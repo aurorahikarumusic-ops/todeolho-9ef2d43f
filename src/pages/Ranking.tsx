@@ -9,9 +9,9 @@ export default function Ranking() {
   const { data: myProfile } = useProfile();
 
   const getPositionIcon = (pos: number) => {
-    if (pos === 0) return <Crown className="w-6 h-6 text-yellow-500" />;
-    if (pos === 1) return <Medal className="w-6 h-6 text-gray-400" />;
-    if (pos === 2) return <Medal className="w-6 h-6 text-amber-600" />;
+    if (pos === 0) return <Crown className="w-6 h-6 text-accent-foreground" />;
+    if (pos === 1) return <Medal className="w-6 h-6 text-muted-foreground" />;
+    if (pos === 2) return <Medal className="w-6 h-6 text-secondary" />;
     return <span className="w-6 h-6 flex items-center justify-center font-display font-bold text-muted-foreground">{pos + 1}</span>;
   };
 
