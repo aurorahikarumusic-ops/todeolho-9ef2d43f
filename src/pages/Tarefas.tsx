@@ -101,31 +101,22 @@ export default function Tarefas() {
     enabled: !!profile?.family_id,
   });
 
-  // Daily mission
+  // Daily mission via edge function (server-side creation)
   const { data: todayMission } = useQuery({
     queryKey: ["daily-mission", user?.id],
     queryFn: async () => {
       if (!user) return null;
-      const today = new Date().toISOString().split("T")[0];
-      const { data } = await supabase
-        .from("daily_missions")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("mission_date", today)
-        .maybeSingle();
-
-      if (!data) {
-        // Create today's mission
-        const { data: created } = await supabase
+      const { data, error } = await supabase.functions.invoke("create-daily-mission");
+      if (error) {
+        // Fallback: try to read existing mission
+        const today = new Date().toISOString().split("T")[0];
+        const { data: existing } = await supabase
           .from("daily_missions")
-          .insert({
-            user_id: user.id,
-            mission_text: getDailyMission(),
-            mission_date: today,
-          })
-          .select()
-          .single();
-        return created;
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("mission_date", today)
+          .maybeSingle();
+        return existing;
       }
       return data;
     },
