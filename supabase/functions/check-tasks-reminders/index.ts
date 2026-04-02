@@ -92,7 +92,7 @@ Deno.serve(async (req) => {
         .lte("due_date", in2h.toISOString());
 
       for (const task of tasks2h || []) {
-        const msg = `⏰ *Tô de Olho — URGENTE*\n${name}, faltam 2 horas.\n📌 *${task.title}*\n\nSe você não sabia disso até agora... bom. Agora sabe.`;
+        const msg = `⏰ *Estou de Olho — URGENTE*\n${name}, faltam 2 horas.\n📌 *${task.title}*\n\nSe você não sabia disso até agora... bom. Agora sabe.`;
 
         await sendWhatsApp(sub.phone_number, msg, LOVABLE_API_KEY, TWILIO_API_KEY, TWILIO_WHATSAPP_FROM);
 
