@@ -52,7 +52,7 @@ function AppRoutes() {
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/tarefas" element={<Tarefas />} />
         <Route path="/ranking" element={<Ranking />} />
-        <Route path="/perfil" element={<ComingSoon title="Perfil" />} />
+        <Route path="/perfil" element={<Perfil />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BottomNav />
