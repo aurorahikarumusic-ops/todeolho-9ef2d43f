@@ -89,6 +89,10 @@ export default function Tarefas() {
     title: "", description: "", due_date: "", due_time: "18:00",
     category: "home", proof_required: false,
   });
+  const [celebration, setCelebration] = useState<{ points: number } | null>(null);
+  const [proofViewer, setProofViewer] = useState<{
+    photoUrl: string; taskTitle: string; storagePath: string;
+  } | null>(null);
 
   const { data: tasks = [] } = useQuery({
     queryKey: ["all-tasks", profile?.family_id],
