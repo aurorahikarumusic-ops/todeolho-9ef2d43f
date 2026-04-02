@@ -10,7 +10,6 @@ const isPreviewHost =
 
 export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
   if (isInIframe || isPreviewHost) {
-    // Unregister any existing SW in preview/iframe
     navigator.serviceWorker?.getRegistrations().then((regs) => regs.forEach((r) => r.unregister()));
     return null;
   }
@@ -18,11 +17,43 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
 
   try {
     const registration = await navigator.serviceWorker.register("/sw.js");
+
+    // Check for updates immediately and every 60s
+    registration.update();
+    setInterval(() => registration.update(), 60 * 1000);
+
+    // Listen for new SW waiting
+    registration.addEventListener("updatefound", () => {
+      const newWorker = registration.installing;
+      if (!newWorker) return;
+
+      newWorker.addEventListener("statechange", () => {
+        if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+          // New version available — notify via custom event
+          window.dispatchEvent(new CustomEvent("sw-update-available", { detail: registration }));
+        }
+      });
+    });
+
+    // Auto-reload when new SW takes over
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
+
     return registration;
   } catch (err) {
     console.error("SW registration failed:", err);
     return null;
   }
+}
+
+/** Call this to activate a waiting SW immediately */
+export function activateWaitingSW(registration: ServiceWorkerRegistration) {
+  registration.waiting?.postMessage({ type: "SKIP_WAITING" });
 }
 
 export function isPushSupported(): boolean {
