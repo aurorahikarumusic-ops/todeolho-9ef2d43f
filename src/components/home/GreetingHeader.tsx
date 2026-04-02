@@ -16,32 +16,37 @@ function getGreeting(props: GreetingHeaderProps): string {
   const daysSince = getDaysSinceActive(props.lastActiveAt);
   const name = props.displayName?.split(" ")[0] || "pai";
 
-  // Inactive for 3+ days
+  if (daysSince >= 7) {
+    return `Sumiu por ${daysSince} dias. As crianças nem perceberam. Brincadeira. Perceberam sim.`;
+  }
   if (daysSince >= 3) {
-    return `Você sumiu por ${daysSince} dias. Seu filho ainda existe. A gente checou.`;
+    return `${daysSince} dias sem abrir o app. Seu filho continua existindo. Confirmamos.`;
   }
 
   if (hour < 12) {
-    // Morning
     if (props.hasCompletedToday) {
-      return `Bom dia, ${name}! Você tá indo bem. Não estraga agora.`;
+      return `Bom dia, ${name}! Fez tarefa cedo? Tô impressionado. Não estraga.`;
     }
-    return "Bom dia! Seu filho já foi pra escola. Você sabia? Agora sabe.";
+    if (props.hasPendingTasks) {
+      return `Bom dia! Tem tarefa pendente de ontem. Vai fingir que não viu?`;
+    }
+    return `Bom dia! Seu filho já saiu pra escola. Você sabia? Agora sabe.`;
   }
 
   if (hour < 18) {
-    // Afternoon
     if (props.hasPendingTasks) {
-      return "Boa tarde. Aquela tarefa de ontem? Ainda não foi feita. Só lembrando.";
+      return `Boa tarde. Aquela tarefa de ontem continua lá. Ela não vai se resolver sozinha.`;
     }
-    return `Boa tarde, ${name}! A mãe mandou lembrar: as crianças ainda existem.`;
+    if (props.hasCompletedToday) {
+      return `Boa tarde, ${name}! Mandou bem hoje. A mãe tá quase impressionada.`;
+    }
+    return `Boa tarde, ${name}! A mãe mandou lembrar: as crianças continuam existindo.`;
   }
 
-  // Night
   if (props.hasCompletedToday) {
-    return "Boa noite! Hoje você foi um pai decente. Guarda esse sentimento pra amanhã.";
+    return `Boa noite! Hoje você foi um pai decente. Guarda esse sentimento.`;
   }
-  return "Boa noite. Você passou o dia inteiro sem fazer nada aqui. Amanhã é outro dia. Ou não.";
+  return `Boa noite. O dia passou e o app ficou aqui esperando. Igual seu filho.`;
 }
 
 export default function GreetingHeader(props: GreetingHeaderProps) {
@@ -49,7 +54,6 @@ export default function GreetingHeader(props: GreetingHeaderProps) {
 
   return (
     <div className="relative bg-primary rounded-2xl p-5 overflow-hidden shadow-sm">
-      {/* Eye watermark */}
       <span className="absolute top-3 right-4 text-3xl opacity-15 select-none">👁️</span>
       <p className="font-display text-primary-foreground text-base leading-relaxed relative z-10">
         {greeting}

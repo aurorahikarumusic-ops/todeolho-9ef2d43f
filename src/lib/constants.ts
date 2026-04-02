@@ -7,42 +7,42 @@ export const DAD_TITLES = [
 ] as const;
 
 export const RANKING_DESCRIPTIONS = [
-  "O Pai do Ano. Suspeito, mas ok.",
-  "Chegou no 2° por acidente, mas chegou.",
-  "Não ganhou, mas tentou (mais ou menos).",
+  "O Pai do Ano. Suspeito, mas tá valendo.",
+  "Segundo lugar. Chegou aqui por acidente, mas chegou.",
+  "Terceiro. Não ganhou, mas tá no pódio.",
   "Esqueceu o lanche. De novo.",
   "Perguntou o nome da professora ontem. A filha tem 7 anos.",
 ] as const;
 
 export const IRONIC_GREETINGS = {
   morning: [
-    "Bom dia! Seu filho tem consulta hoje. Não, você não sabia. Mas tudo bem.",
+    "Bom dia! Seu filho tem consulta hoje. Não, você não sabia.",
     "Bom dia, pai. A mãe já saiu. As crianças estão vivas. Bom trabalho.",
-    "Bom dia! Hoje é dia de reunião na escola. Não, não é sobre você. Dessa vez.",
+    "Bom dia! Reunião na escola hoje. Não é sobre você. Dessa vez.",
   ],
   afternoon: [
-    "Boa tarde! Lembrou de buscar as crianças? Não? Tá bom.",
-    "Boa tarde! A mãe mandou lembrar: as crianças ainda existem.",
-    "Boa tarde, pai. Alguém esqueceu o lanche de novo. Adivinha quem.",
+    "Boa tarde! Lembrou de buscar as crianças? Não? Pensei.",
+    "Boa tarde! A mãe mandou lembrar: as crianças continuam existindo.",
+    "Boa tarde. Alguém esqueceu o lanche de novo. Adivinha quem.",
   ],
   evening: [
-    "Boa noite! Você leu a história pro seu filho? Não? Netflix tá mais fácil, né?",
-    "Boa noite! Seus filhos estão dormindo. Sim, eles ainda moram aqui.",
-    "Boa noite, pai. A mãe fez tudo. De novo. Mas amanhã é um novo dia.",
+    "Boa noite! Leu história pro seu filho? Netflix ganha sempre, né?",
+    "Boa noite! Seus filhos tão dormindo. Sim, eles ainda moram aqui.",
+    "Boa noite, pai. A mãe fez tudo. De novo. Amanhã é outro dia.",
   ],
   inactive: [
-    "Você não abre o app há {days} dias. Seu filho ainda existe.",
-    "Ei, sumiu de novo? As crianças perguntaram por você. Mentira, nem perceberam.",
-    "Voltou! A mãe já tinha desistido de você. Brincadeira. Mais ou menos.",
+    "Você não abre o app há {days} dias. Seu filho continua existindo.",
+    "Sumiu de novo? As crianças perguntaram por você. Mentira, nem perceberam.",
+    "Voltou! A mãe já tinha desistido. Brincadeira. Mais ou menos.",
   ],
 } as const;
 
 export const DAILY_TIPS = [
-  "Dica do dia: Pergunte ao seu filho como foi o dia dele. Sem olhar o celular.",
-  "Dica do dia: Sabia que seus filhos têm professores? Tenta lembrar o nome de um.",
-  "Dica do dia: A mãe merece uma folga. Sim, hoje. Não, amanhã não conta.",
-  "Dica do dia: Leve as crianças pro parque. Sem celular. Sim, é possível.",
-  "Dica do dia: Faça o lanche da escola. Google ajuda. A mãe também, mas tente sozinho.",
+  "Pergunta pro seu filho como foi o dia. Sem celular na mão.",
+  "Seus filhos têm professores. Tenta lembrar o nome de pelo menos um.",
+  "A mãe merece folga. Hoje. Não amanhã — hoje.",
+  "Leva as crianças pro parque. Sem celular. Experimenta.",
+  "Faz o lanche da escola. Google ajuda. A mãe também, mas tente sozinho.",
 ] as const;
 
 export const TASK_CATEGORIES = {

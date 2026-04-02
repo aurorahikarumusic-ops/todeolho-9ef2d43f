@@ -3,21 +3,26 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 const QUOTES = [
-  "Hoje é um bom dia pra perguntar o nome do professor do seu filho. Só pra variar.",
-  "Você lembrou do aniversário da sua mãe. Do filho? Ainda estamos verificando.",
-  "Presença não é só estar no mesmo cômodo. Mas começa por aí.",
-  "A mãe já resolveu. Mas a intenção sua era boa, né?",
-  "Seu filho vai lembrar de você pelo que você fez, não pelo que você planejou fazer.",
-  "Hoje tem consulta? Reunião? Lanche especial? Vai lá conferir. Agora.",
+  "Pergunta pro seu filho como foi o dia dele. Sem olhar o celular. Sim, dá pra fazer.",
+  "Você lembrou do aniversário da sua mãe. Do seu filho? Ainda estamos verificando.",
+  "Presença não é só estar no cômodo. Mas começa por aí.",
+  "A mãe já resolveu. Mas a intenção era boa, né?",
+  "Seu filho vai lembrar do que você fez, não do que você planejou fazer.",
+  "Tem consulta hoje? Reunião? Lanche especial? Confere agora.",
   "3 segundos pra mandar um áudio pro seu filho. Você tem 3 segundos.",
-  "A mãe não quer ajuda. Ela quer que você saiba sem precisar pedir.",
-  "Pai presente não é pai perfeito. Mas é pai que aparece.",
+  "A mãe não quer ajuda. Quer que você saiba sem precisar pedir.",
+  "Pai presente não é pai perfeito. É pai que aparece.",
   "Você abriu o app. Isso já é mais que ontem.",
   "Seu filho cresce com ou sem você. A escolha é sua.",
-  "Toda semana tem algo importante. Você conhece algum?",
+  "Todo dia tem algo que você deveria saber. Abriu a agenda?",
   "A escola tem nome. O professor tem nome. Seu filho sabe os dois. E você?",
-  "Hoje: 1 tarefa. Só 1. Você consegue.",
-  "O ranking não vai se resolver sozinho. Mas você talvez sim.",
+  "Hoje: 1 tarefa. Só 1. Dá conta.",
+  "O ranking não vai se resolver sozinho. Você talvez sim.",
+  "Chega em casa e larga o celular por 10 minutos. Experimenta.",
+  "Conta uma história antes de dormir. Vale inventar.",
+  "Descobre o nome do melhor amigo do seu filho. Sem perguntar pra mãe.",
+  "Sabe o que tem pra jantar? Não? Tá na hora de aprender.",
+  "Mandou mensagem pra mãe hoje? Não vale emoji sozinho.",
 ];
 
 function getDailyIndex(): number {

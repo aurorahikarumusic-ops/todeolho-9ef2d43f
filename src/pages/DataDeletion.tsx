@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,9 +44,13 @@ export default function DataDeletion() {
     }
   };
 
+  useEffect(() => {
+    document.title = "Exclusão de Dados — Estou de Olho";
+  }, []);
+
   return (
     <div className="min-h-screen bg-background pb-16">
-      <div className="max-w-lg mx-auto px-4 py-6">
+      <div className="max-w-lg mx-auto px-4 py-8">
         <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-4">
           <ArrowLeft className="w-4 h-4 mr-2" /> Voltar
         </Button>
@@ -55,11 +59,10 @@ export default function DataDeletion() {
 
         <div className="space-y-6 text-sm font-body text-foreground/90 leading-relaxed">
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">Seu direito à exclusão</h2>
+            <h2 className="font-display font-bold text-lg mb-2">Quer apagar tudo?</h2>
             <p>
-              Em conformidade com a <strong>LGPD (Lei nº 13.709/2018)</strong> e as diretrizes 
-              do Google Play, você pode solicitar a exclusão completa dos seus dados pessoais 
-              a qualquer momento.
+              A LGPD (Lei nº 13.709/2018) e o Google Play garantem seu direito 
+              de apagar seus dados. Sem burocracia, sem pegadinha.
             </p>
           </section>
 
@@ -78,8 +81,7 @@ export default function DataDeletion() {
           <section>
             <h2 className="font-display font-bold text-lg mb-2">Prazo</h2>
             <p>
-              A exclusão é processada imediatamente para dados no app. Backups podem levar 
-              até 30 dias para serem completamente removidos dos nossos servidores.
+              No app, é imediato. Backups levam até 30 dias pra serem removidos dos servidores.
             </p>
           </section>
 
