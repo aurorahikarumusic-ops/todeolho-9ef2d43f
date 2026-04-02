@@ -1,5 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import screenshotDashboard from "@/assets/screenshot-dashboard.jpg";
+import screenshotTarefas from "@/assets/screenshot-tarefas.jpg";
+import screenshotRanking from "@/assets/screenshot-ranking.jpg";
 
 const APK_URL = "https://github.com/aurorahikarumusic-ops/todeolho-9ef2d43f/releases/download/v1.0.0/app-release.apk";
 
@@ -84,6 +87,12 @@ const testimonials = [
     role: "Pai convertido, Manaus — Ex-posição 4°",
     avatarBg: "#EEF0FF",
   },
+];
+
+const appScreenshots = [
+  { src: screenshotDashboard, label: "Dashboard", desc: "Veja seu nível de pai em tempo real" },
+  { src: screenshotTarefas, label: "Tarefas", desc: "Organize e comprove sua presença" },
+  { src: screenshotRanking, label: "Ranking", desc: "Compare com outros pais do Brasil" },
 ];
 
 export default function LandingPage() {
@@ -222,15 +231,21 @@ export default function LandingPage() {
           transform: translate(-2px, -2px);
         }
 
-        .phone-frame {
-          width: 260px;
-          background: #1B2B23;
-          border-radius: 40px;
-          border: 4px solid rgba(255,255,255,0.15);
-          box-shadow: 20px 40px 80px rgba(0,0,0,0.6), -20px -10px 60px rgba(45,106,79,0.2), 20px -10px 60px rgba(244,132,95,0.15);
-          transform: rotateY(-8deg) rotateX(5deg);
-          padding: 12px;
-          flex-shrink: 0;
+        .screenshot-card {
+          border-radius: 24px;
+          overflow: hidden;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+          transition: transform 0.4s ease, box-shadow 0.4s ease;
+          max-width: 280px;
+        }
+        .screenshot-card:hover {
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+        }
+        .screenshot-card img {
+          width: 100%;
+          height: auto;
+          display: block;
         }
 
         .ranking-row {
@@ -245,7 +260,6 @@ export default function LandingPage() {
         .ranking-row:last-child { border-bottom: none; }
 
         @media (max-width: 768px) {
-          .phone-frame { transform: rotateY(0) rotateX(0); }
           .ranking-row { padding: 0.75rem 1rem; font-size: 0.9rem; }
         }
       `}</style>
@@ -259,7 +273,7 @@ export default function LandingPage() {
         padding: "0.75rem 1.5rem",
       }}>
         <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.5rem", color: "#2D6A4F" }}>
-          Tô de <span style={{ color: "#F4845F" }}>Olho</span> 👁️
+          Estou de <span style={{ color: "#F4845F" }}>Olho</span> 👁️
         </span>
         <a href="#download" style={{
           background: "#2D6A4F", color: "white", padding: "0.6rem 1.5rem",
@@ -285,7 +299,6 @@ export default function LandingPage() {
         <div style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%,-50%)", width: "300px", height: "300px", background: "#FFEAAE", borderRadius: "50%", filter: "blur(60px)", opacity: 0.2, pointerEvents: "none" }} />
 
         <div style={{ position: "relative", maxWidth: "800px" }}>
-          {/* Badge pill */}
           <div style={{
             display: "inline-block", background: "#FFEAAE", border: "2px solid #1B2B23",
             borderRadius: "50px", padding: "0.5rem 1.25rem", fontSize: "0.9rem", fontWeight: 700, marginBottom: "1.5rem",
@@ -293,16 +306,14 @@ export default function LandingPage() {
             🇧🇷 O app que o Brasil precisava (e os pais, mais ainda)
           </div>
 
-          {/* Title */}
           <h1 style={{
             fontFamily: "'Baloo 2', cursive", fontWeight: 900,
             fontSize: "clamp(3rem, 8vw, 6rem)", color: "#2D6A4F", lineHeight: 1.1, margin: "0 0 0.5rem",
           }}>
-            Tô de Olho{" "}
+            Estou de Olho{" "}
             <span style={{ display: "inline-block", animation: "eye-pulse 3s ease-in-out infinite" }}>👁️</span>
           </h1>
 
-          {/* Subtitle */}
           <p style={{
             fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontStyle: "italic",
             color: "#F4845F", fontSize: "clamp(1.2rem, 3vw, 1.75rem)", margin: "0 0 1.5rem",
@@ -310,12 +321,10 @@ export default function LandingPage() {
             porque alguém tem que lembrar
           </p>
 
-          {/* Description */}
           <p style={{ maxWidth: "560px", margin: "0 auto 2rem", fontSize: "1.1rem", lineHeight: 1.7, color: "#243B2F" }}>
             O app que <span style={{ color: "#F4845F", fontWeight: 700 }}>gamifica a paternidade</span> — com ironia, ranking público e notificações que batem direto no ego. Para pais que esquecem tudo e mães que lembram de tudo.
           </p>
 
-          {/* CTAs */}
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
             <a href="#download" style={{
               background: "#2D6A4F", color: "white", border: "3px solid #1B2B23",
@@ -326,7 +335,7 @@ export default function LandingPage() {
               onMouseEnter={(e) => (e.currentTarget.style.background = "#F4845F")}
               onMouseLeave={(e) => (e.currentTarget.style.background = "#2D6A4F")}
             >
-              📱 Baixar grátis agora
+              🤖 Baixar para Android
             </a>
             <a href="#como-funciona" style={{
               background: "white", color: "#2D6A4F", border: "3px solid #2D6A4F",
@@ -353,21 +362,49 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* SECTION 2 — PHONE + FEATURES */}
+      {/* SECTION — APP SCREENSHOTS */}
       <section id="como-funciona" style={{ background: "#1B2B23", padding: "5rem 1.5rem" }}>
-        <div ref={addRevealRef} className="reveal" style={{
-          maxWidth: "1100px", margin: "0 auto", display: "flex", flexWrap: "wrap",
-          gap: "3rem", alignItems: "center",
-        }}>
-          {/* Left text */}
-          <div style={{ flex: "1 1 400px" }}>
-            <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.5rem", color: "white", lineHeight: 1.2, marginBottom: "1.5rem" }}>
-              O app que ninguém pediu<br />mas <span style={{ color: "#F4845F" }}>todo pai precisava</span>
+        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.5rem", color: "white", lineHeight: 1.2, marginBottom: "0.75rem" }}>
+              Veja o app <span style={{ color: "#F4845F" }}>por dentro</span>
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "1.05rem", lineHeight: 1.7, marginBottom: "2rem" }}>
-              Agenda compartilhada, ranking de pais, tarefas com prova de conclusão e notificações irônicas que chegam quando você menos espera — e quando você mais precisa.
+            <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "1.05rem", maxWidth: "500px", margin: "0 auto" }}>
+              Screenshots reais do Estou de Olho. Sem enrolação, sem mockup inventado.
             </p>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "1rem" }}>
+          </div>
+
+          {/* Screenshots grid */}
+          <div style={{
+            display: "flex", justifyContent: "center", gap: "2rem", flexWrap: "wrap",
+            alignItems: "flex-start",
+          }}>
+            {appScreenshots.map((screen, i) => (
+              <div key={i} style={{ textAlign: "center" }}>
+                <div className="screenshot-card">
+                  <img
+                    src={screen.src}
+                    alt={`Tela ${screen.label} do Estou de Olho`}
+                    loading={i === 0 ? undefined : "lazy"}
+                    width={540}
+                    height={960}
+                  />
+                </div>
+                <div style={{ marginTop: "1rem" }}>
+                  <div style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, color: "white", fontSize: "1.1rem" }}>
+                    {screen.label}
+                  </div>
+                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", fontStyle: "italic" }}>
+                    {screen.desc}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Feature list below screenshots */}
+          <div style={{ marginTop: "3rem", maxWidth: "700px", marginLeft: "auto", marginRight: "auto" }}>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
               {[
                 "📅 Agenda familiar compartilhada em tempo real",
                 "🏆 Ranking semanal de pais (público e sem piedade)",
@@ -383,74 +420,14 @@ export default function LandingPage() {
               ))}
             </ul>
           </div>
-
-          {/* Phone mockup */}
-          <div style={{ flex: "0 0 auto", display: "flex", justifyContent: "center", perspective: "1000px", width: "100%" }}>
-            <div className="phone-frame">
-              {/* Notch */}
-              <div style={{ width: 100, height: 28, background: "#1B2B23", borderRadius: 14, margin: "0 auto 12px", border: "2px solid rgba(255,255,255,0.1)" }} />
-              {/* Screen */}
-              <div style={{ background: "#FFF8F1", borderRadius: 28, padding: "1rem", overflow: "hidden" }}>
-                {/* Header */}
-                <div style={{ background: "#2D6A4F", borderRadius: 12, padding: "1rem", marginBottom: "0.75rem", color: "white" }}>
-                  <div style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: "1rem" }}>Bom dia, João! 👁️</div>
-                  <div style={{ fontSize: "0.7rem", fontStyle: "italic", opacity: 0.85, marginTop: 4 }}>Você tem consulta do Pedro hoje. Não, você não sabia.</div>
-                </div>
-                {/* Gauge */}
-                <div style={{ background: "white", border: "1px solid #e5e5e5", borderRadius: 12, padding: "0.75rem", marginBottom: "0.75rem" }}>
-                  <div style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "#666", marginBottom: 4 }}>Nível do Pai esta semana</div>
-                  <div style={{ fontWeight: 700, color: "#F4845F", fontSize: "0.85rem" }}>Pai Tentando 😬</div>
-                  <div style={{ background: "#eee", borderRadius: 10, height: 8, margin: "6px 0", overflow: "hidden" }}>
-                    <div style={{ width: "42%", height: "100%", background: "linear-gradient(90deg, #F4845F, #52B788)", borderRadius: 10 }} />
-                  </div>
-                  <div style={{ fontSize: "0.55rem", fontStyle: "italic", color: "#999" }}>42% — esforço visível, resultado questionável</div>
-                </div>
-                {/* Stats grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: "0.75rem" }}>
-                  {[
-                    { val: "3/8", label: "Tarefas feitas", sub: "a mãe fez as outras", c: "#F4845F" },
-                    { val: "#4", label: "Ranking", sub: "o Carlos tá na 3ª", c: "#2D6A4F" },
-                    { val: "3★", label: "Nota da mãe", sub: "ela foi gentil", c: "#F4845F" },
-                    { val: "🔥7", label: "Dias seguidos", sub: "isso é novo", c: "#2D6A4F" },
-                  ].map((s, i) => (
-                    <div key={i} style={{ background: "white", border: "1px solid #eee", borderRadius: 10, padding: "0.5rem", textAlign: "center" }}>
-                      <div style={{ fontWeight: 700, color: s.c, fontSize: "0.9rem" }}>{s.val}</div>
-                      <div style={{ fontSize: "0.55rem", fontWeight: 600 }}>{s.label}</div>
-                      <div style={{ fontSize: "0.5rem", color: "#999", fontStyle: "italic" }}>{s.sub}</div>
-                    </div>
-                  ))}
-                </div>
-                {/* Mini ranking */}
-                <div style={{ background: "white", border: "1px solid #eee", borderRadius: 10, padding: "0.5rem", fontSize: "0.6rem" }}>
-                  {[
-                    { pos: "🥇", init: "RA", name: "Ricardo A.", q: "Fez tudo. Suspeito.", pts: "980pts" },
-                    { pos: "2", init: "MF", name: "Marcos F.", q: "Chegou por acidente.", pts: "841pts" },
-                    { pos: "4", init: "VC", name: "Você ←", q: "Tá dando pra subir.", pts: "489pts", hl: true },
-                  ].map((r, i) => (
-                    <div key={i} style={{
-                      display: "flex", alignItems: "center", gap: 6, padding: "4px 6px",
-                      borderRadius: 8, marginBottom: 3,
-                      background: r.hl ? "#FFF0E6" : "transparent",
-                    }}>
-                      <span style={{ fontWeight: 700, width: 20 }}>{r.pos}</span>
-                      <span style={{ width: 20, height: 20, borderRadius: "50%", background: "#F4845F", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.5rem", fontWeight: 700 }}>{r.init}</span>
-                      <span style={{ fontWeight: 600, flex: 1 }}>{r.name}</span>
-                      <span style={{ fontStyle: "italic", color: "#999", flex: 1 }}>{r.q}</span>
-                      <span style={{ fontWeight: 700, color: "#2D6A4F" }}>{r.pts}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* SECTION 3 — FEATURE CARDS */}
+      {/* SECTION — FEATURE CARDS */}
       <section id="features" style={{ padding: "5rem 1.5rem", textAlign: "center" }}>
         <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.25rem", color: "#2D6A4F", marginBottom: "0.5rem" }}>
-            O que o Tô de Olho faz
+            O que o Estou de Olho faz
           </h2>
           <p style={{ fontStyle: "italic", color: "#666", marginBottom: "3rem" }}>
             (e o que nenhum app tinha coragem de fazer antes)
@@ -470,7 +447,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 4 — BADGES */}
+      {/* SECTION — BADGES */}
       <section style={{ padding: "3rem 1.5rem", textAlign: "center" }}>
         <div ref={addRevealRef} className="reveal" style={{ maxWidth: "900px", margin: "0 auto" }}>
           <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2rem", color: "#2D6A4F", marginBottom: "2rem" }}>
@@ -486,7 +463,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 5 — STATS */}
+      {/* SECTION — STATS */}
       <section style={{
         background: "#2D6A4F", color: "white", padding: "5rem 1.5rem", textAlign: "center",
         backgroundImage: "radial-gradient(circle at 10% 20%, rgba(255,255,255,0.05) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(244,132,95,0.1) 0%, transparent 50%)",
@@ -503,7 +480,7 @@ export default function LandingPage() {
               { val: "35M", label: "Pais brasileiros com filhos", sub: "Quantos lembram da consulta? Menos." },
               { val: "172K", label: "Filhos sem pai no registro (2023)", sub: "A ausência começa antes do app." },
               { val: "88,9%", label: "Brasileiros com smartphone", sub: "Não tem desculpa tecnológica." },
-              { val: "0", label: "Apps como este no Brasil", sub: "Até agora. Bem-vindo ao Tô de Olho." },
+              { val: "0", label: "Apps como este no Brasil", sub: "Até agora. Bem-vindo ao Estou de Olho." },
             ].map((s, i) => (
               <div key={i} className="stat-card">
                 <div style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.5rem", marginBottom: "0.5rem" }}>{s.val}</div>
@@ -515,7 +492,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 6 — RANKING */}
+      {/* SECTION — RANKING */}
       <section id="ranking" style={{ padding: "5rem 1.5rem", textAlign: "center" }}>
         <div ref={addRevealRef} className="reveal" style={{ maxWidth: "700px", margin: "0 auto" }}>
           <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.25rem", color: "#2D6A4F", marginBottom: "0.5rem" }}>
@@ -525,12 +502,10 @@ export default function LandingPage() {
             Semanal. Público. Sem piedade. Você vai querer subir.
           </p>
           <div className="lp-card" style={{ overflow: "hidden", boxShadow: "8px 8px 0 #1B2B23", textAlign: "left" }}>
-            {/* Header */}
             <div style={{ background: "#1B2B23", color: "white", padding: "1rem 1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
               <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800 }}>🏆 Ranking Semanal — Brasil</span>
               <span style={{ background: "#F4845F", padding: "0.25rem 0.75rem", borderRadius: 50, fontSize: "0.75rem", fontWeight: 700 }}>Atualizado toda segunda</span>
             </div>
-            {/* Rows */}
             {rankingRows.map((r, i) => (
               <div key={i} className="ranking-row" style={{
                 background: r.highlight ? "#FFF0E6" : "white",
@@ -549,7 +524,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 7 — TESTIMONIALS */}
+      {/* SECTION — TESTIMONIALS */}
       <section style={{ background: "#1B2B23", padding: "5rem 1.5rem", textAlign: "center" }}>
         <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.25rem", color: "white", marginBottom: "0.5rem" }}>
@@ -582,7 +557,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 8 — DOWNLOAD CTA */}
+      {/* SECTION — DOWNLOAD CTA */}
       <section id="download" style={{ padding: "5rem 1.5rem", textAlign: "center" }}>
         <div ref={addRevealRef} className="reveal" style={{ maxWidth: "600px", margin: "0 auto" }}>
           <div style={{ fontSize: "4rem", animation: "eye-bounce 2s infinite", marginBottom: "1.5rem" }}>👁️</div>
@@ -595,19 +570,12 @@ export default function LandingPage() {
           <p style={{ fontSize: "1.05rem", color: "#243B2F", lineHeight: 1.7, marginBottom: "2.5rem" }}>
             Baixa agora. É grátis. E o ranking já tá contando o tempo que você levou pra decidir instalar.
           </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
             <a href={APK_URL} className="store-btn" target="_blank" rel="noopener noreferrer">
               <span style={{ fontSize: "1.75rem" }}>🤖</span>
               <div style={{ textAlign: "left" }}>
-                <div style={{ fontSize: "0.7rem", opacity: 0.7 }}>Disponível no</div>
-                <div style={{ fontWeight: 700, fontSize: "1.1rem" }}>Google Play</div>
-              </div>
-            </a>
-            <a href="#" className="store-btn" style={{ opacity: 0.6, cursor: "not-allowed" }}>
-              <span style={{ fontSize: "1.75rem" }}>🍎</span>
-              <div style={{ textAlign: "left" }}>
-                <div style={{ fontSize: "0.7rem", opacity: 0.7 }}>Em breve na</div>
-                <div style={{ fontWeight: 700, fontSize: "1.1rem" }}>App Store</div>
+                <div style={{ fontSize: "0.7rem", opacity: 0.7 }}>Disponível para</div>
+                <div style={{ fontWeight: 700, fontSize: "1.1rem" }}>Android</div>
               </div>
             </a>
           </div>
@@ -622,7 +590,7 @@ export default function LandingPage() {
       <footer style={{ background: "#1B2B23", color: "white", padding: "3rem 1.5rem", textAlign: "center" }}>
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
           <div style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.5rem", marginBottom: "0.5rem" }}>
-            Tô de <span style={{ color: "#F4845F" }}>Olho</span> 👁️
+            Estou de <span style={{ color: "#F4845F" }}>Olho</span> 👁️
           </div>
           <p style={{ fontStyle: "italic", opacity: 0.6, marginBottom: "1.5rem", fontSize: "0.95rem" }}>
             porque alguém tem que lembrar
@@ -644,7 +612,7 @@ export default function LandingPage() {
             ))}
           </div>
           <p style={{ fontSize: "0.85rem", opacity: 0.5, marginBottom: "1rem" }}>
-            © {new Date().getFullYear()} Tô de Olho. Feito com amor (e ironia) no Brasil 🇧🇷
+            © {new Date().getFullYear()} Estou de Olho. Feito com amor (e ironia) no Brasil 🇧🇷
           </p>
           <p style={{ fontSize: "0.75rem", opacity: 0.35 }}>
             Nenhum pai foi ferido durante a produção deste app. Mas alguns ficaram com vergonha.
