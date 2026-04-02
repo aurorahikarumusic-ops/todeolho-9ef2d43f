@@ -232,19 +232,38 @@ export default function LandingPage() {
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
 
-          {/* Deep link button to open the installed app */}
-          <div className="mt-6">
-            <Button
-              variant="secondary"
-              size="lg"
-              className="font-display text-base h-12 px-8"
-              onClick={handleOpenApp}
-            >
-              <Smartphone className="w-5 h-5 mr-2" />
-              Abrir no Aplicativo
-            </Button>
+          {/* Download / Open App */}
+          <div className="mt-6 p-4 bg-card rounded-2xl border border-border shadow-sm">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Smartphone className="w-6 h-6 text-primary" />
+              <h3 className="font-display font-bold text-foreground">Baixe o App</h3>
+            </div>
+            <p className="font-body text-sm text-muted-foreground mb-4">
+              Instale no celular e nunca mais esqueça uma tarefa.
+            </p>
+            <div className="flex flex-col gap-2">
+              <a
+                href="https://github.com/user/estoudeolho/releases/latest/download/estoudeolho.apk"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="default" size="lg" className="w-full font-display text-base h-12">
+                  <Download className="w-5 h-5 mr-2" />
+                  Baixar APK (Android)
+                </Button>
+              </a>
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full font-display text-base h-12"
+                onClick={handleOpenApp}
+              >
+                <Smartphone className="w-5 h-5 mr-2" />
+                Já tenho o app — Abrir
+              </Button>
+            </div>
             <p className="font-body text-xs text-muted-foreground mt-2">
-              Já instalou o app? Toque aqui para abrir direto.
+              Disponível para Android. iOS em breve. 🍎
             </p>
           </div>
         </div>
