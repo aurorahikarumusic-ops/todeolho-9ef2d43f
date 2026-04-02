@@ -123,7 +123,7 @@ export default function LandingPage() {
 
   const handleOpenApp = () => {
     const appPackage = "app.lovable.c98da6ca3b0a4e2a816155c857301dd2";
-    const intentUrl = `intent://estoudeolho.lovable.app/#Intent;scheme=https;package=${appPackage};end`;
+    const intentUrl = `intent://estoudeolho.lovable.app/app#Intent;scheme=https;package=${appPackage};end`;
     const timeout = setTimeout(() => { navigate("/app"); }, 1500);
     window.location.href = intentUrl;
     document.addEventListener("visibilitychange", () => {
