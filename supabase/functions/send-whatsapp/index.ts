@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
       if (upsertError) throw upsertError;
 
       // Send OTP via WhatsApp
-      const whatsappMsg = `👁️ *Tô de Olho — Verificação*\n\nSeu código: *${code}*\n\nVálido por 10 minutos.\nSe não foi você... bom, alguém quer te ajudar a ser um pai melhor.`;
+      const whatsappMsg = `👁️ *Estou de Olho — Verificação*\n\nSeu código: *${code}*\n\nVálido por 10 minutos.\nSe não foi você... bom, alguém quer te ajudar a ser um pai melhor.`;
 
       const response = await fetch(`${GATEWAY_URL}/Messages.json`, {
         method: "POST",
