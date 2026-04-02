@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Home, CalendarDays, CheckSquare, Trophy, User } from "lucide-react";
 
 const NAV_ITEMS = [
-  { path: "/", icon: Home, label: "Home" },
+  { path: "/app", icon: Home, label: "Home" },
   { path: "/agenda", icon: CalendarDays, label: "Agenda" },
   { path: "/tarefas", icon: CheckSquare, label: "Tarefas" },
   { path: "/ranking", icon: Trophy, label: "Ranking" },

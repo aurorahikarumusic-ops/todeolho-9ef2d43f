@@ -58,7 +58,7 @@ export default function LandingPage() {
     // Try the intent URL first, fallback to direct navigation
     const timeout = setTimeout(() => {
       // If intent didn't work, navigate to app route
-      navigate("/");
+      navigate("/app");
     }, 1500);
 
     window.location.href = intentUrl;
