@@ -25,17 +25,11 @@ import SwUpdateToast from "./components/SwUpdateToast";
 
 const queryClient = new QueryClient();
 
-const isAndroidAppWebView = () => {
-  if (typeof window === "undefined") return false;
-
-  const userAgent = window.navigator.userAgent || "";
-  return /Android/i.test(userAgent) && (/\bwv\b/i.test(userAgent) || /; wv\)/i.test(userAgent) || /Version\/\d+(?:\.\d+)+/i.test(userAgent));
-};
 
 function AppRoutes() {
   const { user, loading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
-  const shouldBypassLanding = isAndroidAppWebView();
+  
 
   if (loading || (user && profileLoading)) {
     return (
@@ -59,14 +53,15 @@ function AppRoutes() {
   if (!user) {
     return (
       <Routes>
-        <Route path="/" element={shouldBypassLanding ? <Navigate to="/auth" replace /> : <LandingPage />} />
+        <Route path="/" element={<Navigate to="/auth" replace />} />
+        <Route path="/inicio" element={<LandingPage />} />
         <Route path="/app" element={<Navigate to="/auth" replace />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/privacidade" element={<PrivacyPolicy />} />
         <Route path="/termos" element={<TermsOfUse />} />
         <Route path="/exclusao-dados" element={<DataDeletion />} />
         <Route path="/suporte" element={<Support />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/auth" replace />} />
       </Routes>
     );
   }
@@ -84,6 +79,7 @@ function AppRoutes() {
         <Route path="/" element={<Navigate to="/app" replace />} />
         <Route path="/auth" element={<Navigate to="/app" replace />} />
         <Route path="/app" element={<Dashboard />} />
+        <Route path="/inicio" element={<LandingPage />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/agenda" element={<Agenda />} />
