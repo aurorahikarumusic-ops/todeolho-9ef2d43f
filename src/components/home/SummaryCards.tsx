@@ -92,10 +92,10 @@ export default function SummaryCards({
       <Card
         icon={<Star className="w-4 h-4" />}
         label="Nota da Mãe"
-        value={momRating !== null ? `${momRating}★` : "—"}
+        value={momRating !== null ? `${momRating}★` : "Pendente"}
         valueColor={momRating !== null && momRating >= 4 ? "text-primary" : "text-secondary"}
-        comment={ratingMsg}
-        commentColor="text-muted-foreground"
+        comment={momRating === null ? "Convide a mãe pra avaliar sua semana!" : ratingMsg}
+        commentColor={momRating === null ? "text-secondary" : "text-muted-foreground"}
         stars={momRating}
       />
     </div>

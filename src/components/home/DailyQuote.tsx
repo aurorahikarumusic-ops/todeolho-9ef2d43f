@@ -28,7 +28,7 @@ function getDailyIndex(): number {
 
 export default function DailyQuote() {
   const quote = QUOTES[getDailyIndex()];
-  const today = format(new Date(), "dd 'de' MMMM", { locale: ptBR });
+  const today = format(new Date(), "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
 
   return (
     <div className="bg-card rounded-2xl p-4 shadow-sm border-l-4 border-secondary relative">

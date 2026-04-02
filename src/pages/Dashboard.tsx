@@ -107,7 +107,7 @@ export default function Dashboard() {
   const dadTitle = getDadTitle(profile.points);
 
   return (
-    <div className="pb-32 px-4 pt-6 max-w-lg mx-auto space-y-4">
+    <div className="pb-24 px-4 pt-6 max-w-lg mx-auto space-y-4">
       {/* App Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">

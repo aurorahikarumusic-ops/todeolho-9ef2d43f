@@ -436,7 +436,7 @@ export default function Perfil() {
 
         <Card className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => navigate("/exclusao-dados")}>
           <CardContent className="p-3 flex items-center justify-between">
-            <span className="text-sm font-body text-destructive">🗑️ Exclusão de Dados</span>
+            <span className="text-sm font-body text-muted-foreground">🗑️ Exclusão de Dados</span>
             <ChevronRight className="w-4 h-4 text-muted-foreground" />
           </CardContent>
         </Card>
