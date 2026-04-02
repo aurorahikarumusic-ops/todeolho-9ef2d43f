@@ -25,12 +25,6 @@ import SwUpdateToast from "./components/SwUpdateToast";
 
 const queryClient = new QueryClient();
 
-const isAndroidAppWebView = () => {
-  if (typeof window === "undefined") return false;
-
-  const userAgent = window.navigator.userAgent || "";
-  return /Android/i.test(userAgent) && (/\bwv\b/i.test(userAgent) || /; wv\)/i.test(userAgent) || /Version\/\d+(?:\.\d+)+/i.test(userAgent));
-};
 
 function AppRoutes() {
   const { user, loading } = useAuth();
