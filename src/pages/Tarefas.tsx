@@ -220,7 +220,7 @@ export default function Tarefas() {
       const dueDate = newTask.due_date
         ? new Date(`${newTask.due_date}T${newTask.due_time}`).toISOString()
         : null;
-      const { error } = await supabase.from("tasks").insert({
+      const { data: inserted, error } = await supabase.from("tasks").insert({
         title: newTask.title,
         description: newTask.description || null,
         due_date: dueDate,
@@ -229,14 +229,22 @@ export default function Tarefas() {
         family_id: profile.family_id,
         created_by: user.id,
         assigned_to: user.id,
-      });
+      }).select().single();
       if (error) throw error;
+      return inserted;
     },
-    onSuccess: () => {
+    onSuccess: (inserted) => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       setShowAddSheet(false);
       setNewTask({ title: "", description: "", due_date: "", due_time: "18:00", category: "home", proof_required: false });
       toast.success("Tarefa criada! Você adicionou sozinho. +30 pontos de iniciativa. ✨", { duration: 4000 });
+
+      // Send push notification to family members (fire and forget)
+      if (inserted) {
+        supabase.functions.invoke("notify-new-task", {
+          body: { type: "INSERT", record: inserted },
+        }).catch(console.error);
+      }
     },
     onError: () => toast.error("Erro ao criar tarefa."),
   });
