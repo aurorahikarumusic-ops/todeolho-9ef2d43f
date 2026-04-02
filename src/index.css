@@ -20,7 +20,7 @@
     --secondary-foreground: 0 0% 100%;
 
     --muted: 30 20% 93%;
-    --muted-foreground: 210 10% 40%;
+    --muted-foreground: 210 12% 35%;
 
     --accent: 43 100% 84%;
     --accent-foreground: 210 14% 11%;
@@ -54,34 +54,48 @@
   }
 
   html {
-    /* Disable pull-to-refresh in WebView */
     overscroll-behavior-y: contain;
-    /* Disable text size adjustment */
     -webkit-text-size-adjust: 100%;
+    font-size: 16px;
   }
 
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
-    /* Safe area padding for notch/nav bar */
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
-    /* Prevent overscroll bounce */
     overscroll-behavior: none;
-    /* Disable touch callout */
     -webkit-touch-callout: none;
-    /* Prevent user select on interactive elements */
     -webkit-tap-highlight-color: transparent;
+    line-height: 1.5;
   }
 
-  /* Prevent zoom on input focus (WebView fix) */
+  /* Prevent zoom on input focus (WebView fix) — enforce 16px */
   input, select, textarea {
     font-size: 16px !important;
+    font-family: var(--font-body);
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  /* Mobile typography floor: 9px/10px/11px → 12px minimum on mobile */
+  @media (max-width: 768px) {
+    .text-\[9px\] { font-size: 11px !important; }
+    .text-\[10px\] { font-size: 12px !important; }
+    .text-\[11px\] { font-size: 12px !important; }
+  }
+}
+
+/* Ironic text utility — Nunito Italic with accent color */
+@layer utilities {
+  .text-ironic {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: hsl(var(--secondary));
   }
 }
