@@ -337,7 +337,7 @@ export default function Tarefas() {
   };
 
   return (
-    <div className="pb-32 px-4 pt-6 max-w-lg mx-auto space-y-4">
+    <div className="pb-24 px-4 pt-8 max-w-lg mx-auto space-y-4">
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
