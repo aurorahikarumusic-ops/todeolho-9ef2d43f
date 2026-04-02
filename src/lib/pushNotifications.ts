@@ -75,8 +75,7 @@ export async function sendLocalNotification(title: string, body: string) {
       body,
       icon: "/icons/icon-192.png",
       badge: "/icons/icon-192.png",
-      vibrate: [200, 100, 200],
-    });
+    } as NotificationOptions);
   } else {
     new Notification(title, { body, icon: "/icons/icon-192.png" });
   }
