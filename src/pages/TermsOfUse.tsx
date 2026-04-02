@@ -1,115 +1,106 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 export default function TermsOfUse() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.title = "Termos de Uso — Estou de Olho";
+  }, []);
+
   return (
     <div className="min-h-screen bg-background pb-16">
-      <div className="max-w-lg mx-auto px-4 py-6">
+      <div className="max-w-lg mx-auto px-4 py-8">
         <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-4">
           <ArrowLeft className="w-4 h-4 mr-2" /> Voltar
         </Button>
 
         <h1 className="font-display text-2xl font-bold mb-6">Termos de Uso</h1>
-        <p className="text-xs text-muted-foreground mb-6">Última atualização: {new Date().toLocaleDateString("pt-BR")}</p>
+        <p className="text-xs text-muted-foreground mb-6">Última atualização: 01/04/2026</p>
 
         <div className="space-y-6 text-sm font-body text-foreground/90 leading-relaxed">
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">1. Aceitação dos Termos</h2>
+            <h2 className="font-display font-bold text-lg mb-2">1. O combinado</h2>
             <p>
-              Ao usar o <strong>Estou de Olho</strong>, você concorda com estes Termos de Uso. 
-              Se não concordar, não utilize o app. O uso continuado constitui aceitação.
+              Ao usar o <strong>Estou de Olho</strong>, você aceita estes termos. 
+              Se não curtiu, não usa. Simples assim.
             </p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">2. Descrição do Serviço</h2>
+            <h2 className="font-display font-bold text-lg mb-2">2. O que o app faz</h2>
             <p>
-              O Estou de Olho é uma plataforma de organização familiar com gamificação, 
-              projetada para ajudar pais a serem mais presentes e organizados. O app inclui:
+              O Estou de Olho organiza a rotina familiar com tarefas, agenda, ranking e 
+              missões diárias. Tudo com humor — porque sem humor ninguém aguenta criar filho.
             </p>
-            <ul className="list-disc pl-6 space-y-1 mt-2">
-              <li>Gerenciamento de tarefas familiares</li>
-              <li>Agenda de eventos e compromissos</li>
-              <li>Sistema de pontuação e ranking</li>
-              <li>Missões diárias e conquistas</li>
-              <li>Perfis de filhos e gestão familiar</li>
-            </ul>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">3. Cadastro e Conta</h2>
+            <h2 className="font-display font-bold text-lg mb-2">3. Sua conta</h2>
             <ul className="list-disc pl-6 space-y-1">
-              <li>Você deve ter 18 anos ou mais para criar uma conta.</li>
-              <li>As informações fornecidas devem ser verdadeiras e atualizadas.</li>
-              <li>Você é responsável pela segurança da sua conta e senha.</li>
-              <li>Cada pessoa deve ter apenas uma conta.</li>
+              <li>Precisa ter 18 anos ou mais.</li>
+              <li>Use informações reais. Inventar nome não vai te salvar do ranking.</li>
+              <li>Cuide da sua senha. A mãe já cuida de tudo, não peça isso pra ela também.</li>
+              <li>Uma conta por pessoa.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">4. Uso Aceitável</h2>
-            <p>Você concorda em NÃO:</p>
+            <h2 className="font-display font-bold text-lg mb-2">4. O que não pode</h2>
             <ul className="list-disc pl-6 space-y-1 mt-2">
-              <li>Usar o app para fins ilegais ou não autorizados.</li>
-              <li>Tentar acessar dados de outros usuários sem autorização.</li>
-              <li>Manipular o sistema de pontuação de forma fraudulenta.</li>
-              <li>Enviar conteúdo ofensivo, abusivo ou ilegal.</li>
-              <li>Interferir no funcionamento do app ou seus servidores.</li>
+              <li>Usar o app pra algo ilegal.</li>
+              <li>Tentar ver dados de outros usuários.</li>
+              <li>Fraudar o sistema de pontos (a gente descobre, a mãe sempre descobre).</li>
+              <li>Mandar conteúdo ofensivo ou abusivo.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">5. Conteúdo do Usuário</h2>
+            <h2 className="font-display font-bold text-lg mb-2">5. Seu conteúdo</h2>
             <p>
-              Fotos, textos e dados que você enviar permanecem seus. Ao enviá-los, você nos concede 
-              licença limitada para armazená-los e exibi-los dentro do app, conforme necessário 
-              para o funcionamento do serviço.
+              Fotos e textos que você enviar continuam sendo seus. 
+              A gente só precisa armazenar e mostrar dentro do app pra ele funcionar.
             </p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">6. Tom Irônico do App</h2>
+            <h2 className="font-display font-bold text-lg mb-2">6. Sobre o tom do app</h2>
             <p>
-              O Estou de Olho utiliza humor e ironia como ferramenta de engajamento. 
-              As mensagens irônicas são parte da experiência e não têm intenção de ofender. 
-              O tom é sempre família-friendly e respeitoso.
+              O Estou de Olho usa humor e ironia pra engajar. As piadas são sobre a experiência de ser pai, 
+              nunca pra ofender. Se algo incomodar, fala com a gente.
             </p>
           </section>
 
           <section>
             <h2 className="font-display font-bold text-lg mb-2">7. Disponibilidade</h2>
             <p>
-              Nos esforçamos para manter o app disponível 24/7, mas não garantimos 
-              funcionamento ininterrupto. Podemos realizar manutenções programadas 
-              ou enfrentar indisponibilidades temporárias.
+              Tentamos manter o app no ar o tempo todo, mas às vezes ele precisa de manutenção. 
+              Tipo pai no domingo: presente, mas nem sempre 100%.
             </p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">8. Limitação de Responsabilidade</h2>
+            <h2 className="font-display font-bold text-lg mb-2">8. Responsabilidade</h2>
             <p>
-              O app é fornecido "como está". Não nos responsabilizamos por decisões 
-              tomadas com base nas informações do app, nem por perdas decorrentes 
-              de indisponibilidade ou erros no serviço.
+              O app é oferecido "como está". Não somos responsáveis por decisões 
+              que você tome com base no que viu aqui, nem por quedas temporárias do serviço.
             </p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">9. Encerramento</h2>
+            <h2 className="font-display font-bold text-lg mb-2">9. Encerrar conta</h2>
             <p>
-              Você pode encerrar sua conta a qualquer momento pelo app ou por e-mail. 
-              Reservamo-nos o direito de suspender contas que violem estes termos.
+              Você pode sair quando quiser, direto pelo app ou por e-mail. 
+              Se violar os termos, podemos suspender sua conta.
             </p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">10. Lei Aplicável</h2>
+            <h2 className="font-display font-bold text-lg mb-2">10. Legislação</h2>
             <p>
-              Estes termos são regidos pelas leis da República Federativa do Brasil. 
-              Qualquer disputa será resolvida no foro da comarca do usuário consumidor.
+              Vale a lei brasileira. Qualquer problema vai pro foro da sua cidade.
             </p>
           </section>
 
