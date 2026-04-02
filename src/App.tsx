@@ -74,6 +74,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <SwUpdateToast />
       <BrowserRouter>
         <AuthProvider>
           <AppRoutes />
