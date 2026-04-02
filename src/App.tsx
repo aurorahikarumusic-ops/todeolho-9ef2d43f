@@ -15,6 +15,7 @@ import Tarefas from "./pages/Tarefas";
 import Perfil from "./pages/Perfil";
 import BottomNav from "./components/BottomNav";
 import NotFound from "./pages/NotFound";
+import SwUpdateToast from "./components/SwUpdateToast";
 
 const queryClient = new QueryClient();
 
@@ -73,6 +74,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <SwUpdateToast />
       <BrowserRouter>
         <AuthProvider>
           <AppRoutes />
