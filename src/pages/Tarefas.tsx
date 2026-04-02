@@ -17,7 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { format, isBefore, isToday, differenceInHours } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Plus, CheckSquare, Camera, Star, LifeBuoy } from "lucide-react";
+import { Plus, CheckSquare, Camera, Star, LifeBuoy, Trash2 } from "lucide-react";
 import TaskCelebration from "@/components/tasks/TaskCelebration";
 import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 
@@ -241,6 +241,19 @@ export default function Tarefas() {
     onError: () => toast.error("Erro ao criar tarefa."),
   });
 
+  // Delete task mutation
+  const deleteTaskMutation = useMutation({
+    mutationFn: async (taskId: string) => {
+      const { error } = await supabase.from("tasks").delete().eq("id", taskId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
+      toast.success("Tarefa removida. Como se nunca tivesse existido. 🗑️", { duration: 3000 });
+    },
+    onError: () => toast.error("Erro ao excluir."),
+  });
+
   const renderTaskCard = (task: any) => {
     const cat = CATEGORIES[task.category] || CATEGORIES.home;
     const isDadTask = task.created_by === user?.id;
@@ -311,11 +324,25 @@ export default function Tarefas() {
               </p>
             </div>
 
-            {/* Points indicator */}
-            {task.completed_at && !task.rescued_by_mom && (
-              <span className="text-xs font-display font-bold text-primary shrink-0">
-                +{task.points || 50}pts
-              </span>
+            {/* Points + Delete for completed */}
+            {(task.completed_at || task.rescued_by_mom) && (
+              <div className="flex flex-col items-end gap-2 shrink-0">
+                {!task.rescued_by_mom && (
+                  <span className="text-xs font-display font-bold text-primary">
+                    +{task.points || 50}pts
+                  </span>
+                )}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                  onClick={() => deleteTaskMutation.mutate(task.id)}
+                  disabled={deleteTaskMutation.isPending}
+                  title="Excluir tarefa"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </Button>
+              </div>
             )}
           </div>
         </CardContent>
