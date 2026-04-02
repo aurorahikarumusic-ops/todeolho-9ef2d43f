@@ -1,6 +1,7 @@
-import { useState, useEffect, createContext, useContext, ReactNode } from "react";
+import { useState, useEffect, useRef, createContext, useContext, ReactNode } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { autoInitOneSignal } from "@/lib/onesignal";
 
 interface AuthContextType {
   session: Session | null;
