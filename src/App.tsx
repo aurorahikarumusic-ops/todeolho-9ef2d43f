@@ -51,12 +51,13 @@ function AppRoutes() {
   if (!user) {
     return (
       <Routes>
-        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/auth" element={<AuthPage />} />
         <Route path="/privacidade" element={<PrivacyPolicy />} />
         <Route path="/termos" element={<TermsOfUse />} />
         <Route path="/exclusao-dados" element={<DataDeletion />} />
         <Route path="/suporte" element={<Support />} />
-        <Route path="*" element={<AuthPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     );
   }
