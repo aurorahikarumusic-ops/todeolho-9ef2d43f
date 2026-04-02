@@ -297,7 +297,7 @@ export default function Ranking() {
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    const text = "Entrei no 'Tô de Olho', app que tira sarro de pai ausente 😂\nVamos ver quem é o pior pai.\nhttps://estoudeolho.lovable.app";
+                    const text = "Entrei no 'Estou de Olho', app que tira sarro de pai ausente 😂\nVamos ver quem é o pior pai.\nhttps://estoudeolho.lovable.app";
                     if (navigator.share) navigator.share({ text });
                     else { navigator.clipboard.writeText(text); toast("Link copiado!"); }
                   }}

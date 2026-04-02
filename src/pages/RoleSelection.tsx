@@ -29,7 +29,7 @@ export default function RoleSelection() {
         <div className="flex items-center justify-center gap-2 mb-2">
           <Eye className="w-8 h-8 text-primary" />
           <h1 className="font-display text-3xl font-bold">
-            Tô de <span className="text-secondary">Olho</span>
+            Estou de <span className="text-secondary">Olho</span>
           </h1>
         </div>
         <p className="font-display text-xl text-foreground mt-4">

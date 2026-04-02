@@ -399,7 +399,7 @@ export default function Perfil() {
 
         {/* Share DNA */}
         <Button variant="outline" className="w-full font-display text-sm" onClick={() => {
-          const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nTô de Olho — porque alguém tem que lembrar`;
+          const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nEstou de Olho — porque alguém tem que lembrar`;
           if (navigator.share) navigator.share({ text });
           else { navigator.clipboard.writeText(text); toast("DNA copiado!"); }
         }}>

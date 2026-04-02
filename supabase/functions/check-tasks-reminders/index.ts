@@ -114,7 +114,7 @@ Deno.serve(async (req) => {
         .lt("due_date", now.toISOString());
 
       for (const task of missedTasks || []) {
-        const msg = `😬 *Tô de Olho*\n${name}. A tarefa *${task.title}* venceu.\nVocê não concluiu.\n\nSeus pontos agradeceriam se você tivesse feito.\nMas tudo bem. A mãe já resolveu. De novo.`;
+        const msg = `😬 *Estou de Olho*\n${name}. A tarefa *${task.title}* venceu.\nVocê não concluiu.\n\nSeus pontos agradeceriam se você tivesse feito.\nMas tudo bem. A mãe já resolveu. De novo.`;
 
         await sendWhatsApp(sub.phone_number, msg, LOVABLE_API_KEY, TWILIO_API_KEY, TWILIO_WHATSAPP_FROM);
 
