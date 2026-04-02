@@ -208,7 +208,7 @@ export default function Perfil() {
   };
 
   return (
-    <div className="pb-32 px-4 pt-6 max-w-lg mx-auto space-y-5">
+    <div className="pb-24 px-4 pt-8 max-w-lg mx-auto space-y-5">
       {/* Profile Header */}
       <div className="flex items-start gap-4">
         <label className="cursor-pointer relative group">
