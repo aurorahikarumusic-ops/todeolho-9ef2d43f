@@ -96,9 +96,9 @@ export default function Dashboard() {
     (t) => t.completed_at && new Date(t.completed_at).toDateString() === now.toDateString()
   ) || false;
 
-  // Weekly performance percentage for gauge
-  const gaugeBase = Math.min(100, (profile.points / 10) + (profile.streak_days * 5) + (tasksCompleted * 10));
-  const gaugePercentage = Math.min(100, Math.max(0, gaugeBase));
+  // Weekly performance percentage for gauge — more motivating formula
+  const gaugeBase = Math.min(100, (profile.points * 1.5) + (profile.streak_days * 8) + (tasksCompleted * 15));
+  const gaugePercentage = Math.min(100, Math.max(5, gaugeBase)); // minimum 5% to feel progress
 
   // Week activity (simplified: use streak to estimate)
   const weekActivity = Array.from({ length: 7 }, (_, i) => i < profile.streak_days % 8);
