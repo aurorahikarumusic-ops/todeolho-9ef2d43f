@@ -49,7 +49,16 @@ function AppRoutes() {
   }
 
   if (!user) {
-    return <AuthPage />;
+    return (
+      <Routes>
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/privacidade" element={<PrivacyPolicy />} />
+        <Route path="/termos" element={<TermsOfUse />} />
+        <Route path="/exclusao-dados" element={<DataDeletion />} />
+        <Route path="/suporte" element={<Support />} />
+        <Route path="*" element={<AuthPage />} />
+      </Routes>
+    );
   }
 
   // New user needs role selection - check if default role unchanged and no explicit selection
