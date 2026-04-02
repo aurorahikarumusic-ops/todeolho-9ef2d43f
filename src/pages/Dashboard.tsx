@@ -124,6 +124,9 @@ export default function Dashboard() {
         </Badge>
       </div>
 
+      {/* Push Notification Banner */}
+      <PushPermissionBanner />
+
       {/* 1. Greeting Header */}
       <GreetingHeader
         displayName={profile.display_name}
