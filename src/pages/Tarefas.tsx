@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -18,6 +18,8 @@ import { toast } from "sonner";
 import { format, isBefore, isToday, differenceInHours } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Plus, CheckSquare, Camera, Star, LifeBuoy } from "lucide-react";
+import TaskCelebration from "@/components/tasks/TaskCelebration";
+import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 
 const CATEGORIES: Record<string, { label: string; emoji: string }> = {
   school: { label: "Escola", emoji: "🏫" },
