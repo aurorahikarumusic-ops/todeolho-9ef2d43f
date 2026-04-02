@@ -26,6 +26,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+
+        // Init OneSignal push on login
+        if (session?.user && !onesignalInitRef.current) {
+          onesignalInitRef.current = true;
+          autoInitOneSignal(session.user.id);
+        }
       }
     );
 
