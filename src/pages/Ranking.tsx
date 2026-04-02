@@ -74,7 +74,7 @@ export default function Ranking() {
     },
   });
 
-  // Groups
+  // Groups with members
   const { data: myGroups = [] } = useQuery({
     queryKey: ["my-groups", user?.id],
     queryFn: async () => {
@@ -89,7 +89,29 @@ export default function Ranking() {
         .from("ranking_groups")
         .select("*")
         .in("id", groupIds);
-      return groups || [];
+      
+      // Fetch members for each group
+      const groupsWithMembers = await Promise.all(
+        (groups || []).map(async (group: any) => {
+          const { data: members } = await supabase
+            .from("ranking_group_members")
+            .select("user_id")
+            .eq("group_id", group.id);
+          
+          if (!members?.length) return { ...group, members: [] };
+          
+          const memberIds = members.map(m => m.user_id);
+          const { data: profiles } = await supabase
+            .from("profiles")
+            .select("id, display_name, points, streak_days, avatar_url")
+            .in("user_id", memberIds)
+            .order("points", { ascending: false });
+          
+          return { ...group, members: profiles || [] };
+        })
+      );
+      
+      return groupsWithMembers;
     },
     enabled: !!user,
   });
