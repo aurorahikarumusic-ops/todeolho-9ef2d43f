@@ -392,8 +392,8 @@ export default function Ranking() {
         </TabsContent>
       </Tabs>
 
-      {/* Share button */}
-      {myPos >= 0 && (
+      {/* Share button — only show when more than 1 participant */}
+      {myPos >= 0 && ranking.length > 1 && (
         <Button
           className="w-full bg-secondary text-secondary-foreground font-display"
           onClick={handleShare}
