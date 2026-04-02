@@ -419,6 +419,29 @@ export default function Perfil() {
           </CardContent>
         </Card>
 
+        {/* Test Notification */}
+        <Button
+          variant="outline"
+          className="w-full font-display text-sm"
+          onClick={async () => {
+            const perm = await getNotificationPermission();
+            if (perm !== "granted") {
+              if (user) await requestPushSubscription(user.id);
+            }
+            const msgs = [
+              "Você esqueceu de alguma coisa. Não sabemos o quê. Mas você sabe.",
+              "A mãe já fez o que você ia fazer. De novo.",
+              "Seu filho perguntou por você. Tá sabendo?",
+              "Ranking atualizado. Você não vai gostar.",
+              "Última chance de fazer algo útil hoje.",
+            ];
+            sendLocalNotification("Estou de Olho 👁️", msgs[Math.floor(Math.random() * msgs.length)]);
+          }}
+        >
+          <Bell className="w-4 h-4 mr-2" />
+          🔔 Me mande um esporro agora
+        </Button>
+
         {/* Share DNA */}
         <Button variant="outline" className="w-full font-display text-sm" onClick={() => {
           const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nEstou de Olho — porque alguém tem que lembrar`;
