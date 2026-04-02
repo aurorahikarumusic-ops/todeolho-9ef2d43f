@@ -66,6 +66,10 @@ function AppRoutes() {
         <Route path="/tarefas" element={<Tarefas />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/privacidade" element={<PrivacyPolicy />} />
+        <Route path="/termos" element={<TermsOfUse />} />
+        <Route path="/exclusao-dados" element={<DataDeletion />} />
+        <Route path="/suporte" element={<Support />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <BottomNav />
