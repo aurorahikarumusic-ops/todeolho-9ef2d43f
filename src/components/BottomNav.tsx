@@ -21,9 +21,8 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg"
+      className="fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border shadow-lg"
       style={{
-        zIndex: 9999,
         paddingBottom: "env(safe-area-inset-bottom)",
       }}
     >
