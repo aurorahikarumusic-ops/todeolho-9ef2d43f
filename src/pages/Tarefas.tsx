@@ -241,6 +241,19 @@ export default function Tarefas() {
     onError: () => toast.error("Erro ao criar tarefa."),
   });
 
+  // Delete task mutation
+  const deleteTaskMutation = useMutation({
+    mutationFn: async (taskId: string) => {
+      const { error } = await supabase.from("tasks").delete().eq("id", taskId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
+      toast.success("Tarefa removida. Como se nunca tivesse existido. 🗑️", { duration: 3000 });
+    },
+    onError: () => toast.error("Erro ao excluir."),
+  });
+
   const renderTaskCard = (task: any) => {
     const cat = CATEGORIES[task.category] || CATEGORIES.home;
     const isDadTask = task.created_by === user?.id;
