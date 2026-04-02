@@ -243,7 +243,7 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col gap-2">
               <a
-                href="https://github.com/user/estoudeolho/releases/latest/download/estoudeolho.apk"
+                href="https://github.com/aurorahikarumusic-ops/todeolho-9ef2d43f/releases/download/v1.0.0/app-release.apk"
                 target="_blank"
                 rel="noopener noreferrer"
               >
