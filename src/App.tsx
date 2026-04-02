@@ -67,7 +67,7 @@ function AppRoutes() {
         <Route path="/termos" element={<TermsOfUse />} />
         <Route path="/exclusao-dados" element={<DataDeletion />} />
         <Route path="/suporte" element={<Support />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/auth" replace />} />
       </Routes>
     );
   }
