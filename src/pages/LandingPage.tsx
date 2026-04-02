@@ -4,7 +4,7 @@ import screenshotDashboard from "@/assets/screenshot-dashboard.jpg";
 import screenshotTarefas from "@/assets/screenshot-tarefas.jpg";
 import screenshotRanking from "@/assets/screenshot-ranking.jpg";
 
-const APK_URL = "https://github.com/aurorahikarumusic-ops/todeolho-9ef2d43f/releases/download/v1.0.0/app-release.apk";
+const APK_URL = "https://github.com/aurorahikarumusic-ops/todeolho-9ef2d43f/releases/download/v1.1.0/app-release.apk";
 
 const tickerItems = [
   "Pai que esquece lanche",
