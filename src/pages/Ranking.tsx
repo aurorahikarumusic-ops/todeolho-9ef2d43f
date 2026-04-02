@@ -74,7 +74,7 @@ export default function Ranking() {
     },
   });
 
-  // Groups
+  // Groups with members
   const { data: myGroups = [] } = useQuery({
     queryKey: ["my-groups", user?.id],
     queryFn: async () => {
@@ -89,7 +89,29 @@ export default function Ranking() {
         .from("ranking_groups")
         .select("*")
         .in("id", groupIds);
-      return groups || [];
+      
+      // Fetch members for each group
+      const groupsWithMembers = await Promise.all(
+        (groups || []).map(async (group: any) => {
+          const { data: members } = await supabase
+            .from("ranking_group_members")
+            .select("user_id")
+            .eq("group_id", group.id);
+          
+          if (!members?.length) return { ...group, members: [] };
+          
+          const memberIds = members.map(m => m.user_id);
+          const { data: profiles } = await supabase
+            .from("profiles")
+            .select("id, display_name, points, streak_days, avatar_url")
+            .in("user_id", memberIds)
+            .order("points", { ascending: false });
+          
+          return { ...group, members: profiles || [] };
+        })
+      );
+      
+      return groupsWithMembers;
     },
     enabled: !!user,
   });
@@ -159,8 +181,14 @@ export default function Ranking() {
     return <span className="w-6 h-6 flex items-center justify-center font-display font-bold text-sm text-muted-foreground">{pos + 1}</span>;
   };
 
-  const getRatingForUser = (userId: string) => {
-    const rating = momRatings.find((r: any) => r.user_id === userId);
+  const getRatingForUser = (profileId: string) => {
+    // mom_ratings.user_id stores auth user_id, but ranking list uses profile.id
+    // We need to match by finding the profile's user_id from the ranking data
+    const dad = ranking.find(r => r.id === profileId);
+    if (!dad) return undefined;
+    // Since ranking doesn't have user_id, we use profile id matching via profiles query
+    // For now, search mom_ratings by the profile id field (which is profile.id, not auth uid)
+    const rating = momRatings.find((r: any) => r.user_id === profileId);
     return rating;
   };
 
@@ -343,7 +371,7 @@ export default function Ranking() {
               {myGroups.map((group: any) => (
                 <Card key={group.id}>
                   <CardContent className="p-3">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-3">
                       <p className="font-display font-bold text-sm">{group.name}</p>
                       <Button
                         variant="ghost"
@@ -357,9 +385,41 @@ export default function Ranking() {
                         <Copy className="w-3 h-3 mr-1" /> {group.invite_code}
                       </Button>
                     </div>
-                    <p className="text-[10px] text-muted-foreground font-body italic">
-                      Compartilha o código com os pais do grupo.
-                    </p>
+                    {/* Group members ranking */}
+                    {group.members && group.members.length > 0 ? (
+                      <div className="space-y-2">
+                        {group.members.map((member: any, idx: number) => (
+                          <div key={member.id} className={`flex items-center gap-2 py-1.5 px-2 rounded-lg ${member.id === myProfile?.id ? "bg-primary/5 ring-1 ring-primary/20" : ""}`}>
+                            <span className="font-display font-bold text-xs w-5 text-center text-muted-foreground">
+                              {idx === 0 ? "👑" : `${idx + 1}`}
+                            </span>
+                            <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center text-xs shrink-0 overflow-hidden">
+                              {member.avatar_url ? (
+                                <img src={member.avatar_url} alt="" className="w-full h-full object-cover rounded-full" />
+                              ) : (
+                                <span className="font-display font-bold">{(member.display_name || "P")[0]}</span>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-display font-bold truncate">
+                                {(member.display_name || "Pai").split(" ")[0]}
+                                {member.id === myProfile?.id && <span className="text-secondary ml-1">(você)</span>}
+                              </p>
+                            </div>
+                            <div className="text-right shrink-0">
+                              <p className="font-display font-bold text-primary text-xs">{member.points}pts</p>
+                              {member.streak_days > 0 && (
+                                <p className="text-[9px] text-secondary">🔥{member.streak_days}</p>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-[10px] text-muted-foreground font-body italic">
+                        Sem membros ainda. Compartilha o código.
+                      </p>
+                    )}
                   </CardContent>
                 </Card>
               ))}

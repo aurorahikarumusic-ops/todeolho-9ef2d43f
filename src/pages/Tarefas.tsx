@@ -470,28 +470,32 @@ export default function Tarefas() {
                 </div>
               ) : (
                 <div className="space-y-3">
+                  {/* Primary action: conclude without photo */}
                   <Button
                     className="w-full bg-primary font-display"
                     onClick={() => {
-                      if (!proofFile) {
-                        document.getElementById("proof-photo")?.click();
-                        return;
+                      if (proofFile) {
+                        completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
+                      } else {
+                        completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: false });
                       }
-                      completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
                     }}
                     disabled={completeTaskMutation.isPending}
                   >
-                    <Camera className="w-4 h-4 mr-2" />
-                    {proofFile ? `Enviar foto e concluir (+50pts)` : "Adicionar foto como prova (+50pts)"}
+                    {proofFile ? `Enviar foto e concluir (+50pts)` : "✅ Concluir tarefa (+35pts)"}
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full font-display text-muted-foreground"
-                    onClick={() => completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: false })}
-                    disabled={completeTaskMutation.isPending}
-                  >
-                    Concluir sem foto (+35pts)
-                  </Button>
+                  {/* Secondary: add photo for bonus */}
+                  {!proofFile && (
+                    <Button
+                      variant="outline"
+                      className="w-full font-display text-muted-foreground"
+                      onClick={() => document.getElementById("proof-photo")?.click()}
+                      disabled={completeTaskMutation.isPending}
+                    >
+                      <Camera className="w-4 h-4 mr-2" />
+                      Adicionar foto (+15pts bônus)
+                    </Button>
+                  )}
                 </div>
               )}
             </div>

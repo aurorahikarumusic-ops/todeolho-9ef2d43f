@@ -337,9 +337,11 @@ export default function Agenda() {
       {/* FAB - Add Event */}
       <button
         onClick={() => setShowAddSheet(true)}
-        className="fixed bottom-20 right-4 z-40 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors active:scale-95"
+        className="fixed bottom-20 right-4 z-40 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center gap-2 hover:bg-primary/90 transition-all active:scale-95 px-4 h-12"
+        title="Adicionar novo evento"
       >
-        <Plus className="w-7 h-7" />
+        <Plus className="w-5 h-5" />
+        <span className="font-display text-sm">Novo evento</span>
       </button>
 
       {/* Add Event Sheet */}
