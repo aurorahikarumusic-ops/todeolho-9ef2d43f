@@ -165,7 +165,9 @@ export default function AuthPage() {
       </Card>
 
       <p className="mt-6 text-xs text-muted-foreground text-center font-body max-w-xs">
-        Ao criar uma conta, você concorda em ser um pai melhor. Ou pelo menos tentar. 👀
+        Ao criar uma conta, você concorda com nossos{" "}
+        <a href="/termos" className="underline hover:text-primary">Termos de Uso</a> e{" "}
+        <a href="/privacidade" className="underline hover:text-primary">Política de Privacidade</a>. 👀
       </p>
     </div>
   );
