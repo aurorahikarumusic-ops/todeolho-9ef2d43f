@@ -419,6 +419,35 @@ export default function Perfil() {
           </CardContent>
         </Card>
 
+        {/* Legal Links */}
+        <Card className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => navigate("/privacidade")}>
+          <CardContent className="p-3 flex items-center justify-between">
+            <span className="text-sm font-body">📄 Política de Privacidade</span>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => navigate("/termos")}>
+          <CardContent className="p-3 flex items-center justify-between">
+            <span className="text-sm font-body">📋 Termos de Uso</span>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => navigate("/exclusao-dados")}>
+          <CardContent className="p-3 flex items-center justify-between">
+            <span className="text-sm font-body text-destructive">🗑️ Exclusão de Dados</span>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => navigate("/suporte")}>
+          <CardContent className="p-3 flex items-center justify-between">
+            <span className="text-sm font-body">💬 Suporte & Contato</span>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </CardContent>
+        </Card>
+
         {/* Test Notification */}
         <Button
           variant="outline"
