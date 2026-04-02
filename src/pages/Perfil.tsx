@@ -20,9 +20,10 @@ import { format, differenceInHours, startOfMonth, endOfMonth, startOfWeek } from
 import { ptBR } from "date-fns/locale";
 import {
   User, Edit2, Trophy, Flame, Star, LifeBuoy, CheckSquare, CalendarDays,
-  LogOut, Share2, ChevronRight, Baby, Shield, Clock
+  LogOut, Share2, ChevronRight, Baby, Shield, Clock, Bell
 } from "lucide-react";
 import { getDadTitle } from "@/lib/constants";
+import { sendLocalNotification, isPushSupported, getNotificationPermission, requestPushSubscription } from "@/lib/pushNotifications";
 
 const ACHIEVEMENT_DEFS = {
   earned: [
