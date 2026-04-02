@@ -422,7 +422,7 @@ export default function Ranking() {
                     )}
                   </CardContent>
                 </Card>
-              ))
+              ))}
             </>
           )}
         </TabsContent>
