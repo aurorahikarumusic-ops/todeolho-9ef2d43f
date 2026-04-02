@@ -19,7 +19,7 @@ export default function ShareWeekCard({ displayName, tasksCompleted, streak, ran
   };
 
   const handleShare = async () => {
-    const text = `👁️ Tô de Olho — Semana do ${name}\n\n✅ ${tasksCompleted} tarefas concluídas\n🔥 ${streak} dias de sequência\n🏆 #${rankingPosition || "?"} no ranking\n\n${getClosingLine()}\n\n📲 fazoquetemandei.lovable.app`;
+    const text = `👁️ Estou de Olho — Semana do ${name}\n\n✅ ${tasksCompleted} tarefas concluídas\n🔥 ${streak} dias de sequência\n🏆 #${rankingPosition || "?"} no ranking\n\n${getClosingLine()}\n\n📲 estoudeolho.lovable.app`;
 
     if (navigator.share) {
       try {

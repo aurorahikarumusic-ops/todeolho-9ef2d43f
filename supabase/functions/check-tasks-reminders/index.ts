@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
 
       for (const task of tasks24h || []) {
         const dueDate = new Date(task.due_date).toLocaleString("pt-BR");
-        const msg = `👁️ *Tô de Olho*\nEi, ${name}. Amanhã você tem uma tarefa:\n📌 *${task.title}*\nPrazo: ${dueDate}\n\nDessa vez não esquece, tá? A gente tá de olho. 👀`;
+        const msg = `👁️ *Estou de Olho*\nEi, ${name}. Amanhã você tem uma tarefa:\n📌 *${task.title}*\nPrazo: ${dueDate}\n\nDessa vez não esquece, tá? A gente tá de olho. 👀`;
 
         await sendWhatsApp(sub.phone_number, msg, LOVABLE_API_KEY, TWILIO_API_KEY, TWILIO_WHATSAPP_FROM);
 
@@ -92,7 +92,7 @@ Deno.serve(async (req) => {
         .lte("due_date", in2h.toISOString());
 
       for (const task of tasks2h || []) {
-        const msg = `⏰ *Tô de Olho — URGENTE*\n${name}, faltam 2 horas.\n📌 *${task.title}*\n\nSe você não sabia disso até agora... bom. Agora sabe.`;
+        const msg = `⏰ *Estou de Olho — URGENTE*\n${name}, faltam 2 horas.\n📌 *${task.title}*\n\nSe você não sabia disso até agora... bom. Agora sabe.`;
 
         await sendWhatsApp(sub.phone_number, msg, LOVABLE_API_KEY, TWILIO_API_KEY, TWILIO_WHATSAPP_FROM);
 
@@ -114,7 +114,7 @@ Deno.serve(async (req) => {
         .lt("due_date", now.toISOString());
 
       for (const task of missedTasks || []) {
-        const msg = `😬 *Tô de Olho*\n${name}. A tarefa *${task.title}* venceu.\nVocê não concluiu.\n\nSeus pontos agradeceriam se você tivesse feito.\nMas tudo bem. A mãe já resolveu. De novo.`;
+        const msg = `😬 *Estou de Olho*\n${name}. A tarefa *${task.title}* venceu.\nVocê não concluiu.\n\nSeus pontos agradeceriam se você tivesse feito.\nMas tudo bem. A mãe já resolveu. De novo.`;
 
         await sendWhatsApp(sub.phone_number, msg, LOVABLE_API_KEY, TWILIO_API_KEY, TWILIO_WHATSAPP_FROM);
 

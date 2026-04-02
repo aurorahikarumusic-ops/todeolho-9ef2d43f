@@ -37,9 +37,9 @@ function getHeaderSubtitle(myPos: number | null, total: number): string {
 
 function getShareText(name: string, pos: number, total: number, pts: number): string {
   const posLabel = `#${pos + 1}`;
-  if (pos <= 2) return `Tô no pódio dos pais no Tô de Olho 👁️\nPosição ${posLabel} com ${pts} pontos.\nSim, eu. Guarda esse print.`;
-  if (pos === total - 1) return `Último lugar no ranking dos pais no Tô de Olho 👁️\n${pts} pontos. Mas apareço. Isso conta.`;
-  return `Posição ${posLabel} no ranking dos pais no Tô de Olho 👁️\n${pts} pontos. Tô melhorando. (Devagar.)`;
+  if (pos <= 2) return `Tô no pódio dos pais no Estou de Olho 👁️\nPosição ${posLabel} com ${pts} pontos.\nSim, eu. Guarda esse print.`;
+  if (pos === total - 1) return `Último lugar no ranking dos pais no Estou de Olho 👁️\n${pts} pontos. Mas apareço. Isso conta.`;
+  return `Posição ${posLabel} no ranking dos pais no Estou de Olho 👁️\n${pts} pontos. Tô melhorando. (Devagar.)`;
 }
 
 const StarRating = ({ stars }: { stars: number }) => (
@@ -297,7 +297,7 @@ export default function Ranking() {
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    const text = "Entrei no 'Tô de Olho', app que tira sarro de pai ausente 😂\nVamos ver quem é o pior pai.\nhttps://estoudeolho.lovable.app";
+                    const text = "Entrei no 'Estou de Olho', app que tira sarro de pai ausente 😂\nVamos ver quem é o pior pai.\nhttps://estoudeolho.lovable.app";
                     if (navigator.share) navigator.share({ text });
                     else { navigator.clipboard.writeText(text); toast("Link copiado!"); }
                   }}

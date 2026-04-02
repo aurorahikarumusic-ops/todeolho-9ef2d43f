@@ -115,7 +115,7 @@ export default function Dashboard() {
         <div className="flex items-center gap-2">
           <Eye className="w-6 h-6 text-primary" />
           <h1 className="font-display text-2xl font-bold">
-            Tô de <span className="text-secondary">Olho</span>
+            Estou de <span className="text-secondary">Olho</span>
           </h1>
         </div>
         <Badge variant="secondary" className="font-display text-xs">

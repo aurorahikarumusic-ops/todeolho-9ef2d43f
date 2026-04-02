@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
       if (upsertError) throw upsertError;
 
       // Send OTP via WhatsApp
-      const whatsappMsg = `👁️ *Tô de Olho — Verificação*\n\nSeu código: *${code}*\n\nVálido por 10 minutos.\nSe não foi você... bom, alguém quer te ajudar a ser um pai melhor.`;
+      const whatsappMsg = `👁️ *Estou de Olho — Verificação*\n\nSeu código: *${code}*\n\nVálido por 10 minutos.\nSe não foi você... bom, alguém quer te ajudar a ser um pai melhor.`;
 
       const response = await fetch(`${GATEWAY_URL}/Messages.json`, {
         method: "POST",
@@ -111,7 +111,7 @@ Deno.serve(async (req) => {
 
       const name = profile?.display_name?.split(" ")[0] || "Pai";
 
-      const welcomeMsg = `👁️ *Tô de Olho — Bot Ativado*\nOlá, ${name}.\n\nA partir de agora eu vou te lembrar de tudo que você deveria lembrar sozinho.\n\nNão é assim que deveria funcionar, mas tudo bem.\nA gente se adapta.\n\nPara pausar notificações: responda *PAUSAR*\nPara reativar: responda *ATIVAR*\nPara ver sua agenda hoje: responda *AGENDA*\nPara ver seu ranking: responda *RANKING*\n\nBem-vindo ao clube dos pais que precisam de ajuda.\nSão muitos. Você não está sozinho.`;
+      const welcomeMsg = `👁️ *Estou de Olho — Bot Ativado*\nOlá, ${name}.\n\nA partir de agora eu vou te lembrar de tudo que você deveria lembrar sozinho.\n\nNão é assim que deveria funcionar, mas tudo bem.\nA gente se adapta.\n\nPara pausar notificações: responda *PAUSAR*\nPara reativar: responda *ATIVAR*\nPara ver sua agenda hoje: responda *AGENDA*\nPara ver seu ranking: responda *RANKING*\n\nBem-vindo ao clube dos pais que precisam de ajuda.\nSão muitos. Você não está sozinho.`;
 
       await fetch(`${GATEWAY_URL}/Messages.json`, {
         method: "POST",

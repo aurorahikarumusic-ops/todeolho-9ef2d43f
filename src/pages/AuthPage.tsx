@@ -44,7 +44,7 @@ export default function AuthPage() {
         <div className="flex items-center justify-center gap-2 mb-2">
           <Eye className="w-10 h-10 text-primary" />
           <h1 className="font-display text-4xl font-bold text-foreground">
-            Tô de <span className="text-secondary">Olho</span>
+            Estou de <span className="text-secondary">Olho</span>
           </h1>
         </div>
         <p className="font-body text-muted-foreground text-lg">
