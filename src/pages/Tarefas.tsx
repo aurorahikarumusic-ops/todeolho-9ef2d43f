@@ -82,6 +82,7 @@ export default function Tarefas() {
   const queryClient = useQueryClient();
   const [showAddSheet, setShowAddSheet] = useState(false);
   const [completingTask, setCompletingTask] = useState<any>(null);
+  const [proofFile, setProofFile] = useState<File | null>(null);
   const [newTask, setNewTask] = useState({
     title: "", description: "", due_date: "", due_time: "18:00",
     category: "home", proof_required: false,
@@ -101,31 +102,22 @@ export default function Tarefas() {
     enabled: !!profile?.family_id,
   });
 
-  // Daily mission
+  // Daily mission via edge function (server-side creation)
   const { data: todayMission } = useQuery({
     queryKey: ["daily-mission", user?.id],
     queryFn: async () => {
       if (!user) return null;
-      const today = new Date().toISOString().split("T")[0];
-      const { data } = await supabase
-        .from("daily_missions")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("mission_date", today)
-        .maybeSingle();
-
-      if (!data) {
-        // Create today's mission
-        const { data: created } = await supabase
+      const { data, error } = await supabase.functions.invoke("create-daily-mission");
+      if (error) {
+        // Fallback: try to read existing mission
+        const today = new Date().toISOString().split("T")[0];
+        const { data: existing } = await supabase
           .from("daily_missions")
-          .insert({
-            user_id: user.id,
-            mission_text: getDailyMission(),
-            mission_date: today,
-          })
-          .select()
-          .single();
-        return created;
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("mission_date", today)
+          .maybeSingle();
+        return existing;
       }
       return data;
     },
@@ -144,14 +136,34 @@ export default function Tarefas() {
   if (overdue.length > 0) subtitle = `Você tem ${overdue.length} tarefa${overdue.length > 1 ? "s" : ""} atrasada${overdue.length > 1 ? "s" : ""}. A mãe já sabe.`;
   if (completed.length === 0 && pending.length > 0) subtitle = "Nenhuma tarefa concluída hoje. Só lembrando.";
 
+  // Photo upload helper
+  const uploadProofPhoto = async (taskId: string, file: File): Promise<string | null> => {
+    if (!user) return null;
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `${user.id}/${taskId}.${ext}`;
+    const { error } = await supabase.storage.from("task-proofs").upload(path, file, { upsert: true });
+    if (error) throw error;
+    const { data: urlData } = supabase.storage.from("task-proofs").getPublicUrl(path);
+    return urlData.publicUrl;
+  };
+
   // Complete task mutation
   const completeTaskMutation = useMutation({
-    mutationFn: async ({ taskId, withPhoto }: { taskId: string; withPhoto: boolean }) => {
+    mutationFn: async ({ taskId, withPhoto, photoFile }: { taskId: string; withPhoto: boolean; photoFile?: File }) => {
       const task = tasks.find(t => t.id === taskId);
       if (!task || !user) throw new Error("Erro");
       const pts = calculatePoints(task, withPhoto);
 
-      await supabase.from("tasks").update({ completed_at: new Date().toISOString() }).eq("id", taskId);
+      let photoUrl: string | null = null;
+      if (withPhoto && photoFile) {
+        photoUrl = await uploadProofPhoto(taskId, photoFile);
+      }
+
+      await supabase.from("tasks").update({
+        completed_at: new Date().toISOString(),
+        photo_proof_url: photoUrl,
+      }).eq("id", taskId);
+      
       if (pts > 0) {
         await supabase.from("profiles").update({ points: (profile?.points || 0) + pts }).eq("user_id", user.id);
       }
@@ -408,7 +420,7 @@ export default function Tarefas() {
       </button>
 
       {/* Complete Task Sheet */}
-      <Sheet open={!!completingTask} onOpenChange={(open) => !open && setCompletingTask(null)}>
+      <Sheet open={!!completingTask} onOpenChange={(open) => { if (!open) { setCompletingTask(null); setProofFile(null); } }}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader>
             <SheetTitle className="font-display text-lg">Tarefa concluída! 🎉</SheetTitle>
@@ -419,6 +431,21 @@ export default function Tarefas() {
                 {completingTask.title}
               </p>
 
+              {/* File input for photo */}
+              <div className="space-y-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  id="proof-photo"
+                  className="hidden"
+                  onChange={(e) => setProofFile(e.target.files?.[0] || null)}
+                />
+                {proofFile && (
+                  <p className="text-xs text-primary font-body">📷 {proofFile.name}</p>
+                )}
+              </div>
+
               {completingTask.proof_required ? (
                 <div className="space-y-3">
                   <p className="text-xs font-body italic text-secondary">
@@ -426,22 +453,34 @@ export default function Tarefas() {
                   </p>
                   <Button
                     className="w-full bg-primary font-display"
-                    onClick={() => completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true })}
+                    onClick={() => {
+                      if (!proofFile) {
+                        document.getElementById("proof-photo")?.click();
+                        return;
+                      }
+                      completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
+                    }}
                     disabled={completeTaskMutation.isPending}
                   >
                     <Camera className="w-4 h-4 mr-2" />
-                    Tirar foto e concluir (+50pts)
+                    {proofFile ? `Enviar foto e concluir (+50pts)` : "Tirar foto como prova (+50pts)"}
                   </Button>
                 </div>
               ) : (
                 <div className="space-y-3">
                   <Button
                     className="w-full bg-primary font-display"
-                    onClick={() => completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true })}
+                    onClick={() => {
+                      if (!proofFile) {
+                        document.getElementById("proof-photo")?.click();
+                        return;
+                      }
+                      completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
+                    }}
                     disabled={completeTaskMutation.isPending}
                   >
                     <Camera className="w-4 h-4 mr-2" />
-                    Adicionar foto como prova (+50pts)
+                    {proofFile ? `Enviar foto e concluir (+50pts)` : "Adicionar foto como prova (+50pts)"}
                   </Button>
                   <Button
                     variant="outline"

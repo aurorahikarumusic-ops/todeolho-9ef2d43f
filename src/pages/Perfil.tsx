@@ -195,15 +195,36 @@ export default function Perfil() {
     toast("Saiu. Seu ranking continua correndo sem você. 👋");
   };
 
+  const handleAvatarUpload = async (file: File) => {
+    if (!user) return;
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `${user.id}/avatar.${ext}`;
+    const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
+    if (error) { toast.error("Erro ao enviar foto."); return; }
+    const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
+    await updateProfile.mutateAsync({ avatar_url: urlData.publicUrl });
+    toast.success("Foto atualizada. A mãe aprova? Veremos.");
+  };
+
   return (
     <div className="pb-32 px-4 pt-6 max-w-lg mx-auto space-y-5">
       {/* Profile Header */}
       <div className="flex items-start gap-4">
-        <div className="w-16 h-16 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center shrink-0">
-          <span className="font-display text-2xl font-bold text-primary">
-            {(profile.display_name || "P")[0].toUpperCase()}
-          </span>
-        </div>
+        <label className="cursor-pointer relative group">
+          <input type="file" accept="image/*" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+          <div className="w-16 h-16 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center shrink-0 overflow-hidden group-hover:opacity-80 transition-opacity">
+            {profile.avatar_url ? (
+              <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              <span className="font-display text-2xl font-bold text-primary">
+                {(profile.display_name || "P")[0].toUpperCase()}
+              </span>
+            )}
+          </div>
+          <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+            <Edit2 className="w-3 h-3 text-primary-foreground" />
+          </div>
+        </label>
         <div className="flex-1 min-w-0">
           {editMode ? (
             <div className="flex gap-2">
