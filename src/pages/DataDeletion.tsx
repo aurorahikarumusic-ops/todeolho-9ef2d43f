@@ -81,8 +81,7 @@ export default function DataDeletion() {
           <section>
             <h2 className="font-display font-bold text-lg mb-2">Prazo</h2>
             <p>
-              A exclusão é processada imediatamente para dados no app. Backups podem levar 
-              até 30 dias para serem completamente removidos dos nossos servidores.
+              No app, é imediato. Backups levam até 30 dias pra serem removidos dos servidores.
             </p>
           </section>
 
