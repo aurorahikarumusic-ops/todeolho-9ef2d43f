@@ -135,14 +135,34 @@ export default function Tarefas() {
   if (overdue.length > 0) subtitle = `Você tem ${overdue.length} tarefa${overdue.length > 1 ? "s" : ""} atrasada${overdue.length > 1 ? "s" : ""}. A mãe já sabe.`;
   if (completed.length === 0 && pending.length > 0) subtitle = "Nenhuma tarefa concluída hoje. Só lembrando.";
 
+  // Photo upload helper
+  const uploadProofPhoto = async (taskId: string, file: File): Promise<string | null> => {
+    if (!user) return null;
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `${user.id}/${taskId}.${ext}`;
+    const { error } = await supabase.storage.from("task-proofs").upload(path, file, { upsert: true });
+    if (error) throw error;
+    const { data: urlData } = supabase.storage.from("task-proofs").getPublicUrl(path);
+    return urlData.publicUrl;
+  };
+
   // Complete task mutation
   const completeTaskMutation = useMutation({
-    mutationFn: async ({ taskId, withPhoto }: { taskId: string; withPhoto: boolean }) => {
+    mutationFn: async ({ taskId, withPhoto, photoFile }: { taskId: string; withPhoto: boolean; photoFile?: File }) => {
       const task = tasks.find(t => t.id === taskId);
       if (!task || !user) throw new Error("Erro");
       const pts = calculatePoints(task, withPhoto);
 
-      await supabase.from("tasks").update({ completed_at: new Date().toISOString() }).eq("id", taskId);
+      let photoUrl: string | null = null;
+      if (withPhoto && photoFile) {
+        photoUrl = await uploadProofPhoto(taskId, photoFile);
+      }
+
+      await supabase.from("tasks").update({
+        completed_at: new Date().toISOString(),
+        photo_proof_url: photoUrl,
+      }).eq("id", taskId);
+      
       if (pts > 0) {
         await supabase.from("profiles").update({ points: (profile?.points || 0) + pts }).eq("user_id", user.id);
       }
