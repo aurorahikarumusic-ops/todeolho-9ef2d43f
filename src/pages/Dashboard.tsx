@@ -1,34 +1,43 @@
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/hooks/useAuth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { getDadTitle, getTimeGreeting, getRandomItem, IRONIC_GREETINGS, DAILY_TIPS } from "@/lib/constants";
-import { CalendarDays, CheckSquare, Trophy, Flame, Eye } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { Eye } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { getDadTitle } from "@/lib/constants";
+import GreetingHeader from "@/components/home/GreetingHeader";
+import DadGauge from "@/components/home/DadGauge";
+import DailyQuote from "@/components/home/DailyQuote";
+import PresenceStreak from "@/components/home/PresenceStreak";
+import SummaryCards from "@/components/home/SummaryCards";
+import ShareWeekCard from "@/components/home/ShareWeekCard";
+import { startOfWeek, endOfWeek } from "date-fns";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
 
-  const { data: upcomingEvents } = useQuery({
-    queryKey: ["upcoming-events", profile?.family_id],
+  const now = new Date();
+  const weekStart = startOfWeek(now, { weekStartsOn: 1 }).toISOString();
+  const weekEnd = endOfWeek(now, { weekStartsOn: 1 }).toISOString();
+
+  // Tasks this week
+  const { data: weekTasks } = useQuery({
+    queryKey: ["week-tasks", profile?.family_id],
     queryFn: async () => {
       if (!profile?.family_id) return [];
       const { data } = await supabase
-        .from("events")
+        .from("tasks")
         .select("*")
         .eq("family_id", profile.family_id)
-        .gte("event_date", new Date().toISOString())
-        .order("event_date", { ascending: true })
-        .limit(3);
+        .gte("created_at", weekStart)
+        .lte("created_at", weekEnd);
       return data || [];
     },
     enabled: !!profile?.family_id,
   });
 
+  // Pending tasks (for greeting context)
   const { data: pendingTasks } = useQuery({
     queryKey: ["pending-tasks", profile?.family_id],
     queryFn: async () => {
@@ -38,145 +47,115 @@ export default function Dashboard() {
         .select("*")
         .eq("family_id", profile.family_id)
         .is("completed_at", null)
-        .order("due_date", { ascending: true })
         .limit(5);
       return data || [];
     },
     enabled: !!profile?.family_id,
   });
 
+  // Next event
+  const { data: nextEvent } = useQuery({
+    queryKey: ["next-event", profile?.family_id],
+    queryFn: async () => {
+      if (!profile?.family_id) return null;
+      const { data } = await supabase
+        .from("events")
+        .select("*")
+        .eq("family_id", profile.family_id)
+        .gte("event_date", new Date().toISOString())
+        .order("event_date", { ascending: true })
+        .limit(1);
+      return data && data.length > 0 ? { title: data[0].title, date: new Date(data[0].event_date) } : null;
+    },
+    enabled: !!profile?.family_id,
+  });
+
+  // Ranking position
+  const { data: rankingPosition } = useQuery({
+    queryKey: ["ranking-position", user?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("user_id, points")
+        .eq("role", "pai")
+        .order("points", { ascending: false })
+        .limit(50);
+      if (!data) return null;
+      const idx = data.findIndex((p) => p.user_id === user?.id);
+      return idx >= 0 ? idx + 1 : null;
+    },
+    enabled: !!user,
+  });
+
   if (!profile) return null;
 
+  const tasksTotal = weekTasks?.length || 0;
+  const tasksCompleted = weekTasks?.filter((t) => t.completed_at).length || 0;
+  const hasCompletedToday = weekTasks?.some(
+    (t) => t.completed_at && new Date(t.completed_at).toDateString() === now.toDateString()
+  ) || false;
+
+  // Weekly performance percentage for gauge
+  const gaugeBase = Math.min(100, (profile.points / 10) + (profile.streak_days * 5) + (tasksCompleted * 10));
+  const gaugePercentage = Math.min(100, Math.max(0, gaugeBase));
+
+  // Week activity (simplified: use streak to estimate)
+  const weekActivity = Array.from({ length: 7 }, (_, i) => i < profile.streak_days % 8);
+  // Reverse so most recent is last
+  weekActivity.reverse();
+  // Mark today as active (user opened the app)
+  weekActivity[6] = true;
+
   const dadTitle = getDadTitle(profile.points);
-  const timeKey = getTimeGreeting();
-  const greeting = getRandomItem(IRONIC_GREETINGS[timeKey]);
-  const tip = getRandomItem(DAILY_TIPS);
-  const isPai = profile.role === "pai";
 
   return (
-    <div className="pb-24 px-4 pt-6 max-w-lg mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <div className="flex items-center gap-2">
-            <Eye className="w-6 h-6 text-primary" />
-            <h1 className="font-display text-2xl font-bold">
-              Tô de <span className="text-secondary">Olho</span>
-            </h1>
-          </div>
-          <p className="font-body text-sm text-muted-foreground mt-1">
-            Olá, {profile.display_name?.split(" ")[0] || "pai"} 👋
-          </p>
+    <div className="pb-32 px-4 pt-6 max-w-lg mx-auto space-y-4">
+      {/* App Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Eye className="w-6 h-6 text-primary" />
+          <h1 className="font-display text-2xl font-bold">
+            Tô de <span className="text-secondary">Olho</span>
+          </h1>
         </div>
-        <div className="text-right">
-          <Badge variant="secondary" className="font-display text-sm">
-            {dadTitle.emoji} {dadTitle.title}
-          </Badge>
-          <p className="text-xs text-muted-foreground font-body mt-1">
-            {profile.points} pts
-          </p>
-        </div>
+        <Badge variant="secondary" className="font-display text-xs">
+          {dadTitle.emoji} {dadTitle.title}
+        </Badge>
       </div>
 
-      {/* Ironic Greeting */}
-      <Card className="mb-4 border-0 bg-primary/5">
-        <CardContent className="pt-4 pb-4">
-          <p className="font-body text-sm text-foreground leading-relaxed">
-            {isPai ? greeting : `Olá, mãe! O pai ${profile.display_name?.split(" ")[0] || ""} tá no app. Progresso. 🎉`}
-          </p>
-        </CardContent>
-      </Card>
+      {/* 1. Greeting Header */}
+      <GreetingHeader
+        displayName={profile.display_name}
+        lastActiveAt={profile.last_active_at}
+        hasPendingTasks={(pendingTasks?.length || 0) > 0}
+        hasCompletedToday={hasCompletedToday}
+      />
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-3 gap-3 mb-4">
-        <Card className="border-0 shadow-sm">
-          <CardContent className="pt-4 pb-4 text-center">
-            <Flame className="w-6 h-6 text-secondary mx-auto mb-1" />
-            <p className="font-display text-2xl font-bold">{profile.streak_days}</p>
-            <p className="text-xs text-muted-foreground font-body">Sequência</p>
-          </CardContent>
-        </Card>
-        <Card className="border-0 shadow-sm">
-          <CardContent className="pt-4 pb-4 text-center">
-            <CheckSquare className="w-6 h-6 text-primary mx-auto mb-1" />
-            <p className="font-display text-2xl font-bold">{pendingTasks?.length || 0}</p>
-            <p className="text-xs text-muted-foreground font-body">Tarefas</p>
-          </CardContent>
-        </Card>
-        <Card className="border-0 shadow-sm">
-          <CardContent className="pt-4 pb-4 text-center">
-            <CalendarDays className="w-6 h-6 text-accent-foreground mx-auto mb-1" />
-            <p className="font-display text-2xl font-bold">{upcomingEvents?.length || 0}</p>
-            <p className="text-xs text-muted-foreground font-body">Eventos</p>
-          </CardContent>
-        </Card>
-      </div>
+      {/* 2. Dad Gauge */}
+      <DadGauge percentage={gaugePercentage} />
 
-      {/* Upcoming Events */}
-      <Card className="mb-4 border-0 shadow-sm">
-        <CardHeader className="pb-2">
-          <CardTitle className="font-display text-base flex items-center gap-2">
-            <CalendarDays className="w-4 h-4 text-primary" />
-            Próximos Eventos
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {upcomingEvents && upcomingEvents.length > 0 ? (
-            <div className="space-y-2">
-              {upcomingEvents.map((event) => (
-                <div key={event.id} className="flex justify-between items-center py-2 border-b border-border last:border-0">
-                  <span className="font-body text-sm">{event.title}</span>
-                  <span className="text-xs text-muted-foreground font-body">
-                    {format(new Date(event.event_date), "dd MMM", { locale: ptBR })}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-muted-foreground font-body italic">
-              Nenhum evento. Ou você esqueceu de cadastrar. O que é mais provável? 🤔
-            </p>
-          )}
-        </CardContent>
-      </Card>
+      {/* 3. Daily Quote */}
+      <DailyQuote />
 
-      {/* Pending Tasks */}
-      <Card className="mb-4 border-0 shadow-sm">
-        <CardHeader className="pb-2">
-          <CardTitle className="font-display text-base flex items-center gap-2">
-            <CheckSquare className="w-4 h-4 text-primary" />
-            Tarefas Pendentes
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {pendingTasks && pendingTasks.length > 0 ? (
-            <div className="space-y-2">
-              {pendingTasks.map((task) => (
-                <div key={task.id} className="flex justify-between items-center py-2 border-b border-border last:border-0">
-                  <span className="font-body text-sm">{task.title}</span>
-                  <Badge variant="outline" className="text-xs font-body">
-                    {task.category}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-muted-foreground font-body italic">
-              Nenhuma tarefa pendente. Parabéns ou a mãe fez tudo. Provavelmente a segunda opção.
-            </p>
-          )}
-        </CardContent>
-      </Card>
+      {/* 4. Presence Streak */}
+      <PresenceStreak streakDays={profile.streak_days} weekActivity={weekActivity} />
 
-      {/* Daily Tip */}
-      <Card className="border-0 bg-accent/30">
-        <CardContent className="pt-4 pb-4">
-          <p className="text-sm font-body text-foreground flex items-start gap-2">
-            <span className="text-lg">💡</span>
-            <span>{tip}</span>
-          </p>
-        </CardContent>
-      </Card>
+      {/* 5. Summary Cards */}
+      <SummaryCards
+        tasksCompleted={tasksCompleted}
+        tasksTotal={tasksTotal}
+        nextEvent={nextEvent || null}
+        rankingPosition={rankingPosition || null}
+        momRating={null}
+      />
+
+      {/* 6. Share Week Card */}
+      <ShareWeekCard
+        displayName={profile.display_name}
+        tasksCompleted={tasksCompleted}
+        streak={profile.streak_days}
+        rankingPosition={rankingPosition || null}
+      />
     </div>
   );
 }
