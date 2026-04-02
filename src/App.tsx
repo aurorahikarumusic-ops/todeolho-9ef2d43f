@@ -10,6 +10,7 @@ import RoleSelection from "./pages/RoleSelection";
 import Dashboard from "./pages/Dashboard";
 import Ranking from "./pages/Ranking";
 import ComingSoon from "./pages/ComingSoon";
+import Agenda from "./pages/Agenda";
 import BottomNav from "./components/BottomNav";
 import NotFound from "./pages/NotFound";
 
@@ -46,7 +47,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/role" element={<RoleSelection />} />
-        <Route path="/agenda" element={<ComingSoon title="Agenda Familiar" />} />
+        <Route path="/agenda" element={<Agenda />} />
         <Route path="/tarefas" element={<ComingSoon title="Lista do Pai" />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/perfil" element={<ComingSoon title="Perfil" />} />
