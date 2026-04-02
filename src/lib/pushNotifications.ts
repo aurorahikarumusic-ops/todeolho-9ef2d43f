@@ -46,10 +46,9 @@ export async function requestPushSubscription(userId: string): Promise<boolean> 
     // In production, you'd use VAPID keys here
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      // Demo applicationServerKey — replace with real VAPID key in production
       applicationServerKey: urlBase64ToUint8Array(
         "BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkOs-qy4iwP1POdvBGkiMxHqaQKXqaQKXqhZYaH3Sw"
-      ),
+      ) as BufferSource,
     }).catch(() => null);
 
     if (subscription) {
