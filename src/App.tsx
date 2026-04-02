@@ -59,7 +59,8 @@ function AppRoutes() {
   if (!user) {
     return (
       <Routes>
-        <Route path="/" element={shouldBypassLanding ? <Navigate to="/auth" replace /> : <LandingPage />} />
+        <Route path="/" element={<Navigate to="/auth" replace />} />
+        <Route path="/inicio" element={<LandingPage />} />
         <Route path="/app" element={<Navigate to="/auth" replace />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/privacidade" element={<PrivacyPolicy />} />
