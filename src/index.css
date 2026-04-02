@@ -99,3 +99,62 @@
     color: hsl(var(--secondary));
   }
 }
+
+/* Kiss celebration animations */
+@keyframes kiss-float {
+  0% {
+    transform: translateY(100vh) scale(0.5) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-20vh) scale(1.2) rotate(30deg);
+    opacity: 0;
+  }
+}
+
+@keyframes kiss-3d-spin {
+  0% {
+    transform: perspective(400px) rotateY(0deg) scale(1);
+  }
+  25% {
+    transform: perspective(400px) rotateY(90deg) scale(1.2);
+  }
+  50% {
+    transform: perspective(400px) rotateY(180deg) scale(1);
+  }
+  75% {
+    transform: perspective(400px) rotateY(270deg) scale(1.2);
+  }
+  100% {
+    transform: perspective(400px) rotateY(360deg) scale(1);
+  }
+}
+
+@keyframes kiss-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.animate-kiss-float {
+  animation: kiss-float 3s ease-out forwards;
+}
+
+.kiss-3d-container {
+  perspective: 500px;
+}
+
+.kiss-3d {
+  animation: kiss-3d-spin 3s ease-in-out infinite, kiss-pulse 1.5s ease-in-out infinite;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 0 20px hsl(var(--secondary) / 0.5));
+}

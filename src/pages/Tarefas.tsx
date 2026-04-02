@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -18,6 +18,8 @@ import { toast } from "sonner";
 import { format, isBefore, isToday, differenceInHours } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Plus, CheckSquare, Camera, Star, LifeBuoy } from "lucide-react";
+import TaskCelebration from "@/components/tasks/TaskCelebration";
+import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 
 const CATEGORIES: Record<string, { label: string; emoji: string }> = {
   school: { label: "Escola", emoji: "🏫" },
@@ -87,6 +89,10 @@ export default function Tarefas() {
     title: "", description: "", due_date: "", due_time: "18:00",
     category: "home", proof_required: false,
   });
+  const [celebration, setCelebration] = useState<{ points: number } | null>(null);
+  const [proofViewer, setProofViewer] = useState<{
+    photoUrl: string; taskTitle: string; storagePath: string;
+  } | null>(null);
 
   const { data: tasks = [] } = useQuery({
     queryKey: ["all-tasks", profile?.family_id],
@@ -155,8 +161,11 @@ export default function Tarefas() {
       const pts = calculatePoints(task, withPhoto);
 
       let photoUrl: string | null = null;
+      let storagePath: string | null = null;
       if (withPhoto && photoFile) {
         photoUrl = await uploadProofPhoto(taskId, photoFile);
+        const ext = photoFile.name.split(".").pop() || "jpg";
+        storagePath = `${user.id}/${taskId}.${ext}`;
       }
 
       await supabase.from("tasks").update({
@@ -167,16 +176,24 @@ export default function Tarefas() {
       if (pts > 0) {
         await supabase.from("profiles").update({ points: (profile?.points || 0) + pts }).eq("user_id", user.id);
       }
-      return pts;
+      return { pts, photoUrl, storagePath, taskTitle: task.title };
     },
-    onSuccess: (pts) => {
+    onSuccess: ({ pts, photoUrl, storagePath, taskTitle }) => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       setCompletingTask(null);
+      setProofFile(null);
+      
+      // Show celebration overlay
       if (pts > 0) {
-        toast.success(`Aprovado! +${pts} pontos. A mãe confirma que você fez mesmo.`, { duration: 4000 });
-      } else {
-        toast("Concluído. Mas os pontos... bom, você sabe.", { duration: 3000 });
+        setCelebration({ points: pts });
+      }
+
+      // Show proof photo viewer if photo was uploaded
+      if (photoUrl && storagePath) {
+        setTimeout(() => {
+          setProofViewer({ photoUrl, taskTitle, storagePath });
+        }, pts > 0 ? 2000 : 300);
       }
     },
     onError: () => toast.error("Erro ao concluir. Tenta de novo, pai."),
@@ -587,6 +604,25 @@ export default function Tarefas() {
           </div>
         </SheetContent>
       </Sheet>
+
+      {/* Celebration Overlay */}
+      {celebration && (
+        <TaskCelebration
+          points={celebration.points}
+          onClose={() => setCelebration(null)}
+        />
+      )}
+
+      {/* Proof Photo Viewer */}
+      {proofViewer && (
+        <ProofPhotoViewer
+          open={!!proofViewer}
+          onClose={() => setProofViewer(null)}
+          photoUrl={proofViewer.photoUrl}
+          taskTitle={proofViewer.taskTitle}
+          storagePath={proofViewer.storagePath}
+        />
+      )}
     </div>
   );
 }
