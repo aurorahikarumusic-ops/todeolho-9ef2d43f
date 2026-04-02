@@ -19,6 +19,8 @@ import DataDeletion from "./pages/DataDeletion";
 import Support from "./pages/Support";
 import BottomNav from "./components/BottomNav";
 import NotFound from "./pages/NotFound";
+import LandingPage from "./pages/LandingPage";
+import Onboarding from "./pages/Onboarding";
 import SwUpdateToast from "./components/SwUpdateToast";
 
 const queryClient = new QueryClient();
@@ -47,7 +49,16 @@ function AppRoutes() {
   }
 
   if (!user) {
-    return <AuthPage />;
+    return (
+      <Routes>
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/privacidade" element={<PrivacyPolicy />} />
+        <Route path="/termos" element={<TermsOfUse />} />
+        <Route path="/exclusao-dados" element={<DataDeletion />} />
+        <Route path="/suporte" element={<Support />} />
+        <Route path="*" element={<AuthPage />} />
+      </Routes>
+    );
   }
 
   // New user needs role selection - check if default role unchanged and no explicit selection
@@ -61,6 +72,8 @@ function AppRoutes() {
     <>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/tarefas" element={<Tarefas />} />
