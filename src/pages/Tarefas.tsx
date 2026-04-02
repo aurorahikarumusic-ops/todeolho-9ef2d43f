@@ -420,7 +420,7 @@ export default function Tarefas() {
       </button>
 
       {/* Complete Task Sheet */}
-      <Sheet open={!!completingTask} onOpenChange={(open) => !open && setCompletingTask(null)}>
+      <Sheet open={!!completingTask} onOpenChange={(open) => { if (!open) { setCompletingTask(null); setProofFile(null); } }}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader>
             <SheetTitle className="font-display text-lg">Tarefa concluída! 🎉</SheetTitle>
@@ -431,6 +431,21 @@ export default function Tarefas() {
                 {completingTask.title}
               </p>
 
+              {/* File input for photo */}
+              <div className="space-y-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  id="proof-photo"
+                  className="hidden"
+                  onChange={(e) => setProofFile(e.target.files?.[0] || null)}
+                />
+                {proofFile && (
+                  <p className="text-xs text-primary font-body">📷 {proofFile.name}</p>
+                )}
+              </div>
+
               {completingTask.proof_required ? (
                 <div className="space-y-3">
                   <p className="text-xs font-body italic text-secondary">
@@ -438,22 +453,34 @@ export default function Tarefas() {
                   </p>
                   <Button
                     className="w-full bg-primary font-display"
-                    onClick={() => completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true })}
+                    onClick={() => {
+                      if (!proofFile) {
+                        document.getElementById("proof-photo")?.click();
+                        return;
+                      }
+                      completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
+                    }}
                     disabled={completeTaskMutation.isPending}
                   >
                     <Camera className="w-4 h-4 mr-2" />
-                    Tirar foto e concluir (+50pts)
+                    {proofFile ? `Enviar foto e concluir (+50pts)` : "Tirar foto como prova (+50pts)"}
                   </Button>
                 </div>
               ) : (
                 <div className="space-y-3">
                   <Button
                     className="w-full bg-primary font-display"
-                    onClick={() => completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true })}
+                    onClick={() => {
+                      if (!proofFile) {
+                        document.getElementById("proof-photo")?.click();
+                        return;
+                      }
+                      completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
+                    }}
                     disabled={completeTaskMutation.isPending}
                   >
                     <Camera className="w-4 h-4 mr-2" />
-                    Adicionar foto como prova (+50pts)
+                    {proofFile ? `Enviar foto e concluir (+50pts)` : "Adicionar foto como prova (+50pts)"}
                   </Button>
                   <Button
                     variant="outline"
