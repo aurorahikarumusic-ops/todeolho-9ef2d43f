@@ -25,9 +25,17 @@ import SwUpdateToast from "./components/SwUpdateToast";
 
 const queryClient = new QueryClient();
 
+const isAndroidAppWebView = () => {
+  if (typeof window === "undefined") return false;
+
+  const userAgent = window.navigator.userAgent || "";
+  return /Android/i.test(userAgent) && (/\bwv\b/i.test(userAgent) || /; wv\)/i.test(userAgent) || /Version\/\d+(?:\.\d+)+/i.test(userAgent));
+};
+
 function AppRoutes() {
   const { user, loading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
+  const shouldBypassLanding = isAndroidAppWebView();
 
   if (loading || (user && profileLoading)) {
     return (
@@ -51,7 +59,7 @@ function AppRoutes() {
   if (!user) {
     return (
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={shouldBypassLanding ? <Navigate to="/auth" replace /> : <LandingPage />} />
         <Route path="/app" element={<Navigate to="/auth" replace />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/privacidade" element={<PrivacyPolicy />} />
