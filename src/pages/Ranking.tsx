@@ -224,7 +224,7 @@ export default function Ranking() {
   );
 
   return (
-    <div className="pb-32 px-4 pt-6 max-w-lg mx-auto space-y-4">
+    <div className="pb-24 px-4 pt-8 max-w-lg mx-auto space-y-4">
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
@@ -392,8 +392,8 @@ export default function Ranking() {
         </TabsContent>
       </Tabs>
 
-      {/* Share button */}
-      {myPos >= 0 && (
+      {/* Share button — only show when more than 1 participant */}
+      {myPos >= 0 && ranking.length > 1 && (
         <Button
           className="w-full bg-secondary text-secondary-foreground font-display"
           onClick={handleShare}

@@ -34,10 +34,10 @@ export default function ShareWeekCard({ displayName, tasksCompleted, streak, ran
   };
 
   return (
-    <div className="fixed bottom-16 left-0 right-0 z-40 px-4 pb-2">
+    <div className="mt-2 mb-4 px-0">
       <Button
         onClick={handleShare}
-        className="w-full max-w-lg mx-auto flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-display text-sm h-11 rounded-xl shadow-lg"
+        className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-display text-sm h-11 rounded-xl shadow-lg"
       >
         <Share2 className="w-4 h-4" />
         📤 Compartilhar minha semana

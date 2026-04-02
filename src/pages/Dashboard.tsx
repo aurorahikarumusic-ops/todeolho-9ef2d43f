@@ -96,21 +96,18 @@ export default function Dashboard() {
     (t) => t.completed_at && new Date(t.completed_at).toDateString() === now.toDateString()
   ) || false;
 
-  // Weekly performance percentage for gauge
-  const gaugeBase = Math.min(100, (profile.points / 10) + (profile.streak_days * 5) + (tasksCompleted * 10));
-  const gaugePercentage = Math.min(100, Math.max(0, gaugeBase));
+  // Weekly performance percentage for gauge — more motivating formula
+  const gaugeBase = Math.min(100, (profile.points * 1.5) + (profile.streak_days * 8) + (tasksCompleted * 15));
+  const gaugePercentage = Math.min(100, Math.max(5, gaugeBase)); // minimum 5% to feel progress
 
-  // Week activity (simplified: use streak to estimate)
-  const weekActivity = Array.from({ length: 7 }, (_, i) => i < profile.streak_days % 8);
-  // Reverse so most recent is last
-  weekActivity.reverse();
-  // Mark today as active (user opened the app)
-  weekActivity[6] = true;
+  // Week activity — mark streak days ending today as active
+  const streakCapped = Math.min(7, profile.streak_days + 1); // +1 because user is here now
+  const weekActivity = Array.from({ length: 7 }, (_, i) => i >= 7 - streakCapped);
 
   const dadTitle = getDadTitle(profile.points);
 
   return (
-    <div className="pb-32 px-4 pt-6 max-w-lg mx-auto space-y-4">
+    <div className="pb-24 px-4 pt-6 max-w-lg mx-auto space-y-4">
       {/* App Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
