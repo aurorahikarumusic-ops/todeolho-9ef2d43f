@@ -20,9 +20,10 @@ import { format, differenceInHours, startOfMonth, endOfMonth, startOfWeek } from
 import { ptBR } from "date-fns/locale";
 import {
   User, Edit2, Trophy, Flame, Star, LifeBuoy, CheckSquare, CalendarDays,
-  LogOut, Share2, ChevronRight, Baby, Shield, Clock
+  LogOut, Share2, ChevronRight, Baby, Shield, Clock, Bell
 } from "lucide-react";
 import { getDadTitle } from "@/lib/constants";
+import { sendLocalNotification, isPushSupported, getNotificationPermission, requestPushSubscription } from "@/lib/pushNotifications";
 
 const ACHIEVEMENT_DEFS = {
   earned: [
@@ -417,6 +418,29 @@ export default function Perfil() {
             </span>
           </CardContent>
         </Card>
+
+        {/* Test Notification */}
+        <Button
+          variant="outline"
+          className="w-full font-display text-sm"
+          onClick={async () => {
+            const perm = await getNotificationPermission();
+            if (perm !== "granted") {
+              if (user) await requestPushSubscription(user.id);
+            }
+            const msgs = [
+              "Você esqueceu de alguma coisa. Não sabemos o quê. Mas você sabe.",
+              "A mãe já fez o que você ia fazer. De novo.",
+              "Seu filho perguntou por você. Tá sabendo?",
+              "Ranking atualizado. Você não vai gostar.",
+              "Última chance de fazer algo útil hoje.",
+            ];
+            sendLocalNotification("Estou de Olho 👁️", msgs[Math.floor(Math.random() * msgs.length)]);
+          }}
+        >
+          <Bell className="w-4 h-4 mr-2" />
+          🔔 Me mande um esporro agora
+        </Button>
 
         {/* Share DNA */}
         <Button variant="outline" className="w-full font-display text-sm" onClick={() => {

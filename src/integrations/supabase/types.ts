@@ -186,6 +186,7 @@ export type Database = {
           id: string
           last_active_at: string | null
           points: number
+          push_subscription: Json | null
           role: string
           streak_days: number
           updated_at: string
@@ -200,6 +201,7 @@ export type Database = {
           id?: string
           last_active_at?: string | null
           points?: number
+          push_subscription?: Json | null
           role?: string
           streak_days?: number
           updated_at?: string
@@ -214,6 +216,7 @@ export type Database = {
           id?: string
           last_active_at?: string | null
           points?: number
+          push_subscription?: Json | null
           role?: string
           streak_days?: number
           updated_at?: string

@@ -11,6 +11,7 @@ import DailyQuote from "@/components/home/DailyQuote";
 import PresenceStreak from "@/components/home/PresenceStreak";
 import SummaryCards from "@/components/home/SummaryCards";
 import ShareWeekCard from "@/components/home/ShareWeekCard";
+import PushPermissionBanner from "@/components/home/PushPermissionBanner";
 import { startOfWeek, endOfWeek } from "date-fns";
 
 export default function Dashboard() {
@@ -122,6 +123,9 @@ export default function Dashboard() {
           {dadTitle.emoji} {dadTitle.title}
         </Badge>
       </div>
+
+      {/* Push Notification Banner */}
+      <PushPermissionBanner />
 
       {/* 1. Greeting Header */}
       <GreetingHeader
