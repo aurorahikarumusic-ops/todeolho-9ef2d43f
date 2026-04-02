@@ -25,9 +25,17 @@ function AppRoutes() {
   if (loading || (user && profileLoading)) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-4xl mb-3 animate-bounce">👀</div>
-          <p className="font-display text-lg text-muted-foreground">Carregando...</p>
+        <div className="text-center space-y-4">
+          <div className="text-6xl animate-bounce">👁️</div>
+          <h1 className="font-display text-xl font-bold text-primary">Estou de Olho</h1>
+          <p className="font-body text-sm text-muted-foreground italic">
+            Calma, estamos conferindo se você esqueceu algo.
+          </p>
+          <div className="flex justify-center gap-1 mt-2">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: "0ms" }} />
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: "200ms" }} />
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: "400ms" }} />
+          </div>
         </div>
       </div>
     );
