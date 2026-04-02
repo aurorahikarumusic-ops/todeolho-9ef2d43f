@@ -66,7 +66,7 @@ export default function Onboarding() {
   };
 
   const handleFinish = () => {
-    navigate("/");
+    navigate("/app");
   };
 
   return (
