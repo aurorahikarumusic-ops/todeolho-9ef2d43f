@@ -203,7 +203,9 @@ export default function Perfil() {
     const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
     if (error) { toast.error("Erro ao enviar foto."); return; }
     const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
-    await updateProfile.mutateAsync({ avatar_url: urlData.publicUrl });
+    // Cache-busting: append timestamp to force browser to reload the new image
+    const avatarUrlWithCacheBust = `${urlData.publicUrl}?t=${Date.now()}`;
+    await updateProfile.mutateAsync({ avatar_url: avatarUrlWithCacheBust });
     toast.success("Foto atualizada. A mãe aprova? Veremos.");
   };
 

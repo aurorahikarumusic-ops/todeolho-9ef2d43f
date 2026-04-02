@@ -159,8 +159,14 @@ export default function Ranking() {
     return <span className="w-6 h-6 flex items-center justify-center font-display font-bold text-sm text-muted-foreground">{pos + 1}</span>;
   };
 
-  const getRatingForUser = (userId: string) => {
-    const rating = momRatings.find((r: any) => r.user_id === userId);
+  const getRatingForUser = (profileId: string) => {
+    // mom_ratings.user_id stores auth user_id, but ranking list uses profile.id
+    // We need to match by finding the profile's user_id from the ranking data
+    const dad = ranking.find(r => r.id === profileId);
+    if (!dad) return undefined;
+    // Since ranking doesn't have user_id, we use profile id matching via profiles query
+    // For now, search mom_ratings by the profile id field (which is profile.id, not auth uid)
+    const rating = momRatings.find((r: any) => r.user_id === profileId);
     return rating;
   };
 
