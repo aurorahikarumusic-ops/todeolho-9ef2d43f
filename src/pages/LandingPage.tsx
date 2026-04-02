@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Eye, CheckCircle2, Trophy, Calendar, ListTodo,
-  Star, ArrowRight, Smartphone, Shield, Users
+  Star, ArrowRight, Smartphone, Shield, Users, Download
 } from "lucide-react";
 
 const features = [
