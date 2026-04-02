@@ -1,0 +1,2 @@
+ALTER TABLE public.events DROP CONSTRAINT events_event_type_check;
+ALTER TABLE public.events ADD CONSTRAINT events_event_type_check CHECK (event_type = ANY (ARRAY['school'::text, 'health'::text, 'birthday'::text, 'pickup'::text, 'other'::text, 'escola'::text, 'saude'::text, 'aniversario'::text, 'casa'::text, 'outro'::text]));
