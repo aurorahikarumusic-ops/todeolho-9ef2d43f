@@ -29,7 +29,7 @@ const queryClient = new QueryClient();
 function AppRoutes() {
   const { user, loading } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
-  const shouldBypassLanding = isAndroidAppWebView();
+  
 
   if (loading || (user && profileLoading)) {
     return (
