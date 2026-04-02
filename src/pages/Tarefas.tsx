@@ -161,8 +161,11 @@ export default function Tarefas() {
       const pts = calculatePoints(task, withPhoto);
 
       let photoUrl: string | null = null;
+      let storagePath: string | null = null;
       if (withPhoto && photoFile) {
         photoUrl = await uploadProofPhoto(taskId, photoFile);
+        const ext = photoFile.name.split(".").pop() || "jpg";
+        storagePath = `${user.id}/${taskId}.${ext}`;
       }
 
       await supabase.from("tasks").update({
@@ -173,16 +176,24 @@ export default function Tarefas() {
       if (pts > 0) {
         await supabase.from("profiles").update({ points: (profile?.points || 0) + pts }).eq("user_id", user.id);
       }
-      return pts;
+      return { pts, photoUrl, storagePath, taskTitle: task.title };
     },
-    onSuccess: (pts) => {
+    onSuccess: ({ pts, photoUrl, storagePath, taskTitle }) => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       setCompletingTask(null);
+      setProofFile(null);
+      
+      // Show celebration overlay
       if (pts > 0) {
-        toast.success(`Aprovado! +${pts} pontos. A mãe confirma que você fez mesmo.`, { duration: 4000 });
-      } else {
-        toast("Concluído. Mas os pontos... bom, você sabe.", { duration: 3000 });
+        setCelebration({ points: pts });
+      }
+
+      // Show proof photo viewer if photo was uploaded
+      if (photoUrl && storagePath) {
+        setTimeout(() => {
+          setProofViewer({ photoUrl, taskTitle, storagePath });
+        }, pts > 0 ? 2000 : 300);
       }
     },
     onError: () => toast.error("Erro ao concluir. Tenta de novo, pai."),
