@@ -37,9 +37,9 @@ function getHeaderSubtitle(myPos: number | null, total: number): string {
 
 function getShareText(name: string, pos: number, total: number, pts: number): string {
   const posLabel = `#${pos + 1}`;
-  if (pos <= 2) return `Tô no pódio dos pais no Tô de Olho 👁️\nPosição ${posLabel} com ${pts} pontos.\nSim, eu. Guarda esse print.`;
-  if (pos === total - 1) return `Último lugar no ranking dos pais no Tô de Olho 👁️\n${pts} pontos. Mas apareço. Isso conta.`;
-  return `Posição ${posLabel} no ranking dos pais no Tô de Olho 👁️\n${pts} pontos. Tô melhorando. (Devagar.)`;
+  if (pos <= 2) return `Tô no pódio dos pais no Estou de Olho 👁️\nPosição ${posLabel} com ${pts} pontos.\nSim, eu. Guarda esse print.`;
+  if (pos === total - 1) return `Último lugar no ranking dos pais no Estou de Olho 👁️\n${pts} pontos. Mas apareço. Isso conta.`;
+  return `Posição ${posLabel} no ranking dos pais no Estou de Olho 👁️\n${pts} pontos. Tô melhorando. (Devagar.)`;
 }
 
 const StarRating = ({ stars }: { stars: number }) => (
