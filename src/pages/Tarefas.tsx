@@ -82,6 +82,7 @@ export default function Tarefas() {
   const queryClient = useQueryClient();
   const [showAddSheet, setShowAddSheet] = useState(false);
   const [completingTask, setCompletingTask] = useState<any>(null);
+  const [proofFile, setProofFile] = useState<File | null>(null);
   const [newTask, setNewTask] = useState({
     title: "", description: "", due_date: "", due_time: "18:00",
     category: "home", proof_required: false,
