@@ -79,6 +79,7 @@ function AppRoutes() {
         <Route path="/" element={<Navigate to="/app" replace />} />
         <Route path="/auth" element={<Navigate to="/app" replace />} />
         <Route path="/app" element={<Dashboard />} />
+        <Route path="/inicio" element={<LandingPage />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/agenda" element={<Agenda />} />
