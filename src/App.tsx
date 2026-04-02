@@ -52,6 +52,7 @@ function AppRoutes() {
     return (
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/app" element={<Navigate to="/auth" replace />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/privacidade" element={<PrivacyPolicy />} />
         <Route path="/termos" element={<TermsOfUse />} />
