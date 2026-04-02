@@ -72,6 +72,8 @@ function AppRoutes() {
     <>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/tarefas" element={<Tarefas />} />
