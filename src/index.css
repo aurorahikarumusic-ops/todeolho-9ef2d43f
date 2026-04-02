@@ -53,9 +53,32 @@
     @apply border-border;
   }
 
+  html {
+    /* Disable pull-to-refresh in WebView */
+    overscroll-behavior-y: contain;
+    /* Disable text size adjustment */
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    /* Safe area padding for notch/nav bar */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    /* Prevent overscroll bounce */
+    overscroll-behavior: none;
+    /* Disable touch callout */
+    -webkit-touch-callout: none;
+    /* Prevent user select on interactive elements */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent zoom on input focus (WebView fix) */
+  input, select, textarea {
+    font-size: 16px !important;
   }
 
   h1, h2, h3, h4, h5, h6 {

@@ -9,20 +9,35 @@ const NAV_ITEMS = [
   { path: "/perfil", icon: User, label: "Perfil" },
 ] as const;
 
+function triggerHaptic() {
+  if ("vibrate" in navigator) {
+    navigator.vibrate(10);
+  }
+}
+
 export default function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border shadow-lg">
+    <nav
+      className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg"
+      style={{
+        zIndex: 9999,
+        paddingBottom: "env(safe-area-inset-bottom)",
+      }}
+    >
       <div className="max-w-lg mx-auto flex">
         {NAV_ITEMS.map(({ path, icon: Icon, label }) => {
           const active = location.pathname === path;
           return (
             <button
               key={path}
-              onClick={() => navigate(path)}
-              className={`flex-1 flex flex-col items-center py-3 transition-colors ${
+              onClick={() => {
+                triggerHaptic();
+                navigate(path);
+              }}
+              className={`flex-1 flex flex-col items-center py-3 transition-colors active:scale-95 ${
                 active
                   ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
