@@ -324,11 +324,25 @@ export default function Tarefas() {
               </p>
             </div>
 
-            {/* Points indicator */}
-            {task.completed_at && !task.rescued_by_mom && (
-              <span className="text-xs font-display font-bold text-primary shrink-0">
-                +{task.points || 50}pts
-              </span>
+            {/* Points + Delete for completed */}
+            {(task.completed_at || task.rescued_by_mom) && (
+              <div className="flex flex-col items-end gap-2 shrink-0">
+                {!task.rescued_by_mom && (
+                  <span className="text-xs font-display font-bold text-primary">
+                    +{task.points || 50}pts
+                  </span>
+                )}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                  onClick={() => deleteTaskMutation.mutate(task.id)}
+                  disabled={deleteTaskMutation.isPending}
+                  title="Excluir tarefa"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </Button>
+              </div>
             )}
           </div>
         </CardContent>
