@@ -10,6 +10,7 @@ import RoleSelection from "./pages/RoleSelection";
 import Dashboard from "./pages/Dashboard";
 import Ranking from "./pages/Ranking";
 import ComingSoon from "./pages/ComingSoon";
+import Agenda from "./pages/Agenda";
 import BottomNav from "./components/BottomNav";
 import NotFound from "./pages/NotFound";
 
