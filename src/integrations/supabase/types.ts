@@ -80,6 +80,36 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_missions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          mission_date: string
+          mission_text: string
+          points_awarded: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          mission_date?: string
+          mission_text: string
+          points_awarded?: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          mission_date?: string
+          mission_text?: string
+          points_awarded?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           created_at: string
@@ -172,8 +202,12 @@ export type Database = {
           due_date: string | null
           family_id: string
           id: string
+          mom_approved: boolean | null
+          mom_reprove_comment: string | null
           photo_proof_url: string | null
           points: number
+          proof_required: boolean
+          rescued_by_mom: boolean
           title: string
           updated_at: string
         }
@@ -187,8 +221,12 @@ export type Database = {
           due_date?: string | null
           family_id: string
           id?: string
+          mom_approved?: boolean | null
+          mom_reprove_comment?: string | null
           photo_proof_url?: string | null
           points?: number
+          proof_required?: boolean
+          rescued_by_mom?: boolean
           title: string
           updated_at?: string
         }
@@ -202,8 +240,12 @@ export type Database = {
           due_date?: string | null
           family_id?: string
           id?: string
+          mom_approved?: boolean | null
+          mom_reprove_comment?: string | null
           photo_proof_url?: string | null
           points?: number
+          proof_required?: boolean
+          rescued_by_mom?: boolean
           title?: string
           updated_at?: string
         }
