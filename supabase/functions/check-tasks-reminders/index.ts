@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
 
       for (const task of tasks24h || []) {
         const dueDate = new Date(task.due_date).toLocaleString("pt-BR");
-        const msg = `👁️ *Tô de Olho*\nEi, ${name}. Amanhã você tem uma tarefa:\n📌 *${task.title}*\nPrazo: ${dueDate}\n\nDessa vez não esquece, tá? A gente tá de olho. 👀`;
+        const msg = `👁️ *Estou de Olho*\nEi, ${name}. Amanhã você tem uma tarefa:\n📌 *${task.title}*\nPrazo: ${dueDate}\n\nDessa vez não esquece, tá? A gente tá de olho. 👀`;
 
         await sendWhatsApp(sub.phone_number, msg, LOVABLE_API_KEY, TWILIO_API_KEY, TWILIO_WHATSAPP_FROM);
 
