@@ -83,18 +83,22 @@ function calculatePoints(task: any, withPhoto: boolean): number {
 export default function Tarefas() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
+  const isMom = useIsMom();
+  const { data: partner } = useFamilyPartner();
   const queryClient = useQueryClient();
   const [showAddSheet, setShowAddSheet] = useState(false);
   const [completingTask, setCompletingTask] = useState<any>(null);
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [newTask, setNewTask] = useState({
     title: "", description: "", due_date: "", due_time: "18:00",
-    category: "home", proof_required: false,
+    category: "home", proof_required: isMom, urgency: "normal",
   });
   const [celebration, setCelebration] = useState<{ points: number } | null>(null);
   const [proofViewer, setProofViewer] = useState<{
     photoUrl: string; taskTitle: string; storagePath: string;
   } | null>(null);
+
+  const dadName = partner?.display_name || "o pai";
 
   const { data: tasks = [] } = useQuery({
     queryKey: ["all-tasks", profile?.family_id],
