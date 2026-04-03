@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
+import { useFamilyPartner, useIsMom } from "@/hooks/useFamily";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,6 +21,7 @@ import { ptBR } from "date-fns/locale";
 import { Plus, CheckSquare, Camera, Star, LifeBuoy, Trash2 } from "lucide-react";
 import TaskCelebration from "@/components/tasks/TaskCelebration";
 import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
+import MomTaskApproval from "@/components/tasks/MomTaskApproval";
 
 const CATEGORIES: Record<string, { label: string; emoji: string }> = {
   school: { label: "Escola", emoji: "🏫" },
