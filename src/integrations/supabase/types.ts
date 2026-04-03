@@ -80,6 +80,30 @@ export type Database = {
         }
         Relationships: []
       }
+      confessions: {
+        Row: {
+          content: string
+          created_at: string
+          family_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          family_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          family_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       daily_missions: {
         Row: {
           completed_at: string | null
