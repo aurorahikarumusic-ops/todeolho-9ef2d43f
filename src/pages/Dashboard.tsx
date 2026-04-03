@@ -21,6 +21,7 @@ import { startOfWeek, endOfWeek } from "date-fns";
 export default function Dashboard() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
+  const { data: partner } = useFamilyPartner();
 
   const now = new Date();
   const weekStart = startOfWeek(now, { weekStartsOn: 1 }).toISOString();
