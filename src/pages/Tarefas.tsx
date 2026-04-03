@@ -137,16 +137,20 @@ export default function Tarefas() {
   });
 
   const pending = tasks.filter(t => !t.completed_at && !t.rescued_by_mom);
-  const completed = tasks.filter(t => t.completed_at || t.rescued_by_mom);
+  const awaitingApproval = tasks.filter(t => t.completed_at && t.mom_approved === null && !t.rescued_by_mom);
+  const completed = tasks.filter(t => (t.completed_at && t.mom_approved !== null) || t.rescued_by_mom);
+  const rescued = tasks.filter(t => t.rescued_by_mom);
   const overdue = tasks.filter(t =>
     !t.completed_at && !t.rescued_by_mom && t.due_date && isBefore(new Date(t.due_date), new Date())
   );
 
   // Header subtitle
-  let subtitle = `${pending.length} pendentes, ${completed.length} concluídas. Tá indo.`;
-  if (pending.length === 0 && completed.length > 0) subtitle = "Tudo feito! Isso não acontece toda semana. Aproveita.";
-  if (overdue.length > 0) subtitle = `Você tem ${overdue.length} tarefa${overdue.length > 1 ? "s" : ""} atrasada${overdue.length > 1 ? "s" : ""}. A mãe já sabe.`;
-  if (completed.length === 0 && pending.length > 0) subtitle = "Nenhuma tarefa concluída hoje. Só lembrando.";
+  let subtitle = isMom
+    ? `Você cria. Ele faz. Ou a gente registra que não fez.`
+    : `${pending.length} pendentes, ${completed.length} concluídas. Tá indo.`;
+  if (!isMom && pending.length === 0 && completed.length > 0) subtitle = "Tudo feito! Isso não acontece toda semana. Aproveita.";
+  if (!isMom && overdue.length > 0) subtitle = `Você tem ${overdue.length} tarefa${overdue.length > 1 ? "s" : ""} atrasada${overdue.length > 1 ? "s" : ""}. A mãe já sabe.`;
+  if (isMom && awaitingApproval.length > 0) subtitle = `${awaitingApproval.length} tarefa(s) aguardando sua aprovação.`;
 
   // Photo upload helper
   const uploadProofPhoto = async (taskId: string, file: File): Promise<string | null> => {
