@@ -25,6 +25,7 @@ import LandingPage from "./pages/LandingPage";
 import Onboarding from "./pages/Onboarding";
 import SwUpdateToast from "./components/SwUpdateToast";
 import MuralPerolas from "./pages/MuralPerolas";
+import BancoReusPage from "./pages/BancoReus";
 
 const queryClient = new QueryClient();
 
