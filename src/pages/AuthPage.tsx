@@ -163,7 +163,7 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
     setLoading(true);
     try {
       if (isSignUp) {
-        await signUp(form.email, form.password, form.name);
+        await signUp(form.email, form.password, form.name, "mae");
         toast.success("Conta criada, chefe! 👑", {
           description: "Agora você tem o controle. Ele que se prepare.",
         });
