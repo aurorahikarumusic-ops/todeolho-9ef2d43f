@@ -71,7 +71,7 @@ function AppRoutes() {
   const isMom = profile?.role === "mae";
 
   return (
-    <>
+    <AppLayout>
       <Routes>
         <Route path="/" element={<Navigate to="/app" replace />} />
         <Route path="/auth" element={<Navigate to="/app" replace />} />
@@ -90,8 +90,7 @@ function AppRoutes() {
         <Route path="/suporte" element={<Support />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <BottomNav />
-    </>
+    </AppLayout>
   );
 }
 
