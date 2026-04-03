@@ -230,6 +230,7 @@ export default function Tarefas() {
       const dueDate = newTask.due_date
         ? new Date(`${newTask.due_date}T${newTask.due_time}`).toISOString()
         : null;
+      const pointsByUrgency: Record<string, number> = { normal: 30, urgente: 40, critico: 50 };
       const { data: inserted, error } = await supabase.from("tasks").insert({
         title: newTask.title,
         description: newTask.description || null,
@@ -238,8 +239,10 @@ export default function Tarefas() {
         proof_required: newTask.proof_required,
         family_id: profile.family_id,
         created_by: user.id,
-        assigned_to: user.id,
-      }).select().single();
+        assigned_to: isMom && partner ? partner.user_id : user.id,
+        points: pointsByUrgency[newTask.urgency] || 30,
+        urgency: newTask.urgency,
+      } as any).select().single();
       if (error) throw error;
       return inserted;
     },
