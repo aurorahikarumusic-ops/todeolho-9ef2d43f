@@ -637,3 +637,154 @@ export default function Perfil() {
     </div>
   );
 }
+
+// ==================== Banco dos Réus (Dad only) ====================
+function BancoReus({ userId, familyId }: { userId?: string; familyId?: string | null }) {
+  const [content, setContent] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const qc = useQueryClient();
+
+  const { data: confessions = [] } = useQuery({
+    queryKey: ["confessions", userId],
+    queryFn: async () => {
+      if (!userId) return [];
+      const { data, error } = await supabase
+        .from("confessions")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(20);
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!userId,
+  });
+
+  const addConfession = useMutation({
+    mutationFn: async (text: string) => {
+      if (!userId || !familyId) throw new Error("Sem família");
+      const { error } = await supabase.from("confessions").insert({
+        user_id: userId,
+        family_id: familyId,
+        content: text,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["confessions"] });
+      setContent("");
+      setShowForm(false);
+      toast.success("Confissão registrada. Boa sorte. ⚖️");
+    },
+    onError: () => toast.error("Erro ao confessar"),
+  });
+
+  const deleteConfession = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("confessions").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["confessions"] });
+      toast.success("Confissão apagada. Mas a culpa... permanece.");
+    },
+  });
+
+  const handleSubmit = () => {
+    const trimmed = content.trim();
+    if (!trimmed || trimmed.length < 5) {
+      toast.error("Confessa direito! Mínimo de 5 caracteres.");
+      return;
+    }
+    if (trimmed.length > 300) {
+      toast.error("Máximo de 300 caracteres. Seja breve.");
+      return;
+    }
+    addConfession.mutate(trimmed);
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-3">
+        <div className="p-2 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 shadow-lg shadow-amber-500/30">
+          <Gavel className="w-5 h-5 text-white" />
+        </div>
+        <div>
+          <h2 className="font-display text-lg font-bold">Banco dos Réus ⚖️</h2>
+          <p className="text-[10px] text-muted-foreground font-body">
+            Confesse antes que ela descubra. É melhor pra você.
+          </p>
+        </div>
+      </div>
+
+      {/* Add confession */}
+      {!showForm ? (
+        <button
+          onClick={() => setShowForm(true)}
+          className="w-full text-left font-body text-sm text-muted-foreground hover:text-foreground transition-colors py-3 px-4 rounded-lg border border-dashed border-amber-300/50 hover:border-amber-400 bg-amber-50/50 dark:bg-amber-950/10"
+        >
+          ⚖️ Confessar um erro antes que ela descubra...
+        </button>
+      ) : (
+        <Card className="border-amber-300/50 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20">
+          <CardContent className="p-4 space-y-3">
+            <Textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder='Ex: "Deixei a louça de molho desde ontem... e esqueci."'
+              className="min-h-[70px] font-body text-sm border-amber-300/50 focus:border-amber-500"
+              maxLength={300}
+              autoFocus
+            />
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground font-body">{content.length}/300</span>
+              <div className="flex gap-2">
+                <Button variant="ghost" size="sm" onClick={() => { setShowForm(false); setContent(""); }}>
+                  Cancelar
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleSubmit}
+                  disabled={addConfession.isPending}
+                  className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white gap-1"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  Confessar
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* List of confessions */}
+      {confessions.length === 0 ? (
+        <p className="text-xs text-muted-foreground font-body italic text-center py-2">
+          Nenhuma confissão ainda. Sortudo... ou mentiroso. 🤔
+        </p>
+      ) : (
+        <div className="space-y-2">
+          {confessions.map((c: any) => (
+            <Card key={c.id} className="border-amber-200/30">
+              <CardContent className="p-3 flex items-start gap-3">
+                <span className="text-lg mt-0.5">⚖️</span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-body text-sm text-foreground">{c.content}</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    {formatDistanceToNow(new Date(c.created_at), { addSuffix: true, locale: ptBR })}
+                  </p>
+                </div>
+                <button
+                  onClick={() => deleteConfession.mutate(c.id)}
+                  className="text-muted-foreground hover:text-destructive transition-colors p-1 shrink-0"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
