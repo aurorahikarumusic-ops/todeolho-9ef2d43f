@@ -1,9 +1,12 @@
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/hooks/useAuth";
+import { useFamilyPartner } from "@/hooks/useFamily";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Eye } from "lucide-react";
+import { Eye, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { getDadTitle } from "@/lib/constants";
 import GreetingHeader from "@/components/home/GreetingHeader";
 import DadGauge from "@/components/home/DadGauge";
@@ -12,6 +15,7 @@ import PresenceStreak from "@/components/home/PresenceStreak";
 import SummaryCards from "@/components/home/SummaryCards";
 import ShareWeekCard from "@/components/home/ShareWeekCard";
 import PushPermissionBanner from "@/components/home/PushPermissionBanner";
+import JoinFamily from "@/components/family/JoinFamily";
 import { startOfWeek, endOfWeek } from "date-fns";
 
 export default function Dashboard() {
