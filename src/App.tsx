@@ -25,6 +25,7 @@ import LandingPage from "./pages/LandingPage";
 import Onboarding from "./pages/Onboarding";
 import SwUpdateToast from "./components/SwUpdateToast";
 import MuralPerolas from "./pages/MuralPerolas";
+import BancoReusPage from "./pages/BancoReus";
 
 const queryClient = new QueryClient();
 
@@ -83,7 +84,7 @@ function AppRoutes() {
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/tarefas" element={<Tarefas />} />
         <Route path="/ranking" element={<Ranking />} />
-        <Route path="/mural" element={<MuralPerolas />} />
+        <Route path="/mural" element={isMom ? <MuralPerolas /> : <BancoReusPage />} />
         <Route path="/avaliacao" element={<MomAvaliacao />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/privacidade" element={<PrivacyPolicy />} />

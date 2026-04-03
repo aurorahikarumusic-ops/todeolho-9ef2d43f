@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, CalendarDays, CheckSquare, Trophy, User, FileText, Gem } from "lucide-react";
+import { Home, CalendarDays, CheckSquare, Trophy, User, FileText, Gem, Gavel } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 
 function triggerHaptic() {
@@ -26,7 +26,7 @@ export default function BottomNav() {
     : [
         { path: "/app", icon: Home, label: "Home" },
         { path: "/agenda", icon: CalendarDays, label: "Agenda" },
-        { path: "/mural", icon: Gem, label: "Pérolas", neon: true },
+        { path: "/mural", icon: Gavel, label: "Réus", neon: true },
         { path: "/tarefas", icon: CheckSquare, label: "Tarefas" },
         { path: "/ranking", icon: Trophy, label: "Ranking" },
       ];
