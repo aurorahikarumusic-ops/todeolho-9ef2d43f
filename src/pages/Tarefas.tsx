@@ -242,8 +242,8 @@ export default function Tarefas() {
     onSuccess: (inserted) => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       setShowAddSheet(false);
-      setNewTask({ title: "", description: "", due_date: "", due_time: "18:00", category: "home", proof_required: false });
-      toast.success("Tarefa criada! Você adicionou sozinho. +30 pontos de iniciativa. ✨", { duration: 4000 });
+      setNewTask({ title: "", description: "", due_date: "", due_time: "18:00", category: "home", proof_required: false, urgency: "normal" });
+      toast.success(isMom ? "Tarefa criada! Ele recebeu uma notificação. Agora é com ele." : "Tarefa criada! Você adicionou sozinho. +30 pontos de iniciativa. ✨", { duration: 4000 });
 
       // Send push notification to family members (fire and forget)
       if (inserted) {
