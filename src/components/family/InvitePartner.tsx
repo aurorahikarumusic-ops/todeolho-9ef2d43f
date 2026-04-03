@@ -26,14 +26,10 @@ export default function InvitePartner() {
   };
 
   const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: "Estou de Olho", text: message });
-      } catch { /* cancelled */ }
-    } else {
-      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, "_blank");
-    }
+    await navigator.clipboard.writeText(message);
+    toast.success("Mensagem copiada! Abrindo WhatsApp... 📲");
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
   };
 
   const handleRegenerate = async () => {
