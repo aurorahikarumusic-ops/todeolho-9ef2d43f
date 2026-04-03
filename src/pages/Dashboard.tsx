@@ -129,6 +129,22 @@ export default function Dashboard() {
       {/* Push Notification Banner */}
       <PushPermissionBanner />
 
+      {/* Connect with Mom Banner */}
+      {!partner && (
+        <Card className="border-primary/30 border-dashed bg-dad-bg">
+          <CardContent className="p-4 text-center">
+            <Users className="w-8 h-8 text-primary mx-auto mb-2" />
+            <p className="font-display font-bold text-sm text-dad-text mb-1">
+              Conecte-se com a mãe
+            </p>
+            <p className="font-body text-xs text-muted-foreground mb-3">
+              Peça o código de 6 dígitos pra ela. Sem ele, você tá jogando sozinho.
+            </p>
+            <JoinFamily />
+          </CardContent>
+        </Card>
+      )}
+
       {/* 1. Greeting Header */}
       <GreetingHeader
         displayName={profile.display_name}
