@@ -8,7 +8,11 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Check, X, Camera, LifeBuoy } from "lucide-react";
+import { Check, X, Camera, LifeBuoy, Trash2 } from "lucide-react";
+import { notifyCrossPanel } from "@/lib/notify";
+import { useAuth } from "@/hooks/useAuth";
+import { useProfile } from "@/hooks/useProfile";
+import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 
 interface Props {
   task: any;
@@ -16,9 +20,12 @@ interface Props {
 }
 
 export default function MomTaskApproval({ task, dadName }: Props) {
+  const { user } = useAuth();
+  const { data: profile } = useProfile();
   const queryClient = useQueryClient();
   const [showReprove, setShowReprove] = useState(false);
   const [reproveComment, setReproveComment] = useState("");
+  const [showProof, setShowProof] = useState(false);
 
   const approveMutation = useMutation({
     mutationFn: async () => {
@@ -31,6 +38,12 @@ export default function MomTaskApproval({ task, dadName }: Props) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       toast.success(`Aprovado! O ${dadName} ganhou +${task.points || 50} pontos. Ele fez mesmo.`);
+      if (user && profile?.family_id) {
+        notifyCrossPanel("task_approved", profile.family_id, user.id, {
+          title: task.title,
+          points: task.points || 50,
+        });
+      }
     },
   });
 
@@ -50,6 +63,12 @@ export default function MomTaskApproval({ task, dadName }: Props) {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       setShowReprove(false);
       toast.success(`Reprovado. O ${dadName} vai ter que refazer.`);
+      if (user && profile?.family_id) {
+        notifyCrossPanel("task_reproved", profile.family_id, user.id, {
+          title: task.title,
+          comment: reproveComment.trim(),
+        });
+      }
     },
   });
 
@@ -60,15 +79,47 @@ export default function MomTaskApproval({ task, dadName }: Props) {
         .update({ rescued_by_mom: true, completed_at: new Date().toISOString() })
         .eq("id", task.id);
       if (error) throw error;
+      // Deduct 30 points from dad
+      if (task.assigned_to) {
+        const { data: dadProfile } = await supabase
+          .from("profiles")
+          .select("points")
+          .eq("user_id", task.assigned_to)
+          .single();
+        if (dadProfile) {
+          await supabase
+            .from("profiles")
+            .update({ points: Math.max(0, (dadProfile.points || 0) - 30) })
+            .eq("user_id", task.assigned_to);
+        }
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
-      toast.success(`Resgate registrado. O ${dadName} foi notificado. Ele sabe.`, { duration: 4000 });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      toast.success(`Resgate registrado. O ${dadName} foi notificado. -30 pontos.`, { duration: 4000 });
+      if (user && profile?.family_id) {
+        notifyCrossPanel("task_rescued", profile.family_id, user.id, {
+          title: task.title,
+        });
+      }
+    },
+  });
+
+  const deleteTaskMutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("tasks").delete().eq("id", task.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
+      toast.success("Tarefa removida. 🗑️");
     },
   });
 
   const isAwaitingApproval = task.completed_at && task.mom_approved === null && !task.rescued_by_mom;
   const isPending = !task.completed_at && !task.rescued_by_mom;
+  const isCompleted = (task.completed_at && task.mom_approved !== null) || task.rescued_by_mom;
 
   return (
     <>
@@ -100,7 +151,7 @@ export default function MomTaskApproval({ task, dadName }: Props) {
               {task.description && (
                 <p className="text-xs text-muted-foreground font-body mt-1">{task.description}</p>
               )}
-              <div className="flex gap-1 mt-2">
+              <div className="flex gap-1 mt-2 flex-wrap">
                 {task.proof_required && (
                   <Badge variant="outline" className="text-[10px]">📸 Prova exigida</Badge>
                 )}
@@ -111,17 +162,34 @@ export default function MomTaskApproval({ task, dadName }: Props) {
                   <Badge className="bg-destructive text-[10px]">⚠️ Crítico</Badge>
                 )}
               </div>
+
+              {/* Photo proof thumbnail */}
+              {task.photo_proof_url && (
+                <button
+                  onClick={() => setShowProof(true)}
+                  className="mt-2 rounded-lg overflow-hidden border-2 border-mom/30 hover:border-mom transition-colors w-20 h-20"
+                >
+                  <img
+                    src={task.photo_proof_url}
+                    alt="Prova"
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              )}
             </div>
 
             <div className="flex flex-col gap-1 shrink-0">
               {isAwaitingApproval && (
                 <>
                   {task.photo_proof_url && (
-                    <a href={task.photo_proof_url} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" size="sm" className="h-7 text-[10px]">
-                        <Camera className="w-3 h-3 mr-1" /> Ver foto
-                      </Button>
-                    </a>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 text-[10px]"
+                      onClick={() => setShowProof(true)}
+                    >
+                      <Camera className="w-3 h-3 mr-1" /> Ver foto
+                    </Button>
                   )}
                   <Button
                     size="sm"
@@ -156,10 +224,32 @@ export default function MomTaskApproval({ task, dadName }: Props) {
                   <LifeBuoy className="w-3 h-3 mr-1" /> Eu resolvi
                 </Button>
               )}
+              {isCompleted && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                  onClick={() => deleteTaskMutation.mutate()}
+                  disabled={deleteTaskMutation.isPending}
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </Button>
+              )}
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {/* Proof Photo Viewer */}
+      {task.photo_proof_url && (
+        <ProofPhotoViewer
+          open={showProof}
+          onClose={() => setShowProof(false)}
+          photoUrl={task.photo_proof_url}
+          taskTitle={task.title}
+          storagePath={`${task.assigned_to || "unknown"}/${task.id}.jpg`}
+        />
+      )}
 
       {/* Reprove Sheet */}
       <Sheet open={showReprove} onOpenChange={setShowReprove}>
