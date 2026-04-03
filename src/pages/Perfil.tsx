@@ -198,16 +198,52 @@ export default function Perfil() {
     toast(isMom ? "Saiu. A família sente sua falta. 👑" : "Saiu. Seu ranking continua correndo sem você. 👋");
   };
 
+  const resizeImage = (file: File, maxSize: number = 1200): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+        if (width > maxSize || height > maxSize) {
+          if (width > height) { height = Math.round((height * maxSize) / width); width = maxSize; }
+          else { width = Math.round((width * maxSize) / height); height = maxSize; }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) { reject(new Error("Canvas not supported")); return; }
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(
+          (blob) => blob ? resolve(blob) : reject(new Error("Erro ao processar imagem")),
+          "image/jpeg",
+          0.85
+        );
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Erro ao carregar imagem")); };
+      img.src = url;
+    });
+  };
+
   const handleAvatarUpload = async (file: File) => {
     if (!user) return;
-    const ext = file.name.split(".").pop() || "jpg";
-    const path = `${user.id}/avatar.${ext}`;
-    const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
-    if (error) { toast.error("Erro ao enviar foto."); return; }
-    const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
-    const avatarUrlWithCacheBust = `${urlData.publicUrl}?t=${Date.now()}`;
-    await updateProfile.mutateAsync({ avatar_url: avatarUrlWithCacheBust });
-    toast.success(isMom ? "Foto atualizada. Linda como sempre. 👑" : "Foto atualizada. A mãe aprova? Veremos.");
+    try {
+      toast.loading("Enviando foto...", { id: "avatar-upload" });
+      const resized = await resizeImage(file);
+      const path = `${user.id}/avatar.jpg`;
+      const { error } = await supabase.storage.from("avatars").upload(path, resized, {
+        upsert: true,
+        contentType: "image/jpeg",
+      });
+      if (error) { toast.error("Erro ao enviar foto: " + error.message, { id: "avatar-upload" }); return; }
+      const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
+      const avatarUrlWithCacheBust = `${urlData.publicUrl}?t=${Date.now()}`;
+      await updateProfile.mutateAsync({ avatar_url: avatarUrlWithCacheBust });
+      toast.success(isMom ? "Foto atualizada. Linda como sempre. 👑" : "Foto atualizada. A mãe aprova? Veremos.", { id: "avatar-upload" });
+    } catch (err: any) {
+      toast.error("Erro ao processar foto: " + (err.message || "tente novamente"), { id: "avatar-upload" });
+    }
   };
 
   // Color scheme based on role
@@ -222,7 +258,7 @@ export default function Perfil() {
       {/* Profile Header */}
       <div className="flex items-start gap-4">
         <label className="cursor-pointer relative group">
-          <input type="file" accept="image/*" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+          <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
           <div className={`w-16 h-16 rounded-full ${profileBgColor} border-2 ${profileBorderColor} flex items-center justify-center shrink-0 overflow-hidden group-hover:opacity-80 transition-opacity`}>
             {profile.avatar_url ? (
               <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
