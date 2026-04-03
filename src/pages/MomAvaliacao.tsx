@@ -10,7 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { startOfWeek, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Star, FileText } from "lucide-react";
+import { Star, FileText, TrendingUp } from "lucide-react";
+import { notifyCrossPanel } from "@/lib/notify";
 import { RATING_LABELS } from "@/lib/mom-constants";
 
 export default function MomAvaliacao() {
