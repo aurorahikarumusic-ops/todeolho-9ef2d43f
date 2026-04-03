@@ -20,6 +20,7 @@ import { format, isBefore, isToday, differenceInHours } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Plus, CheckSquare, Camera, Star, LifeBuoy, Trash2 } from "lucide-react";
 import TaskCelebration from "@/components/tasks/TaskCelebration";
+import { notifyCrossPanel } from "@/lib/notify";
 import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 import MomTaskApproval from "@/components/tasks/MomTaskApproval";
 
