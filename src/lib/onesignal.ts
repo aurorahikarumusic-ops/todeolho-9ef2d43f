@@ -20,8 +20,8 @@ export async function initOneSignal(appId: string) {
       appId,
       allowLocalhostAsSecureOrigin: true,
       notifyButton: { enable: false },
-      serviceWorkerParam: { scope: "/push/onesignal/" },
-      serviceWorkerPath: "push/onesignal/OneSignalSDKWorker.js",
+      serviceWorkerParam: { scope: "/" },
+      serviceWorkerPath: "OneSignalSDKWorker.js",
     });
 
     // Request permission automatically on Android WebView
