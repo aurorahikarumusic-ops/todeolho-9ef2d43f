@@ -41,8 +41,9 @@ export default function BottomNav() {
       }}
     >
       <div className="max-w-lg mx-auto flex">
-        {NAV_ITEMS.map(({ path, icon: Icon, label }) => {
+        {NAV_ITEMS.map(({ path, icon: Icon, label, neon }: any) => {
           const active = location.pathname === path;
+          const isNeon = !!neon;
           return (
             <button
               key={path}
@@ -51,13 +52,22 @@ export default function BottomNav() {
                 navigate(path);
               }}
               className={`flex-1 flex flex-col items-center py-3 transition-colors active:scale-95 ${
-                active
-                  ? accentColor
-                  : "text-muted-foreground hover:text-foreground"
+                isNeon
+                  ? active
+                    ? "text-pink-500"
+                    : "text-pink-400 hover:text-pink-500"
+                  : active
+                    ? accentColor
+                    : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <Icon className={`w-5 h-5 ${active ? "stroke-[2.5]" : ""}`} />
-              <span className="text-[10px] font-body font-semibold mt-1">{label}</span>
+              <div className={isNeon ? "relative" : ""}>
+                {isNeon && (
+                  <div className="absolute inset-0 bg-pink-500/30 blur-md rounded-full" />
+                )}
+                <Icon className={`w-5 h-5 relative ${active ? "stroke-[2.5]" : ""} ${isNeon ? "drop-shadow-[0_0_6px_rgba(236,72,153,0.7)]" : ""}`} />
+              </div>
+              <span className={`text-[10px] font-body font-semibold mt-1 ${isNeon ? "drop-shadow-[0_0_4px_rgba(236,72,153,0.5)]" : ""}`}>{label}</span>
             </button>
           );
         })}
