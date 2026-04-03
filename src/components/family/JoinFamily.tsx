@@ -17,9 +17,10 @@ export default function JoinFamily() {
     if (!code.trim() || !user) return;
     setJoining(true);
     try {
-      const { data, error } = await supabase.rpc("join_family_by_code", {
+      const { data: rawData, error } = await supabase.rpc("join_family_by_code", {
         invite_code: code.trim(),
       });
+      const data = rawData as any;
 
       if (error) throw error;
 

@@ -79,9 +79,10 @@ export default function Onboarding() {
     }
     setSaving(true);
     try {
-      const { data, error } = await supabase.rpc("join_family_by_code", {
+      const { data: rawData, error } = await supabase.rpc("join_family_by_code", {
         invite_code: familyCode.trim(),
       });
+      const data = rawData as any;
 
       if (error) throw error;
 
