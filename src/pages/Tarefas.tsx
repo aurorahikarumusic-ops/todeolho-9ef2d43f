@@ -403,8 +403,10 @@ export default function Tarefas() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <CheckSquare className="w-6 h-6 text-primary" />
-          <h1 className="font-display text-2xl font-bold">A Lista da Mãe</h1>
+          <CheckSquare className={`w-6 h-6 ${isMom ? "text-mom" : "text-primary"}`} />
+          <h1 className="font-display text-2xl font-bold">
+            {isMom ? "Lista do Pai" : "A Lista da Mãe"}
+          </h1>
         </div>
         <p className="text-sm text-muted-foreground font-body italic">{subtitle}</p>
       </div>
