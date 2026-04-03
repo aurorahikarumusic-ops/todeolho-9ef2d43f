@@ -10,7 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { startOfWeek, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Star, FileText } from "lucide-react";
+import { Star, FileText, TrendingUp } from "lucide-react";
+import { notifyCrossPanel } from "@/lib/notify";
 import { RATING_LABELS } from "@/lib/mom-constants";
 
 export default function MomAvaliacao() {
@@ -70,6 +71,12 @@ export default function MomAvaliacao() {
       queryClient.invalidateQueries({ queryKey: ["mom-rating-this-week"] });
       queryClient.invalidateQueries({ queryKey: ["mom-all-ratings"] });
       toast.success(`Avaliação publicada! O ${dadName} já pode ver.`, { duration: 4000 });
+      if (user && profile?.family_id) {
+        notifyCrossPanel("rating_submitted", profile.family_id, user.id, {
+          stars,
+          comment: comment.trim() || undefined,
+        });
+      }
     },
     onError: () => toast.error("Erro ao salvar avaliação."),
   });
@@ -161,6 +168,31 @@ export default function MomAvaliacao() {
       )}
 
       {/* Rating History */}
+      {/* Rating Evolution Chart */}
+      {allRatings.length > 1 && (
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingUp className="w-4 h-4 text-mom" />
+              <h3 className="font-display font-bold text-sm">Evolução do {dadName}</h3>
+            </div>
+            <div className="flex items-end gap-1 h-24">
+              {[...allRatings].reverse().map((r: any, i: number) => (
+                <div key={r.id} className="flex-1 flex flex-col items-center gap-1">
+                  <div
+                    className="w-full rounded-t bg-mom/70 transition-all"
+                    style={{ height: `${(r.stars / 5) * 100}%` }}
+                  />
+                  <span className="text-[9px] text-muted-foreground">
+                    {format(new Date(r.week_start), "dd/MM")}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {allRatings.length > 0 && (
         <div>
           <h2 className="font-display font-bold text-lg mb-3">Histórico</h2>

@@ -20,6 +20,7 @@ import { format, isBefore, isToday, differenceInHours } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Plus, CheckSquare, Camera, Star, LifeBuoy, Trash2 } from "lucide-react";
 import TaskCelebration from "@/components/tasks/TaskCelebration";
+import { notifyCrossPanel } from "@/lib/notify";
 import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 import MomTaskApproval from "@/components/tasks/MomTaskApproval";
 
@@ -205,6 +206,14 @@ export default function Tarefas() {
           setProofViewer({ photoUrl, taskTitle, storagePath });
         }, pts > 0 ? 2000 : 300);
       }
+
+      // Send cross-panel notification to mom
+      if (user && profile?.family_id) {
+        notifyCrossPanel("task_completed", profile.family_id, user.id, {
+          title: taskTitle,
+          has_photo: !!photoUrl,
+        });
+      }
     },
     onError: () => toast.error("Erro ao concluir. Tenta de novo, pai."),
   });
@@ -252,11 +261,12 @@ export default function Tarefas() {
       setNewTask({ title: "", description: "", due_date: "", due_time: "18:00", category: "home", proof_required: false, urgency: "normal" });
       toast.success(isMom ? "Tarefa criada! Ele recebeu uma notificação. Agora é com ele." : "Tarefa criada! Você adicionou sozinho. +30 pontos de iniciativa. ✨", { duration: 4000 });
 
-      // Send push notification to family members (fire and forget)
-      if (inserted) {
-        supabase.functions.invoke("notify-new-task", {
-          body: { type: "INSERT", record: inserted },
-        }).catch(console.error);
+      // Send cross-panel notification
+      if (inserted && user && profile?.family_id) {
+        notifyCrossPanel("task_created", profile.family_id, user.id, {
+          title: inserted.title,
+          urgency: inserted.urgency,
+        });
       }
     },
     onError: () => toast.error("Erro ao criar tarefa."),
