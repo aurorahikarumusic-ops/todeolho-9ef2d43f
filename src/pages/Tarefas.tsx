@@ -206,6 +206,14 @@ export default function Tarefas() {
           setProofViewer({ photoUrl, taskTitle, storagePath });
         }, pts > 0 ? 2000 : 300);
       }
+
+      // Send cross-panel notification to mom
+      if (user && profile?.family_id) {
+        notifyCrossPanel("task_completed", profile.family_id, user.id, {
+          title: taskTitle,
+          has_photo: !!photoUrl,
+        });
+      }
     },
     onError: () => toast.error("Erro ao concluir. Tenta de novo, pai."),
   });
