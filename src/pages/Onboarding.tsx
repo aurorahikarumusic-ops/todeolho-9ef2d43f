@@ -20,7 +20,9 @@ export default function Onboarding() {
   const { data: profile } = useProfile();
   const updateProfile = useUpdateProfile();
   const [step, setStep] = useState<Step>("welcome");
-  const [role, setRole] = useState<"pai" | "mae" | null>(null);
+  const [role, setRole] = useState<"pai" | "mae" | null>(
+    (profile?.role === "mae" || profile?.role === "pai") ? profile.role : null
+  );
   const [childName, setChildName] = useState("");
   const [familyCode, setFamilyCode] = useState("");
   const [saving, setSaving] = useState(false);
