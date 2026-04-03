@@ -217,7 +217,7 @@ export default function Perfil() {
   const profileBgColor = isMom ? "bg-mom/10" : "bg-primary/10";
 
   return (
-    <div className="pb-24 px-4 pt-8 max-w-lg mx-auto space-y-5">
+    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-8 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-5">
       {/* Profile Header */}
       <div className="flex items-start gap-4">
         <label className="cursor-pointer relative group">
