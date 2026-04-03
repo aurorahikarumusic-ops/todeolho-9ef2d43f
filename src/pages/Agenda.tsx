@@ -136,7 +136,12 @@ export default function Agenda() {
       queryClient.invalidateQueries({ queryKey: ["events"] });
       setShowAddSheet(false);
       setNewEvent({ title: "", description: "", event_date: "", event_time: "09:00", event_type: "outro", notify_partner: true });
-      toast.success("Evento salvo! Você adicionou sozinho. Isso vai pro seu histórico. Sim, de verdade. ✨", { duration: 4000 });
+      toast.success(
+        isMom
+          ? `Evento adicionado! O ${dadName} já vai saber.\n(Mesmo que ele diga que não sabia.)`
+          : "Evento salvo! Você adicionou sozinho. Isso vai pro seu histórico. ✨",
+        { duration: 4000 }
+      );
     },
     onError: () => toast.error("Erro ao salvar. Tenta de novo, pai."),
   });
