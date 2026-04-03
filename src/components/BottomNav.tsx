@@ -54,8 +54,8 @@ export default function BottomNav() {
               className={`flex-1 flex flex-col items-center py-3 transition-colors active:scale-95 ${
                 isNeon
                   ? active
-                    ? "text-pink-500"
-                    : "text-pink-400 hover:text-pink-500"
+                    ? isMom ? "text-pink-500" : "text-blue-500"
+                    : isMom ? "text-pink-400 hover:text-pink-500" : "text-blue-400 hover:text-blue-500"
                   : active
                     ? accentColor
                     : "text-muted-foreground hover:text-foreground"
@@ -63,11 +63,11 @@ export default function BottomNav() {
             >
               <div className={isNeon ? "relative" : ""}>
                 {isNeon && (
-                  <div className="absolute inset-0 bg-pink-500/30 blur-md rounded-full" />
+                  <div className={`absolute inset-0 ${isMom ? "bg-pink-500/30" : "bg-blue-500/30"} blur-md rounded-full`} />
                 )}
-                <Icon className={`w-5 h-5 relative ${active ? "stroke-[2.5]" : ""} ${isNeon ? "drop-shadow-[0_0_6px_rgba(236,72,153,0.7)]" : ""}`} />
+                <Icon className={`w-5 h-5 relative ${active ? "stroke-[2.5]" : ""} ${isNeon ? (isMom ? "drop-shadow-[0_0_6px_rgba(236,72,153,0.7)]" : "drop-shadow-[0_0_6px_rgba(59,130,246,0.7)]") : ""}`} />
               </div>
-              <span className={`text-[10px] font-body font-semibold mt-1 ${isNeon ? "drop-shadow-[0_0_4px_rgba(236,72,153,0.5)]" : ""}`}>{label}</span>
+              <span className={`text-[10px] font-body font-semibold mt-1 ${isNeon ? (isMom ? "drop-shadow-[0_0_4px_rgba(236,72,153,0.5)]" : "drop-shadow-[0_0_4px_rgba(59,130,246,0.5)]") : ""}`}>{label}</span>
             </button>
           );
         })}
