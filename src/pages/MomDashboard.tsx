@@ -123,21 +123,24 @@ export default function MomDashboard() {
 
       {/* Partner banner */}
       {!partner && (
-        <Card className="border-mom-border border-dashed bg-mom-bg/50">
-          <CardContent className="p-4 text-center">
-            <p className="font-body text-sm text-mom-text">
-              O pai ainda não entrou no app.
-            </p>
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-2 border-mom text-mom hover:bg-mom/10"
-              onClick={() => navigate("/perfil")}
-            >
-              Reenviar convite — ele provavelmente não viu.
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="space-y-2">
+          <Card className="border-mom-border border-dashed bg-mom-bg/50">
+            <CardContent className="p-4 text-center">
+              <p className="font-body text-sm text-mom-text mb-2">
+                O pai ainda não entrou no app.
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="mb-2 border-mom text-mom hover:bg-mom/10"
+                onClick={() => navigate("/perfil")}
+              >
+                Reenviar convite — ele provavelmente não viu.
+              </Button>
+            </CardContent>
+          </Card>
+          <InvitePartner />
+        </div>
       )}
 
       {/* Stats Strip */}
