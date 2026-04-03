@@ -110,12 +110,10 @@ export default function Onboarding() {
 
   const handleShare = () => {
     const code = profile?.family_code?.toUpperCase() || "";
-    const msg = `Baixa o Estou de Olho (${window.location.origin}) e usa o código ${code}.\nAgora eu tenho provas de tudo. 👁️`;
-    if (navigator.share) {
-      navigator.share({ title: "Estou de Olho", text: msg }).catch(() => {});
-    } else {
-      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
-    }
+    const msg = `👁️ *Estou de Olho* — O app que prova que pai também cuida (ou não).\n\nBaixa aqui: ${window.location.origin}\nUsa o código: *${code}*\n\nA partir de agora, "eu não sabia" não é mais desculpa. Boa sorte. 😘`;
+    navigator.clipboard.writeText(msg);
+    toast.success("Mensagem copiada! Abrindo WhatsApp... 📲");
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   const handleFinish = () => {

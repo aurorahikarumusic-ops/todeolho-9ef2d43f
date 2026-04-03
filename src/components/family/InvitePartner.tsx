@@ -18,7 +18,7 @@ export default function InvitePartner() {
 
   const code = profile.family_code.toUpperCase();
   const appUrl = window.location.origin;
-  const message = `Baixa o Estou de Olho (${appUrl}) e usa o código ${code}.\nAgora eu tenho provas de tudo. 👁️`;
+  const message = `👁️ *Estou de Olho* — O app que prova que pai também cuida (ou não).\n\nBaixa aqui: ${appUrl}\nUsa o código: *${code}*\n\nA partir de agora, "eu não sabia" não é mais desculpa. Boa sorte. 😘`;
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
@@ -26,14 +26,10 @@ export default function InvitePartner() {
   };
 
   const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: "Estou de Olho", text: message });
-      } catch { /* cancelled */ }
-    } else {
-      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, "_blank");
-    }
+    await navigator.clipboard.writeText(message);
+    toast.success("Mensagem copiada! Abrindo WhatsApp... 📲");
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
   };
 
   const handleRegenerate = async () => {
