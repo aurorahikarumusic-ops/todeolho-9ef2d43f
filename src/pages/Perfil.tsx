@@ -258,7 +258,7 @@ export default function Perfil() {
       {/* Profile Header */}
       <div className="flex items-start gap-4">
         <label className="cursor-pointer relative group">
-          <input type="file" accept="image/*" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+          <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
           <div className={`w-16 h-16 rounded-full ${profileBgColor} border-2 ${profileBorderColor} flex items-center justify-center shrink-0 overflow-hidden group-hover:opacity-80 transition-opacity`}>
             {profile.avatar_url ? (
               <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
