@@ -157,7 +157,14 @@ export default function Onboarding() {
           <p className="font-body text-sm italic text-secondary">
             Mais rápido que trocar uma fralda. Prometemos.
           </p>
-          <Button size="lg" className="mt-8 font-display text-lg h-14 w-full" onClick={() => setStep("role")}>
+          <Button size="lg" className="mt-8 font-display text-lg h-14 w-full" onClick={() => {
+            if (role) {
+              // Role already set from signup form, skip role selection
+              setStep(role === "mae" ? "child" : "join");
+            } else {
+              setStep("role");
+            }
+          }}>
             Bora Começar <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
