@@ -17,29 +17,24 @@ export default function JoinFamily() {
     if (!code.trim() || !user) return;
     setJoining(true);
     try {
-      // Find profile with this family_code
-      const { data: hostProfile, error: findError } = await supabase
-        .from("profiles")
-        .select("family_id, display_name")
-        .eq("family_code", code.trim().toLowerCase())
-        .maybeSingle();
+      const { data, error } = await supabase.rpc("join_family_by_code", {
+        invite_code: code.trim(),
+      });
 
-      if (findError || !hostProfile?.family_id) {
-        toast.error("Código não encontrado. Confere com a mãe.");
+      if (error) throw error;
+
+      if (data?.error) {
+        if (data.error === "Code not found") {
+          toast.error("Código não encontrado. Confere com a mãe.");
+        } else {
+          toast.error(data.error);
+        }
         return;
       }
 
-      // Update my profile to join this family
-      const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ family_id: hostProfile.family_id })
-        .eq("user_id", user.id);
-
-      if (updateError) throw updateError;
-
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       toast.success(
-        `Conectado com ${hostProfile.display_name}!\nEla já está de olho. Literalmente. 👁️`,
+        `Conectado com ${data.host_name}!\nEla já está de olho. Literalmente. 👁️`,
         { duration: 5000 }
       );
     } catch {

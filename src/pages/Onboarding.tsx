@@ -79,25 +79,24 @@ export default function Onboarding() {
     }
     setSaving(true);
     try {
-      const { data: hostProfile } = await supabase
-        .from("profiles")
-        .select("family_id, display_name")
-        .eq("family_code", familyCode.trim().toLowerCase())
-        .maybeSingle();
+      const { data, error } = await supabase.rpc("join_family_by_code", {
+        invite_code: familyCode.trim(),
+      });
 
-      if (!hostProfile?.family_id) {
-        toast.error("Código não encontrado. Confere com a mãe.");
+      if (error) throw error;
+
+      if (data?.error) {
+        if (data.error === "Code not found") {
+          toast.error("Código não encontrado. Confere com a mãe.");
+        } else {
+          toast.error(data.error);
+        }
         setSaving(false);
         return;
       }
 
-      await supabase
-        .from("profiles")
-        .update({ family_id: hostProfile.family_id })
-        .eq("user_id", user.id);
-
       toast.success(
-        `Conectado com ${hostProfile.display_name}! Ela já está de olho. Literalmente. 👁️`,
+        `Conectado com ${data.host_name}! Ela já está de olho. Literalmente. 👁️`,
         { duration: 5000 }
       );
       setStep("done");
