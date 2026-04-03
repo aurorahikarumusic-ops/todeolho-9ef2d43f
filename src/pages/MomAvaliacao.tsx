@@ -71,6 +71,12 @@ export default function MomAvaliacao() {
       queryClient.invalidateQueries({ queryKey: ["mom-rating-this-week"] });
       queryClient.invalidateQueries({ queryKey: ["mom-all-ratings"] });
       toast.success(`Avaliação publicada! O ${dadName} já pode ver.`, { duration: 4000 });
+      if (user && profile?.family_id) {
+        notifyCrossPanel("rating_submitted", profile.family_id, user.id, {
+          stars,
+          comment: comment.trim() || undefined,
+        });
+      }
     },
     onError: () => toast.error("Erro ao salvar avaliação."),
   });
