@@ -17,7 +17,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { format, differenceInHours, startOfMonth, endOfMonth, startOfWeek } from "date-fns";
+import { format, differenceInHours, startOfMonth, endOfMonth, startOfWeek, formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   User, Edit2, Trophy, Flame, Star, LifeBuoy, CheckSquare, CalendarDays,
