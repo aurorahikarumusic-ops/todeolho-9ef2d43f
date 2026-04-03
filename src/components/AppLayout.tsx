@@ -56,8 +56,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </span>
         </div>
 
-        {NAV_ITEMS.map(({ path, icon: Icon, label }) => {
+        {NAV_ITEMS.map(({ path, icon: Icon, label, neon }: any) => {
           const active = location.pathname === path;
+          const isNeon = !!neon;
           return (
             <button
               key={path}
@@ -66,12 +67,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 navigate(path);
               }}
               className={`flex items-center gap-3 px-3 py-3 rounded-lg transition-colors text-sm font-body font-semibold justify-center lg:justify-start ${
-                active
-                  ? `${accentColor} bg-muted`
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                isNeon
+                  ? active
+                    ? "text-pink-500 bg-pink-100 dark:bg-pink-900/20"
+                    : "text-pink-400 hover:text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-900/10"
+                  : active
+                    ? `${accentColor} bg-muted`
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               }`}
             >
-              <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "stroke-[2.5]" : ""}`} />
+              <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "stroke-[2.5]" : ""} ${isNeon ? "drop-shadow-[0_0_6px_rgba(236,72,153,0.7)]" : ""}`} />
               <span className="hidden lg:inline">{label}</span>
             </button>
           );
