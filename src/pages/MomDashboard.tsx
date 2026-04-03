@@ -10,6 +10,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { startOfWeek, endOfWeek, startOfMonth, endOfMonth } from "date-fns";
 import { getMomGreeting } from "@/lib/mom-constants";
+import InvitePartner from "@/components/family/InvitePartner";
+import MonthlyChallenge from "@/components/home/MonthlyChallenge";
+import MonthlyReport from "@/components/home/MonthlyReport";
 
 export default function MomDashboard() {
   const { user } = useAuth();
