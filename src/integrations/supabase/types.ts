@@ -176,6 +176,54 @@ export type Database = {
         }
         Relationships: []
       }
+      monthly_challenges: {
+        Row: {
+          badge_emoji: string | null
+          badge_name: string | null
+          completed_at: string | null
+          completed_by: string | null
+          created_at: string
+          created_by: string
+          deadline: string
+          description: string | null
+          family_id: string
+          id: string
+          success_criteria: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          badge_emoji?: string | null
+          badge_name?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          created_by: string
+          deadline: string
+          description?: string | null
+          family_id: string
+          id?: string
+          success_criteria?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          badge_emoji?: string | null
+          badge_name?: string | null
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string
+          created_by?: string
+          deadline?: string
+          description?: string | null
+          family_id?: string
+          id?: string
+          success_criteria?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -320,6 +368,7 @@ export type Database = {
           rescued_by_mom: boolean
           title: string
           updated_at: string
+          urgency: string
         }
         Insert: {
           assigned_to?: string | null
@@ -339,6 +388,7 @@ export type Database = {
           rescued_by_mom?: boolean
           title: string
           updated_at?: string
+          urgency?: string
         }
         Update: {
           assigned_to?: string | null
@@ -358,6 +408,7 @@ export type Database = {
           rescued_by_mom?: boolean
           title?: string
           updated_at?: string
+          urgency?: string
         }
         Relationships: []
       }
