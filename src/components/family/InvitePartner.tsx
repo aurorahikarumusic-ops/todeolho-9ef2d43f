@@ -1,11 +1,19 @@
+import { useState } from "react";
 import { useProfile } from "@/hooks/useProfile";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Copy, Share2 } from "lucide-react";
+import { Copy, Share2, RefreshCw } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function InvitePartner() {
   const { data: profile } = useProfile();
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  const [regenerating, setRegenerating] = useState(false);
+
   if (!profile?.family_code) return null;
 
   const code = profile.family_code.toUpperCase();
@@ -28,6 +36,29 @@ export default function InvitePartner() {
     }
   };
 
+  const handleRegenerate = async () => {
+    if (!user) return;
+    setRegenerating(true);
+    try {
+      const newCode = Array.from(crypto.getRandomValues(new Uint8Array(4)))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+      const { error } = await supabase
+        .from("profiles")
+        .update({ family_code: newCode })
+        .eq("user_id", user.id);
+      if (error) throw error;
+      qc.invalidateQueries({ queryKey: ["profile"] });
+      toast.success("Novo código gerado! 🔄", {
+        description: "Envie o novo código para o pai.",
+      });
+    } catch {
+      toast.error("Erro ao gerar novo código.");
+    } finally {
+      setRegenerating(false);
+    }
+  };
+
   return (
     <Card className="border-mom-border bg-mom-bg">
       <CardContent className="p-4 text-center">
@@ -44,7 +75,7 @@ export default function InvitePartner() {
           </p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-2">
           <Button
             variant="outline"
             className="flex-1 border-mom text-mom hover:bg-mom/10"
@@ -59,6 +90,17 @@ export default function InvitePartner() {
             <Share2 className="w-4 h-4 mr-1" /> WhatsApp
           </Button>
         </div>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-xs text-muted-foreground hover:text-mom"
+          onClick={handleRegenerate}
+          disabled={regenerating}
+        >
+          <RefreshCw className={`w-3 h-3 mr-1 ${regenerating ? "animate-spin" : ""}`} />
+          {regenerating ? "Gerando..." : "Gerar novo código"}
+        </Button>
       </CardContent>
     </Card>
   );

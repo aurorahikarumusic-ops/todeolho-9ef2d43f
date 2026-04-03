@@ -18,7 +18,7 @@ function DadLoginForm() {
     setLoading(true);
     try {
       if (isSignUp) {
-        await signUp(form.email, form.password, form.name);
+        await signUp(form.email, form.password, form.name, "pai");
         toast.success("Conta criada! 🎉", {
           description: "Bem-vindo ao clube dos pais que tentam. A barra é baixa, relaxa.",
         });
@@ -163,7 +163,7 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
     setLoading(true);
     try {
       if (isSignUp) {
-        await signUp(form.email, form.password, form.name);
+        await signUp(form.email, form.password, form.name, "mae");
         toast.success("Conta criada, chefe! 👑", {
           description: "Agora você tem o controle. Ele que se prepare.",
         });
