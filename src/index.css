@@ -45,6 +45,18 @@
 
     --font-display: 'Baloo 2', cursive;
     --font-body: 'Nunito', sans-serif;
+
+    /* Mom panel tokens */
+    --mom-accent: 340 72% 57%;
+    --mom-bg: 340 100% 97%;
+    --mom-border: 340 50% 82%;
+    --mom-text: 340 50% 35%;
+
+    /* Dad panel tokens */
+    --dad-accent: 153 42% 30%;
+    --dad-bg: 153 60% 94%;
+    --dad-border: 153 40% 76%;
+    --dad-text: 153 42% 20%;
   }
 }
 

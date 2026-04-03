@@ -61,6 +61,18 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        mom: {
+          DEFAULT: "hsl(var(--mom-accent))",
+          bg: "hsl(var(--mom-bg))",
+          border: "hsl(var(--mom-border))",
+          text: "hsl(var(--mom-text))",
+        },
+        dad: {
+          DEFAULT: "hsl(var(--dad-accent))",
+          bg: "hsl(var(--dad-bg))",
+          border: "hsl(var(--dad-border))",
+          text: "hsl(var(--dad-text))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
