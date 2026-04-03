@@ -19,12 +19,14 @@ export default function BottomNav() {
     ? [
         { path: "/app", icon: Home, label: "Home" },
         { path: "/agenda", icon: CalendarDays, label: "Agenda" },
+        { path: "/mural", icon: Gem, label: "Pérolas", neon: true },
         { path: "/tarefas", icon: CheckSquare, label: "Tarefas" },
         { path: "/avaliacao", icon: FileText, label: "Avaliar" },
       ]
     : [
         { path: "/app", icon: Home, label: "Home" },
         { path: "/agenda", icon: CalendarDays, label: "Agenda" },
+        { path: "/mural", icon: Gem, label: "Pérolas", neon: true },
         { path: "/tarefas", icon: CheckSquare, label: "Tarefas" },
         { path: "/ranking", icon: Trophy, label: "Ranking" },
       ];
