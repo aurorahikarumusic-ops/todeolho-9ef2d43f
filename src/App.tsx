@@ -19,7 +19,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
 import DataDeletion from "./pages/DataDeletion";
 import Support from "./pages/Support";
-import BottomNav from "./components/BottomNav";
+import AppLayout from "./components/AppLayout";
 import NotFound from "./pages/NotFound";
 import LandingPage from "./pages/LandingPage";
 import Onboarding from "./pages/Onboarding";
