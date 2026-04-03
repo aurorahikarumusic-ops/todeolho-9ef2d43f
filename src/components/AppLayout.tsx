@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, CalendarDays, CheckSquare, Trophy, User, FileText, Eye } from "lucide-react";
+import { Home, CalendarDays, CheckSquare, Trophy, User, FileText, Eye, Gem } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import BottomNav from "./BottomNav";
