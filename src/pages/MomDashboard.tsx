@@ -190,6 +190,9 @@ export default function MomDashboard() {
         </Card>
       )}
 
+      {/* Monthly Challenge */}
+      <MonthlyChallenge />
+
       {/* Quick Actions */}
       <div className="grid grid-cols-3 gap-2">
         <Button
@@ -241,6 +244,9 @@ export default function MomDashboard() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Monthly Report */}
+      <MonthlyReport />
     </div>
   );
 }
