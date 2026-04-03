@@ -21,6 +21,7 @@ import {
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Plus, Camera, CalendarDays, Eye, Sparkles } from "lucide-react";
+import { notifyCrossPanel } from "@/lib/notify";
 
 const EVENT_CATEGORIES = [
   { value: "escola", label: "🏫 Escola" },
