@@ -7,7 +7,9 @@ import { Eye, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { getDadTitle } from "@/lib/constants";
+import { useNavigate } from "react-router-dom";
 import GreetingHeader from "@/components/home/GreetingHeader";
 import DadGauge from "@/components/home/DadGauge";
 import DailyQuote from "@/components/home/DailyQuote";
@@ -22,6 +24,7 @@ export default function Dashboard() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
   const { data: partner } = useFamilyPartner();
+  const navigate = useNavigate();
 
   const now = new Date();
   const weekStart = startOfWeek(now, { weekStartsOn: 1 }).toISOString();
@@ -121,9 +124,20 @@ export default function Dashboard() {
             Estou de <span className="text-secondary">Olho</span>
           </h1>
         </div>
-        <Badge variant="secondary" className="font-display text-xs">
-          {dadTitle.emoji} {dadTitle.title}
-        </Badge>
+        <div className="flex items-center gap-3">
+          <Badge variant="secondary" className="font-display text-xs">
+            {dadTitle.emoji} {dadTitle.title}
+          </Badge>
+          <button onClick={() => navigate("/perfil")} className="flex flex-col items-center gap-0.5 group">
+            <Avatar className="h-10 w-10 ring-2 ring-primary/30 group-hover:ring-primary transition-all">
+              <AvatarImage src={profile.avatar_url || undefined} alt={profile.display_name} />
+              <AvatarFallback className="bg-primary/10 text-primary font-display text-sm">
+                {profile.display_name?.charAt(0)?.toUpperCase() || "P"}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-[9px] text-muted-foreground group-hover:text-primary transition-colors">Ver perfil</span>
+          </button>
+        </div>
       </div>
 
       {/* Push Notification Banner */}
