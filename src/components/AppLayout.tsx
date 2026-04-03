@@ -21,14 +21,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         { path: "/agenda", icon: CalendarDays, label: "Agenda" },
         { path: "/tarefas", icon: CheckSquare, label: "Tarefas" },
         { path: "/avaliacao", icon: FileText, label: "Avaliar" },
-        { path: "/perfil", icon: User, label: "Perfil" },
       ]
     : [
         { path: "/app", icon: Home, label: "Home" },
         { path: "/agenda", icon: CalendarDays, label: "Agenda" },
         { path: "/tarefas", icon: CheckSquare, label: "Tarefas" },
         { path: "/ranking", icon: Trophy, label: "Ranking" },
-        { path: "/perfil", icon: User, label: "Perfil" },
       ];
 
   const accentColor = isMom ? "text-mom" : "text-primary";

@@ -102,9 +102,20 @@ export default function MomDashboard() {
             Estou de <span className="text-mom">Olho</span>
           </h1>
         </div>
-        <Badge className="bg-mom text-white font-display text-xs">
-          👩 CEO da Família
-        </Badge>
+        <div className="flex items-center gap-3">
+          <Badge className="bg-mom text-white font-display text-xs">
+            👩 CEO da Família
+          </Badge>
+          <button onClick={() => navigate("/perfil")} className="flex flex-col items-center gap-0.5 group">
+            <Avatar className="h-10 w-10 ring-2 ring-mom/30 group-hover:ring-mom transition-all">
+              <AvatarImage src={profile.avatar_url || undefined} alt={profile.display_name} />
+              <AvatarFallback className="bg-mom/10 text-mom font-display text-sm">
+                {profile.display_name?.charAt(0)?.toUpperCase() || "M"}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-[9px] text-muted-foreground group-hover:text-mom transition-colors">Ver perfil</span>
+          </button>
+        </div>
       </div>
 
       {/* Greeting Card */}
