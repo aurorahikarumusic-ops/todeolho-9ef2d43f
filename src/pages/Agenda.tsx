@@ -143,6 +143,12 @@ export default function Agenda() {
           : "Evento salvo! Você adicionou sozinho. Isso vai pro seu histórico. ✨",
         { duration: 4000 }
       );
+      // Cross-panel notification
+      if (user && profile?.family_id) {
+        notifyCrossPanel("event_created", profile.family_id, user.id, {
+          title: newEvent.title,
+        });
+      }
     },
     onError: () => toast.error("Erro ao salvar. Tenta de novo, pai."),
   });
