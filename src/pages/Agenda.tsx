@@ -181,10 +181,14 @@ export default function Agenda() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <CalendarDays className="w-6 h-6 text-primary" />
-          <h1 className="font-display text-2xl font-bold">O Que Você Ia Esquecer</h1>
+          <CalendarDays className={`w-6 h-6 ${isMom ? "text-mom" : "text-primary"}`} />
+          <h1 className="font-display text-2xl font-bold">
+            {isMom ? "Agenda da Família" : "O Que Você Ia Esquecer"}
+          </h1>
         </div>
-        <p className="text-sm text-muted-foreground font-body italic">{subtitle}</p>
+        <p className="text-sm text-muted-foreground font-body italic">
+          {isMom ? "Só você adiciona. Ele não tem desculpa de não saber." : subtitle}
+        </p>
       </div>
 
       {/* Month counter */}
