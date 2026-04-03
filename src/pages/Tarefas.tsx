@@ -684,8 +684,27 @@ export default function Tarefas() {
               />
             </div>
 
+            {isMom && (
+              <div>
+                <Label className="text-xs font-body">Urgência</Label>
+                <Select
+                  value={newTask.urgency}
+                  onValueChange={v => setNewTask(p => ({ ...p, urgency: v }))}
+                >
+                  <SelectTrigger className="mt-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="normal">Normal (30pts)</SelectItem>
+                    <SelectItem value="urgente">⚡ Urgente (40pts)</SelectItem>
+                    <SelectItem value="critico">⚠️ Crítico (50pts)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             <Button
-              className="w-full bg-primary font-display"
+              className={`w-full font-display ${isMom ? "bg-mom hover:bg-mom/90" : "bg-primary"}`}
               onClick={() => addTaskMutation.mutate()}
               disabled={!newTask.title || addTaskMutation.isPending}
             >
