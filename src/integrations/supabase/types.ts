@@ -490,6 +490,7 @@ export type Database = {
     }
     Functions: {
       get_current_user_family_id: { Args: never; Returns: string }
+      join_family_by_code: { Args: { invite_code: string }; Returns: Json }
     }
     Enums: {
       [_ in never]: never
