@@ -449,29 +449,72 @@ export default function Tarefas() {
       )}
 
       {/* Tabs */}
-      <Tabs defaultValue="pending">
-        <TabsList className="w-full grid grid-cols-3">
+      <Tabs defaultValue={isMom && awaitingApproval.length > 0 ? "approval" : "pending"}>
+        <TabsList className={`w-full grid ${isMom ? "grid-cols-4" : "grid-cols-3"}`}>
           <TabsTrigger value="pending" className="text-xs font-display">
             Pendentes ({pending.length})
           </TabsTrigger>
+          {isMom && (
+            <TabsTrigger value="approval" className="text-xs font-display">
+              Aprovação ({awaitingApproval.length})
+            </TabsTrigger>
+          )}
           <TabsTrigger value="completed" className="text-xs font-display">
             Concluídas ({completed.length})
           </TabsTrigger>
           <TabsTrigger value="overdue" className="text-xs font-display">
-            Atrasadas ({overdue.length})
+            {isMom ? "Resgatadas" : "Atrasadas"} ({isMom ? rescued.length : overdue.length})
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="pending" className="space-y-3 mt-3">
-          {pending.length === 0 ? renderEmptyState("pending") : pending.map(renderTaskCard)}
+          {pending.length === 0
+            ? renderEmptyState("pending")
+            : isMom
+              ? pending.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
+              : pending.map(renderTaskCard)}
         </TabsContent>
 
+        {isMom && (
+          <TabsContent value="approval" className="space-y-3 mt-3">
+            {awaitingApproval.length === 0 ? (
+              <Card className="border-dashed">
+                <CardContent className="py-8 text-center">
+                  <p className="text-3xl mb-2">✅</p>
+                  <p className="font-display font-bold">Nada para aprovar</p>
+                  <p className="text-xs text-muted-foreground font-body italic">
+                    O {dadName} ainda não concluiu nada. Típico.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : awaitingApproval.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)}
+          </TabsContent>
+        )}
+
         <TabsContent value="completed" className="space-y-3 mt-3">
-          {completed.length === 0 ? renderEmptyState("completed") : completed.map(renderTaskCard)}
+          {completed.length === 0
+            ? renderEmptyState("completed")
+            : isMom
+              ? completed.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
+              : completed.map(renderTaskCard)}
         </TabsContent>
 
         <TabsContent value="overdue" className="space-y-3 mt-3">
-          {overdue.length === 0 ? renderEmptyState("overdue") : overdue.map(renderTaskCard)}
+          {isMom ? (
+            rescued.length === 0 ? (
+              <Card className="border-dashed">
+                <CardContent className="py-8 text-center">
+                  <p className="text-3xl mb-2">🏆</p>
+                  <p className="font-display font-bold">Zero resgates</p>
+                  <p className="text-xs text-muted-foreground font-body italic">
+                    O {dadName} tá fazendo tudo sozinho. Guarda esse print.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : rescued.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
+          ) : (
+            overdue.length === 0 ? renderEmptyState("overdue") : overdue.map(renderTaskCard)
+          )}
         </TabsContent>
       </Tabs>
 
