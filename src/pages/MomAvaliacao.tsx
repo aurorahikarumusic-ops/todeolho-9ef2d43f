@@ -84,7 +84,7 @@ export default function MomAvaliacao() {
   if (!profile) return null;
 
   return (
-    <div className="pb-24 px-4 pt-8 max-w-lg mx-auto space-y-4">
+    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-8 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
       <div>
         <div className="flex items-center gap-2 mb-1">
           <FileText className="w-6 h-6 text-mom" />

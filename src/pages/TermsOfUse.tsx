@@ -12,7 +12,7 @@ export default function TermsOfUse() {
 
   return (
     <div className="min-h-screen bg-background pb-16">
-      <div className="max-w-lg mx-auto px-4 py-8">
+      <div className="max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto px-4 py-8">
         <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-4">
           <ArrowLeft className="w-4 h-4 mr-2" /> Voltar
         </Button>
