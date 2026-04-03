@@ -168,6 +168,31 @@ export default function MomAvaliacao() {
       )}
 
       {/* Rating History */}
+      {/* Rating Evolution Chart */}
+      {allRatings.length > 1 && (
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingUp className="w-4 h-4 text-mom" />
+              <h3 className="font-display font-bold text-sm">Evolução do {dadName}</h3>
+            </div>
+            <div className="flex items-end gap-1 h-24">
+              {[...allRatings].reverse().map((r: any, i: number) => (
+                <div key={r.id} className="flex-1 flex flex-col items-center gap-1">
+                  <div
+                    className="w-full rounded-t bg-mom/70 transition-all"
+                    style={{ height: `${(r.stars / 5) * 100}%` }}
+                  />
+                  <span className="text-[9px] text-muted-foreground">
+                    {format(new Date(r.week_start), "dd/MM")}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {allRatings.length > 0 && (
         <div>
           <h2 className="font-display font-bold text-lg mb-3">Histórico</h2>
