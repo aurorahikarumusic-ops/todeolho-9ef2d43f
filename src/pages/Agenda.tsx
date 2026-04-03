@@ -59,6 +59,8 @@ function isCheckinWindow(eventDate: string) {
 export default function Agenda() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
+  const isMom = useIsMom();
+  const { data: partner } = useFamilyPartner();
   const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [showAddSheet, setShowAddSheet] = useState(false);
@@ -68,6 +70,7 @@ export default function Agenda() {
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [checkinEventId, setCheckinEventId] = useState<string | null>(null);
+  const dadName = partner?.display_name || "o pai";
 
   const monthStart = startOfMonth(selectedDate || new Date()).toISOString();
   const monthEnd = endOfMonth(selectedDate || new Date()).toISOString();
