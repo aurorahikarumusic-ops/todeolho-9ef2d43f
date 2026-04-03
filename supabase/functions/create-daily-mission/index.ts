@@ -30,29 +30,36 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "No auth" }), { status: 401, headers: corsHeaders });
-    }
-
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-    // Verify user
-    const anonClient = createClient(supabaseUrl, Deno.env.get("SUPABASE_ANON_KEY")!);
-    const { data: { user }, error: authError } = await anonClient.auth.getUser(authHeader.replace("Bearer ", ""));
-    if (authError || !user) {
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders });
     }
 
+    // Validate user via getClaims
+    const anonClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const token = authHeader.replace("Bearer ", "");
+    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders });
+    }
+
+    const userId = claimsData.claims.sub as string;
     const today = new Date().toISOString().split("T")[0];
+
+    // Use service role client for DB operations
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Check if mission already exists
     const { data: existing } = await supabase
       .from("daily_missions")
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .eq("mission_date", today)
       .maybeSingle();
 
@@ -60,11 +67,11 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify(existing), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Create new mission using service role
+    // Create new mission
     const { data: created, error } = await supabase
       .from("daily_missions")
       .insert({
-        user_id: user.id,
+        user_id: userId,
         mission_text: getDailyMission(),
         mission_date: today,
       })
