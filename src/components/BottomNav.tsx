@@ -1,13 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, CalendarDays, CheckSquare, Trophy, User } from "lucide-react";
-
-const NAV_ITEMS = [
-  { path: "/app", icon: Home, label: "Home" },
-  { path: "/agenda", icon: CalendarDays, label: "Agenda" },
-  { path: "/tarefas", icon: CheckSquare, label: "Tarefas" },
-  { path: "/ranking", icon: Trophy, label: "Ranking" },
-  { path: "/perfil", icon: User, label: "Perfil" },
-] as const;
+import { Home, CalendarDays, CheckSquare, Trophy, User, FileText } from "lucide-react";
+import { useProfile } from "@/hooks/useProfile";
 
 function triggerHaptic() {
   if ("vibrate" in navigator) {
@@ -18,6 +11,27 @@ function triggerHaptic() {
 export default function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { data: profile } = useProfile();
+
+  const isMom = profile?.role === "mae";
+
+  const NAV_ITEMS = isMom
+    ? [
+        { path: "/app", icon: Home, label: "Home" },
+        { path: "/agenda", icon: CalendarDays, label: "Agenda" },
+        { path: "/tarefas", icon: CheckSquare, label: "Tarefas" },
+        { path: "/avaliacao", icon: FileText, label: "Avaliar" },
+        { path: "/perfil", icon: User, label: "Perfil" },
+      ]
+    : [
+        { path: "/app", icon: Home, label: "Home" },
+        { path: "/agenda", icon: CalendarDays, label: "Agenda" },
+        { path: "/tarefas", icon: CheckSquare, label: "Tarefas" },
+        { path: "/ranking", icon: Trophy, label: "Ranking" },
+        { path: "/perfil", icon: User, label: "Perfil" },
+      ];
+
+  const accentColor = isMom ? "text-mom" : "text-primary";
 
   return (
     <nav
@@ -38,7 +52,7 @@ export default function BottomNav() {
               }}
               className={`flex-1 flex flex-col items-center py-3 transition-colors active:scale-95 ${
                 active
-                  ? "text-primary"
+                  ? accentColor
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >

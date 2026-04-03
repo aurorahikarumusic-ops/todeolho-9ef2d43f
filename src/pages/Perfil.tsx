@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
+import { useIsMom, useFamilyPartner } from "@/hooks/useFamily";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +55,8 @@ const ACHIEVEMENT_DEFS = {
 export default function Perfil() {
   const { user, signOut } = useAuth();
   const { data: profile } = useProfile();
+  const isMom = useIsMom();
+  const { data: partner } = useFamilyPartner();
   const updateProfile = useUpdateProfile();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -330,6 +333,70 @@ export default function Perfil() {
           ))}
         </div>
       </div>
+
+      <Separator />
+
+      {/* Family Connection */}
+      {!partner && (
+        <div>
+          <h2 className="font-display text-lg font-bold mb-3">Conexão Familiar</h2>
+          {isMom ? (
+            <div>
+              <p className="text-xs text-muted-foreground font-body mb-3">
+                Compartilhe o código abaixo com o pai pra ele se conectar.
+              </p>
+              {profile?.family_code && (
+                <Card className="border-mom-border bg-mom-bg">
+                  <CardContent className="p-4 text-center">
+                    <p className="font-display text-2xl font-bold tracking-[0.3em] text-mom-text mb-2">
+                      {profile.family_code.toUpperCase()}
+                    </p>
+                    <Button
+                      size="sm"
+                      className="bg-mom hover:bg-mom/90"
+                      onClick={() => {
+                        const msg = `Baixa o Estou de Olho (${window.location.origin}) e usa o código ${profile.family_code?.toUpperCase()}.\nAgora eu tenho provas de tudo. 👁️`;
+                        if (navigator.share) {
+                          navigator.share({ title: "Estou de Olho", text: msg }).catch(() => {});
+                        } else {
+                          window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+                        }
+                      }}
+                    >
+                      Compartilhar via WhatsApp
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          ) : (
+            <div>
+              <p className="text-xs text-muted-foreground font-body mb-3">
+                Peça o código de 6 dígitos pra mãe e conecte-se.
+              </p>
+              <Button variant="outline" onClick={() => navigate("/onboarding")}>
+                Conectar com a mãe
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {partner && (
+        <Card className={`border-0 shadow-sm ${isMom ? "bg-dad-bg" : "bg-mom-bg"}`}>
+          <CardContent className="p-3 flex items-center gap-3">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isMom ? "bg-primary/20" : "bg-mom/20"}`}>
+              <span className="text-lg">{isMom ? "👨" : "👩"}</span>
+            </div>
+            <div>
+              <p className="font-display font-bold text-sm">{partner.display_name}</p>
+              <p className="text-[10px] text-muted-foreground font-body">
+                {isMom ? "O pai" : "A mãe"} — conectado ✓
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Separator />
 

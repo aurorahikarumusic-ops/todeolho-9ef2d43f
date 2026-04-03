@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
+import { useFamilyPartner, useIsMom } from "@/hooks/useFamily";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,6 +21,7 @@ import { ptBR } from "date-fns/locale";
 import { Plus, CheckSquare, Camera, Star, LifeBuoy, Trash2 } from "lucide-react";
 import TaskCelebration from "@/components/tasks/TaskCelebration";
 import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
+import MomTaskApproval from "@/components/tasks/MomTaskApproval";
 
 const CATEGORIES: Record<string, { label: string; emoji: string }> = {
   school: { label: "Escola", emoji: "🏫" },
@@ -81,18 +83,22 @@ function calculatePoints(task: any, withPhoto: boolean): number {
 export default function Tarefas() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
+  const isMom = useIsMom();
+  const { data: partner } = useFamilyPartner();
   const queryClient = useQueryClient();
   const [showAddSheet, setShowAddSheet] = useState(false);
   const [completingTask, setCompletingTask] = useState<any>(null);
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [newTask, setNewTask] = useState({
     title: "", description: "", due_date: "", due_time: "18:00",
-    category: "home", proof_required: false,
+    category: "home", proof_required: isMom, urgency: "normal",
   });
   const [celebration, setCelebration] = useState<{ points: number } | null>(null);
   const [proofViewer, setProofViewer] = useState<{
     photoUrl: string; taskTitle: string; storagePath: string;
   } | null>(null);
+
+  const dadName = partner?.display_name || "o pai";
 
   const { data: tasks = [] } = useQuery({
     queryKey: ["all-tasks", profile?.family_id],
@@ -131,16 +137,20 @@ export default function Tarefas() {
   });
 
   const pending = tasks.filter(t => !t.completed_at && !t.rescued_by_mom);
-  const completed = tasks.filter(t => t.completed_at || t.rescued_by_mom);
+  const awaitingApproval = tasks.filter(t => t.completed_at && t.mom_approved === null && !t.rescued_by_mom);
+  const completed = tasks.filter(t => (t.completed_at && t.mom_approved !== null) || t.rescued_by_mom);
+  const rescued = tasks.filter(t => t.rescued_by_mom);
   const overdue = tasks.filter(t =>
     !t.completed_at && !t.rescued_by_mom && t.due_date && isBefore(new Date(t.due_date), new Date())
   );
 
   // Header subtitle
-  let subtitle = `${pending.length} pendentes, ${completed.length} concluídas. Tá indo.`;
-  if (pending.length === 0 && completed.length > 0) subtitle = "Tudo feito! Isso não acontece toda semana. Aproveita.";
-  if (overdue.length > 0) subtitle = `Você tem ${overdue.length} tarefa${overdue.length > 1 ? "s" : ""} atrasada${overdue.length > 1 ? "s" : ""}. A mãe já sabe.`;
-  if (completed.length === 0 && pending.length > 0) subtitle = "Nenhuma tarefa concluída hoje. Só lembrando.";
+  let subtitle = isMom
+    ? `Você cria. Ele faz. Ou a gente registra que não fez.`
+    : `${pending.length} pendentes, ${completed.length} concluídas. Tá indo.`;
+  if (!isMom && pending.length === 0 && completed.length > 0) subtitle = "Tudo feito! Isso não acontece toda semana. Aproveita.";
+  if (!isMom && overdue.length > 0) subtitle = `Você tem ${overdue.length} tarefa${overdue.length > 1 ? "s" : ""} atrasada${overdue.length > 1 ? "s" : ""}. A mãe já sabe.`;
+  if (isMom && awaitingApproval.length > 0) subtitle = `${awaitingApproval.length} tarefa(s) aguardando sua aprovação.`;
 
   // Photo upload helper
   const uploadProofPhoto = async (taskId: string, file: File): Promise<string | null> => {
@@ -220,6 +230,7 @@ export default function Tarefas() {
       const dueDate = newTask.due_date
         ? new Date(`${newTask.due_date}T${newTask.due_time}`).toISOString()
         : null;
+      const pointsByUrgency: Record<string, number> = { normal: 30, urgente: 40, critico: 50 };
       const { data: inserted, error } = await supabase.from("tasks").insert({
         title: newTask.title,
         description: newTask.description || null,
@@ -228,16 +239,18 @@ export default function Tarefas() {
         proof_required: newTask.proof_required,
         family_id: profile.family_id,
         created_by: user.id,
-        assigned_to: user.id,
-      }).select().single();
+        assigned_to: isMom && partner ? partner.user_id : user.id,
+        points: pointsByUrgency[newTask.urgency] || 30,
+        urgency: newTask.urgency,
+      } as any).select().single();
       if (error) throw error;
       return inserted;
     },
     onSuccess: (inserted) => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       setShowAddSheet(false);
-      setNewTask({ title: "", description: "", due_date: "", due_time: "18:00", category: "home", proof_required: false });
-      toast.success("Tarefa criada! Você adicionou sozinho. +30 pontos de iniciativa. ✨", { duration: 4000 });
+      setNewTask({ title: "", description: "", due_date: "", due_time: "18:00", category: "home", proof_required: false, urgency: "normal" });
+      toast.success(isMom ? "Tarefa criada! Ele recebeu uma notificação. Agora é com ele." : "Tarefa criada! Você adicionou sozinho. +30 pontos de iniciativa. ✨", { duration: 4000 });
 
       // Send push notification to family members (fire and forget)
       if (inserted) {
@@ -393,8 +406,10 @@ export default function Tarefas() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <CheckSquare className="w-6 h-6 text-primary" />
-          <h1 className="font-display text-2xl font-bold">A Lista da Mãe</h1>
+          <CheckSquare className={`w-6 h-6 ${isMom ? "text-mom" : "text-primary"}`} />
+          <h1 className="font-display text-2xl font-bold">
+            {isMom ? "Lista do Pai" : "A Lista da Mãe"}
+          </h1>
         </div>
         <p className="text-sm text-muted-foreground font-body italic">{subtitle}</p>
       </div>
@@ -437,36 +452,79 @@ export default function Tarefas() {
       )}
 
       {/* Tabs */}
-      <Tabs defaultValue="pending">
-        <TabsList className="w-full grid grid-cols-3">
+      <Tabs defaultValue={isMom && awaitingApproval.length > 0 ? "approval" : "pending"}>
+        <TabsList className={`w-full grid ${isMom ? "grid-cols-4" : "grid-cols-3"}`}>
           <TabsTrigger value="pending" className="text-xs font-display">
             Pendentes ({pending.length})
           </TabsTrigger>
+          {isMom && (
+            <TabsTrigger value="approval" className="text-xs font-display">
+              Aprovação ({awaitingApproval.length})
+            </TabsTrigger>
+          )}
           <TabsTrigger value="completed" className="text-xs font-display">
             Concluídas ({completed.length})
           </TabsTrigger>
           <TabsTrigger value="overdue" className="text-xs font-display">
-            Atrasadas ({overdue.length})
+            {isMom ? "Resgatadas" : "Atrasadas"} ({isMom ? rescued.length : overdue.length})
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="pending" className="space-y-3 mt-3">
-          {pending.length === 0 ? renderEmptyState("pending") : pending.map(renderTaskCard)}
+          {pending.length === 0
+            ? renderEmptyState("pending")
+            : isMom
+              ? pending.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
+              : pending.map(renderTaskCard)}
         </TabsContent>
 
+        {isMom && (
+          <TabsContent value="approval" className="space-y-3 mt-3">
+            {awaitingApproval.length === 0 ? (
+              <Card className="border-dashed">
+                <CardContent className="py-8 text-center">
+                  <p className="text-3xl mb-2">✅</p>
+                  <p className="font-display font-bold">Nada para aprovar</p>
+                  <p className="text-xs text-muted-foreground font-body italic">
+                    O {dadName} ainda não concluiu nada. Típico.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : awaitingApproval.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)}
+          </TabsContent>
+        )}
+
         <TabsContent value="completed" className="space-y-3 mt-3">
-          {completed.length === 0 ? renderEmptyState("completed") : completed.map(renderTaskCard)}
+          {completed.length === 0
+            ? renderEmptyState("completed")
+            : isMom
+              ? completed.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
+              : completed.map(renderTaskCard)}
         </TabsContent>
 
         <TabsContent value="overdue" className="space-y-3 mt-3">
-          {overdue.length === 0 ? renderEmptyState("overdue") : overdue.map(renderTaskCard)}
+          {isMom ? (
+            rescued.length === 0 ? (
+              <Card className="border-dashed">
+                <CardContent className="py-8 text-center">
+                  <p className="text-3xl mb-2">🏆</p>
+                  <p className="font-display font-bold">Zero resgates</p>
+                  <p className="text-xs text-muted-foreground font-body italic">
+                    O {dadName} tá fazendo tudo sozinho. Guarda esse print.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : rescued.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
+          ) : (
+            overdue.length === 0 ? renderEmptyState("overdue") : overdue.map(renderTaskCard)
+          )}
         </TabsContent>
       </Tabs>
 
       {/* FAB */}
       <button
         onClick={() => setShowAddSheet(true)}
-        className="fixed bottom-20 right-4 z-40 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center gap-2 hover:bg-primary/90 transition-all active:scale-95 px-4 h-12"
+        className={`fixed bottom-20 right-4 z-40 rounded-full shadow-lg flex items-center gap-2 transition-all active:scale-95 px-4 h-12 ${isMom ? "bg-mom text-white hover:bg-mom/90" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}
         title="Criar nova tarefa"
       >
         <Plus className="w-5 h-5" />
@@ -629,8 +687,27 @@ export default function Tarefas() {
               />
             </div>
 
+            {isMom && (
+              <div>
+                <Label className="text-xs font-body">Urgência</Label>
+                <Select
+                  value={newTask.urgency}
+                  onValueChange={v => setNewTask(p => ({ ...p, urgency: v }))}
+                >
+                  <SelectTrigger className="mt-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="normal">Normal (30pts)</SelectItem>
+                    <SelectItem value="urgente">⚡ Urgente (40pts)</SelectItem>
+                    <SelectItem value="critico">⚠️ Crítico (50pts)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             <Button
-              className="w-full bg-primary font-display"
+              className={`w-full font-display ${isMom ? "bg-mom hover:bg-mom/90" : "bg-primary"}`}
               onClick={() => addTaskMutation.mutate()}
               disabled={!newTask.title || addTaskMutation.isPending}
             >

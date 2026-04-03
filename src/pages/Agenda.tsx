@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
+import { useIsMom, useFamilyPartner } from "@/hooks/useFamily";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar } from "@/components/ui/calendar";
@@ -58,6 +59,8 @@ function isCheckinWindow(eventDate: string) {
 export default function Agenda() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
+  const isMom = useIsMom();
+  const { data: partner } = useFamilyPartner();
   const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [showAddSheet, setShowAddSheet] = useState(false);
@@ -67,6 +70,7 @@ export default function Agenda() {
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [checkinEventId, setCheckinEventId] = useState<string | null>(null);
+  const dadName = partner?.display_name || "o pai";
 
   const monthStart = startOfMonth(selectedDate || new Date()).toISOString();
   const monthEnd = endOfMonth(selectedDate || new Date()).toISOString();
@@ -132,7 +136,12 @@ export default function Agenda() {
       queryClient.invalidateQueries({ queryKey: ["events"] });
       setShowAddSheet(false);
       setNewEvent({ title: "", description: "", event_date: "", event_time: "09:00", event_type: "outro", notify_partner: true });
-      toast.success("Evento salvo! Você adicionou sozinho. Isso vai pro seu histórico. Sim, de verdade. ✨", { duration: 4000 });
+      toast.success(
+        isMom
+          ? `Evento adicionado! O ${dadName} já vai saber.\n(Mesmo que ele diga que não sabia.)`
+          : "Evento salvo! Você adicionou sozinho. Isso vai pro seu histórico. ✨",
+        { duration: 4000 }
+      );
     },
     onError: () => toast.error("Erro ao salvar. Tenta de novo, pai."),
   });
@@ -177,10 +186,14 @@ export default function Agenda() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <CalendarDays className="w-6 h-6 text-primary" />
-          <h1 className="font-display text-2xl font-bold">O Que Você Ia Esquecer</h1>
+          <CalendarDays className={`w-6 h-6 ${isMom ? "text-mom" : "text-primary"}`} />
+          <h1 className="font-display text-2xl font-bold">
+            {isMom ? "Agenda da Família" : "O Que Você Ia Esquecer"}
+          </h1>
         </div>
-        <p className="text-sm text-muted-foreground font-body italic">{subtitle}</p>
+        <p className="text-sm text-muted-foreground font-body italic">
+          {isMom ? "Só você adiciona. Ele não tem desculpa de não saber." : subtitle}
+        </p>
       </div>
 
       {/* Month counter */}
@@ -337,7 +350,7 @@ export default function Agenda() {
       {/* FAB - Add Event */}
       <button
         onClick={() => setShowAddSheet(true)}
-        className="fixed bottom-20 right-4 z-40 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center gap-2 hover:bg-primary/90 transition-all active:scale-95 px-4 h-12"
+        className={`fixed bottom-20 right-4 z-40 rounded-full shadow-lg flex items-center gap-2 transition-all active:scale-95 px-4 h-12 ${isMom ? "bg-mom text-white hover:bg-mom/90" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}
         title="Adicionar novo evento"
       >
         <Plus className="w-5 h-5" />
