@@ -55,6 +55,8 @@ const ACHIEVEMENT_DEFS = {
 export default function Perfil() {
   const { user, signOut } = useAuth();
   const { data: profile } = useProfile();
+  const isMom = useIsMom();
+  const { data: partner } = useFamilyPartner();
   const updateProfile = useUpdateProfile();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
