@@ -8,6 +8,8 @@ import { useProfile } from "@/hooks/useProfile";
 import AuthPage from "./pages/AuthPage";
 import RoleSelection from "./pages/RoleSelection";
 import Dashboard from "./pages/Dashboard";
+import MomDashboard from "./pages/MomDashboard";
+import MomAvaliacao from "./pages/MomAvaliacao";
 import Ranking from "./pages/Ranking";
 import ComingSoon from "./pages/ComingSoon";
 import Agenda from "./pages/Agenda";
@@ -66,25 +68,21 @@ function AppRoutes() {
     );
   }
 
-  // New user needs role selection - check if default role unchanged and no explicit selection
-  if (profile && profile.role === "pai" && profile.points === 0 && profile.display_name === profile.display_name) {
-    // Show role selection for new users (we'll use a simple heuristic - created in the last minute)
-    const createdRecently = new Date(profile.created_at).getTime() > Date.now() - 60000;
-    // Actually, let's just show the app - role selection can be done from profile later
-  }
+  const isMom = profile?.role === "mae";
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Navigate to="/app" replace />} />
         <Route path="/auth" element={<Navigate to="/app" replace />} />
-        <Route path="/app" element={<Dashboard />} />
+        <Route path="/app" element={isMom ? <MomDashboard /> : <Dashboard />} />
         <Route path="/inicio" element={<LandingPage />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/tarefas" element={<Tarefas />} />
         <Route path="/ranking" element={<Ranking />} />
+        <Route path="/avaliacao" element={<MomAvaliacao />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/privacidade" element={<PrivacyPolicy />} />
         <Route path="/termos" element={<TermsOfUse />} />
