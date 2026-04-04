@@ -257,16 +257,20 @@ export default function AvoPerfil() {
 
       <Separator />
 
-      {/* Partner info */}
-      {partner && (
-        <Card className="border border-avo-border">
-          <CardContent className="p-4">
-            <p className="font-body text-sm text-avo-text font-semibold mb-1">👨‍👩‍👧 Família Conectada</p>
-            <p className="font-body text-xs text-muted-foreground">
-              Conectada com: <strong>{partner.display_name}</strong>
-            </p>
-          </CardContent>
-        </Card>
+      {/* Family connection */}
+      {profile.family_id ? (
+        partner && (
+          <Card className="border border-avo-border">
+            <CardContent className="p-4">
+              <p className="font-body text-sm text-avo-text font-semibold mb-1">👨‍👩‍👧 Família Conectada</p>
+              <p className="font-body text-xs text-muted-foreground">
+                Conectada com: <strong>{partner.display_name}</strong>
+              </p>
+            </CardContent>
+          </Card>
+        )
+      ) : (
+        <JoinFamilyAvo />
       )}
 
       {/* Logout */}
