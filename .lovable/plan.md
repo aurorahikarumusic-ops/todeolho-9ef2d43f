@@ -1,46 +1,41 @@
 
-## Fase 1 — Banco de Dados e Infraestrutura
-- Adicionar tabela `families` (mae_id, pai_id, invite_code)
-- Adicionar tabela `task_approvals` para fluxo de aprovação
-- Adicionar tabela `monthly_challenges` para desafios do mês
-- Criar RLS policies baseadas em role (mãe cria tarefas/eventos, pai executa)
-- Habilitar Realtime nas tabelas principais
+# 🧓 Modo Avó - Plano de Implementação
 
-## Fase 2 — Sistema de Conexão Familiar
-- Fluxo de convite: mãe gera código de 6 dígitos
-- Tela de entrada de código para o pai
-- Compartilhamento via WhatsApp com mensagem pré-preenchida
-- Banner persistente se pai ainda não entrou
+## 1. Banco de Dados
+- Nova tabela `grandma_suggestions` com campos: `user_id` (avó), `family_id`, `suggestion_type` (tarefa/evento/palpite), `title`, `description`, `status` (pendente/aceito/recusado/ignorado), `response_by`, `response_comment`
+- Permitir role "avo" na tabela profiles (já suporta texto livre)
 
-## Fase 3 — Onboarding da Mãe (6 telas)
-- Confirmação de papel, perfil, convite, filho, primeira tarefa, boas-vindas
+## 2. Autenticação - Login Avó
+- Novo formulário `GrandmaLoginForm` na AuthPage, abaixo do botão "Sou a Chefe"
+- Botão **"Sou a Avó 👵"** com visual único (tons de lilás/roxo)
+- Interface com frases como: *"Na minha época..."*, *"Eu criei 5 filhos sem isso"*
+- Role "avo" atribuída no signup
 
-## Fase 4 — Dashboard da Mãe
-- Header rosa com saudação empoderada e stats do pai
-- Cards de resumo (tarefas, resgates, avaliação)
-- Ações rápidas (nova tarefa, evento, ranking)
-- Resumo semanal compartilhável
+## 3. Dashboard da Avó
+- Nova página `AvoDashboard` com visual lilás/roxo
+- Formulário para enviar palpites (sugestões de tarefas, conselhos, críticas construtivas)
+- Histórico de palpites enviados com status (aceito ✅, recusado ❌, ignorado 🙄)
+- **Ranking de Avós** - quem dá mais palpites, quem tem mais aceitos
 
-## Fase 5 — Tarefas (visão da mãe)
-- Criar tarefas com urgência, prova foto, pontos
-- Tabs: Pendentes, Aguardando aprovação, Concluídas, Resgatadas
-- Fluxo de aprovação/reprovação com comentário
-- Botão "Eu Resolvi" (resgate)
+## 4. Botão Flutuante (Pai e Mãe)
+- Botão flutuante "👵 Palpites da Vovó" com badge de contagem
+- Ao clicar, abre drawer/modal com lista de sugestões pendentes
+- Mãe pode: Aceitar (vira tarefa/evento), Recusar (com comentário sarcástico), Ignorar
+- Pai pode: Ver os palpites e reagir com emojis
 
-## Fase 6 — Agenda (visão da mãe)
-- Calendário com eventos criados pela mãe
-- Check-in do pai com foto
-- Status de presença (verde/laranja/cinza)
+## 5. Fluxo
+```
+Avó envia palpite → Notificação no botão flutuante → Mãe aceita/recusa → 
+Se aceito: vira tarefa real → Pai executa
+Se recusado: Avó recebe feedback sarcástico
+```
 
-## Fase 7 — Avaliação Semanal + Gamificação da Mãe
-- Tela de rating semanal (1-5 estrelas)
-- Badges exclusivos da mãe
-- Desafio mensal
-- Relatório mensal
+## 6. Frases Sarcásticas da Avó
+- "Na minha época a gente não precisava de app pra criar filho"
+- "O pai tá fazendo isso errado, tenho certeza"
+- "Vocês já deram comida pro meu neto?"
+- "Eu avisei que isso ia acontecer"
 
-## Fase 8 — Navegação e Visual
-- Bottom nav diferente por role
-- Cores rosa para mãe, verde para pai
-- Tokens CSS para temas por role
-
-**Nota:** Cada fase será implementada e testada antes de avançar. Vou começar pela Fase 1 (banco de dados) pois todas as outras dependem dela.
+## 7. Conexão Familiar
+- A avó se conecta à família via código de convite (mesmo sistema existente)
+- Pode haver múltiplas avós por família (avó materna + paterna)
