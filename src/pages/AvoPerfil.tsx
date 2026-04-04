@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
+import JoinFamilyAvo from "@/components/grandma/JoinFamilyAvo";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
 import { useGrandmaSuggestions, useGrandmaRanking } from "@/hooks/useGrandmaSuggestions";
