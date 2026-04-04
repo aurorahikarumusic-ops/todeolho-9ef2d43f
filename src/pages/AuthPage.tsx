@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Eye, UserPlus, LogIn, Crown, ArrowLeft } from "lucide-react";
+import GrandmaLoginForm from "@/components/grandma/GrandmaLoginForm";
 
 function DadLoginForm() {
   const { signUp, signIn } = useAuth();
