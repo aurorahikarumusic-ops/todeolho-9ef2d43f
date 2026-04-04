@@ -18,90 +18,139 @@ const tickerItems = [
   "Reunião que o pai esqueceu",
   "Resgate número 7 da mãe",
   "Pai presente de verdade",
+  "Nota 2 estrelas essa semana",
+  "Quem buscou na escola? A mãe.",
 ];
 
 const featureCards = [
   {
-    bg: "#FFF0E6",
+    bg: "#FFEAAE",
+    border: "#D4A10A",
+    shadow: "#B8890A",
     icon: "📅",
     title: "Agenda que o pai vai ver",
-    desc: "Calendário compartilhado com cores por quem adicionou: laranja pra mãe, verde pra quando o pai lembra sozinho (raro).",
-    quote: "Este mês: 11 eventos da mãe, 1 do pai. Progresso de 8%. Não desiste.",
+    desc: "Calendário compartilhado com cores por quem adicionou. Verde = pai (raro). Laranja = mãe (sempre).",
+    quote: "Este mês: 11 eventos da mãe, 1 do pai.",
   },
   {
     bg: "#D8F3DC",
+    border: "#2D6A4F",
+    shadow: "#1B4332",
     icon: "🏆",
     title: "Ranking público de pais",
-    desc: "Semanalmente, todos os pais são rankeados. Com descrições irônicas em cada posição. E um Hall da Vergonha mensal.",
-    quote: "Último lugar. Mas pelo menos você aparece aqui.",
+    desc: "Semanalmente, todos os pais são rankeados. Com descrições irônicas. E um Hall da Vergonha mensal.",
+    quote: "Último lugar. Mas pelo menos você aparece.",
   },
   {
-    bg: "#FFEAAE",
+    bg: "#FFD6D6",
+    border: "#C0392B",
+    shadow: "#922B21",
     icon: "📸",
     title: "Prova de presença",
-    desc: "O pai pode tirar foto como prova de que fez a tarefa. A mãe aprova ou reprova. Sem aprovação, não conta.",
-    quote: "A mãe reprovou sua conclusão. Motivo: 'Isso não é o remédio certo, amor.'",
+    desc: "O pai tira foto como prova. A mãe aprova ou reprova. Sem aprovação, não conta.",
+    quote: "Reprovou: 'Isso não é o remédio certo, amor.'",
   },
   {
-    bg: "#EEF0FF",
+    bg: "#E8DAFF",
+    border: "#7B2FF2",
+    shadow: "#5B1FBF",
     icon: "⭐",
     title: "Avaliação da mãe",
-    desc: "Toda sexta, a mãe dá de 1 a 5 estrelas pro pai. Nota pública, aparece no ranking. Com comentário opcional.",
-    quote: "Ana deu 2 estrelas pro João esta semana. Motivo: 'Foi bom, mas poderia ser melhor.'",
+    desc: "Toda sexta, a mãe dá de 1 a 5 estrelas. Nota pública, aparece no ranking.",
+    quote: "Ana deu 2 estrelas pro João. Motivo: 'Poderia melhorar.'",
   },
 ];
 
 const badges = [
-  { emoji: "🔥", label: "Sequência de 7 dias", bg: "#D8F3DC", color: "#2D6A4F" },
-  { emoji: "😬", label: "Pai Google Maps", bg: "#FFF0E6", color: "#c0502e" },
-  { emoji: "⭐", label: "Herói do Lanche", bg: "#D8F3DC", color: "#2D6A4F" },
-  { emoji: "💤", label: "Modo Hibernação", bg: "#FFE4E4", color: "#9B2C2C" },
-  { emoji: "👑", label: "Pai do Mês", bg: "#FFEAAE", color: "#7B6B1A" },
-  { emoji: "📊", label: "DNA do Pai", bg: "#EEF0FF", color: "#3B4C9B" },
-  { emoji: "🛟", label: "Resgatado (5x)", bg: "#E4F0FF", color: "#2B5EA7" },
+  { emoji: "🔥", label: "7 dias seguidos", bg: "#D8F3DC", color: "#1B4332", border: "#2D6A4F" },
+  { emoji: "😬", label: "Pai Google Maps", bg: "#FFF0E6", color: "#922B21", border: "#F4845F" },
+  { emoji: "⭐", label: "Herói do Lanche", bg: "#FFEAAE", color: "#7B6B1A", border: "#D4A10A" },
+  { emoji: "💤", label: "Modo Hibernação", bg: "#FFD6D6", color: "#922B21", border: "#C0392B" },
+  { emoji: "👑", label: "Pai do Mês", bg: "#E8DAFF", color: "#5B1FBF", border: "#7B2FF2" },
+  { emoji: "📊", label: "DNA do Pai", bg: "#D6EAFF", color: "#1A4B7B", border: "#2B7ACA" },
+  { emoji: "🛟", label: "Resgatado 5x", bg: "#FFE8CC", color: "#8B5E00", border: "#D4A10A" },
 ];
 
 const rankingRows = [
-  { pos: "🥇", initials: "RA", name: "Ricardo A.", city: "São Paulo", quote: "Fez tudo certo. Suspeito. Mas parabéns.", pts: 980, avatarBg: "#F4845F", highlight: false },
-  { pos: "2", initials: "MF", name: "Marcos F.", city: "Fortaleza", quote: "Chegou no 2° por acidente. Mas chegou.", pts: 841, avatarBg: "#52B788", highlight: false },
-  { pos: "3", initials: "LG", name: "Lucas G.", city: "Manaus", quote: "Tentou. Mais ou menos. Tá no pódio.", pts: 702, avatarBg: "#8B5CF6", highlight: false },
-  { pos: "4", initials: "VC", name: "Você", city: "Aqui", quote: "Poderia ser o 3°. Mas esqueceu o lanche.", pts: 489, avatarBg: "#F4845F", highlight: true },
-  { pos: "5", initials: "PS", name: "Paulo S.", city: "Recife", quote: "Perguntou o nome da professora. A filha tem 7 anos.", pts: 201, avatarBg: "#9CA3AF", highlight: false },
+  { pos: "🥇", initials: "RA", name: "Ricardo A.", city: "São Paulo", quote: "Fez tudo certo. Suspeito.", pts: 980, avatarBg: "#F4845F" },
+  { pos: "🥈", initials: "MF", name: "Marcos F.", city: "Fortaleza", quote: "Chegou no 2° por acidente.", pts: 841, avatarBg: "#52B788" },
+  { pos: "🥉", initials: "LG", name: "Lucas G.", city: "Manaus", quote: "Tentou. Mais ou menos.", pts: 702, avatarBg: "#8B5CF6" },
+  { pos: "4", initials: "VC", name: "Você", city: "Aqui", quote: "Poderia ser o 3°. Esqueceu o lanche.", pts: 489, avatarBg: "#F4845F", highlight: true },
+  { pos: "5", initials: "PS", name: "Paulo S.", city: "Recife", quote: "Perguntou o nome da professora.", pts: 201, avatarBg: "#9CA3AF" },
 ];
 
 const testimonials = [
   {
     stars: 5,
-    text: "Mandei o link pro meu marido com o comentário 'baixa aí'. Ele baixou. Na mesma hora. Pela primeira vez na história ele perguntou o nome da pediatra sem eu pedir.",
+    text: "Mandei o link pro meu marido com 'baixa aí'. Pela primeira vez ele perguntou o nome da pediatra sem eu pedir.",
     name: "Ana Carolina",
-    role: "Mãe de 2, São Paulo — A mãe que instalou",
-    avatarBg: "#FFF0E6",
+    role: "Mãe de 2 — São Paulo",
+    avatarBg: "#FFD6D6",
+    avatarEmoji: "👩‍👧‍👦",
   },
   {
     stars: 5,
-    text: "Meu marido ficou com raiva quando viu que tava em último no ranking. Aí começou a fazer as tarefas sozinho. Eu não disse nada. O app disse por mim.",
+    text: "Meu marido ficou com raiva quando viu que tava em último. Aí começou a fazer as tarefas sozinho. O app disse por mim.",
     name: "Mariana R.",
-    role: "Mãe de 3, Fortaleza — A que deu 3 estrelas",
+    role: "Mãe de 3 — Fortaleza",
     avatarBg: "#D8F3DC",
+    avatarEmoji: "💪",
   },
   {
     stars: 4,
-    text: "Sou o pai. Eu estava em 4° lugar. O Carlos estava em 3°. O Carlos. Isso foi suficiente pra eu buscar as crianças na escola 5 vezes seguidas.",
+    text: "Sou o pai. Eu estava em 4°. O Carlos em 3°. Isso foi suficiente pra eu buscar as crianças 5 vezes seguidas.",
     name: "João L.",
-    role: "Pai convertido, Manaus — Ex-posição 4°",
-    avatarBg: "#EEF0FF",
+    role: "Pai convertido — Manaus",
+    avatarBg: "#E8DAFF",
+    avatarEmoji: "🏃‍♂️",
   },
 ];
 
 const appScreenshots = [
-  { src: screenshotDashboard, label: "Dashboard", desc: "Veja seu nível de pai em tempo real" },
-  { src: screenshotTarefas, label: "Tarefas", desc: "Organize e comprove sua presença" },
-  { src: screenshotRanking, label: "Ranking", desc: "Compare com outros pais do Brasil" },
+  { src: screenshotDashboard, label: "Dashboard", desc: "Seu nível de pai em tempo real" },
+  { src: screenshotTarefas, label: "Tarefas", desc: "Organize e comprove presença" },
+  { src: screenshotRanking, label: "Ranking", desc: "Compare com outros pais" },
+];
+
+const tutorialSteps = [
+  {
+    img: tutorialStep1,
+    step: "1",
+    title: "Mãe cria a conta",
+    desc: "Abra o app e clique em \"Sou a Chefe\" 👑. Crie sua conta. Você é a CEO da família.",
+    color: "#FF6B9D",
+    rotate: "-4deg",
+  },
+  {
+    img: tutorialStep2,
+    step: "2",
+    title: "Gere o código",
+    desc: "No perfil, clique em \"Convidar Parceiro\". Um código único será gerado. Envie pelo WhatsApp.",
+    color: "#2D6A4F",
+    rotate: "3deg",
+  },
+  {
+    img: tutorialStep3,
+    step: "3",
+    title: "Pai entra",
+    desc: "O pai cria a conta dele e cola o código no campo \"Código de Convite\" na tela inicial.",
+    color: "#F4845F",
+    rotate: "-2deg",
+  },
+  {
+    img: tutorialStep4,
+    step: "4",
+    title: "Conectados! 🎉",
+    desc: "Pronto! A mãe cria tarefas, o pai executa, e o ranking começa. Sem escapatória.",
+    color: "#7B2FF2",
+    rotate: "4deg",
+  },
 ];
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const revealRefs = useRef<HTMLElement[]>([]);
+  const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -125,267 +174,386 @@ export default function LandingPage() {
     }
   };
 
-  const handleOpenApp = () => {
-    const appPackage = "app.lovable.c98da6ca3b0a4e2a816155c857301dd2";
-    const intentUrl = `intent://estoudeolho.lovable.app/app#Intent;scheme=https;package=${appPackage};end`;
-    const timeout = setTimeout(() => { navigate("/app"); }, 1500);
-    window.location.href = intentUrl;
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) clearTimeout(timeout);
-    }, { once: true });
-  };
-
   return (
-    <div style={{ fontFamily: "'Nunito', sans-serif", background: "#FFF8F1", color: "#1B2B23" }}>
+    <div style={{ fontFamily: "'Nunito', sans-serif", background: "#FFF8F1", color: "#1B2B23", overflowX: "hidden" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&display=swap');
         
-        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .revealed { opacity: 1; transform: translateY(0); }
-        .reveal-d1 { transition-delay: 0.1s; }
-        .reveal-d2 { transition-delay: 0.2s; }
-        .reveal-d3 { transition-delay: 0.3s; }
+        .reveal-d1 { transition-delay: 0.15s; }
+        .reveal-d2 { transition-delay: 0.3s; }
+        .reveal-d3 { transition-delay: 0.45s; }
 
-        .lp-card {
-          border: 3px solid #1B2B23;
-          border-radius: 20px;
-          box-shadow: 6px 6px 0 #1B2B23;
-          transition: transform 0.3s, box-shadow 0.3s;
+        .neo-card {
+          border: 4px solid #1B2B23;
+          border-radius: 24px;
+          box-shadow: 8px 8px 0 #1B2B23;
+          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
         }
-        .lp-card:hover {
-          transform: translate(-4px, -4px);
-          box-shadow: 10px 10px 0 #1B2B23;
+        .neo-card:hover {
+          transform: translate(-6px, -6px) rotate(-0.5deg);
+          box-shadow: 14px 14px 0 #1B2B23;
         }
 
         @keyframes eye-pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.1); }
+          0%, 100% { transform: scale(1) rotate(0deg); }
+          25% { transform: scale(1.15) rotate(5deg); }
+          50% { transform: scale(1.05) rotate(0deg); }
+          75% { transform: scale(1.15) rotate(-5deg); }
         }
-        @keyframes eye-bounce {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-12px); }
+        @keyframes float-hero {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
         }
         @keyframes ticker-scroll {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
+        @keyframes gradient-shift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          10% { transform: translateX(-4px) rotate(-1deg); }
+          30% { transform: translateX(4px) rotate(1deg); }
+          50% { transform: translateX(-4px) rotate(-0.5deg); }
+          70% { transform: translateX(4px) rotate(0.5deg); }
+        }
+        @keyframes badge-float {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-8px) rotate(3deg); }
+        }
 
         .ticker-track {
           display: flex;
-          animation: ticker-scroll 25s linear infinite;
+          animation: ticker-scroll 20s linear infinite;
           white-space: nowrap;
         }
 
-        .pill-badge {
-          border: 2px solid #1B2B23;
-          border-radius: 50px;
-          padding: 0.5rem 1.25rem;
-          font-weight: 700;
-          font-family: 'Nunito', sans-serif;
-          font-size: 0.9rem;
-          transition: transform 0.2s;
-          display: inline-block;
-        }
-        .pill-badge:hover {
-          transform: rotate(-2deg) scale(1.05);
-        }
-
-        .stat-card {
-          background: rgba(255,255,255,0.1);
-          border: 2px solid rgba(255,255,255,0.2);
-          border-radius: 16px;
-          padding: 2rem 1.5rem;
-          text-align: center;
-          transition: background 0.3s, transform 0.3s;
-        }
-        .stat-card:hover {
-          background: rgba(255,255,255,0.18);
-          transform: translateY(-4px);
-        }
-
-        .testimonial-card {
-          background: rgba(255,255,255,0.05);
-          border: 1.5px solid rgba(255,255,255,0.1);
-          border-radius: 16px;
-          padding: 2rem;
-          transition: background 0.3s, transform 0.3s;
-        }
-        .testimonial-card:hover {
-          background: rgba(255,255,255,0.09);
-          transform: translateY(-4px);
-        }
-
-        .store-btn {
-          background: #1B2B23;
-          color: white;
-          border-radius: 14px;
+        .neo-badge {
           border: 3px solid #1B2B23;
-          box-shadow: 4px 4px 0 #2D6A4F;
-          padding: 1rem 1.5rem;
-          min-width: 180px;
-          display: flex;
+          border-radius: 50px;
+          padding: 0.65rem 1.5rem;
+          font-weight: 800;
+          font-family: 'Baloo 2', cursive;
+          font-size: 1rem;
+          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          box-shadow: 4px 4px 0 #1B2B23;
+          cursor: default;
+        }
+        .neo-badge:hover {
+          transform: rotate(-3deg) scale(1.08) translateY(-4px);
+          box-shadow: 6px 6px 0 #1B2B23;
+        }
+
+        .stat-neo {
+          border: 4px solid rgba(255,255,255,0.3);
+          border-radius: 24px;
+          padding: 2.5rem 1.5rem;
+          text-align: center;
+          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s;
+          background: rgba(255,255,255,0.08);
+          backdrop-filter: blur(8px);
+        }
+        .stat-neo:hover {
+          transform: translateY(-8px) scale(1.02);
+          border-color: #F4845F;
+        }
+
+        .testimonial-neo {
+          border: 3px solid rgba(255,255,255,0.15);
+          border-radius: 24px;
+          padding: 2.5rem;
+          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s, box-shadow 0.3s;
+          background: rgba(255,255,255,0.06);
+          backdrop-filter: blur(8px);
+        }
+        .testimonial-neo:hover {
+          transform: translateY(-8px) rotate(-0.5deg);
+          border-color: #F4845F;
+          box-shadow: 0 20px 60px rgba(244,132,95,0.15);
+        }
+
+        .cta-btn {
+          background: #2D6A4F;
+          color: white;
+          border: 4px solid #1B2B23;
+          border-radius: 50px;
+          padding: 1.1rem 2.5rem;
+          font-family: 'Baloo 2', cursive;
+          font-weight: 800;
+          font-size: 1.2rem;
+          text-decoration: none;
+          box-shadow: 6px 6px 0 #1B2B23;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          display: inline-flex;
           align-items: center;
           gap: 0.75rem;
-          font-family: 'Nunito', sans-serif;
-          text-decoration: none;
-          transition: box-shadow 0.3s, transform 0.3s;
+          cursor: pointer;
         }
-        .store-btn:hover {
-          box-shadow: 6px 6px 0 #F4845F;
-          transform: translate(-2px, -2px);
+        .cta-btn:hover {
+          background: #F4845F;
+          transform: translate(-4px, -4px);
+          box-shadow: 10px 10px 0 #1B2B23;
         }
 
-        .screenshot-card {
-          border-radius: 24px;
+        .cta-btn-outline {
+          background: white;
+          color: #2D6A4F;
+          border: 4px solid #2D6A4F;
+          border-radius: 50px;
+          padding: 1.1rem 2.5rem;
+          font-family: 'Baloo 2', cursive;
+          font-weight: 800;
+          font-size: 1.2rem;
+          text-decoration: none;
+          box-shadow: 6px 6px 0 #2D6A4F;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          cursor: pointer;
+        }
+        .cta-btn-outline:hover {
+          background: #FFEAAE;
+          transform: translate(-4px, -4px);
+          box-shadow: 10px 10px 0 #2D6A4F;
+        }
+
+        .screenshot-neo {
+          border: 4px solid #1B2B23;
+          border-radius: 28px;
           overflow: hidden;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-          transition: transform 0.4s ease, box-shadow 0.4s ease;
+          box-shadow: 12px 12px 0 rgba(244,132,95,0.4);
+          transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s;
           max-width: 280px;
         }
-        .screenshot-card:hover {
-          transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 30px 80px rgba(0,0,0,0.2);
+        .screenshot-neo:hover {
+          transform: translateY(-12px) rotate(-2deg) scale(1.03);
+          box-shadow: 16px 16px 0 rgba(244,132,95,0.5);
         }
-        .screenshot-card img {
+        .screenshot-neo img {
           width: 100%;
           height: auto;
           display: block;
         }
 
-        .ranking-row {
+        .ranking-row-neo {
           display: flex;
           align-items: center;
-          padding: 1rem 1.5rem;
-          border-bottom: 1px solid #f0f0f0;
+          padding: 1.1rem 1.5rem;
+          border-bottom: 3px solid #F0EDE8;
           gap: 1rem;
-          transition: background 0.2s;
+          transition: background 0.2s, transform 0.2s;
         }
-        .ranking-row:hover { background: #fafafa; }
-        .ranking-row:last-child { border-bottom: none; }
+        .ranking-row-neo:hover { 
+          background: #FFF8F1; 
+          transform: translateX(4px);
+        }
+        .ranking-row-neo:last-child { border-bottom: none; }
+
+        .store-btn-neo {
+          background: #1B2B23;
+          color: white;
+          border-radius: 20px;
+          border: 4px solid #1B2B23;
+          box-shadow: 8px 8px 0 #2D6A4F;
+          padding: 1.25rem 2rem;
+          min-width: 200px;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          font-family: 'Nunito', sans-serif;
+          text-decoration: none;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .store-btn-neo:hover {
+          box-shadow: 12px 12px 0 #F4845F;
+          transform: translate(-4px, -4px);
+        }
 
         @media (max-width: 768px) {
-          .ranking-row { padding: 0.75rem 1rem; font-size: 0.9rem; }
+          .ranking-row-neo { padding: 0.85rem 1rem; font-size: 0.9rem; }
+          .neo-card { box-shadow: 6px 6px 0 #1B2B23; }
+          .neo-card:hover { box-shadow: 10px 10px 0 #1B2B23; transform: translate(-4px, -4px); }
         }
       `}</style>
 
-      {/* NAV */}
+      {/* ═══════════════ NAV ═══════════════ */}
       <nav style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        background: "rgba(255,248,241,0.85)", backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(45,106,79,0.1)",
+        background: "rgba(255,248,241,0.92)", backdropFilter: "blur(16px)",
+        borderBottom: "3px solid #1B2B23",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "0.75rem 1.5rem",
       }}>
-        <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.5rem", color: "#2D6A4F" }}>
-          Estou de <span style={{ color: "#F4845F" }}>Olho</span> 👁️
+        <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.75rem", color: "#2D6A4F" }}>
+          Estou de <span style={{ color: "#F4845F" }}>Olho</span>{" "}
+          <span style={{ display: "inline-block", animation: "eye-pulse 3s ease-in-out infinite" }}>👁️</span>
         </span>
-        <a href="#download" style={{
-          background: "#2D6A4F", color: "white", padding: "0.6rem 1.5rem",
-          borderRadius: "50px", fontFamily: "'Baloo 2', cursive", fontWeight: 700,
-          textDecoration: "none", transition: "background 0.3s", fontSize: "0.95rem",
-        }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#F4845F")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#2D6A4F")}
-        >
+        <a href="#download" className="cta-btn" style={{ padding: "0.6rem 1.5rem", fontSize: "1rem", boxShadow: "4px 4px 0 #1B2B23" }}>
           Baixar grátis
         </a>
       </nav>
 
-      {/* HERO */}
+      {/* ═══════════════ HERO ═══════════════ */}
       <section style={{
         minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center",
-        justifyContent: "center", textAlign: "center", padding: "6rem 1.5rem 4rem",
+        justifyContent: "center", textAlign: "center", padding: "7rem 1.5rem 5rem",
         position: "relative", overflow: "hidden",
       }}>
-        {/* Blurred blobs */}
-        <div style={{ position: "absolute", top: "-10%", left: "-15%", width: "400px", height: "400px", background: "#D8F3DC", borderRadius: "50%", filter: "blur(60px)", opacity: 0.25, pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "-10%", right: "-10%", width: "350px", height: "350px", background: "#FFF0E6", borderRadius: "50%", filter: "blur(60px)", opacity: 0.3, pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%,-50%)", width: "300px", height: "300px", background: "#FFEAAE", borderRadius: "50%", filter: "blur(60px)", opacity: 0.2, pointerEvents: "none" }} />
+        {/* Giant decorative shapes */}
+        <div style={{ position: "absolute", top: "-5%", left: "-10%", width: "500px", height: "500px", background: "#D8F3DC", borderRadius: "50%", filter: "blur(80px)", opacity: 0.3, pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-5%", right: "-5%", width: "450px", height: "450px", background: "#FFEAAE", borderRadius: "50%", filter: "blur(80px)", opacity: 0.35, pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "30%", left: "60%", width: "300px", height: "300px", background: "#FFD6D6", borderRadius: "50%", filter: "blur(80px)", opacity: 0.2, pointerEvents: "none" }} />
+        
+        {/* Geometric decorations */}
+        <div style={{ position: "absolute", top: "15%", right: "8%", width: "80px", height: "80px", border: "4px solid #2D6A4F", borderRadius: "20px", transform: "rotate(15deg)", opacity: 0.15, animation: "float-hero 6s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", bottom: "20%", left: "5%", width: "60px", height: "60px", background: "#F4845F", borderRadius: "50%", opacity: 0.12, animation: "float-hero 8s ease-in-out infinite 1s" }} />
+        <div style={{ position: "absolute", top: "60%", right: "15%", width: "40px", height: "40px", background: "#FFEAAE", borderRadius: "8px", transform: "rotate(45deg)", opacity: 0.2, animation: "float-hero 5s ease-in-out infinite 0.5s" }} />
 
-        <div style={{ position: "relative", maxWidth: "800px" }}>
+        <div style={{ position: "relative", maxWidth: "900px" }}>
+          {/* Tag */}
           <div style={{
-            display: "inline-block", background: "#FFEAAE", border: "2px solid #1B2B23",
-            borderRadius: "50px", padding: "0.5rem 1.25rem", fontSize: "0.9rem", fontWeight: 700, marginBottom: "1.5rem",
+            display: "inline-block", background: "#FFEAAE", border: "3px solid #1B2B23",
+            borderRadius: "50px", padding: "0.6rem 1.5rem", fontSize: "1rem", fontWeight: 800, marginBottom: "2rem",
+            boxShadow: "4px 4px 0 #1B2B23", fontFamily: "'Baloo 2', cursive",
           }}>
             🇧🇷 O app que o Brasil precisava (e os pais, mais ainda)
           </div>
 
+          {/* Main Title — GIANT */}
           <h1 style={{
             fontFamily: "'Baloo 2', cursive", fontWeight: 900,
-            fontSize: "clamp(3rem, 8vw, 6rem)", color: "#2D6A4F", lineHeight: 1.1, margin: "0 0 0.5rem",
+            fontSize: "clamp(3.5rem, 10vw, 8rem)", color: "#1B2B23", lineHeight: 0.95,
+            margin: "0 0 0.5rem", letterSpacing: "-0.02em",
           }}>
-            Estou de Olho{" "}
-            <span style={{ display: "inline-block", animation: "eye-pulse 3s ease-in-out infinite" }}>👁️</span>
+            <span style={{ color: "#2D6A4F" }}>Estou de</span>
+            <br />
+            <span style={{
+              color: "#F4845F",
+              textShadow: "6px 6px 0 #1B2B23",
+              WebkitTextStroke: "2px #1B2B23",
+              paintOrder: "stroke fill",
+            }}>
+              Olho
+            </span>{" "}
+            <span style={{ display: "inline-block", animation: "eye-pulse 2.5s ease-in-out infinite", fontSize: "0.8em" }}>👁️</span>
           </h1>
 
+          {/* Subtitle */}
           <p style={{
-            fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontStyle: "italic",
-            color: "#F4845F", fontSize: "clamp(1.2rem, 3vw, 1.75rem)", margin: "0 0 1.5rem",
+            fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontStyle: "italic",
+            color: "#F4845F", fontSize: "clamp(1.3rem, 3.5vw, 2rem)", margin: "0.5rem 0 2rem",
+            background: "#FFF0E6", display: "inline-block", padding: "0.3rem 1.5rem",
+            border: "3px solid #F4845F", borderRadius: "12px", boxShadow: "4px 4px 0 #F4845F",
           }}>
             porque alguém tem que lembrar
           </p>
 
-          <p style={{ maxWidth: "560px", margin: "0 auto 2rem", fontSize: "1.1rem", lineHeight: 1.7, color: "#243B2F" }}>
-            O app que <span style={{ color: "#F4845F", fontWeight: 700 }}>gamifica a paternidade</span> — com ironia, ranking público e notificações que batem direto no ego. Para pais que esquecem tudo e mães que lembram de tudo.
+          {/* Description */}
+          <p style={{
+            maxWidth: "620px", margin: "0 auto 2.5rem", fontSize: "1.2rem", lineHeight: 1.75,
+            color: "#243B2F", fontWeight: 600,
+          }}>
+            O app que <span style={{ background: "#FFEAAE", padding: "0.1rem 0.5rem", borderRadius: "8px", fontWeight: 800 }}>gamifica a paternidade</span> — com ironia, ranking público e notificações que batem direto no ego. Para pais que <span style={{ textDecoration: "line-through", opacity: 0.5 }}>esquecem tudo</span> tentam melhorar.
           </p>
 
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <a href="#download" style={{
-              background: "#2D6A4F", color: "white", border: "3px solid #1B2B23",
-              borderRadius: "50px", padding: "1rem 2rem", fontFamily: "'Baloo 2', cursive",
-              fontWeight: 700, fontSize: "1.1rem", textDecoration: "none",
-              boxShadow: "4px 4px 0 #1B2B23", transition: "background 0.3s",
-            }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#F4845F")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#2D6A4F")}
-            >
+          {/* CTA Buttons */}
+          <div style={{ display: "flex", gap: "1.25rem", justifyContent: "center", flexWrap: "wrap" }}>
+            <a href="#download" className="cta-btn">
               🤖 Baixar para Android
             </a>
-            <a href="#como-funciona" style={{
-              background: "white", color: "#2D6A4F", border: "3px solid #2D6A4F",
-              borderRadius: "50px", padding: "1rem 2rem", fontFamily: "'Baloo 2', cursive",
-              fontWeight: 700, fontSize: "1.1rem", textDecoration: "none",
-            }}>
+            <a href="#como-funciona" className="cta-btn-outline">
               👀 Como funciona
             </a>
+          </div>
+
+          {/* Social proof mini */}
+          <div style={{
+            marginTop: "2.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem",
+            flexWrap: "wrap",
+          }}>
+            <div style={{ display: "flex" }}>
+              {["#F4845F", "#52B788", "#8B5CF6", "#D4A10A"].map((c, i) => (
+                <div key={i} style={{
+                  width: 36, height: 36, borderRadius: "50%", background: c,
+                  border: "3px solid #FFF8F1", marginLeft: i > 0 ? "-10px" : 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "0.7rem", color: "white", fontWeight: 800, zIndex: 4 - i,
+                }}>
+                  {["PA", "MF", "LG", "RA"][i]}
+                </div>
+              ))}
+            </div>
+            <span style={{ fontSize: "0.95rem", color: "#666", fontWeight: 600 }}>
+              Pais já competindo pelo 1° lugar
+            </span>
           </div>
         </div>
       </section>
 
-      {/* TICKER */}
+      {/* ═══════════════ TICKER ═══════════════ */}
       <div style={{
-        background: "#F4845F", borderTop: "2px solid #1B2B23", borderBottom: "2px solid #1B2B23",
-        padding: "0.75rem 0", overflow: "hidden",
+        background: "#F4845F", borderTop: "4px solid #1B2B23", borderBottom: "4px solid #1B2B23",
+        padding: "0.85rem 0", overflow: "hidden",
       }}>
         <div className="ticker-track">
           {[...tickerItems, ...tickerItems].map((item, i) => (
-            <span key={i} style={{ color: "white", fontWeight: 700, fontSize: "1rem", padding: "0 2rem", whiteSpace: "nowrap" }}>
+            <span key={i} style={{
+              color: "white", fontWeight: 800, fontSize: "1.1rem", padding: "0 2.5rem",
+              whiteSpace: "nowrap", fontFamily: "'Baloo 2', cursive",
+              textShadow: "2px 2px 0 rgba(0,0,0,0.15)",
+            }}>
               👁️ {item}
             </span>
           ))}
         </div>
       </div>
 
-      {/* SECTION — APP SCREENSHOTS */}
-      <section id="como-funciona" style={{ background: "#1B2B23", padding: "5rem 1.5rem" }}>
-        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.5rem", color: "white", lineHeight: 1.2, marginBottom: "0.75rem" }}>
-              Veja o app <span style={{ color: "#F4845F" }}>por dentro</span>
+      {/* ═══════════════ SCREENSHOTS ═══════════════ */}
+      <section id="como-funciona" style={{ background: "#1B2B23", padding: "6rem 1.5rem", position: "relative" }}>
+        {/* Decorative dots pattern */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)",
+          backgroundSize: "30px 30px", pointerEvents: "none",
+        }} />
+        
+        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1100px", margin: "0 auto", position: "relative" }}>
+          <div style={{ textAlign: "center", marginBottom: "4rem" }}>
+            <div style={{
+              display: "inline-block", background: "#F4845F", color: "white",
+              border: "3px solid white", borderRadius: "50px", padding: "0.5rem 1.5rem",
+              fontSize: "1rem", fontWeight: 800, marginBottom: "1.25rem",
+              boxShadow: "4px 4px 0 rgba(255,255,255,0.3)", fontFamily: "'Baloo 2', cursive",
+            }}>
+              📱 Screenshots Reais
+            </div>
+            <h2 style={{
+              fontFamily: "'Baloo 2', cursive", fontWeight: 900,
+              fontSize: "clamp(2rem, 5vw, 3.5rem)", color: "white", lineHeight: 1.1, marginBottom: "0.75rem",
+            }}>
+              Veja o app <span style={{ color: "#F4845F", textShadow: "4px 4px 0 rgba(0,0,0,0.3)" }}>por dentro</span>
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "1.05rem", maxWidth: "500px", margin: "0 auto" }}>
-              Screenshots reais do Estou de Olho. Sem enrolação, sem mockup inventado.
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1.1rem", maxWidth: "500px", margin: "0 auto", fontWeight: 600 }}>
+              Sem mockup inventado. Isso aqui é real.
             </p>
           </div>
 
-          {/* Screenshots grid */}
           <div style={{
-            display: "flex", justifyContent: "center", gap: "2rem", flexWrap: "wrap",
+            display: "flex", justifyContent: "center", gap: "2.5rem", flexWrap: "wrap",
             alignItems: "flex-start",
           }}>
             {appScreenshots.map((screen, i) => (
               <div key={i} style={{ textAlign: "center" }}>
-                <div className="screenshot-card">
+                <div className="screenshot-neo">
                   <img
                     src={screen.src}
                     alt={`Tela ${screen.label} do Estou de Olho`}
@@ -394,11 +562,15 @@ export default function LandingPage() {
                     height={960}
                   />
                 </div>
-                <div style={{ marginTop: "1rem" }}>
-                  <div style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, color: "white", fontSize: "1.1rem" }}>
+                <div style={{ marginTop: "1.25rem" }}>
+                  <div style={{
+                    fontFamily: "'Baloo 2', cursive", fontWeight: 800, color: "white", fontSize: "1.2rem",
+                    background: "rgba(244,132,95,0.2)", display: "inline-block", padding: "0.2rem 1rem",
+                    borderRadius: "8px",
+                  }}>
                     {screen.label}
                   </div>
-                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", fontStyle: "italic" }}>
+                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", fontStyle: "italic", marginTop: "0.5rem" }}>
                     {screen.desc}
                   </div>
                 </div>
@@ -406,9 +578,9 @@ export default function LandingPage() {
             ))}
           </div>
 
-          {/* Feature list below screenshots */}
-          <div style={{ marginTop: "3rem", maxWidth: "700px", marginLeft: "auto", marginRight: "auto" }}>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
+          {/* Feature list */}
+          <div style={{ marginTop: "4rem", maxWidth: "800px", marginLeft: "auto", marginRight: "auto" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1rem" }}>
               {[
                 "📅 Agenda familiar compartilhada em tempo real",
                 "🏆 Ranking semanal de pais (público e sem piedade)",
@@ -417,32 +589,65 @@ export default function LandingPage() {
                 "📊 DNA do Pai — card mensal compartilhável",
                 "👁️ Notificações que não deixam esquecer. Nunca.",
               ].map((item, i) => (
-                <li key={i} style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "white", fontSize: "1rem" }}>
-                  <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#F4845F", flexShrink: 0 }} />
+                <div key={i} style={{
+                  display: "flex", alignItems: "center", gap: "0.75rem",
+                  color: "white", fontSize: "1.05rem", fontWeight: 600,
+                  background: "rgba(255,255,255,0.05)", padding: "0.75rem 1rem",
+                  borderRadius: "12px", border: "1px solid rgba(255,255,255,0.08)",
+                }}>
                   {item}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION — FEATURE CARDS */}
-      <section id="features" style={{ padding: "5rem 1.5rem", textAlign: "center" }}>
+      {/* ═══════════════ FEATURE CARDS ═══════════════ */}
+      <section id="features" style={{ padding: "6rem 1.5rem", textAlign: "center" }}>
         <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.25rem", color: "#2D6A4F", marginBottom: "0.5rem" }}>
-            O que o Estou de Olho faz
+          <h2 style={{
+            fontFamily: "'Baloo 2', cursive", fontWeight: 900,
+            fontSize: "clamp(2rem, 5vw, 3.5rem)", color: "#1B2B23", marginBottom: "0.5rem",
+          }}>
+            O que o app <span style={{ color: "#F4845F" }}>faz</span>
           </h2>
-          <p style={{ fontStyle: "italic", color: "#666", marginBottom: "3rem" }}>
-            (e o que nenhum app tinha coragem de fazer antes)
+          <p style={{
+            fontStyle: "italic", color: "#666", marginBottom: "3.5rem", fontSize: "1.1rem", fontWeight: 600,
+          }}>
+            (o que nenhum app tinha coragem de fazer antes)
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "2rem" }}>
             {featureCards.map((card, i) => (
-              <div key={i} className="lp-card" style={{ background: card.bg, padding: "2rem", textAlign: "left" }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>{card.icon}</div>
-                <h3 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: "1.25rem", color: "#1B2B23", marginBottom: "0.75rem" }}>{card.title}</h3>
-                <p style={{ fontSize: "0.95rem", color: "#243B2F", lineHeight: 1.6, marginBottom: "1rem" }}>{card.desc}</p>
-                <div style={{ borderLeft: "4px solid #F4845F", paddingLeft: "1rem", fontStyle: "italic", fontSize: "0.85rem", color: "#666" }}>
+              <div
+                key={i}
+                className="neo-card"
+                style={{
+                  background: card.bg, padding: "2.25rem", textAlign: "left",
+                  borderColor: card.border,
+                  boxShadow: hoveredFeature === i
+                    ? `14px 14px 0 ${card.shadow}`
+                    : `8px 8px 0 ${card.shadow}`,
+                  transform: hoveredFeature === i ? "translate(-6px, -6px) rotate(-1deg)" : "none",
+                }}
+                onMouseEnter={() => setHoveredFeature(i)}
+                onMouseLeave={() => setHoveredFeature(null)}
+              >
+                <div style={{
+                  fontSize: "3.5rem", marginBottom: "1rem",
+                  filter: "drop-shadow(3px 3px 0 rgba(0,0,0,0.1))",
+                }}>{card.icon}</div>
+                <h3 style={{
+                  fontFamily: "'Baloo 2', cursive", fontWeight: 800,
+                  fontSize: "1.4rem", color: "#1B2B23", marginBottom: "0.75rem",
+                }}>{card.title}</h3>
+                <p style={{ fontSize: "1rem", color: "#243B2F", lineHeight: 1.7, marginBottom: "1.25rem", fontWeight: 600 }}>
+                  {card.desc}
+                </p>
+                <div style={{
+                  borderLeft: `5px solid ${card.border}`, paddingLeft: "1rem",
+                  fontStyle: "italic", fontSize: "0.9rem", color: "#555", fontWeight: 600,
+                }}>
                   {card.quote}
                 </div>
               </div>
@@ -451,108 +656,200 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION — BADGES */}
-      <section style={{ padding: "3rem 1.5rem", textAlign: "center" }}>
+      {/* ═══════════════ BADGES ═══════════════ */}
+      <section style={{
+        padding: "4rem 1.5rem", textAlign: "center",
+        background: "linear-gradient(135deg, #FFF8F1 0%, #FFF0E6 50%, #FFEAAE20 100%)",
+      }}>
         <div ref={addRevealRef} className="reveal" style={{ maxWidth: "900px", margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2rem", color: "#2D6A4F", marginBottom: "2rem" }}>
-            Conquistas (e recordes) que você pode ganhar
+          <h2 style={{
+            fontFamily: "'Baloo 2', cursive", fontWeight: 900,
+            fontSize: "clamp(1.75rem, 4vw, 2.75rem)", color: "#1B2B23", marginBottom: "0.5rem",
+          }}>
+            Conquistas <span style={{ color: "#F4845F" }}>(e vergonhas)</span>
           </h2>
+          <p style={{ color: "#666", marginBottom: "2.5rem", fontWeight: 600 }}>
+            Selos que você ganha. Ou que ganham você.
+          </p>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem" }}>
             {badges.map((b, i) => (
-              <span key={i} className="pill-badge" style={{ background: b.bg, color: b.color }}>
-                {b.emoji} {b.label}
+              <span
+                key={i}
+                className="neo-badge"
+                style={{
+                  background: b.bg, color: b.color, borderColor: b.border,
+                  boxShadow: `4px 4px 0 ${b.border}`,
+                  animationDelay: `${i * 0.2}s`,
+                }}
+              >
+                <span style={{ fontSize: "1.3rem" }}>{b.emoji}</span> {b.label}
               </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION — STATS */}
+      {/* ═══════════════ STATS ═══════════════ */}
       <section style={{
-        background: "#2D6A4F", color: "white", padding: "5rem 1.5rem", textAlign: "center",
-        backgroundImage: "radial-gradient(circle at 10% 20%, rgba(255,255,255,0.05) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(244,132,95,0.1) 0%, transparent 50%)",
+        background: "#2D6A4F", color: "white", padding: "6rem 1.5rem", textAlign: "center",
+        position: "relative", overflow: "hidden",
       }}>
-        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.5rem", marginBottom: "0.5rem" }}>
-            A dor é real. O app é a solução.
+        {/* Pattern overlay */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)",
+          backgroundSize: "24px 24px", pointerEvents: "none",
+        }} />
+        
+        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
+          <h2 style={{
+            fontFamily: "'Baloo 2', cursive", fontWeight: 900,
+            fontSize: "clamp(2rem, 5vw, 3.5rem)", marginBottom: "0.5rem",
+          }}>
+            A dor é <span style={{ color: "#FFEAAE" }}>real</span>.
           </h2>
-          <p style={{ fontStyle: "italic", opacity: 0.8, marginBottom: "3rem" }}>
+          <p style={{
+            fontStyle: "italic", opacity: 0.8, marginBottom: "3.5rem", fontSize: "1.1rem", fontWeight: 600,
+          }}>
             Números que a mãe sabia. O pai vai saber agora.
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.5rem" }}>
             {[
-              { val: "35M", label: "Pais brasileiros com filhos", sub: "Quantos lembram da consulta? Menos." },
-              { val: "172K", label: "Filhos sem pai no registro (2023)", sub: "A ausência começa antes do app." },
-              { val: "88,9%", label: "Brasileiros com smartphone", sub: "Não tem desculpa tecnológica." },
-              { val: "0", label: "Apps como este no Brasil", sub: "Até agora. Bem-vindo ao Estou de Olho." },
+              { val: "35M", label: "Pais brasileiros com filhos", sub: "Quantos lembram da consulta?" },
+              { val: "172K", label: "Filhos sem pai no registro", sub: "A ausência começa cedo." },
+              { val: "88,9%", label: "Brasileiros com smartphone", sub: "Sem desculpa tecnológica." },
+              { val: "0", label: "Apps como este no Brasil", sub: "Até agora." },
             ].map((s, i) => (
-              <div key={i} className="stat-card">
-                <div style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.5rem", marginBottom: "0.5rem" }}>{s.val}</div>
-                <div style={{ fontWeight: 600, fontSize: "0.95rem", marginBottom: "0.5rem" }}>{s.label}</div>
-                <div style={{ fontStyle: "italic", fontSize: "0.8rem", opacity: 0.7 }}>{s.sub}</div>
+              <div key={i} className="stat-neo">
+                <div style={{
+                  fontFamily: "'Baloo 2', cursive", fontWeight: 900,
+                  fontSize: "clamp(2rem, 5vw, 3.5rem)", marginBottom: "0.5rem",
+                  textShadow: "3px 3px 0 rgba(0,0,0,0.2)",
+                }}>{s.val}</div>
+                <div style={{ fontWeight: 700, fontSize: "1rem", marginBottom: "0.5rem" }}>{s.label}</div>
+                <div style={{ fontStyle: "italic", fontSize: "0.85rem", opacity: 0.7 }}>{s.sub}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION — RANKING */}
-      <section id="ranking" style={{ padding: "5rem 1.5rem", textAlign: "center" }}>
-        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "700px", margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.25rem", color: "#2D6A4F", marginBottom: "0.5rem" }}>
-            O Mural da Vergonha
+      {/* ═══════════════ RANKING ═══════════════ */}
+      <section id="ranking" style={{ padding: "6rem 1.5rem", textAlign: "center" }}>
+        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "750px", margin: "0 auto" }}>
+          <div style={{
+            display: "inline-block", background: "#FFD6D6", border: "3px solid #C0392B",
+            borderRadius: "50px", padding: "0.5rem 1.5rem", fontSize: "1rem", fontWeight: 800,
+            marginBottom: "1.25rem", boxShadow: "4px 4px 0 #922B21", fontFamily: "'Baloo 2', cursive",
+            color: "#922B21",
+          }}>
+            🚨 Exposição Pública
+          </div>
+          <h2 style={{
+            fontFamily: "'Baloo 2', cursive", fontWeight: 900,
+            fontSize: "clamp(2rem, 5vw, 3rem)", color: "#1B2B23", marginBottom: "0.5rem",
+          }}>
+            O Mural da <span style={{ color: "#F4845F", textShadow: "3px 3px 0 rgba(244,132,95,0.2)" }}>Vergonha</span>
           </h2>
-          <p style={{ color: "#666", marginBottom: "2rem" }}>
+          <p style={{ color: "#666", marginBottom: "2.5rem", fontWeight: 600, fontSize: "1.05rem" }}>
             Semanal. Público. Sem piedade. Você vai querer subir.
           </p>
-          <div className="lp-card" style={{ overflow: "hidden", boxShadow: "8px 8px 0 #1B2B23", textAlign: "left" }}>
-            <div style={{ background: "#1B2B23", color: "white", padding: "1rem 1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
-              <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800 }}>🏆 Ranking Semanal — Brasil</span>
-              <span style={{ background: "#F4845F", padding: "0.25rem 0.75rem", borderRadius: 50, fontSize: "0.75rem", fontWeight: 700 }}>Atualizado toda segunda</span>
+          <div className="neo-card" style={{
+            overflow: "hidden", textAlign: "left", background: "white",
+          }}>
+            <div style={{
+              background: "#1B2B23", color: "white", padding: "1.25rem 1.5rem",
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              flexWrap: "wrap", gap: "0.5rem",
+            }}>
+              <span style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.15rem" }}>
+                🏆 Ranking Semanal — Brasil
+              </span>
+              <span style={{
+                background: "#F4845F", padding: "0.3rem 1rem", borderRadius: 50,
+                fontSize: "0.8rem", fontWeight: 800, border: "2px solid white",
+              }}>
+                Atualizado toda segunda
+              </span>
             </div>
             {rankingRows.map((r, i) => (
-              <div key={i} className="ranking-row" style={{
+              <div key={i} className="ranking-row-neo" style={{
                 background: r.highlight ? "#FFF0E6" : "white",
-                borderLeft: r.highlight ? "4px solid #F4845F" : "none",
+                borderLeft: r.highlight ? "5px solid #F4845F" : "none",
               }}>
-                <span style={{ fontWeight: 700, fontSize: "1.1rem", width: 30, textAlign: "center" }}>{r.pos}</span>
-                <span style={{ width: 36, height: 36, borderRadius: "50%", background: r.avatarBg, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: "0.8rem", flexShrink: 0 }}>{r.initials}</span>
+                <span style={{ fontWeight: 900, fontSize: "1.3rem", width: 36, textAlign: "center", fontFamily: "'Baloo 2', cursive" }}>
+                  {r.pos}
+                </span>
+                <span style={{
+                  width: 42, height: 42, borderRadius: "50%", background: r.avatarBg, color: "white",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontWeight: 800, fontSize: "0.85rem", flexShrink: 0,
+                  border: "3px solid #1B2B23", boxShadow: "2px 2px 0 #1B2B23",
+                }}>
+                  {r.initials}
+                </span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600 }}>{r.name} — <span style={{ color: "#999" }}>{r.city}</span></div>
+                  <div style={{ fontWeight: 700, fontSize: "1rem" }}>
+                    {r.name} <span style={{ color: "#999", fontSize: "0.85rem" }}>— {r.city}</span>
+                  </div>
                   <div style={{ fontStyle: "italic", fontSize: "0.85rem", color: "#888" }}>{r.quote}</div>
                 </div>
-                <span style={{ fontWeight: 700, color: "#2D6A4F", whiteSpace: "nowrap" }}>{r.pts}pts</span>
+                <span style={{
+                  fontWeight: 900, color: "#2D6A4F", whiteSpace: "nowrap",
+                  fontFamily: "'Baloo 2', cursive", fontSize: "1.1rem",
+                }}>
+                  {r.pts}<span style={{ fontSize: "0.75rem" }}>pts</span>
+                </span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION — TESTIMONIALS */}
-      <section style={{ background: "#1B2B23", padding: "5rem 1.5rem", textAlign: "center" }}>
-        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2.25rem", color: "white", marginBottom: "0.5rem" }}>
-            O que as <span style={{ color: "#F4845F" }}>mães</span> estão dizendo
+      {/* ═══════════════ TESTIMONIALS ═══════════════ */}
+      <section style={{
+        background: "#1B2B23", padding: "6rem 1.5rem", textAlign: "center",
+        position: "relative",
+      }}>
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)",
+          backgroundSize: "20px 20px", pointerEvents: "none",
+        }} />
+        
+        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
+          <h2 style={{
+            fontFamily: "'Baloo 2', cursive", fontWeight: 900,
+            fontSize: "clamp(2rem, 5vw, 3rem)", color: "white", marginBottom: "0.5rem",
+          }}>
+            O que as <span style={{ color: "#F4845F" }}>mães</span> dizem
           </h2>
-          <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "3rem" }}>
+          <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "3.5rem", fontWeight: 600, fontSize: "1.05rem" }}>
             (os pais estão com vergonha de falar, mas os pontos falam por eles)
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.75rem" }}>
             {testimonials.map((t, i) => (
-              <div key={i} className="testimonial-card">
-                <div style={{ marginBottom: "1rem", color: "#F9C74F", fontSize: "1.1rem" }}>
-                  {"★".repeat(t.stars)}{"☆".repeat(5 - t.stars)}
+              <div key={i} className="testimonial-neo">
+                <div style={{ marginBottom: "1.25rem", fontSize: "1.5rem" }}>
+                  {"⭐".repeat(t.stars)}{"☆".repeat(5 - t.stars)}
                 </div>
-                <p style={{ color: "rgba(255,255,255,0.9)", lineHeight: 1.7, fontSize: "0.95rem", marginBottom: "1.5rem" }}>
+                <p style={{
+                  color: "rgba(255,255,255,0.9)", lineHeight: 1.75, fontSize: "1rem",
+                  marginBottom: "1.75rem", fontWeight: 600,
+                }}>
                   "{t.text}"
                 </p>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <span style={{ width: 40, height: 40, borderRadius: "50%", background: t.avatarBg, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: "0.85rem", color: "#1B2B23" }}>
-                    {t.name.split(" ").map(n => n[0]).join("")}
+                <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                  <span style={{
+                    width: 48, height: 48, borderRadius: "50%", background: t.avatarBg,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "1.3rem", border: "3px solid rgba(255,255,255,0.2)",
+                  }}>
+                    {t.avatarEmoji}
                   </span>
                   <div style={{ textAlign: "left" }}>
-                    <div style={{ color: "white", fontWeight: 700, fontSize: "0.9rem" }}>{t.name}</div>
-                    <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.8rem" }}>{t.role}</div>
+                    <div style={{ color: "white", fontWeight: 800, fontSize: "1rem" }}>{t.name}</div>
+                    <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem" }}>{t.role}</div>
                   </div>
                 </div>
               </div>
@@ -561,130 +858,119 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION — DOWNLOAD CTA */}
-      <section id="download" style={{ padding: "5rem 1.5rem", textAlign: "center" }}>
-        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "600px", margin: "0 auto" }}>
-          <div style={{ fontSize: "4rem", animation: "eye-bounce 2s infinite", marginBottom: "1.5rem" }}>👁️</div>
+      {/* ═══════════════ DOWNLOAD CTA ═══════════════ */}
+      <section id="download" style={{
+        padding: "6rem 1.5rem", textAlign: "center",
+        background: "linear-gradient(180deg, #FFF8F1 0%, #FFEAAE30 100%)",
+      }}>
+        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "650px", margin: "0 auto" }}>
+          <div style={{
+            fontSize: "5rem", animation: "eye-pulse 2.5s infinite", marginBottom: "1.5rem",
+            filter: "drop-shadow(4px 4px 0 rgba(0,0,0,0.1))",
+          }}>👁️</div>
           <h2 style={{
             fontFamily: "'Baloo 2', cursive", fontWeight: 900,
-            fontSize: "clamp(2.5rem, 5vw, 4rem)", color: "#2D6A4F", lineHeight: 1.1, marginBottom: "1.5rem",
+            fontSize: "clamp(2.5rem, 6vw, 4.5rem)", color: "#1B2B23", lineHeight: 1,
+            marginBottom: "1.5rem",
           }}>
-            Seu filho não vai<br />esperar <span style={{ color: "#F4845F" }}>forever</span>.
+            Seu filho não vai
+            <br />
+            esperar <span style={{
+              color: "#F4845F", textShadow: "4px 4px 0 rgba(244,132,95,0.2)",
+            }}>forever</span>.
           </h2>
-          <p style={{ fontSize: "1.05rem", color: "#243B2F", lineHeight: 1.7, marginBottom: "2.5rem" }}>
-            Baixa agora. É grátis. E o ranking já tá contando o tempo que você levou pra decidir instalar.
+          <p style={{
+            fontSize: "1.15rem", color: "#243B2F", lineHeight: 1.75, marginBottom: "2.5rem", fontWeight: 600,
+          }}>
+            Baixa agora. É grátis. E o ranking já tá contando o tempo que você levou pra decidir.
           </p>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
-            <a href={APK_URL} className="store-btn" target="_blank" rel="noopener noreferrer">
-              <span style={{ fontSize: "1.75rem" }}>🤖</span>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
+            <a href={APK_URL} className="store-btn-neo" target="_blank" rel="noopener noreferrer">
+              <span style={{ fontSize: "2rem" }}>🤖</span>
               <div style={{ textAlign: "left" }}>
-                <div style={{ fontSize: "0.7rem", opacity: 0.7 }}>Disponível para</div>
-                <div style={{ fontWeight: 700, fontSize: "1.1rem" }}>Android</div>
+                <div style={{ fontSize: "0.75rem", opacity: 0.7, fontWeight: 600 }}>Disponível para</div>
+                <div style={{ fontWeight: 800, fontSize: "1.25rem", fontFamily: "'Baloo 2', cursive" }}>Android</div>
               </div>
             </a>
           </div>
 
           {/* APK Notice */}
-          <div style={{
-            background: "#FFF0E6", border: "2px solid #F4845F", borderRadius: "16px",
-            padding: "1.25rem 1.5rem", marginBottom: "1.5rem", textAlign: "left",
+          <div className="neo-card" style={{
+            background: "#FFF0E6", borderColor: "#F4845F",
+            boxShadow: "6px 6px 0 #F4845F",
+            padding: "1.5rem 1.75rem", marginBottom: "1.5rem", textAlign: "left",
           }}>
-            <p style={{ fontSize: "0.95rem", color: "#1B2B23", lineHeight: 1.7, margin: 0 }}>
+            <p style={{ fontSize: "1rem", color: "#1B2B23", lineHeight: 1.75, margin: 0, fontWeight: 600 }}>
               <strong>⚠️ Atenção:</strong> O aplicativo é um arquivo <strong>.APK</strong> (instalação direta no Android).
-              Seu celular pode pedir permissão para instalar apps de fontes desconhecidas — <strong>é normal e seguro</strong>, basta autorizar.
+              Seu celular pode pedir permissão para instalar de fontes desconhecidas — <strong>é normal e seguro</strong>, basta autorizar.
             </p>
-            <p style={{ fontSize: "0.9rem", color: "#666", lineHeight: 1.7, margin: "0.75rem 0 0" }}>
-              Se não se sentir confortável para baixar o APK, mande um <strong>direct no Instagram</strong>{" "}
+            <p style={{ fontSize: "0.95rem", color: "#555", lineHeight: 1.75, margin: "0.75rem 0 0", fontWeight: 600 }}>
+              Não se sentiu confortável? Mande um <strong>direct no Instagram</strong>{" "}
               <a
                 href="https://instagram.com/estoudeolho.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: "#F4845F", fontWeight: 700, textDecoration: "underline" }}
+                style={{ color: "#F4845F", fontWeight: 800, textDecoration: "underline" }}
               >
                 @estoudeolho.app
               </a>{" "}
-              e enviaremos o link da <strong>versão web</strong> para você acessar pelo navegador. 📲
+              e enviaremos o link da <strong>versão web</strong>. 📲
             </p>
           </div>
 
-          <p style={{ fontSize: "0.85rem", fontStyle: "italic", color: "#999" }}>
-            Ou acesse direto no navegador em <strong>estoudeolho.lovable.app</strong> — sem precisar instalar nada.<br />
-            Gratuito para sempre no plano básico. Seu filho não tem preço.
+          <p style={{ fontSize: "0.9rem", fontStyle: "italic", color: "#999", fontWeight: 600 }}>
+            Ou acesse direto em <strong>estoudeolho.lovable.app</strong> — sem instalar nada.<br />
+            Gratuito para sempre. Seu filho não tem preço.
           </p>
         </div>
       </section>
 
-      {/* SECTION — TUTORIAL: COMO CONECTAR */}
-      <section id="tutorial" style={{ background: "#1B2B23", padding: "5rem 1.5rem", overflow: "hidden" }}>
-        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+      {/* ═══════════════ TUTORIAL ═══════════════ */}
+      <section id="tutorial" style={{
+        background: "#1B2B23", padding: "6rem 1.5rem", overflow: "hidden",
+        position: "relative",
+      }}>
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)",
+          backgroundSize: "25px 25px", pointerEvents: "none",
+        }} />
+        
+        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1100px", margin: "0 auto", position: "relative" }}>
+          <div style={{ textAlign: "center", marginBottom: "4rem" }}>
             <div style={{
               display: "inline-block", background: "#F4845F", color: "white",
-              borderRadius: "50px", padding: "0.4rem 1.25rem", fontSize: "0.85rem", fontWeight: 700, marginBottom: "1rem",
+              borderRadius: "50px", padding: "0.5rem 1.5rem", fontSize: "1rem", fontWeight: 800,
+              marginBottom: "1.25rem", fontFamily: "'Baloo 2', cursive",
+              border: "3px solid white", boxShadow: "4px 4px 0 rgba(255,255,255,0.2)",
             }}>
               📖 Passo a passo
             </div>
             <h2 style={{
-              fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "clamp(2rem, 4vw, 2.75rem)",
-              color: "white", lineHeight: 1.2, marginBottom: "0.75rem",
+              fontFamily: "'Baloo 2', cursive", fontWeight: 900,
+              fontSize: "clamp(2rem, 5vw, 3rem)", color: "white", lineHeight: 1.15, marginBottom: "0.75rem",
             }}>
-              Como adicionar o <span style={{ color: "#F4845F" }}>marido</span> à família
+              Como adicionar o <span style={{ color: "#F4845F" }}>marido</span>
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1.05rem", maxWidth: "550px", margin: "0 auto" }}>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1.1rem", maxWidth: "550px", margin: "0 auto", fontWeight: 600 }}>
               Em 4 passos simples. Até ele consegue. (provavelmente.)
             </p>
           </div>
 
           <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "2rem",
-            perspective: "1200px",
+            display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gap: "2rem", perspective: "1200px",
           }}>
-            {[
-              {
-                img: tutorialStep1,
-                step: "1",
-                title: "Mãe cria a conta",
-                desc: "Abra o app e clique em \"Sou a Chefe\" 👑. Crie sua conta com email e senha. Você é a CEO da família.",
-                color: "#FF6B9D",
-                rotate: "-3deg",
-              },
-              {
-                img: tutorialStep2,
-                step: "2",
-                title: "Gere o código de convite",
-                desc: "No perfil, clique em \"Convidar Parceiro\". Um código único será gerado. Copie e envie pelo WhatsApp com a mensagem irônica.",
-                color: "#2D6A4F",
-                rotate: "2deg",
-              },
-              {
-                img: tutorialStep3,
-                step: "3",
-                title: "Pai recebe e entra",
-                desc: "O pai abre o app, cria a conta dele (login normal) e cola o código no campo \"Código de Convite\" na tela inicial.",
-                color: "#F4845F",
-                rotate: "-2deg",
-              },
-              {
-                img: tutorialStep4,
-                step: "4",
-                title: "Família conectada! 🎉",
-                desc: "Pronto! Agora a mãe cria tarefas, o pai executa, e o ranking começa a contar. Sem escapatória.",
-                color: "#8B5CF6",
-                rotate: "3deg",
-              },
-            ].map((item, i) => (
+            {tutorialSteps.map((item, i) => (
               <div
                 key={i}
                 style={{
                   transform: `rotateY(${item.rotate}) rotateX(1deg)`,
                   transformStyle: "preserve-3d",
                   transition: "transform 0.5s ease, box-shadow 0.5s ease",
-                  borderRadius: "24px",
-                  overflow: "hidden",
-                  background: "#fff",
-                  boxShadow: `0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05)`,
+                  borderRadius: "24px", overflow: "hidden", background: "#fff",
+                  boxShadow: `0 20px 60px rgba(0,0,0,0.3)`,
+                  border: "4px solid #1B2B23",
                   cursor: "default",
                 }}
                 onMouseEnter={(e) => {
@@ -693,31 +979,25 @@ export default function LandingPage() {
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = `rotateY(${item.rotate}) rotateX(1deg)`;
-                  e.currentTarget.style.boxShadow = `0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05)`;
+                  e.currentTarget.style.boxShadow = `0 20px 60px rgba(0,0,0,0.3)`;
                 }}
               >
-                {/* Step number badge */}
                 <div style={{ position: "relative" }}>
                   <img
-                    src={item.img}
-                    alt={`Passo ${item.step}: ${item.title}`}
-                    loading="lazy"
-                    width={640}
-                    height={960}
+                    src={item.img} alt={`Passo ${item.step}: ${item.title}`}
+                    loading="lazy" width={640} height={960}
                     style={{ width: "100%", height: "220px", objectFit: "cover", display: "block" }}
                   />
                   <div style={{
                     position: "absolute", top: "12px", left: "12px",
-                    width: "44px", height: "44px", borderRadius: "50%",
+                    width: "48px", height: "48px", borderRadius: "50%",
                     background: item.color, color: "white",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.3rem",
-                    boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-                    border: "3px solid white",
+                    fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.4rem",
+                    boxShadow: "3px 3px 0 rgba(0,0,0,0.3)", border: "3px solid white",
                   }}>
                     {item.step}
                   </div>
-                  {/* Gradient overlay */}
                   <div style={{
                     position: "absolute", bottom: 0, left: 0, right: 0, height: "60px",
                     background: "linear-gradient(to top, white, transparent)",
@@ -726,13 +1006,11 @@ export default function LandingPage() {
                 <div style={{ padding: "1.25rem 1.5rem 1.75rem" }}>
                   <h3 style={{
                     fontFamily: "'Baloo 2', cursive", fontWeight: 800,
-                    fontSize: "1.15rem", color: "#1B2B23", marginBottom: "0.5rem",
+                    fontSize: "1.2rem", color: "#1B2B23", marginBottom: "0.5rem",
                   }}>
                     {item.title}
                   </h3>
-                  <p style={{
-                    fontSize: "0.9rem", color: "#555", lineHeight: 1.65, margin: 0,
-                  }}>
+                  <p style={{ fontSize: "0.9rem", color: "#555", lineHeight: 1.65, margin: 0, fontWeight: 600 }}>
                     {item.desc}
                   </p>
                 </div>
@@ -743,27 +1021,35 @@ export default function LandingPage() {
           {/* Bottom tip */}
           <div style={{
             textAlign: "center", marginTop: "3rem",
-            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: "16px", padding: "1.5rem 2rem", maxWidth: "600px", marginLeft: "auto", marginRight: "auto",
+            background: "rgba(255,255,255,0.05)", border: "2px solid rgba(255,255,255,0.1)",
+            borderRadius: "20px", padding: "1.5rem 2rem", maxWidth: "600px", marginLeft: "auto", marginRight: "auto",
           }}>
-            <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>
-              💡 <strong>Dica:</strong> Se o pai "esqueceu" de entrar com o código, a mãe pode reenviar o convite pelo WhatsApp quantas vezes quiser.
+            <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "1rem", lineHeight: 1.75, margin: 0, fontWeight: 600 }}>
+              💡 <strong>Dica:</strong> Se o pai "esqueceu" de entrar com o código, a mãe pode reenviar quantas vezes quiser.
               O código não expira. <span style={{ color: "#F4845F", fontStyle: "italic" }}>A paciência da mãe, talvez.</span>
             </p>
           </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ background: "#1B2B23", color: "white", padding: "3rem 1.5rem", textAlign: "center" }}>
+      {/* ═══════════════ FOOTER ═══════════════ */}
+      <footer style={{
+        background: "#1B2B23", color: "white", padding: "3.5rem 1.5rem", textAlign: "center",
+        borderTop: "4px solid #F4845F",
+      }}>
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
-          <div style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.5rem", marginBottom: "0.5rem" }}>
+          <div style={{
+            fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "2rem", marginBottom: "0.5rem",
+          }}>
             Estou de <span style={{ color: "#F4845F" }}>Olho</span> 👁️
           </div>
-          <p style={{ fontStyle: "italic", opacity: 0.6, marginBottom: "1.5rem", fontSize: "0.95rem" }}>
+          <p style={{ fontStyle: "italic", opacity: 0.6, marginBottom: "2rem", fontSize: "1rem", fontWeight: 600 }}>
             porque alguém tem que lembrar
           </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem", flexWrap: "wrap", marginBottom: "1.5rem", fontSize: "0.9rem" }}>
+          <div style={{
+            display: "flex", justifyContent: "center", gap: "2rem", flexWrap: "wrap",
+            marginBottom: "2rem", fontSize: "0.95rem",
+          }}>
             {[
               { label: "Sobre", href: "#" },
               { label: "Privacidade", href: "/privacidade" },
@@ -771,7 +1057,10 @@ export default function LandingPage() {
               { label: "Suporte", href: "/suporte" },
               { label: "Exclusão de Dados", href: "/exclusao-dados" },
             ].map((l, i) => (
-              <a key={i} href={l.href} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", transition: "color 0.2s" }}
+              <a key={i} href={l.href} style={{
+                color: "rgba(255,255,255,0.5)", textDecoration: "none",
+                transition: "color 0.2s", fontWeight: 600,
+              }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#F4845F")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
               >
@@ -779,10 +1068,10 @@ export default function LandingPage() {
               </a>
             ))}
           </div>
-          <p style={{ fontSize: "0.85rem", opacity: 0.5, marginBottom: "1rem" }}>
+          <p style={{ fontSize: "0.9rem", opacity: 0.5, marginBottom: "1rem", fontWeight: 600 }}>
             © {new Date().getFullYear()} Estou de Olho. Feito com amor (e ironia) no Brasil 🇧🇷
           </p>
-          <p style={{ fontSize: "0.75rem", opacity: 0.35 }}>
+          <p style={{ fontSize: "0.8rem", opacity: 0.35 }}>
             Nenhum pai foi ferido durante a produção deste app. Mas alguns ficaram com vergonha.
           </p>
         </div>
