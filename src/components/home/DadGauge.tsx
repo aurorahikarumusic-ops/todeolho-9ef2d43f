@@ -250,7 +250,6 @@ export default function DadGauge({ percentage }: DadGaugeProps) {
           {animatedPct}%
         </span>
       </div>
-      </div>
 
       {/* Level info with animated emoji */}
       <div className="mt-3 relative">
