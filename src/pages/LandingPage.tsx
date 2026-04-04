@@ -1,8 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import screenshotDashboard from "@/assets/screenshot-dashboard.jpg";
 import screenshotTarefas from "@/assets/screenshot-tarefas.jpg";
 import screenshotRanking from "@/assets/screenshot-ranking.jpg";
+import tutorialStep1 from "@/assets/tutorial-step1.jpg";
+import tutorialStep2 from "@/assets/tutorial-step2.jpg";
+import tutorialStep3 from "@/assets/tutorial-step3.jpg";
+import tutorialStep4 from "@/assets/tutorial-step4.jpg";
 
 const APK_URL = "https://github.com/aurorahikarumusic-ops/todeolho-9ef2d43f/releases/download/v1.0.0/estoudeolho.apk";
 
