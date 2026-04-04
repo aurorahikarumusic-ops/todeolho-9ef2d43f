@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile, useRanking } from "@/hooks/useProfile";
+import { useIsMom } from "@/hooks/useFamily";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { getDadTitle } from "@/lib/constants";
-import { Trophy, Crown, Medal, Skull, Share2, Users, Plus, Copy, Flame, TrendingUp, Zap, ChevronUp, ChevronDown } from "lucide-react";
+import { Trophy, Crown, Medal, Skull, Share2, Users, Plus, Copy, Flame, TrendingUp, Zap, ChevronUp, ChevronDown, Eye, Star, Sparkles, Heart } from "lucide-react";
 import { startOfWeek } from "date-fns";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
@@ -27,6 +28,16 @@ function getPositionDescription(pos: number, total: number): string {
   return "Existindo no ranking. Parabéns (não).";
 }
 
+function getMomPositionDescription(pos: number, total: number): string {
+  if (total <= 1) return "Só um pai no radar. Coitado. Coitada de você.";
+  if (pos === 0) return "Seu marido lidera. Aproveite. Vai durar pouco.";
+  if (pos === 1) return "Quase lá. Quase bom o suficiente.";
+  if (pos === 2) return "Pódio. Poderia ser pior. E será.";
+  if (pos <= 4) return "Top 5. Tá no caminho. Devagar.";
+  if (pos === total - 1) return "Último. Você sabia desde o começo.";
+  return "Existindo. Já é alguma coisa, né?";
+}
+
 function getShareText(name: string, pos: number, total: number, pts: number): string {
   const posLabel = `#${pos + 1}`;
   if (pos <= 2) return `👑 Tô no PÓDIO dos pais no *Estou de Olho* 👁️\nPosição ${posLabel} com ${pts} pontos!\nSim, eu. Guarda esse print. 🏆`;
@@ -34,15 +45,15 @@ function getShareText(name: string, pos: number, total: number, pts: number): st
   return `⚡ Posição ${posLabel} no ranking dos pais no *Estou de Olho* 👁️\n${pts} pontos. Subindo! (Devagar, mas subindo.)`;
 }
 
-const StarRating = ({ stars }: { stars: number }) => (
+const StarRating = ({ stars, isMom }: { stars: number; isMom?: boolean }) => (
   <div className="flex items-center gap-0.5">
     {[1, 2, 3, 4, 5].map(i => (
-      <span key={i} className={`text-xs ${i <= stars ? "text-accent-foreground" : "text-muted-foreground/30"}`}>★</span>
+      <span key={i} className={`text-xs ${i <= stars ? (isMom ? "text-mom" : "text-accent-foreground") : "text-muted-foreground/30"}`}>★</span>
     ))}
   </div>
 );
 
-// Animated podium component
+// ============ DAD PODIUM ============
 function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any }) {
   const [animate, setAnimate] = useState(false);
   useEffect(() => {
@@ -64,73 +75,34 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
 
   return (
     <div className="relative">
-      {/* Background glow */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent rounded-3xl" />
-      
       <div className="flex items-end justify-center gap-3 px-4 pt-6 pb-2">
         {podiumData.map(({ dad, pos, height, delay, color, medal, ring }) => {
           if (!dad) return <div key={pos} className="w-24" />;
           const isMe = myProfile?.id === dad.id;
           const title = getDadTitle(dad.points);
-
           return (
-            <div
-              key={dad.id}
-              className="flex flex-col items-center gap-2"
-              style={{
-                animation: animate ? `podiumRise 0.6s ease-out ${delay} both` : "none",
-              }}
-            >
-              {/* Medal/Crown */}
-              <span className="text-2xl" style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.2))" }}>
-                {medal}
-              </span>
-
-              {/* Avatar with 3D ring */}
+            <div key={dad.id} className="flex flex-col items-center gap-2" style={{ animation: animate ? `podiumRise 0.6s ease-out ${delay} both` : "none" }}>
+              <span className="text-2xl" style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.2))" }}>{medal}</span>
               <div className={`relative ${pos === 1 ? "scale-110" : ""}`}>
                 <div className={`absolute -inset-1 rounded-full bg-gradient-to-b ${color} blur-sm`} />
                 <Avatar className={`relative h-14 w-14 ${ring} ring-2 border-2 border-card shadow-lg`}>
                   <AvatarImage src={dad.avatar_url || undefined} />
-                  <AvatarFallback className="bg-primary/10 font-display font-bold text-lg">
-                    {(dad.display_name || "P")[0]}
-                  </AvatarFallback>
+                  <AvatarFallback className="bg-primary/10 font-display font-bold text-lg">{(dad.display_name || "P")[0]}</AvatarFallback>
                 </Avatar>
                 {isMe && (
-                  <div className="absolute -bottom-1 -right-1 bg-secondary text-secondary-foreground rounded-full w-5 h-5 flex items-center justify-center text-[8px] font-bold shadow-md">
-                    EU
-                  </div>
+                  <div className="absolute -bottom-1 -right-1 bg-secondary text-secondary-foreground rounded-full w-5 h-5 flex items-center justify-center text-[8px] font-bold shadow-md">EU</div>
                 )}
               </div>
-
-              {/* Name */}
-              <p className="font-display font-bold text-xs text-center truncate max-w-[80px]">
-                {(dad.display_name || "Pai").split(" ")[0]}
-              </p>
-
-              {/* Points */}
-              <Badge
-                variant={pos === 1 ? "default" : "outline"}
-                className={`text-[10px] font-display ${pos === 1 ? "bg-primary shadow-md" : ""}`}
-              >
-                {dad.points}pts
-              </Badge>
-
-              {/* Podium bar */}
-              <div
-                className={`w-20 ${height} rounded-t-xl bg-gradient-to-b ${color} border border-border/50 relative overflow-hidden`}
-                style={{
-                  boxShadow: "inset 0 2px 10px rgba(255,255,255,0.1), 0 -4px 20px rgba(0,0,0,0.08)",
-                }}
-              >
+              <p className="font-display font-bold text-xs text-center truncate max-w-[80px]">{(dad.display_name || "Pai").split(" ")[0]}</p>
+              <Badge variant={pos === 1 ? "default" : "outline"} className={`text-[10px] font-display ${pos === 1 ? "bg-primary shadow-md" : ""}`}>{dad.points}pts</Badge>
+              <div className={`w-20 ${height} rounded-t-xl bg-gradient-to-b ${color} border border-border/50 relative overflow-hidden`} style={{ boxShadow: "inset 0 2px 10px rgba(255,255,255,0.1), 0 -4px 20px rgba(0,0,0,0.08)" }}>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-transparent" />
                 <div className="absolute bottom-2 left-0 right-0 text-center">
                   <span className="font-display font-bold text-lg text-foreground/60">{pos}°</span>
                 </div>
-                {/* Streak fire */}
                 {dad.streak_days > 0 && (
-                  <div className="absolute top-2 left-0 right-0 text-center">
-                    <span className="text-[10px]">🔥{dad.streak_days}</span>
-                  </div>
+                  <div className="absolute top-2 left-0 right-0 text-center"><span className="text-[10px]">🔥{dad.streak_days}</span></div>
                 )}
               </div>
             </div>
@@ -141,39 +113,138 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
   );
 }
 
-// Stats bar for user
+// ============ MOM PODIUM (Elegant 3D) ============
+function MomPodiumSection({ ranking }: { ranking: any[] }) {
+  const [animate, setAnimate] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setAnimate(true), 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (ranking.length < 2) return null;
+
+  const first = ranking[0];
+  const second = ranking[1];
+  const third = ranking[2];
+
+  const podiumData = [
+    { dad: second, pos: 2, height: "h-20", delay: "0.5s", medal: "🥈" },
+    { dad: first, pos: 1, height: "h-28", delay: "0.2s", medal: "💎" },
+    { dad: third, pos: 3, height: "h-16", delay: "0.7s", medal: "🥉" },
+  ];
+
+  return (
+    <div className="relative py-4">
+      {/* Elegant glow */}
+      <div className="absolute inset-0 rounded-3xl" style={{
+        background: "radial-gradient(ellipse at 50% 0%, hsl(var(--mom-accent) / 0.12) 0%, transparent 70%)",
+      }} />
+
+      <div className="relative flex items-end justify-center gap-4 px-4 pt-4 pb-2">
+        {podiumData.map(({ dad, pos, height, delay, medal }) => {
+          if (!dad) return <div key={pos} className="w-24" />;
+          const title = getDadTitle(dad.points);
+          return (
+            <div
+              key={dad.id}
+              className="flex flex-col items-center gap-2"
+              style={{ animation: animate ? `momPodiumRise 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay} both` : "none" }}
+            >
+              {/* Floating medal with glow */}
+              <div className="relative">
+                <span className="text-2xl" style={{
+                  filter: pos === 1 ? "drop-shadow(0 0 12px hsl(var(--mom-accent) / 0.6))" : "drop-shadow(0 2px 6px rgba(0,0,0,0.15))",
+                }}>{medal}</span>
+                {pos === 1 && (
+                  <Sparkles className="absolute -top-2 -right-3 w-4 h-4 text-mom animate-pulse" />
+                )}
+              </div>
+
+              {/* Avatar with rose ring */}
+              <div className={`relative ${pos === 1 ? "scale-110" : ""}`} style={{
+                transform: pos === 1 ? "scale(1.1) translateZ(20px)" : undefined,
+              }}>
+                <div className="absolute -inset-1.5 rounded-full blur-md" style={{
+                  background: pos === 1
+                    ? "linear-gradient(135deg, hsl(var(--mom-accent) / 0.4), hsl(340 80% 70% / 0.3))"
+                    : "linear-gradient(135deg, hsl(var(--mom-accent) / 0.15), transparent)",
+                }} />
+                <Avatar className={`relative h-14 w-14 ring-2 border-2 border-card shadow-lg`} style={{
+                  boxShadow: pos === 1 ? "0 4px 20px hsl(var(--mom-accent) / 0.3)" : undefined,
+                  borderColor: pos === 1 ? "hsl(var(--mom-accent) / 0.3)" : undefined,
+                }}>
+                  <AvatarImage src={dad.avatar_url || undefined} />
+                  <AvatarFallback className="font-display font-bold text-lg" style={{
+                    background: "hsl(var(--mom-bg))",
+                    color: "hsl(var(--mom-text))",
+                  }}>{(dad.display_name || "P")[0]}</AvatarFallback>
+                </Avatar>
+              </div>
+
+              <p className="font-display font-bold text-xs text-center truncate max-w-[80px]">
+                {(dad.display_name || "Pai").split(" ")[0]}
+              </p>
+
+              <Badge className="text-[10px] font-display border-0" style={{
+                background: pos === 1
+                  ? "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(340 80% 65%))"
+                  : "hsl(var(--mom-bg))",
+                color: pos === 1 ? "white" : "hsl(var(--mom-text))",
+                boxShadow: pos === 1 ? "0 2px 10px hsl(var(--mom-accent) / 0.3)" : undefined,
+              }}>
+                {dad.points}pts
+              </Badge>
+
+              {/* Elegant podium bar */}
+              <div className={`w-20 ${height} rounded-t-2xl relative overflow-hidden`} style={{
+                background: pos === 1
+                  ? "linear-gradient(180deg, hsl(var(--mom-accent) / 0.25), hsl(var(--mom-accent) / 0.08))"
+                  : "linear-gradient(180deg, hsl(var(--mom-border) / 0.3), hsl(var(--mom-bg) / 0.5))",
+                border: `1px solid hsl(var(--mom-border) / 0.4)`,
+                boxShadow: "inset 0 2px 10px rgba(255,255,255,0.15), 0 -4px 20px rgba(0,0,0,0.05)",
+              }}>
+                <div className="absolute inset-0" style={{
+                  background: "linear-gradient(90deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(255,255,255,0.06) 100%)",
+                }} />
+                <div className="absolute bottom-2 left-0 right-0 text-center">
+                  <span className="font-display font-bold text-base" style={{ color: "hsl(var(--mom-text) / 0.5)" }}>{pos}°</span>
+                </div>
+                {dad.streak_days > 0 && (
+                  <div className="absolute top-2 left-0 right-0 text-center"><span className="text-[10px]">🔥{dad.streak_days}</span></div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Dad stats bar
 function MyStatsBar({ profile, position, total }: { profile: any; position: number; total: number }) {
   if (!profile || position < 0) return null;
-  
   const percentile = total > 1 ? Math.round(((total - position) / total) * 100) : 100;
   const title = getDadTitle(profile.points);
 
   return (
-    <div
-      className="rounded-2xl p-4 relative overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--card)))",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
-        border: "1px solid hsl(var(--border))",
-      }}
-    >
-      {/* Subtle pattern */}
+    <div className="rounded-2xl p-4 relative overflow-hidden" style={{
+      background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--card)))",
+      boxShadow: "0 8px 32px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
+      border: "1px solid hsl(var(--border))",
+    }}>
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: "radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)",
         backgroundSize: "24px 24px"
       }} />
-
       <div className="relative flex items-center gap-4">
         <div className="relative">
           <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-primary/20 to-secondary/20 blur-sm" />
           <Avatar className="relative h-12 w-12 ring-2 ring-primary/30">
             <AvatarImage src={profile.avatar_url || undefined} />
-            <AvatarFallback className="bg-primary/10 font-display font-bold">
-              {(profile.display_name || "P")[0]}
-            </AvatarFallback>
+            <AvatarFallback className="bg-primary/10 font-display font-bold">{(profile.display_name || "P")[0]}</AvatarFallback>
           </Avatar>
         </div>
-
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
             <span className="font-display font-bold text-lg">#{position + 1}</span>
@@ -184,7 +255,6 @@ function MyStatsBar({ profile, position, total }: { profile: any; position: numb
             {title.emoji} {title.title} • Top {percentile}% dos pais
           </p>
         </div>
-
         <div className="text-right">
           <div className="flex items-center gap-1">
             <Zap className="w-4 h-4 text-primary" />
@@ -193,25 +263,108 @@ function MyStatsBar({ profile, position, total }: { profile: any; position: numb
           <p className="text-[10px] text-muted-foreground">pontos</p>
         </div>
       </div>
-
-      {/* Progress to next position */}
       {position > 0 && (
         <div className="relative mt-3">
           <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-1">
             <span className="flex items-center gap-1">
               <ChevronUp className="w-3 h-3" />
-              Pra subir: +{Math.max(1, (ranking_diff(profile, position)))}pts
+              Pra subir: +{Math.max(1, ranking_diff(profile, position))}pts
             </span>
             <span className="font-display">{profile.streak_days > 0 ? `🔥 ${profile.streak_days} dias` : ""}</span>
           </div>
           <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-1000"
-              style={{ width: `${Math.min(95, Math.max(5, percentile))}%` }}
-            />
+            <div className="h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-1000" style={{ width: `${Math.min(95, Math.max(5, percentile))}%` }} />
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// Mom observer stats
+function MomObserverBar({ ranking, partnerProfile }: { ranking: any[]; partnerProfile: any }) {
+  if (!partnerProfile) return null;
+  const partnerPos = ranking.findIndex(r => r.id === partnerProfile.id);
+  if (partnerPos < 0) return null;
+
+  const total = ranking.length;
+  const title = getDadTitle(partnerProfile.points);
+  const percentile = total > 1 ? Math.round(((total - partnerPos) / total) * 100) : 100;
+
+  const momComments = [
+    "Poderia ser pior. Mas poderia ser BEM melhor.",
+    "Ele tá tentando. Eu acho.",
+    "Pelo menos ele abriu o app hoje.",
+    "Melhor que ontem. O mínimo.",
+    "Surpreendentemente, não é o último.",
+  ];
+  const comment = momComments[partnerPos % momComments.length];
+
+  return (
+    <div className="rounded-2xl p-4 relative overflow-hidden" style={{
+      background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.06), hsl(var(--card)))",
+      boxShadow: "0 8px 32px hsl(var(--mom-accent) / 0.08), inset 0 1px 0 rgba(255,255,255,0.1)",
+      border: "1px solid hsl(var(--mom-border) / 0.4)",
+    }}>
+      {/* Subtle elegant pattern */}
+      <div className="absolute inset-0 opacity-[0.02]" style={{
+        backgroundImage: "radial-gradient(circle at 1px 1px, hsl(var(--mom-accent)) 0.5px, transparent 0)",
+        backgroundSize: "20px 20px"
+      }} />
+
+      <div className="relative">
+        <div className="flex items-center gap-1 mb-3">
+          <Eye className="w-4 h-4" style={{ color: "hsl(var(--mom-accent))" }} />
+          <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--mom-text))" }}>
+            Monitorando seu marido
+          </span>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <div className="absolute -inset-1.5 rounded-full blur-md" style={{
+              background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.2), hsl(340 80% 70% / 0.15))",
+            }} />
+            <Avatar className="relative h-12 w-12 ring-2" style={{
+              boxShadow: "0 4px 12px hsl(var(--mom-accent) / 0.15)",
+            }}>
+              <AvatarImage src={partnerProfile.avatar_url || undefined} />
+              <AvatarFallback className="font-display font-bold" style={{
+                background: "hsl(var(--mom-bg))", color: "hsl(var(--mom-text))"
+              }}>{(partnerProfile.display_name || "P")[0]}</AvatarFallback>
+            </Avatar>
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="font-display font-bold text-lg" style={{ color: "hsl(var(--mom-accent))" }}>
+                #{partnerPos + 1}
+              </span>
+              <span className="text-sm text-muted-foreground font-body">de {total}</span>
+              {partnerPos <= 2 && <Crown className="w-4 h-4" style={{ color: "hsl(var(--mom-accent))" }} />}
+            </div>
+            <p className="text-xs font-body italic truncate" style={{ color: "hsl(var(--mom-text) / 0.7)" }}>
+              {title.emoji} {title.title} • Top {percentile}%
+            </p>
+          </div>
+
+          <div className="text-right shrink-0">
+            <div className="flex items-center gap-1">
+              <Sparkles className="w-4 h-4" style={{ color: "hsl(var(--mom-accent))" }} />
+              <span className="font-display font-bold text-xl" style={{ color: "hsl(var(--mom-accent))" }}>
+                {partnerProfile.points}
+              </span>
+            </div>
+            <p className="text-[10px] text-muted-foreground">pontos</p>
+          </div>
+        </div>
+
+        <div className="mt-3 pt-3" style={{ borderTop: "1px solid hsl(var(--mom-border) / 0.3)" }}>
+          <p className="text-[11px] font-body italic text-center" style={{ color: "hsl(var(--mom-text) / 0.6)" }}>
+            "{comment}"
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -224,6 +377,7 @@ export default function Ranking() {
   const { user } = useAuth();
   const { data: myProfile } = useProfile();
   const { data: ranking = [], isLoading } = useRanking();
+  const isMom = useIsMom();
   const queryClient = useQueryClient();
   const [showGroupSheet, setShowGroupSheet] = useState(false);
   const [showJoinSheet, setShowJoinSheet] = useState(false);
@@ -240,6 +394,14 @@ export default function Ranking() {
       return data || [];
     },
   });
+
+  // For mom view: find partner in ranking
+  const partnerInRanking = isMom
+    ? ranking.find((r: any) => {
+        // partner is in the same family
+        return true; // We show general ranking for mom
+      })
+    : null;
 
   const { data: myGroups = [] } = useQuery({
     queryKey: ["my-groups", user?.id],
@@ -293,7 +455,7 @@ export default function Ranking() {
       queryClient.invalidateQueries({ queryKey: ["my-groups"] });
       setShowJoinSheet(false);
       setJoinCode("");
-      toast.success("Entrou no grupo! Agora vamos ver quem é o pior pai. 😏");
+      toast.success(isMom ? "Entrou no grupo! Hora de monitorar. 👀" : "Entrou no grupo! Agora vamos ver quem é o pior pai. 😏");
     },
     onError: () => toast.error("Código inválido ou você já está no grupo."),
   });
@@ -306,11 +468,16 @@ export default function Ranking() {
   };
 
   const getRatingForUser = (profileId: string) => {
-    const rating = momRatings.find((r: any) => r.user_id === profileId);
-    return rating;
+    return momRatings.find((r: any) => r.user_id === profileId);
   };
 
   const getPositionStyle = (pos: number) => {
+    if (isMom) {
+      if (pos === 0) return { borderLeft: "4px solid hsl(var(--mom-accent))", background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.1), hsl(var(--card)))" };
+      if (pos === 1) return { borderLeft: "4px solid hsl(var(--mom-border))", background: "linear-gradient(135deg, hsl(var(--mom-bg) / 0.5), hsl(var(--card)))" };
+      if (pos === 2) return { borderLeft: "4px solid hsl(var(--mom-accent) / 0.5)", background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.05), hsl(var(--card)))" };
+      return {};
+    }
     if (pos === 0) return { borderLeft: "4px solid hsl(var(--accent-foreground))", background: "linear-gradient(135deg, hsl(var(--accent) / 0.15), hsl(var(--card)))" };
     if (pos === 1) return { borderLeft: "4px solid hsl(var(--muted-foreground))", background: "linear-gradient(135deg, hsl(var(--muted) / 0.3), hsl(var(--card)))" };
     if (pos === 2) return { borderLeft: "4px solid hsl(var(--secondary))", background: "linear-gradient(135deg, hsl(var(--secondary) / 0.1), hsl(var(--card)))" };
@@ -331,60 +498,66 @@ export default function Ranking() {
           <div
             key={dad.id}
             onClick={() => setExpandedCard(isExpanded ? null : dad.id)}
-            className={`rounded-xl border border-border/60 p-3 cursor-pointer transition-all duration-300 ${
-              isMe ? "ring-2 ring-primary/30" : ""
-            } ${isLast && list.length > 3 ? "border-destructive/30" : ""}`}
+            className={`rounded-xl border p-3 cursor-pointer transition-all duration-300 ${
+              isMe ? (isMom ? "ring-2" : "ring-2 ring-primary/30") : ""
+            } ${isLast && list.length > 3 ? "" : ""}`}
             style={{
               ...getPositionStyle(index),
+              borderColor: isMe && isMom ? "hsl(var(--mom-accent) / 0.3)" : isLast && list.length > 3 ? "hsl(var(--destructive) / 0.3)" : "hsl(var(--border) / 0.6)",
               boxShadow: isExpanded
-                ? "0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06)"
+                ? isMom ? "0 8px 24px hsl(var(--mom-accent) / 0.1), 0 2px 8px rgba(0,0,0,0.06)" : "0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06)"
                 : "0 2px 8px rgba(0,0,0,0.04)",
               transform: isExpanded ? "scale(1.02)" : "scale(1)",
             }}
           >
             <div className="flex items-center gap-3">
-              {/* Position number with style */}
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-display font-bold text-sm shrink-0 ${
-                isLast && list.length > 3
-                  ? "bg-destructive/10 text-destructive"
-                  : "bg-muted text-muted-foreground"
-              }`}>
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-display font-bold text-sm shrink-0`} style={{
+                background: isLast && list.length > 3
+                  ? "hsl(var(--destructive) / 0.1)"
+                  : isMom ? "hsl(var(--mom-bg))" : "hsl(var(--muted))",
+                color: isLast && list.length > 3
+                  ? "hsl(var(--destructive))"
+                  : isMom ? "hsl(var(--mom-text))" : "hsl(var(--muted-foreground))",
+              }}>
                 {index + 1}
               </div>
 
-              {/* Avatar */}
               <Avatar className="h-10 w-10 shrink-0">
                 <AvatarImage src={dad.avatar_url || undefined} />
-                <AvatarFallback className="bg-primary/10 font-display text-sm">
-                  {(dad.display_name || "P")[0]}
-                </AvatarFallback>
+                <AvatarFallback className="font-display text-sm" style={{
+                  background: isMom ? "hsl(var(--mom-bg))" : "hsl(var(--primary) / 0.1)",
+                  color: isMom ? "hsl(var(--mom-text))" : undefined,
+                }}>{(dad.display_name || "P")[0]}</AvatarFallback>
               </Avatar>
 
-              {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="font-display font-bold text-sm truncate">
-                    {(dad.display_name || "Pai").split(" ")[0]}
-                  </p>
+                  <p className="font-display font-bold text-sm truncate">{(dad.display_name || "Pai").split(" ")[0]}</p>
                   {isMe && (
-                    <Badge className="text-[9px] bg-secondary/80 text-secondary-foreground px-1.5 py-0">
-                      você
+                    <Badge className="text-[9px] px-1.5 py-0 border-0" style={{
+                      background: isMom ? "hsl(var(--mom-accent) / 0.15)" : "hsl(var(--secondary) / 0.8)",
+                      color: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--secondary-foreground))",
+                    }}>
+                      {isMom ? "marido" : "você"}
                     </Badge>
                   )}
                   <span className="text-xs">{title.emoji}</span>
                 </div>
                 <p className="text-[10px] text-muted-foreground font-body italic truncate">
-                  {getPositionDescription(index, list.length)}
+                  {isMom ? getMomPositionDescription(index, list.length) : getPositionDescription(index, list.length)}
                 </p>
               </div>
 
-              {/* Points */}
               <div className="text-right shrink-0">
-                <p className="font-display font-bold text-primary text-base">{dad.points}</p>
+                <p className="font-display font-bold text-base" style={{
+                  color: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--primary))",
+                }}>{dad.points}</p>
                 <div className="flex items-center gap-1 justify-end">
                   <span className="text-[10px] text-muted-foreground">pts</span>
                   {dad.streak_days > 0 && (
-                    <span className="text-[10px] text-secondary flex items-center gap-0.5">
+                    <span className="text-[10px] flex items-center gap-0.5" style={{
+                      color: isMom ? "hsl(var(--mom-accent) / 0.7)" : "hsl(var(--secondary))",
+                    }}>
                       <Flame className="w-3 h-3" />{dad.streak_days}
                     </span>
                   )}
@@ -392,12 +565,17 @@ export default function Ranking() {
               </div>
             </div>
 
-            {/* Expanded content */}
             {isExpanded && (
-              <div className="mt-3 pt-3 border-t border-border/50 space-y-2" style={{ animation: "fadeSlideDown 0.3s ease-out" }}>
+              <div className="mt-3 pt-3 space-y-2" style={{
+                borderTop: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--border) / 0.5)"}`,
+                animation: "fadeSlideDown 0.3s ease-out",
+              }}>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground font-body">Título:</span>
-                  <Badge variant="outline" className="text-[10px]">{title.emoji} {title.title}</Badge>
+                  <Badge variant="outline" className="text-[10px]" style={{
+                    borderColor: isMom ? "hsl(var(--mom-border))" : undefined,
+                    color: isMom ? "hsl(var(--mom-text))" : undefined,
+                  }}>{title.emoji} {title.title}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground font-body">Sequência:</span>
@@ -407,14 +585,14 @@ export default function Ranking() {
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground font-body">Nota da mãe:</span>
                     <div className="flex items-center gap-1.5">
-                      <StarRating stars={rating.stars} />
+                      <StarRating stars={rating.stars} isMom={isMom} />
                       {rating.comment && <span className="text-[9px] italic text-muted-foreground">"{rating.comment}"</span>}
                     </div>
                   </div>
                 )}
-                {isMe && !rating && (
-                  <p className="text-[10px] italic text-muted-foreground text-center">
-                    A mãe ainda não avaliou. Reze. 🙏
+                {isMom && !rating && (
+                  <p className="text-[10px] italic text-center" style={{ color: "hsl(var(--mom-text) / 0.5)" }}>
+                    Você ainda não avaliou esse pai. Vá em Avaliar. 📝
                   </p>
                 )}
               </div>
@@ -425,44 +603,85 @@ export default function Ranking() {
     </div>
   );
 
+  // =============== RENDER ===============
   return (
     <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-5">
-      {/* Animated Header */}
+      {/* Header - different for mom/dad */}
       <div className="text-center relative">
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-40 h-40 bg-primary/5 rounded-full blur-3xl" />
-        <div className="relative">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 mb-3 shadow-lg" style={{
-            boxShadow: "0 8px 32px rgba(0,0,0,0.08), inset 0 2px 0 rgba(255,255,255,0.1)",
-          }}>
-            <Trophy className="w-8 h-8 text-primary" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))" }} />
-          </div>
-          <h1 className="font-display text-2xl font-bold mb-1">O Mural da Vergonha</h1>
-          <p className="text-sm text-muted-foreground font-body italic">
-            {myPos >= 0
-              ? myPos <= 2
-                ? "Você tá no pódio. Não estraga agora."
-                : `Posição #${myPos + 1}. Dá pra subir. Talvez.`
-              : "Entre no ranking fazendo alguma coisa, pai."}
-          </p>
-        </div>
+        {isMom ? (
+          <>
+            {/* Mom elegant header */}
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-48 h-48 rounded-full blur-3xl" style={{
+              background: "radial-gradient(circle, hsl(var(--mom-accent) / 0.1), transparent)",
+            }} />
+            <div className="relative">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-3 shadow-lg" style={{
+                background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.15), hsl(var(--mom-bg)))",
+                boxShadow: "0 8px 32px hsl(var(--mom-accent) / 0.12), inset 0 2px 0 rgba(255,255,255,0.2)",
+                border: "1px solid hsl(var(--mom-border) / 0.3)",
+              }}>
+                <Eye className="w-8 h-8" style={{
+                  color: "hsl(var(--mom-accent))",
+                  filter: "drop-shadow(0 2px 4px hsl(var(--mom-accent) / 0.3))",
+                }} />
+              </div>
+              <h1 className="font-display text-2xl font-bold mb-1" style={{
+                background: "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(340 60% 45%))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>
+                Painel de Vigilância
+              </h1>
+              <p className="text-sm font-body italic" style={{ color: "hsl(var(--mom-text) / 0.6)" }}>
+                Observando, julgando e avaliando. Como sempre.
+              </p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-40 h-40 bg-primary/5 rounded-full blur-3xl" />
+            <div className="relative">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 mb-3 shadow-lg" style={{
+                boxShadow: "0 8px 32px rgba(0,0,0,0.08), inset 0 2px 0 rgba(255,255,255,0.1)",
+              }}>
+                <Trophy className="w-8 h-8 text-primary" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))" }} />
+              </div>
+              <h1 className="font-display text-2xl font-bold mb-1">O Mural da Vergonha</h1>
+              <p className="text-sm text-muted-foreground font-body italic">
+                {myPos >= 0
+                  ? myPos <= 2
+                    ? "Você tá no pódio. Não estraga agora."
+                    : `Posição #${myPos + 1}. Dá pra subir. Talvez.`
+                  : "Entre no ranking fazendo alguma coisa, pai."}
+              </p>
+            </div>
+          </>
+        )}
       </div>
 
-      {/* My Stats Bar */}
-      {myProfile && myPos >= 0 && (
-        <MyStatsBar profile={myProfile} position={myPos} total={ranking.length} />
+      {/* Stats Bar */}
+      {isMom ? (
+        <MomObserverBar ranking={ranking} partnerProfile={ranking[0]} />
+      ) : (
+        myProfile && myPos >= 0 && <MyStatsBar profile={myProfile} position={myPos} total={ranking.length} />
       )}
 
       {/* Tabs */}
       <Tabs defaultValue="geral">
-        <TabsList className="w-full grid grid-cols-3 h-11">
-          <TabsTrigger value="geral" className="text-xs font-display gap-1">
-            <Trophy className="w-3.5 h-3.5" /> Geral
+        <TabsList className="w-full grid grid-cols-3 h-11" style={isMom ? {
+          background: "hsl(var(--mom-bg))",
+          border: "1px solid hsl(var(--mom-border) / 0.3)",
+        } : undefined}>
+          <TabsTrigger value="geral" className="text-xs font-display gap-1" style={isMom ? { color: "hsl(var(--mom-text))" } : undefined}>
+            {isMom ? <Eye className="w-3.5 h-3.5" /> : <Trophy className="w-3.5 h-3.5" />}
+            {isMom ? "Vigilância" : "Geral"}
           </TabsTrigger>
           <TabsTrigger value="amigos" className="text-xs font-display gap-1">
             <Users className="w-3.5 h-3.5" /> Amigos
           </TabsTrigger>
           <TabsTrigger value="familia" className="text-xs font-display gap-1">
-            <TrendingUp className="w-3.5 h-3.5" /> Família
+            {isMom ? <Heart className="w-3.5 h-3.5" /> : <TrendingUp className="w-3.5 h-3.5" />}
+            Família
           </TabsTrigger>
         </TabsList>
 
@@ -470,58 +689,78 @@ export default function Ranking() {
           {isLoading ? (
             <div className="space-y-3">
               {[1, 2, 3].map(i => (
-                <div key={i} className="h-16 rounded-xl bg-muted animate-pulse" />
+                <div key={i} className="h-16 rounded-xl animate-pulse" style={{
+                  background: isMom ? "hsl(var(--mom-bg))" : "hsl(var(--muted))",
+                }} />
               ))}
             </div>
           ) : ranking.length === 0 ? (
-            <Card className="border-dashed">
+            <Card className="border-dashed" style={isMom ? { borderColor: "hsl(var(--mom-border))" } : undefined}>
               <CardContent className="py-10 text-center">
-                <Skull className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-                <p className="font-display text-lg font-bold mb-1">Você é o único pai aqui</p>
-                <p className="text-sm text-muted-foreground font-body italic mb-4">
-                  1° e último ao mesmo tempo. Convida alguém.
-                </p>
-                <Button variant="outline" size="sm" onClick={() => {
-                  const text = "Entrei no 'Estou de Olho', app que tira sarro de pai ausente 😂\nVamos ver quem é o pior pai.\nhttps://estoudeolho.lovable.app";
-                  navigator.clipboard.writeText(text);
-                  toast("Link copiado!");
-                }}>
-                  <Users className="w-4 h-4 mr-2" /> Convidar outros pais
-                </Button>
+                {isMom ? (
+                  <>
+                    <Eye className="w-12 h-12 mx-auto mb-3" style={{ color: "hsl(var(--mom-accent) / 0.4)" }} />
+                    <p className="font-display text-lg font-bold mb-1">Ninguém pra vigiar ainda</p>
+                    <p className="text-sm font-body italic" style={{ color: "hsl(var(--mom-text) / 0.6)" }}>
+                      Convide o pai pra entrar. Ele precisa ser monitorado.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <Skull className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+                    <p className="font-display text-lg font-bold mb-1">Você é o único pai aqui</p>
+                    <p className="text-sm text-muted-foreground font-body italic mb-4">
+                      1° e último ao mesmo tempo. Convida alguém.
+                    </p>
+                    <Button variant="outline" size="sm" onClick={() => {
+                      const text = "Entrei no 'Estou de Olho', app que tira sarro de pai ausente 😂\nVamos ver quem é o pior pai.\nhttps://estoudeolho.lovable.app";
+                      navigator.clipboard.writeText(text);
+                      toast("Link copiado!");
+                    }}>
+                      <Users className="w-4 h-4 mr-2" /> Convidar outros pais
+                    </Button>
+                  </>
+                )}
               </CardContent>
             </Card>
           ) : (
             <>
-              {/* 3D Podium */}
-              <PodiumSection ranking={ranking} myProfile={myProfile} />
+              {/* Podium */}
+              {isMom ? <MomPodiumSection ranking={ranking} /> : <PodiumSection ranking={ranking} myProfile={myProfile} />}
 
               {/* Rest of ranking */}
               {ranking.length > 3 && (
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="h-px flex-1 bg-border" />
-                    <span className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">
-                      Restante da galera
+                    <div className="h-px flex-1" style={{ background: isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--border))" }} />
+                    <span className="text-[10px] font-body uppercase tracking-wider" style={{
+                      color: isMom ? "hsl(var(--mom-text) / 0.5)" : "hsl(var(--muted-foreground))",
+                    }}>
+                      {isMom ? "Os demais suspeitos" : "Restante da galera"}
                     </span>
-                    <div className="h-px flex-1 bg-border" />
+                    <div className="h-px flex-1" style={{ background: isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--border))" }} />
                   </div>
                   {renderRankingList(ranking)}
                 </div>
               )}
 
-              {/* Last place shame card */}
+              {/* Bottom card */}
               {ranking.length > 3 && (
-                <div
-                  className="rounded-xl p-3 text-center border border-destructive/20"
-                  style={{
-                    background: "linear-gradient(135deg, hsl(var(--destructive) / 0.05), hsl(var(--card)))",
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
-                  }}
-                >
-                  <p className="text-2xl mb-1">💀</p>
-                  <p className="font-display font-bold text-xs text-destructive">Hall da Vergonha</p>
-                  <p className="text-[10px] text-muted-foreground font-body italic">
-                    {ranking[ranking.length - 1]?.display_name?.split(" ")[0]} ocupa essa posição nobre.
+                <div className="rounded-xl p-3 text-center" style={{
+                  background: isMom
+                    ? "linear-gradient(135deg, hsl(var(--mom-accent) / 0.05), hsl(var(--card)))"
+                    : "linear-gradient(135deg, hsl(var(--destructive) / 0.05), hsl(var(--card)))",
+                  border: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.2)" : "hsl(var(--destructive) / 0.2)"}`,
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
+                }}>
+                  <p className="text-2xl mb-1">{isMom ? "👀" : "💀"}</p>
+                  <p className="font-display font-bold text-xs" style={{
+                    color: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--destructive))",
+                  }}>{isMom ? "Caso Perdido" : "Hall da Vergonha"}</p>
+                  <p className="text-[10px] font-body italic" style={{
+                    color: isMom ? "hsl(var(--mom-text) / 0.5)" : "hsl(var(--muted-foreground))",
+                  }}>
+                    {ranking[ranking.length - 1]?.display_name?.split(" ")[0]} ocupa essa posição {isMom ? "preocupante" : "nobre"}.
                   </p>
                 </div>
               )}
@@ -531,18 +770,25 @@ export default function Ranking() {
 
         <TabsContent value="amigos" className="mt-4 space-y-3">
           {myGroups.length === 0 ? (
-            <Card className="border-dashed">
+            <Card className="border-dashed" style={isMom ? { borderColor: "hsl(var(--mom-border))" } : undefined}>
               <CardContent className="py-8 text-center">
-                <Users className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+                <Users className="w-10 h-10 mx-auto mb-3" style={{ color: isMom ? "hsl(var(--mom-accent) / 0.4)" : "hsl(var(--muted-foreground))" }} />
                 <p className="font-display font-bold mb-1">Nenhum grupo ainda</p>
-                <p className="text-xs text-muted-foreground font-body italic mb-4">
-                  Crie um grupo ou entre com um código. A vergonha é melhor compartilhada.
+                <p className="text-xs font-body italic mb-4" style={{ color: isMom ? "hsl(var(--mom-text) / 0.6)" : "hsl(var(--muted-foreground))" }}>
+                  {isMom ? "Crie um grupo de mães ou monitore outros pais." : "Crie um grupo ou entre com um código. A vergonha é melhor compartilhada."}
                 </p>
                 <div className="flex gap-2 justify-center">
-                  <Button size="sm" onClick={() => setShowGroupSheet(true)}>
+                  <Button size="sm" onClick={() => setShowGroupSheet(true)} style={isMom ? {
+                    background: "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(340 65% 50%))",
+                    color: "white",
+                    boxShadow: "0 4px 12px hsl(var(--mom-accent) / 0.3)",
+                  } : undefined}>
                     <Plus className="w-4 h-4 mr-1" /> Criar grupo
                   </Button>
-                  <Button size="sm" variant="outline" onClick={() => setShowJoinSheet(true)}>
+                  <Button size="sm" variant="outline" onClick={() => setShowJoinSheet(true)} style={isMom ? {
+                    borderColor: "hsl(var(--mom-border))",
+                    color: "hsl(var(--mom-text))",
+                  } : undefined}>
                     Entrar com código
                   </Button>
                 </div>
@@ -551,18 +797,27 @@ export default function Ranking() {
           ) : (
             <>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline" onClick={() => setShowGroupSheet(true)}>
+                <Button size="sm" variant="outline" onClick={() => setShowGroupSheet(true)} style={isMom ? {
+                  borderColor: "hsl(var(--mom-border))",
+                  color: "hsl(var(--mom-text))",
+                } : undefined}>
                   <Plus className="w-3.5 h-3.5 mr-1" /> Novo grupo
                 </Button>
-                <Button size="sm" variant="outline" onClick={() => setShowJoinSheet(true)}>
+                <Button size="sm" variant="outline" onClick={() => setShowJoinSheet(true)} style={isMom ? {
+                  borderColor: "hsl(var(--mom-border))",
+                  color: "hsl(var(--mom-text))",
+                } : undefined}>
                   Entrar com código
                 </Button>
               </div>
               {myGroups.map((group: any) => (
                 <div
                   key={group.id}
-                  className="rounded-xl border border-border p-4"
-                  style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.04)" }}
+                  className="rounded-xl p-4"
+                  style={{
+                    border: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--border))"}`,
+                    boxShadow: isMom ? "0 4px 16px hsl(var(--mom-accent) / 0.06)" : "0 4px 16px rgba(0,0,0,0.04)",
+                  }}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <p className="font-display font-bold text-sm">{group.name}</p>
@@ -576,7 +831,14 @@ export default function Ranking() {
                   {group.members?.length > 0 ? (
                     <div className="space-y-2">
                       {group.members.map((member: any, idx: number) => (
-                        <div key={member.id} className={`flex items-center gap-2 py-2 px-3 rounded-lg ${member.id === myProfile?.id ? "bg-primary/5 ring-1 ring-primary/20" : ""}`}>
+                        <div key={member.id} className="flex items-center gap-2 py-2 px-3 rounded-lg" style={{
+                          background: member.id === myProfile?.id
+                            ? isMom ? "hsl(var(--mom-accent) / 0.05)" : "hsl(var(--primary) / 0.05)"
+                            : undefined,
+                          border: member.id === myProfile?.id
+                            ? `1px solid ${isMom ? "hsl(var(--mom-accent) / 0.15)" : "hsl(var(--primary) / 0.2)"}`
+                            : "1px solid transparent",
+                        }}>
                           <span className="font-display font-bold text-xs w-5 text-center text-muted-foreground">
                             {idx === 0 ? "👑" : `${idx + 1}`}
                           </span>
@@ -587,18 +849,28 @@ export default function Ranking() {
                           <div className="flex-1 min-w-0">
                             <p className="text-xs font-display font-bold truncate">
                               {(member.display_name || "Pai").split(" ")[0]}
-                              {member.id === myProfile?.id && <span className="text-secondary ml-1">(você)</span>}
+                              {member.id === myProfile?.id && (
+                                <span className="ml-1" style={{ color: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--secondary))" }}>
+                                  (você)
+                                </span>
+                              )}
                             </p>
                           </div>
                           <div className="text-right shrink-0">
-                            <p className="font-display font-bold text-primary text-xs">{member.points}pts</p>
-                            {member.streak_days > 0 && <p className="text-[9px] text-secondary">🔥{member.streak_days}</p>}
+                            <p className="font-display font-bold text-xs" style={{
+                              color: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--primary))",
+                            }}>{member.points}pts</p>
+                            {member.streak_days > 0 && <p className="text-[9px]" style={{
+                              color: isMom ? "hsl(var(--mom-accent) / 0.7)" : "hsl(var(--secondary))",
+                            }}>🔥{member.streak_days}</p>}
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-[10px] text-muted-foreground font-body italic">
+                    <p className="text-[10px] font-body italic" style={{
+                      color: isMom ? "hsl(var(--mom-text) / 0.5)" : "hsl(var(--muted-foreground))",
+                    }}>
                       Sem membros ainda. Compartilha o código.
                     </p>
                   )}
@@ -609,17 +881,34 @@ export default function Ranking() {
         </TabsContent>
 
         <TabsContent value="familia" className="mt-4">
-          <div
-            className="rounded-xl border border-border p-6 text-center"
-            style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.04)" }}
-          >
-            <p className="text-3xl mb-3">👨‍👩‍👧‍👦</p>
-            <p className="font-display font-bold mb-1">Avaliação da Família</p>
-            {myProfile && (
+          <div className="rounded-xl p-6 text-center" style={{
+            border: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--border))"}`,
+            boxShadow: isMom ? "0 4px 16px hsl(var(--mom-accent) / 0.06)" : "0 4px 16px rgba(0,0,0,0.04)",
+            background: isMom ? "linear-gradient(135deg, hsl(var(--mom-accent) / 0.03), hsl(var(--card)))" : undefined,
+          }}>
+            <p className="text-3xl mb-3">{isMom ? "👩‍👧‍👦" : "👨‍👩‍👧‍👦"}</p>
+            <p className="font-display font-bold mb-1">{isMom ? "Seu Veredito" : "Avaliação da Família"}</p>
+            {isMom ? (
+              <div className="space-y-2 mt-3">
+                <p className="text-xs font-body italic" style={{ color: "hsl(var(--mom-text) / 0.6)" }}>
+                  Aqui você vê como avaliou seu marido. Ele merece?
+                </p>
+                {myProfile && getRatingForUser(myProfile.id) ? (
+                  <div className="flex items-center justify-center gap-2 mt-2">
+                    <span className="text-sm font-body">Sua nota:</span>
+                    <StarRating stars={getRatingForUser(myProfile.id)!.stars} isMom />
+                  </div>
+                ) : (
+                  <p className="text-xs italic mt-2" style={{ color: "hsl(var(--mom-accent) / 0.6)" }}>
+                    Avaliação pendente. Vá em Avaliar. 📝
+                  </p>
+                )}
+              </div>
+            ) : (
               <div className="space-y-2 mt-3">
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-sm font-body">Nota da mãe:</span>
-                  {getRatingForUser(myProfile.id) ? (
+                  {myProfile && getRatingForUser(myProfile.id) ? (
                     <StarRating stars={getRatingForUser(myProfile.id)!.stars} />
                   ) : (
                     <span className="text-xs italic text-muted-foreground">Pendente</span>
@@ -635,7 +924,7 @@ export default function Ranking() {
       </Tabs>
 
       {/* Share */}
-      {myPos >= 0 && ranking.length > 1 && (
+      {!isMom && myPos >= 0 && ranking.length > 1 && (
         <Button
           className="w-full font-display gap-2"
           style={{
@@ -649,6 +938,25 @@ export default function Ranking() {
         </Button>
       )}
 
+      {isMom && ranking.length > 0 && (
+        <Button
+          className="w-full font-display gap-2 border-0"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(340 65% 50%))",
+            color: "white",
+            boxShadow: "0 4px 16px hsl(var(--mom-accent) / 0.3)",
+          }}
+          onClick={() => {
+            const text = `👁️ Estou de Olho no ranking dos pais!\n${ranking.length} pais monitorados.\nO melhor: ${ranking[0]?.display_name?.split(" ")[0]} com ${ranking[0]?.points}pts\nO pior: ${ranking[ranking.length - 1]?.display_name?.split(" ")[0]} com ${ranking[ranking.length - 1]?.points}pts\n\n😏 Baixe: https://estoudeolho.lovable.app`;
+            navigator.clipboard.writeText(text);
+            toast.success("Copiado! Compartilhe no WhatsApp. 📋");
+          }}
+        >
+          <Share2 className="w-4 h-4" />
+          Compartilhar vigilância
+        </Button>
+      )}
+
       {/* Sheets */}
       <Sheet open={showGroupSheet} onOpenChange={setShowGroupSheet}>
         <SheetContent side="bottom" className="rounded-t-2xl">
@@ -659,15 +967,24 @@ export default function Ranking() {
             <div>
               <p className="text-xs text-muted-foreground font-body mb-2">Sugestões:</p>
               <div className="flex flex-wrap gap-2">
-                {["Pais da Escola", "Pais do Bairro", "Os Pais da Firma", "Turma do Futebol"].map(s => (
-                  <Badge key={s} variant="outline" className="cursor-pointer hover:bg-accent text-xs" onClick={() => setGroupName(s)}>
+                {(isMom
+                  ? ["Mães Vigilantes", "Clube das Mães", "Grupo do Zap das Mães", "As Fiscais"]
+                  : ["Pais da Escola", "Pais do Bairro", "Os Pais da Firma", "Turma do Futebol"]
+                ).map(s => (
+                  <Badge key={s} variant="outline" className="cursor-pointer hover:bg-accent text-xs" style={isMom ? {
+                    borderColor: "hsl(var(--mom-border))",
+                    color: "hsl(var(--mom-text))",
+                  } : undefined} onClick={() => setGroupName(s)}>
                     {s}
                   </Badge>
                 ))}
               </div>
             </div>
             <Input placeholder="Nome do grupo" value={groupName} onChange={e => setGroupName(e.target.value)} />
-            <Button className="w-full bg-primary font-display" onClick={() => createGroupMutation.mutate()} disabled={!groupName || createGroupMutation.isPending}>
+            <Button className="w-full font-display" style={isMom ? {
+              background: "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(340 65% 50%))",
+              color: "white",
+            } : { background: "hsl(var(--primary))" }} onClick={() => createGroupMutation.mutate()} disabled={!groupName || createGroupMutation.isPending}>
               {createGroupMutation.isPending ? "Criando..." : "Criar Grupo"}
             </Button>
           </div>
@@ -681,18 +998,25 @@ export default function Ranking() {
           </SheetHeader>
           <div className="space-y-4 mt-4">
             <Input placeholder="Código do grupo (ex: a1b2c3d4)" value={joinCode} onChange={e => setJoinCode(e.target.value)} />
-            <Button className="w-full bg-primary font-display" onClick={() => joinGroupMutation.mutate()} disabled={!joinCode || joinGroupMutation.isPending}>
+            <Button className="w-full font-display" style={isMom ? {
+              background: "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(340 65% 50%))",
+              color: "white",
+            } : { background: "hsl(var(--primary))" }} onClick={() => joinGroupMutation.mutate()} disabled={!joinCode || joinGroupMutation.isPending}>
               {joinGroupMutation.isPending ? "Entrando..." : "Entrar no Grupo"}
             </Button>
           </div>
         </SheetContent>
       </Sheet>
 
-      {/* Inline styles for animations */}
+      {/* Animations */}
       <style>{`
         @keyframes podiumRise {
           from { opacity: 0; transform: translateY(40px) scale(0.9); }
           to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes momPodiumRise {
+          from { opacity: 0; transform: translateY(30px) scale(0.85) rotateX(10deg); }
+          to { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
         }
         @keyframes fadeSlideDown {
           from { opacity: 0; max-height: 0; }
