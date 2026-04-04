@@ -18,7 +18,7 @@ import MonthlyReport from "@/components/home/MonthlyReport";
 export default function MomDashboard() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
-  const { data: partner } = useFamilyPartner();
+  const { data: partner, isLoading: partnerLoading } = useFamilyPartner();
   const navigate = useNavigate();
 
   const now = new Date();
@@ -134,7 +134,7 @@ export default function MomDashboard() {
       </Card>
 
       {/* Partner banner */}
-      {!partner && (
+      {!partnerLoading && !partner && (
         <div className="space-y-2">
           <Card className="border-mom-border border-dashed bg-mom-bg/50">
             <CardContent className="p-4 text-center">
