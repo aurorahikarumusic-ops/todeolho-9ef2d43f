@@ -3,11 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Bell, BellOff, X } from "lucide-react";
-import {
-  isPushSupported,
-  getNotificationPermission,
-  requestPushSubscription,
-} from "@/lib/pushNotifications";
+import { autoInitOneSignal } from "@/lib/onesignal";
 
 export default function PushPermissionBanner() {
   const { user } = useAuth();
@@ -16,31 +12,38 @@ export default function PushPermissionBanner() {
 
   useEffect(() => {
     if (!user) return;
-    if (!isPushSupported()) return;
+    if (!("Notification" in window)) return;
 
-    getNotificationPermission().then((perm) => {
-      if (perm === "default") {
-        // Check if dismissed recently
-        const dismissed = localStorage.getItem("push_banner_dismissed");
-        if (dismissed) {
-          const dismissedAt = new Date(dismissed).getTime();
-          const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
-          if (dismissedAt > dayAgo) return;
-        }
-        setVisible(true);
+    // Show banner if permission not yet granted
+    if (Notification.permission === "default") {
+      const dismissed = localStorage.getItem("push_banner_dismissed");
+      if (dismissed) {
+        const dismissedAt = new Date(dismissed).getTime();
+        const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
+        if (dismissedAt > dayAgo) return;
       }
-    });
+      setVisible(true);
+    }
   }, [user]);
 
   const handleAllow = async () => {
     if (!user) return;
     setLoading(true);
-    const success = await requestPushSubscription(user.id);
-    setLoading(false);
-    setVisible(false);
-    if (!success) {
+    try {
+      // Request browser notification permission first
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        // Initialize OneSignal and sync user
+        await autoInitOneSignal(user.id);
+      } else {
+        localStorage.setItem("push_banner_dismissed", new Date().toISOString());
+      }
+    } catch (err) {
+      console.error("Push permission failed:", err);
       localStorage.setItem("push_banner_dismissed", new Date().toISOString());
     }
+    setLoading(false);
+    setVisible(false);
   };
 
   const handleDismiss = () => {
