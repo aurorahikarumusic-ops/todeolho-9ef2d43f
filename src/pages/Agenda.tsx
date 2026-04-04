@@ -565,7 +565,7 @@ export default function Agenda() {
                     style={{
                       background: newEvent.event_type === c.value ? `${c.color}20` : "hsl(var(--muted))",
                       color: newEvent.event_type === c.value ? c.color : undefined,
-                      ringColor: c.color,
+                      ["--tw-ring-color" as any]: c.color,
                     }}
                   >
                     {c.label}
