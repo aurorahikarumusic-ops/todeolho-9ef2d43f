@@ -19,17 +19,13 @@ export default function ShareWeekCard({ displayName, tasksCompleted, streak, ran
   };
 
   const handleShare = async () => {
-    const text = `👁️ Estou de Olho — Semana do ${name}\n\n✅ ${tasksCompleted} tarefas concluídas\n🔥 ${streak} dias de sequência\n🏆 #${rankingPosition || "?"} no ranking\n\n${getClosingLine()}\n\n📲 estoudeolho.lovable.app`;
+    const text = `👁️ *Estou de Olho* — Semana do ${name}\n\n✅ ${tasksCompleted} tarefas concluídas\n🔥 ${streak} dias de sequência\n🏆 #${rankingPosition || "?"} no ranking\n\n${getClosingLine()}\n\n📲 Baixe o app: estoudeolho.lovable.app`;
 
-    if (navigator.share) {
-      try {
-        await navigator.share({ text });
-      } catch {
-        // User cancelled
-      }
-    } else {
+    try {
       await navigator.clipboard.writeText(text);
-      toast.success("Copiado! Cola no WhatsApp agora. 📋");
+      toast.success("Copiado! Agora cola lá no WhatsApp e mostra que você serve pra algo. 📋");
+    } catch {
+      toast.error("Não foi possível copiar. Tenta de novo, pai.");
     }
   };
 
