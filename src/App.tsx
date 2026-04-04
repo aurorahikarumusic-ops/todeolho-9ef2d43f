@@ -27,6 +27,8 @@ import SwUpdateToast from "./components/SwUpdateToast";
 import MuralPerolas from "./pages/MuralPerolas";
 import BancoReusPage from "./pages/BancoReus";
 import AvoDashboard from "./pages/AvoDashboard";
+import AvoRanking from "./pages/AvoRanking";
+import AvoPerfil from "./pages/AvoPerfil";
 import GrandmaSuggestionsFloat from "./components/grandma/GrandmaSuggestionsFloat";
 
 const queryClient = new QueryClient();

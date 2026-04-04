@@ -70,17 +70,18 @@ export default function AvoDashboard() {
     }
   };
 
-  if (!partnerLoading && !partner && !profile?.family_id) {
+  if (!partnerLoading && !profile?.family_id) {
     return (
-      <div className="p-4 max-w-lg mx-auto space-y-6">
+      <div className="p-4 max-w-lg mx-auto space-y-6 pb-24">
         <div className="text-center py-8">
           <span className="text-6xl block mb-4">👵</span>
           <h1 className="font-display text-2xl font-bold text-avo">Olá, Vovó!</h1>
           <p className="font-body text-muted-foreground mt-2">
-            Primeiro, você precisa se conectar à família. Peça o código de convite para a mãe.
+            Primeiro, você precisa se conectar à família.<br />
+            Peça o <strong>código de convite</strong> para a mãe (ou a nora 😏).
           </p>
         </div>
-        <JoinFamily />
+        <JoinFamilyAvo />
       </div>
     );
   }
