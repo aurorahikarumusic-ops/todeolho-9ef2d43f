@@ -23,7 +23,7 @@ import { startOfWeek, endOfWeek } from "date-fns";
 export default function Dashboard() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
-  const { data: partner } = useFamilyPartner();
+  const { data: partner, isLoading: partnerLoading } = useFamilyPartner();
   const navigate = useNavigate();
 
   const now = new Date();
