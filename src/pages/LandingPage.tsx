@@ -579,6 +579,30 @@ export default function LandingPage() {
               </div>
             </a>
           </div>
+
+          {/* APK Notice */}
+          <div style={{
+            background: "#FFF0E6", border: "2px solid #F4845F", borderRadius: "16px",
+            padding: "1.25rem 1.5rem", marginBottom: "1.5rem", textAlign: "left",
+          }}>
+            <p style={{ fontSize: "0.95rem", color: "#1B2B23", lineHeight: 1.7, margin: 0 }}>
+              <strong>⚠️ Atenção:</strong> O aplicativo é um arquivo <strong>.APK</strong> (instalação direta no Android).
+              Seu celular pode pedir permissão para instalar apps de fontes desconhecidas — <strong>é normal e seguro</strong>, basta autorizar.
+            </p>
+            <p style={{ fontSize: "0.9rem", color: "#666", lineHeight: 1.7, margin: "0.75rem 0 0" }}>
+              Se não se sentir confortável para baixar o APK, mande um <strong>direct no Instagram</strong>{" "}
+              <a
+                href="https://instagram.com/estoudeolho.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#F4845F", fontWeight: 700, textDecoration: "underline" }}
+              >
+                @estoudeolho.app
+              </a>{" "}
+              e enviaremos o link da <strong>versão web</strong> para você acessar pelo navegador. 📲
+            </p>
+          </div>
+
           <p style={{ fontSize: "0.85rem", fontStyle: "italic", color: "#999" }}>
             Ou acesse direto no navegador em <strong>estoudeolho.lovable.app</strong> — sem precisar instalar nada.<br />
             Gratuito para sempre no plano básico. Seu filho não tem preço.
