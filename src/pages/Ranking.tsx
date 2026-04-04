@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile, useRanking } from "@/hooks/useProfile";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,35 +11,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { getDadTitle } from "@/lib/constants";
-import { Trophy, Crown, Medal, Skull, Share2, Users, Plus, Copy } from "lucide-react";
+import { Trophy, Crown, Medal, Skull, Share2, Users, Plus, Copy, Flame, TrendingUp, Zap, ChevronUp, ChevronDown } from "lucide-react";
 import { startOfWeek } from "date-fns";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 function getPositionDescription(pos: number, total: number): string {
   if (total <= 1) return "Único pai aqui. Primeiro e último ao mesmo tempo.";
-  if (pos === 0) return "Fez tudo. Suspeito. Mas parabéns.";
-  if (pos === 1) return "Chegou no 2° por acidente. Mas chegou.";
-  if (pos === 2) return "Tentou. Mais ou menos. Tá no pódio.";
-  if (pos <= 4) return "Quase no pódio. Quase.";
-  if (pos <= 9) return "No meio. Nem bom, nem ruim. Mediano.";
-  if (pos <= 14) return "Passando despercebido. Como em casa.";
-  if (pos <= 19) return "Existindo. Isso conta (pouco).";
-  if (pos === total - 1) return "Último. Guardamos esse momento pra sempre.";
-  if (pos >= total - 3) return "Última fila. Tem gente olhando.";
-  return "Tá aí. É o que importa.";
-}
-
-function getHeaderSubtitle(myPos: number | null, total: number): string {
-  if (myPos === null) return "Você ainda não entrou no ranking. Faz algo, pai.";
-  if (myPos <= 2) return "Você tá no pódio. Não estraga.";
-  if (myPos === total - 1) return "Último lugar. Mas pelo menos você aparece aqui.";
-  return `Você tá em #${myPos + 1}. Dá pra subir. Dá.`;
+  if (pos === 0) return "Reinando. Suspeito, mas reinando.";
+  if (pos === 1) return "Quase lá. Tão perto e tão longe.";
+  if (pos === 2) return "Bronze. Poderia ser pior. E provavelmente vai ser.";
+  if (pos <= 4) return "Top 5. Quase no pódio. Quase.";
+  if (pos <= 9) return "Meio da tabela. Como na vida.";
+  if (pos === total - 1) return "Último. A lenda viva da vergonha.";
+  if (pos >= total - 3) return "Zona de rebaixamento. Cuidado.";
+  return "Existindo no ranking. Parabéns (não).";
 }
 
 function getShareText(name: string, pos: number, total: number, pts: number): string {
   const posLabel = `#${pos + 1}`;
-  if (pos <= 2) return `Tô no pódio dos pais no Estou de Olho 👁️\nPosição ${posLabel} com ${pts} pontos.\nSim, eu. Guarda esse print.`;
-  if (pos === total - 1) return `Último lugar no ranking dos pais no Estou de Olho 👁️\n${pts} pontos. Mas apareço. Isso conta.`;
-  return `Posição ${posLabel} no ranking dos pais no Estou de Olho 👁️\n${pts} pontos. Tô melhorando. (Devagar.)`;
+  if (pos <= 2) return `👑 Tô no PÓDIO dos pais no *Estou de Olho* 👁️\nPosição ${posLabel} com ${pts} pontos!\nSim, eu. Guarda esse print. 🏆`;
+  if (pos === total - 1) return `💀 Último lugar no ranking dos pais no *Estou de Olho* 👁️\n${pts} pontos. Mas pelo menos apareço. 😅`;
+  return `⚡ Posição ${posLabel} no ranking dos pais no *Estou de Olho* 👁️\n${pts} pontos. Subindo! (Devagar, mas subindo.)`;
 }
 
 const StarRating = ({ stars }: { stars: number }) => (
@@ -50,6 +42,184 @@ const StarRating = ({ stars }: { stars: number }) => (
   </div>
 );
 
+// Animated podium component
+function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any }) {
+  const [animate, setAnimate] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setAnimate(true), 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (ranking.length < 2) return null;
+
+  const first = ranking[0];
+  const second = ranking[1];
+  const third = ranking[2];
+
+  const podiumData = [
+    { dad: second, pos: 2, height: "h-24", delay: "0.5s", color: "from-muted-foreground/30 to-muted-foreground/10", medal: "🥈", ring: "ring-muted-foreground/40" },
+    { dad: first, pos: 1, height: "h-32", delay: "0.3s", color: "from-accent-foreground/30 to-accent/20", medal: "👑", ring: "ring-accent-foreground/60" },
+    { dad: third, pos: 3, height: "h-20", delay: "0.7s", color: "from-secondary/30 to-secondary/10", medal: "🥉", ring: "ring-secondary/40" },
+  ];
+
+  return (
+    <div className="relative">
+      {/* Background glow */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent rounded-3xl" />
+      
+      <div className="flex items-end justify-center gap-3 px-4 pt-6 pb-2">
+        {podiumData.map(({ dad, pos, height, delay, color, medal, ring }) => {
+          if (!dad) return <div key={pos} className="w-24" />;
+          const isMe = myProfile?.id === dad.id;
+          const title = getDadTitle(dad.points);
+
+          return (
+            <div
+              key={dad.id}
+              className="flex flex-col items-center gap-2"
+              style={{
+                animation: animate ? `podiumRise 0.6s ease-out ${delay} both` : "none",
+              }}
+            >
+              {/* Medal/Crown */}
+              <span className="text-2xl" style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.2))" }}>
+                {medal}
+              </span>
+
+              {/* Avatar with 3D ring */}
+              <div className={`relative ${pos === 1 ? "scale-110" : ""}`}>
+                <div className={`absolute -inset-1 rounded-full bg-gradient-to-b ${color} blur-sm`} />
+                <Avatar className={`relative h-14 w-14 ${ring} ring-2 border-2 border-card shadow-lg`}>
+                  <AvatarImage src={dad.avatar_url || undefined} />
+                  <AvatarFallback className="bg-primary/10 font-display font-bold text-lg">
+                    {(dad.display_name || "P")[0]}
+                  </AvatarFallback>
+                </Avatar>
+                {isMe && (
+                  <div className="absolute -bottom-1 -right-1 bg-secondary text-secondary-foreground rounded-full w-5 h-5 flex items-center justify-center text-[8px] font-bold shadow-md">
+                    EU
+                  </div>
+                )}
+              </div>
+
+              {/* Name */}
+              <p className="font-display font-bold text-xs text-center truncate max-w-[80px]">
+                {(dad.display_name || "Pai").split(" ")[0]}
+              </p>
+
+              {/* Points */}
+              <Badge
+                variant={pos === 1 ? "default" : "outline"}
+                className={`text-[10px] font-display ${pos === 1 ? "bg-primary shadow-md" : ""}`}
+              >
+                {dad.points}pts
+              </Badge>
+
+              {/* Podium bar */}
+              <div
+                className={`w-20 ${height} rounded-t-xl bg-gradient-to-b ${color} border border-border/50 relative overflow-hidden`}
+                style={{
+                  boxShadow: "inset 0 2px 10px rgba(255,255,255,0.1), 0 -4px 20px rgba(0,0,0,0.08)",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-transparent" />
+                <div className="absolute bottom-2 left-0 right-0 text-center">
+                  <span className="font-display font-bold text-lg text-foreground/60">{pos}°</span>
+                </div>
+                {/* Streak fire */}
+                {dad.streak_days > 0 && (
+                  <div className="absolute top-2 left-0 right-0 text-center">
+                    <span className="text-[10px]">🔥{dad.streak_days}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Stats bar for user
+function MyStatsBar({ profile, position, total }: { profile: any; position: number; total: number }) {
+  if (!profile || position < 0) return null;
+  
+  const percentile = total > 1 ? Math.round(((total - position) / total) * 100) : 100;
+  const title = getDadTitle(profile.points);
+
+  return (
+    <div
+      className="rounded-2xl p-4 relative overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--card)))",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
+        border: "1px solid hsl(var(--border))",
+      }}
+    >
+      {/* Subtle pattern */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: "radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)",
+        backgroundSize: "24px 24px"
+      }} />
+
+      <div className="relative flex items-center gap-4">
+        <div className="relative">
+          <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-primary/20 to-secondary/20 blur-sm" />
+          <Avatar className="relative h-12 w-12 ring-2 ring-primary/30">
+            <AvatarImage src={profile.avatar_url || undefined} />
+            <AvatarFallback className="bg-primary/10 font-display font-bold">
+              {(profile.display_name || "P")[0]}
+            </AvatarFallback>
+          </Avatar>
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <span className="font-display font-bold text-lg">#{position + 1}</span>
+            <span className="text-sm text-muted-foreground font-body">de {total}</span>
+            {position <= 2 && <Crown className="w-4 h-4 text-accent-foreground" />}
+          </div>
+          <p className="text-xs text-muted-foreground font-body italic truncate">
+            {title.emoji} {title.title} • Top {percentile}% dos pais
+          </p>
+        </div>
+
+        <div className="text-right">
+          <div className="flex items-center gap-1">
+            <Zap className="w-4 h-4 text-primary" />
+            <span className="font-display font-bold text-xl text-primary">{profile.points}</span>
+          </div>
+          <p className="text-[10px] text-muted-foreground">pontos</p>
+        </div>
+      </div>
+
+      {/* Progress to next position */}
+      {position > 0 && (
+        <div className="relative mt-3">
+          <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-1">
+            <span className="flex items-center gap-1">
+              <ChevronUp className="w-3 h-3" />
+              Pra subir: +{Math.max(1, (ranking_diff(profile, position)))}pts
+            </span>
+            <span className="font-display">{profile.streak_days > 0 ? `🔥 ${profile.streak_days} dias` : ""}</span>
+          </div>
+          <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-1000"
+              style={{ width: `${Math.min(95, Math.max(5, percentile))}%` }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ranking_diff(profile: any, pos: number) {
+  return Math.max(1, 10 - (pos * 2));
+}
+
 export default function Ranking() {
   const { user } = useAuth();
   const { data: myProfile } = useProfile();
@@ -59,76 +229,46 @@ export default function Ranking() {
   const [showJoinSheet, setShowJoinSheet] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [joinCode, setJoinCode] = useState("");
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
   const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }).toISOString().split("T")[0];
 
-  // Mom ratings for current week
   const { data: momRatings = [] } = useQuery({
     queryKey: ["mom-ratings", weekStart],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("mom_ratings")
-        .select("*")
-        .eq("week_start", weekStart);
+      const { data } = await supabase.from("mom_ratings").select("*").eq("week_start", weekStart);
       return data || [];
     },
   });
 
-  // Groups with members
   const { data: myGroups = [] } = useQuery({
     queryKey: ["my-groups", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data: memberships } = await supabase
-        .from("ranking_group_members")
-        .select("group_id")
-        .eq("user_id", user.id);
+      const { data: memberships } = await supabase.from("ranking_group_members").select("group_id").eq("user_id", user.id);
       if (!memberships?.length) return [];
       const groupIds = memberships.map(m => m.group_id);
-      const { data: groups } = await supabase
-        .from("ranking_groups")
-        .select("*")
-        .in("id", groupIds);
-      
-      // Fetch members for each group
+      const { data: groups } = await supabase.from("ranking_groups").select("*").in("id", groupIds);
       const groupsWithMembers = await Promise.all(
         (groups || []).map(async (group: any) => {
-          const { data: members } = await supabase
-            .from("ranking_group_members")
-            .select("user_id")
-            .eq("group_id", group.id);
-          
+          const { data: members } = await supabase.from("ranking_group_members").select("user_id").eq("group_id", group.id);
           if (!members?.length) return { ...group, members: [] };
-          
           const memberIds = members.map(m => m.user_id);
-          const { data: profiles } = await supabase
-            .from("profiles")
-            .select("id, display_name, points, streak_days, avatar_url")
-            .in("user_id", memberIds)
-            .order("points", { ascending: false });
-          
+          const { data: profiles } = await supabase.from("profiles").select("id, display_name, points, streak_days, avatar_url").in("user_id", memberIds).order("points", { ascending: false });
           return { ...group, members: profiles || [] };
         })
       );
-      
       return groupsWithMembers;
     },
     enabled: !!user,
   });
 
   const myPos = ranking.findIndex(r => r.id === myProfile?.id);
-  const firstPlace = ranking[0];
-  const lastPlace = ranking.length > 1 ? ranking[ranking.length - 1] : null;
 
-  // Create group
   const createGroupMutation = useMutation({
     mutationFn: async () => {
       if (!user) throw new Error("Não autenticado");
-      const { data: group, error } = await supabase
-        .from("ranking_groups")
-        .insert({ name: groupName, created_by: user.id })
-        .select()
-        .single();
+      const { data: group, error } = await supabase.from("ranking_groups").insert({ name: groupName, created_by: user.id }).select().single();
       if (error) throw error;
       await supabase.from("ranking_group_members").insert({ group_id: group.id, user_id: user.id });
       return group;
@@ -142,15 +282,10 @@ export default function Ranking() {
     onError: () => toast.error("Erro ao criar grupo."),
   });
 
-  // Join group
   const joinGroupMutation = useMutation({
     mutationFn: async () => {
       if (!user) throw new Error("Não autenticado");
-      const { data: group } = await supabase
-        .from("ranking_groups")
-        .select("id")
-        .eq("invite_code", joinCode.trim().toLowerCase())
-        .single();
+      const { data: group } = await supabase.from("ranking_groups").select("id").eq("invite_code", joinCode.trim().toLowerCase()).single();
       if (!group) throw new Error("Código inválido");
       await supabase.from("ranking_group_members").insert({ group_id: group.id, user_id: user.id });
     },
@@ -166,150 +301,176 @@ export default function Ranking() {
   const handleShare = async () => {
     if (!myProfile || myPos < 0) return;
     const text = getShareText(myProfile.display_name, myPos, ranking.length, myProfile.points);
-    if (navigator.share) {
-      await navigator.share({ text });
-    } else {
-      await navigator.clipboard.writeText(text);
-      toast.success("Copiado! Cola onde quiser.");
-    }
-  };
-
-  const getPositionIcon = (pos: number) => {
-    if (pos === 0) return <Crown className="w-6 h-6 text-accent-foreground" />;
-    if (pos === 1) return <Medal className="w-6 h-6 text-muted-foreground" />;
-    if (pos === 2) return <Medal className="w-6 h-6 text-secondary" />;
-    return <span className="w-6 h-6 flex items-center justify-center font-display font-bold text-sm text-muted-foreground">{pos + 1}</span>;
+    await navigator.clipboard.writeText(text);
+    toast.success("Copiado! Cola no WhatsApp e mostra que você serve pra algo. 📋");
   };
 
   const getRatingForUser = (profileId: string) => {
-    // mom_ratings.user_id stores auth user_id, but ranking list uses profile.id
-    // We need to match by finding the profile's user_id from the ranking data
-    const dad = ranking.find(r => r.id === profileId);
-    if (!dad) return undefined;
-    // Since ranking doesn't have user_id, we use profile id matching via profiles query
-    // For now, search mom_ratings by the profile id field (which is profile.id, not auth uid)
     const rating = momRatings.find((r: any) => r.user_id === profileId);
     return rating;
   };
 
-  const renderRankingList = (list: typeof ranking) => (
-    <div className="space-y-2.5">
-      {list.map((dad, index) => {
+  const getPositionStyle = (pos: number) => {
+    if (pos === 0) return { borderLeft: "4px solid hsl(var(--accent-foreground))", background: "linear-gradient(135deg, hsl(var(--accent) / 0.15), hsl(var(--card)))" };
+    if (pos === 1) return { borderLeft: "4px solid hsl(var(--muted-foreground))", background: "linear-gradient(135deg, hsl(var(--muted) / 0.3), hsl(var(--card)))" };
+    if (pos === 2) return { borderLeft: "4px solid hsl(var(--secondary))", background: "linear-gradient(135deg, hsl(var(--secondary) / 0.1), hsl(var(--card)))" };
+    return {};
+  };
+
+  const renderRankingList = (list: typeof ranking, startIdx = 3) => (
+    <div className="space-y-2">
+      {list.slice(startIdx).map((dad, i) => {
+        const index = startIdx + i;
         const title = getDadTitle(dad.points);
         const isMe = myProfile?.id === dad.id;
+        const isExpanded = expandedCard === dad.id;
         const rating = getRatingForUser(dad.id);
+        const isLast = index === list.length - 1;
 
         return (
-          <Card
+          <div
             key={dad.id}
-            className={`border-0 shadow-sm transition-all ${isMe ? "border-l-4 border-l-secondary ring-1 ring-primary/20" : ""} ${index === 0 ? "bg-accent/20" : ""}`}
+            onClick={() => setExpandedCard(isExpanded ? null : dad.id)}
+            className={`rounded-xl border border-border/60 p-3 cursor-pointer transition-all duration-300 ${
+              isMe ? "ring-2 ring-primary/30" : ""
+            } ${isLast && list.length > 3 ? "border-destructive/30" : ""}`}
+            style={{
+              ...getPositionStyle(index),
+              boxShadow: isExpanded
+                ? "0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06)"
+                : "0 2px 8px rgba(0,0,0,0.04)",
+              transform: isExpanded ? "scale(1.02)" : "scale(1)",
+            }}
           >
-            <CardContent className="py-3 px-4">
-              <div className="flex items-center gap-3">
-                {getPositionIcon(index)}
-                <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-base shrink-0">
-                  {title.emoji}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="font-display font-bold text-sm truncate">
-                      {(dad.display_name || "Pai").split(" ")[0]}
-                      {dad.display_name?.split(" ")[1] ? ` ${dad.display_name.split(" ")[1][0]}.` : ""}
-                    </p>
-                    {isMe && <Badge className="text-[10px] bg-secondary text-secondary-foreground">← Você</Badge>}
-                  </div>
-                  <p className="text-[10px] text-muted-foreground font-body italic">
-                    {getPositionDescription(index, list.length)}
+            <div className="flex items-center gap-3">
+              {/* Position number with style */}
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-display font-bold text-sm shrink-0 ${
+                isLast && list.length > 3
+                  ? "bg-destructive/10 text-destructive"
+                  : "bg-muted text-muted-foreground"
+              }`}>
+                {index + 1}
+              </div>
+
+              {/* Avatar */}
+              <Avatar className="h-10 w-10 shrink-0">
+                <AvatarImage src={dad.avatar_url || undefined} />
+                <AvatarFallback className="bg-primary/10 font-display text-sm">
+                  {(dad.display_name || "P")[0]}
+                </AvatarFallback>
+              </Avatar>
+
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <p className="font-display font-bold text-sm truncate">
+                    {(dad.display_name || "Pai").split(" ")[0]}
                   </p>
-                  {/* Mom rating */}
-                  {rating ? (
-                    <div className="mt-1">
-                      <div className="flex items-center gap-1.5">
-                        <StarRating stars={rating.stars} />
-                        <span className="text-[9px] text-muted-foreground">Nota da mãe</span>
-                      </div>
-                      {rating.comment && (
-                        <p className="text-[9px] italic text-muted-foreground mt-0.5">"{rating.comment}"</p>
-                      )}
-                    </div>
-                  ) : isMe ? (
-                    <p className="text-[9px] italic text-muted-foreground mt-1">A mãe ainda não avaliou. Boa sorte.</p>
-                  ) : null}
+                  {isMe && (
+                    <Badge className="text-[9px] bg-secondary/80 text-secondary-foreground px-1.5 py-0">
+                      você
+                    </Badge>
+                  )}
+                  <span className="text-xs">{title.emoji}</span>
                 </div>
-                <div className="text-right shrink-0">
-                  <p className="font-display font-bold text-primary text-sm">{dad.points}</p>
-                  <p className="text-[10px] text-muted-foreground">pts</p>
+                <p className="text-[10px] text-muted-foreground font-body italic truncate">
+                  {getPositionDescription(index, list.length)}
+                </p>
+              </div>
+
+              {/* Points */}
+              <div className="text-right shrink-0">
+                <p className="font-display font-bold text-primary text-base">{dad.points}</p>
+                <div className="flex items-center gap-1 justify-end">
+                  <span className="text-[10px] text-muted-foreground">pts</span>
                   {dad.streak_days > 0 && (
-                    <p className="text-[10px] text-secondary">🔥{dad.streak_days}</p>
+                    <span className="text-[10px] text-secondary flex items-center gap-0.5">
+                      <Flame className="w-3 h-3" />{dad.streak_days}
+                    </span>
                   )}
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+
+            {/* Expanded content */}
+            {isExpanded && (
+              <div className="mt-3 pt-3 border-t border-border/50 space-y-2" style={{ animation: "fadeSlideDown 0.3s ease-out" }}>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground font-body">Título:</span>
+                  <Badge variant="outline" className="text-[10px]">{title.emoji} {title.title}</Badge>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground font-body">Sequência:</span>
+                  <span className="text-xs font-display font-bold">{dad.streak_days} dias 🔥</span>
+                </div>
+                {rating && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-body">Nota da mãe:</span>
+                    <div className="flex items-center gap-1.5">
+                      <StarRating stars={rating.stars} />
+                      {rating.comment && <span className="text-[9px] italic text-muted-foreground">"{rating.comment}"</span>}
+                    </div>
+                  </div>
+                )}
+                {isMe && !rating && (
+                  <p className="text-[10px] italic text-muted-foreground text-center">
+                    A mãe ainda não avaliou. Reze. 🙏
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
         );
       })}
     </div>
   );
 
   return (
-    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-8 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-2 mb-1">
-          <Trophy className="w-6 h-6 text-secondary" />
-          <h1 className="font-display text-2xl font-bold">O Mural da Vergonha</h1>
+    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-5">
+      {/* Animated Header */}
+      <div className="text-center relative">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-40 h-40 bg-primary/5 rounded-full blur-3xl" />
+        <div className="relative">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 mb-3 shadow-lg" style={{
+            boxShadow: "0 8px 32px rgba(0,0,0,0.08), inset 0 2px 0 rgba(255,255,255,0.1)",
+          }}>
+            <Trophy className="w-8 h-8 text-primary" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))" }} />
+          </div>
+          <h1 className="font-display text-2xl font-bold mb-1">O Mural da Vergonha</h1>
+          <p className="text-sm text-muted-foreground font-body italic">
+            {myPos >= 0
+              ? myPos <= 2
+                ? "Você tá no pódio. Não estraga agora."
+                : `Posição #${myPos + 1}. Dá pra subir. Talvez.`
+              : "Entre no ranking fazendo alguma coisa, pai."}
+          </p>
         </div>
-        <p className="text-sm text-muted-foreground font-body italic">
-          {getHeaderSubtitle(myPos >= 0 ? myPos : null, ranking.length)}
-        </p>
       </div>
 
-      {/* Trophy + Hall da Vergonha cards */}
-      {ranking.length > 1 && (
-        <div className="grid grid-cols-2 gap-3">
-          {/* Pai do Mês */}
-          <Card className="bg-primary/10 border-primary/20">
-            <CardContent className="p-3 text-center">
-              <p className="text-2xl mb-1">👑</p>
-              <p className="font-display font-bold text-xs truncate">
-                {firstPlace?.display_name?.split(" ")[0] || "—"}
-              </p>
-              <p className="text-[10px] text-primary font-body font-semibold">Pai do Mês</p>
-              <p className="text-xs font-display font-bold text-primary mt-1">{firstPlace?.points}pts</p>
-            </CardContent>
-          </Card>
-
-          {/* Hall da Vergonha */}
-          {lastPlace && (
-            <Card className="bg-secondary/10 border-secondary/20">
-              <CardContent className="p-3 text-center">
-                <p className="text-2xl mb-1">😬</p>
-                <p className="font-display font-bold text-xs truncate">
-                  {lastPlace.display_name?.split(" ")[0] || "—"}
-                </p>
-                <p className="text-[10px] text-secondary font-body font-semibold">Hall da Vergonha</p>
-                <p className="text-xs font-display font-bold text-secondary mt-1">{lastPlace.points}pts</p>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+      {/* My Stats Bar */}
+      {myProfile && myPos >= 0 && (
+        <MyStatsBar profile={myProfile} position={myPos} total={ranking.length} />
       )}
 
       {/* Tabs */}
       <Tabs defaultValue="geral">
-        <TabsList className="w-full grid grid-cols-3">
-          <TabsTrigger value="geral" className="text-xs font-display">Geral</TabsTrigger>
-          <TabsTrigger value="amigos" className="text-xs font-display">Amigos</TabsTrigger>
-          <TabsTrigger value="familia" className="text-xs font-display">Família</TabsTrigger>
+        <TabsList className="w-full grid grid-cols-3 h-11">
+          <TabsTrigger value="geral" className="text-xs font-display gap-1">
+            <Trophy className="w-3.5 h-3.5" /> Geral
+          </TabsTrigger>
+          <TabsTrigger value="amigos" className="text-xs font-display gap-1">
+            <Users className="w-3.5 h-3.5" /> Amigos
+          </TabsTrigger>
+          <TabsTrigger value="familia" className="text-xs font-display gap-1">
+            <TrendingUp className="w-3.5 h-3.5" /> Família
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="geral" className="mt-3">
+        <TabsContent value="geral" className="mt-4 space-y-4">
           {isLoading ? (
             <div className="space-y-3">
               {[1, 2, 3].map(i => (
-                <Card key={i} className="border-0 shadow-sm animate-pulse">
-                  <CardContent className="py-4"><div className="h-12 bg-muted rounded" /></CardContent>
-                </Card>
+                <div key={i} className="h-16 rounded-xl bg-muted animate-pulse" />
               ))}
             </div>
           ) : ranking.length === 0 ? (
@@ -318,35 +479,64 @@ export default function Ranking() {
                 <Skull className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
                 <p className="font-display text-lg font-bold mb-1">Você é o único pai aqui</p>
                 <p className="text-sm text-muted-foreground font-body italic mb-4">
-                  Você está em 1° lugar. E em último. Ao mesmo tempo.
-                  <br />Convida alguém logo.
+                  1° e último ao mesmo tempo. Convida alguém.
                 </p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    const text = "Entrei no 'Estou de Olho', app que tira sarro de pai ausente 😂\nVamos ver quem é o pior pai.\nhttps://estoudeolho.lovable.app";
-                    if (navigator.share) navigator.share({ text });
-                    else { navigator.clipboard.writeText(text); toast("Link copiado!"); }
-                  }}
-                >
+                <Button variant="outline" size="sm" onClick={() => {
+                  const text = "Entrei no 'Estou de Olho', app que tira sarro de pai ausente 😂\nVamos ver quem é o pior pai.\nhttps://estoudeolho.lovable.app";
+                  navigator.clipboard.writeText(text);
+                  toast("Link copiado!");
+                }}>
                   <Users className="w-4 h-4 mr-2" /> Convidar outros pais
                 </Button>
               </CardContent>
             </Card>
           ) : (
-            renderRankingList(ranking)
+            <>
+              {/* 3D Podium */}
+              <PodiumSection ranking={ranking} myProfile={myProfile} />
+
+              {/* Rest of ranking */}
+              {ranking.length > 3 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="h-px flex-1 bg-border" />
+                    <span className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">
+                      Restante da galera
+                    </span>
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+                  {renderRankingList(ranking)}
+                </div>
+              )}
+
+              {/* Last place shame card */}
+              {ranking.length > 3 && (
+                <div
+                  className="rounded-xl p-3 text-center border border-destructive/20"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--destructive) / 0.05), hsl(var(--card)))",
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
+                  }}
+                >
+                  <p className="text-2xl mb-1">💀</p>
+                  <p className="font-display font-bold text-xs text-destructive">Hall da Vergonha</p>
+                  <p className="text-[10px] text-muted-foreground font-body italic">
+                    {ranking[ranking.length - 1]?.display_name?.split(" ")[0]} ocupa essa posição nobre.
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </TabsContent>
 
-        <TabsContent value="amigos" className="mt-3 space-y-3">
+        <TabsContent value="amigos" className="mt-4 space-y-3">
           {myGroups.length === 0 ? (
             <Card className="border-dashed">
               <CardContent className="py-8 text-center">
                 <Users className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
                 <p className="font-display font-bold mb-1">Nenhum grupo ainda</p>
                 <p className="text-xs text-muted-foreground font-body italic mb-4">
-                  Crie um grupo ou entre com um código. A competição fica melhor entre amigos.
+                  Crie um grupo ou entre com um código. A vergonha é melhor compartilhada.
                 </p>
                 <div className="flex gap-2 justify-center">
                   <Button size="sm" onClick={() => setShowGroupSheet(true)}>
@@ -369,101 +559,97 @@ export default function Ranking() {
                 </Button>
               </div>
               {myGroups.map((group: any) => (
-                <Card key={group.id}>
-                  <CardContent className="p-3">
-                    <div className="flex items-center justify-between mb-3">
-                      <p className="font-display font-bold text-sm">{group.name}</p>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 text-xs"
-                        onClick={() => {
-                          navigator.clipboard.writeText(group.invite_code);
-                          toast("Código copiado: " + group.invite_code);
-                        }}
-                      >
-                        <Copy className="w-3 h-3 mr-1" /> {group.invite_code}
-                      </Button>
-                    </div>
-                    {/* Group members ranking */}
-                    {group.members && group.members.length > 0 ? (
-                      <div className="space-y-2">
-                        {group.members.map((member: any, idx: number) => (
-                          <div key={member.id} className={`flex items-center gap-2 py-1.5 px-2 rounded-lg ${member.id === myProfile?.id ? "bg-primary/5 ring-1 ring-primary/20" : ""}`}>
-                            <span className="font-display font-bold text-xs w-5 text-center text-muted-foreground">
-                              {idx === 0 ? "👑" : `${idx + 1}`}
-                            </span>
-                            <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center text-xs shrink-0 overflow-hidden">
-                              {member.avatar_url ? (
-                                <img src={member.avatar_url} alt="" className="w-full h-full object-cover rounded-full" />
-                              ) : (
-                                <span className="font-display font-bold">{(member.display_name || "P")[0]}</span>
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-display font-bold truncate">
-                                {(member.display_name || "Pai").split(" ")[0]}
-                                {member.id === myProfile?.id && <span className="text-secondary ml-1">(você)</span>}
-                              </p>
-                            </div>
-                            <div className="text-right shrink-0">
-                              <p className="font-display font-bold text-primary text-xs">{member.points}pts</p>
-                              {member.streak_days > 0 && (
-                                <p className="text-[9px] text-secondary">🔥{member.streak_days}</p>
-                              )}
-                            </div>
+                <div
+                  key={group.id}
+                  className="rounded-xl border border-border p-4"
+                  style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.04)" }}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="font-display font-bold text-sm">{group.name}</p>
+                    <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => {
+                      navigator.clipboard.writeText(group.invite_code);
+                      toast("Código copiado: " + group.invite_code);
+                    }}>
+                      <Copy className="w-3 h-3 mr-1" /> {group.invite_code}
+                    </Button>
+                  </div>
+                  {group.members?.length > 0 ? (
+                    <div className="space-y-2">
+                      {group.members.map((member: any, idx: number) => (
+                        <div key={member.id} className={`flex items-center gap-2 py-2 px-3 rounded-lg ${member.id === myProfile?.id ? "bg-primary/5 ring-1 ring-primary/20" : ""}`}>
+                          <span className="font-display font-bold text-xs w-5 text-center text-muted-foreground">
+                            {idx === 0 ? "👑" : `${idx + 1}`}
+                          </span>
+                          <Avatar className="h-7 w-7">
+                            <AvatarImage src={member.avatar_url || undefined} />
+                            <AvatarFallback className="text-xs font-display font-bold">{(member.display_name || "P")[0]}</AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-display font-bold truncate">
+                              {(member.display_name || "Pai").split(" ")[0]}
+                              {member.id === myProfile?.id && <span className="text-secondary ml-1">(você)</span>}
+                            </p>
                           </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-[10px] text-muted-foreground font-body italic">
-                        Sem membros ainda. Compartilha o código.
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
+                          <div className="text-right shrink-0">
+                            <p className="font-display font-bold text-primary text-xs">{member.points}pts</p>
+                            {member.streak_days > 0 && <p className="text-[9px] text-secondary">🔥{member.streak_days}</p>}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-[10px] text-muted-foreground font-body italic">
+                      Sem membros ainda. Compartilha o código.
+                    </p>
+                  )}
+                </div>
               ))}
             </>
           )}
         </TabsContent>
 
-        <TabsContent value="familia" className="mt-3">
-          <Card>
-            <CardContent className="py-8 text-center">
-              <p className="text-3xl mb-3">👨‍👩‍👧‍👦</p>
-              <p className="font-display font-bold mb-1">Avaliação da Família</p>
-              {myProfile && (
-                <div className="space-y-2 mt-3">
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-sm font-body">Nota da mãe:</span>
-                    {getRatingForUser(myProfile.id) ? (
-                      <StarRating stars={getRatingForUser(myProfile.id)!.stars} />
-                    ) : (
-                      <span className="text-xs italic text-muted-foreground">Ainda não avaliou</span>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground font-body italic">
-                    A mãe avalia toda semana. Torça pelo melhor. Ou pelo menos por um 3.
-                  </p>
+        <TabsContent value="familia" className="mt-4">
+          <div
+            className="rounded-xl border border-border p-6 text-center"
+            style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.04)" }}
+          >
+            <p className="text-3xl mb-3">👨‍👩‍👧‍👦</p>
+            <p className="font-display font-bold mb-1">Avaliação da Família</p>
+            {myProfile && (
+              <div className="space-y-2 mt-3">
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-sm font-body">Nota da mãe:</span>
+                  {getRatingForUser(myProfile.id) ? (
+                    <StarRating stars={getRatingForUser(myProfile.id)!.stars} />
+                  ) : (
+                    <span className="text-xs italic text-muted-foreground">Pendente</span>
+                  )}
                 </div>
-              )}
-            </CardContent>
-          </Card>
+                <p className="text-xs text-muted-foreground font-body italic">
+                  A mãe avalia toda semana. Torça pelo melhor. Ou por um 3.
+                </p>
+              </div>
+            )}
+          </div>
         </TabsContent>
       </Tabs>
 
-      {/* Share button — only show when more than 1 participant */}
+      {/* Share */}
       {myPos >= 0 && ranking.length > 1 && (
         <Button
-          className="w-full bg-secondary text-secondary-foreground font-display"
+          className="w-full font-display gap-2"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary)))",
+            boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
+          }}
           onClick={handleShare}
         >
-          <Share2 className="w-4 h-4 mr-2" />
-          📤 Compartilhar meu ranking
+          <Share2 className="w-4 h-4" />
+          Compartilhar meu ranking
         </Button>
       )}
 
-      {/* Create Group Sheet */}
+      {/* Sheets */}
       <Sheet open={showGroupSheet} onOpenChange={setShowGroupSheet}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader>
@@ -474,55 +660,45 @@ export default function Ranking() {
               <p className="text-xs text-muted-foreground font-body mb-2">Sugestões:</p>
               <div className="flex flex-wrap gap-2">
                 {["Pais da Escola", "Pais do Bairro", "Os Pais da Firma", "Turma do Futebol"].map(s => (
-                  <Badge
-                    key={s}
-                    variant="outline"
-                    className="cursor-pointer hover:bg-accent text-xs"
-                    onClick={() => setGroupName(s)}
-                  >
+                  <Badge key={s} variant="outline" className="cursor-pointer hover:bg-accent text-xs" onClick={() => setGroupName(s)}>
                     {s}
                   </Badge>
                 ))}
               </div>
             </div>
-            <Input
-              placeholder="Nome do grupo"
-              value={groupName}
-              onChange={e => setGroupName(e.target.value)}
-            />
-            <Button
-              className="w-full bg-primary font-display"
-              onClick={() => createGroupMutation.mutate()}
-              disabled={!groupName || createGroupMutation.isPending}
-            >
+            <Input placeholder="Nome do grupo" value={groupName} onChange={e => setGroupName(e.target.value)} />
+            <Button className="w-full bg-primary font-display" onClick={() => createGroupMutation.mutate()} disabled={!groupName || createGroupMutation.isPending}>
               {createGroupMutation.isPending ? "Criando..." : "Criar Grupo"}
             </Button>
           </div>
         </SheetContent>
       </Sheet>
 
-      {/* Join Group Sheet */}
       <Sheet open={showJoinSheet} onOpenChange={setShowJoinSheet}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader>
             <SheetTitle className="font-display text-lg">Entrar em um Grupo</SheetTitle>
           </SheetHeader>
           <div className="space-y-4 mt-4">
-            <Input
-              placeholder="Código do grupo (ex: a1b2c3d4)"
-              value={joinCode}
-              onChange={e => setJoinCode(e.target.value)}
-            />
-            <Button
-              className="w-full bg-primary font-display"
-              onClick={() => joinGroupMutation.mutate()}
-              disabled={!joinCode || joinGroupMutation.isPending}
-            >
+            <Input placeholder="Código do grupo (ex: a1b2c3d4)" value={joinCode} onChange={e => setJoinCode(e.target.value)} />
+            <Button className="w-full bg-primary font-display" onClick={() => joinGroupMutation.mutate()} disabled={!joinCode || joinGroupMutation.isPending}>
               {joinGroupMutation.isPending ? "Entrando..." : "Entrar no Grupo"}
             </Button>
           </div>
         </SheetContent>
       </Sheet>
+
+      {/* Inline styles for animations */}
+      <style>{`
+        @keyframes podiumRise {
+          from { opacity: 0; transform: translateY(40px) scale(0.9); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeSlideDown {
+          from { opacity: 0; max-height: 0; }
+          to { opacity: 1; max-height: 200px; }
+        }
+      `}</style>
     </div>
   );
 }
