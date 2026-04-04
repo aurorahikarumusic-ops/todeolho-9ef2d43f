@@ -27,6 +27,8 @@ import SwUpdateToast from "./components/SwUpdateToast";
 import MuralPerolas from "./pages/MuralPerolas";
 import BancoReusPage from "./pages/BancoReus";
 import AvoDashboard from "./pages/AvoDashboard";
+import AvoRanking from "./pages/AvoRanking";
+import AvoPerfil from "./pages/AvoPerfil";
 import GrandmaSuggestionsFloat from "./components/grandma/GrandmaSuggestionsFloat";
 
 const queryClient = new QueryClient();
@@ -86,10 +88,10 @@ function AppRoutes() {
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/tarefas" element={<Tarefas />} />
-        <Route path="/ranking" element={<Ranking />} />
+        <Route path="/ranking" element={isAvo ? <AvoRanking /> : <Ranking />} />
         <Route path="/mural" element={isMom ? <MuralPerolas /> : <BancoReusPage />} />
         <Route path="/avaliacao" element={<MomAvaliacao />} />
-        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/perfil" element={isAvo ? <AvoPerfil /> : <Perfil />} />
         <Route path="/privacidade" element={<PrivacyPolicy />} />
         <Route path="/termos" element={<TermsOfUse />} />
         <Route path="/exclusao-dados" element={<DataDeletion />} />
