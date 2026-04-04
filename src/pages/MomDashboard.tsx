@@ -18,7 +18,7 @@ import MonthlyReport from "@/components/home/MonthlyReport";
 export default function MomDashboard() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
-  const { data: partner } = useFamilyPartner();
+  const { data: partner, isLoading: partnerLoading } = useFamilyPartner();
   const navigate = useNavigate();
 
   const now = new Date();
