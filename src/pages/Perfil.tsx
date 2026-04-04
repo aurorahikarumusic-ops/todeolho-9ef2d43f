@@ -21,9 +21,8 @@ import { format, differenceInHours, startOfMonth, endOfMonth, startOfWeek, forma
 import { ptBR } from "date-fns/locale";
 import {
   User, Edit2, Trophy, Flame, Star, LifeBuoy, CheckSquare, CalendarDays,
-  LogOut, Share2, ChevronRight, Baby, Shield, Clock, Bell, Crown, Gem, Gavel, Send, Trash2, Lock, ChevronLeft
+  LogOut, Share2, ChevronRight, Baby, Shield, Clock, Bell, Crown, Gem, Gavel, Lock, ChevronLeft
 } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
 import { getDadTitle } from "@/lib/constants";
 import { MOM_BADGES } from "@/lib/mom-constants";
 import InvitePartner from "@/components/family/InvitePartner";
