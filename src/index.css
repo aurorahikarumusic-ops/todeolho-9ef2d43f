@@ -57,6 +57,13 @@
     --dad-bg: 153 60% 94%;
     --dad-border: 153 40% 76%;
     --dad-text: 153 42% 20%;
+
+    /* Grandma panel tokens */
+    --avo-accent: 270 60% 55%;
+    --avo-bg: 270 80% 97%;
+    --avo-border: 270 40% 78%;
+    --avo-text: 270 50% 30%;
+    --avo-glow: 270 80% 70%;
   }
 }
 

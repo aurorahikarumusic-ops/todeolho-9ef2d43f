@@ -73,6 +73,13 @@ export default {
           border: "hsl(var(--dad-border))",
           text: "hsl(var(--dad-text))",
         },
+        avo: {
+          DEFAULT: "hsl(var(--avo-accent))",
+          bg: "hsl(var(--avo-bg))",
+          border: "hsl(var(--avo-border))",
+          text: "hsl(var(--avo-text))",
+          glow: "hsl(var(--avo-glow))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
