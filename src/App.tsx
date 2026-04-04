@@ -26,6 +26,8 @@ import Onboarding from "./pages/Onboarding";
 import SwUpdateToast from "./components/SwUpdateToast";
 import MuralPerolas from "./pages/MuralPerolas";
 import BancoReusPage from "./pages/BancoReus";
+import AvoDashboard from "./pages/AvoDashboard";
+import GrandmaSuggestionsFloat from "./components/grandma/GrandmaSuggestionsFloat";
 
 const queryClient = new QueryClient();
 
@@ -71,13 +73,14 @@ function AppRoutes() {
   }
 
   const isMom = profile?.role === "mae";
+  const isAvo = profile?.role === "avo";
 
   return (
     <AppLayout>
       <Routes>
         <Route path="/" element={<Navigate to="/app" replace />} />
         <Route path="/auth" element={<Navigate to="/app" replace />} />
-        <Route path="/app" element={isMom ? <MomDashboard /> : <Dashboard />} />
+        <Route path="/app" element={isAvo ? <AvoDashboard /> : isMom ? <MomDashboard /> : <Dashboard />} />
         <Route path="/inicio" element={<LandingPage />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/role" element={<RoleSelection />} />
@@ -93,6 +96,8 @@ function AppRoutes() {
         <Route path="/suporte" element={<Support />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {/* Floating grandma suggestions for mom and dad */}
+      {!isAvo && <GrandmaSuggestionsFloat />}
     </AppLayout>
   );
 }

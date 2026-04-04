@@ -170,6 +170,48 @@ export type Database = {
         }
         Relationships: []
       }
+      grandma_suggestions: {
+        Row: {
+          created_at: string
+          description: string | null
+          family_id: string
+          id: string
+          response_by: string | null
+          response_comment: string | null
+          status: string
+          suggestion_type: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          family_id: string
+          id?: string
+          response_by?: string | null
+          response_comment?: string | null
+          status?: string
+          suggestion_type?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          family_id?: string
+          id?: string
+          response_by?: string | null
+          response_comment?: string | null
+          status?: string
+          suggestion_type?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mom_ratings: {
         Row: {
           comment: string | null
