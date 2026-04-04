@@ -3,9 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "./useProfile";
 
 export function useFamilyPartner() {
-  const { data: profile } = useProfile();
+  const { data: profile, isLoading: profileLoading } = useProfile();
 
-  return useQuery({
+  const query = useQuery({
     queryKey: ["family-partner", profile?.family_id],
     queryFn: async () => {
       if (!profile?.family_id) return null;
@@ -19,6 +19,11 @@ export function useFamilyPartner() {
     },
     enabled: !!profile?.family_id,
   });
+
+  return {
+    ...query,
+    isLoading: profileLoading || query.isLoading,
+  };
 }
 
 export function useIsMom() {
