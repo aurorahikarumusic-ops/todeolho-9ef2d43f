@@ -234,28 +234,22 @@ export default function DadGauge({ percentage }: DadGaugeProps) {
           <circle cx={cx} cy={cy} r="3" fill="hsl(var(--foreground))" opacity="0.6" />
         </svg>
 
-        {/* Percentage display with 3D text effect */}
-        <div className="absolute inset-0 flex items-end justify-center pb-0">
-          <div
-            className="transition-all duration-500"
-            style={{
-              transform: tapped ? "scale(1.2)" : "scale(1)",
-            }}
-          >
-            <span
-              className="font-display text-3xl font-black"
-              style={{
-                background: `linear-gradient(135deg, ${level.color}, hsl(var(--foreground)))`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                textShadow: "none",
-                transition: "all 0.5s ease",
-              }}
-            >
-              {animatedPct}%
-            </span>
-          </div>
-        </div>
+      </div>
+
+      {/* Percentage display below gauge */}
+      <div className="mt-1 flex justify-center">
+        <span
+          className="font-display text-3xl font-black"
+          style={{
+            background: `linear-gradient(135deg, ${level.color}, hsl(var(--foreground)))`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            transition: "all 0.5s ease",
+          }}
+        >
+          {animatedPct}%
+        </span>
+      </div>
       </div>
 
       {/* Level info with animated emoji */}
