@@ -12,6 +12,17 @@ const GRANDMA_PHRASES = [
   "Eu criei 5 filhos e nenhum precisou de tutorial",
   "Deixa a vovó dar uma olhadinha...",
   "Vocês não sabem de nada, coitados",
+  "Esse app é igual genro: nunca tá bom",
+  "Na minha época bastava um chinelo",
+  "Filho de hoje em dia é tudo mimado",
+  "Eu já avisei, mas ninguém me ouve",
+];
+
+const GRANDMA_SIGNUP_TIPS = [
+  "A neta ensinou a vovó a mexer no celular 📱",
+  "A vovó vai fiscalizar tudo agora 👓",
+  "Cuidado, a avó sabe mais do que parece 🧶",
+  "Palpite é o superpoder de toda avó 💪",
 ];
 
 export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
@@ -19,7 +30,9 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+
   const randomPhrase = GRANDMA_PHRASES[Math.floor(Math.random() * GRANDMA_PHRASES.length)];
+  const randomTip = GRANDMA_SIGNUP_TIPS[Math.floor(Math.random() * GRANDMA_SIGNUP_TIPS.length)];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,18 +40,18 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
     try {
       if (isSignUp) {
         await signUp(form.email, form.password, form.name, "avo");
-        toast.success("Conta criada, vovó! 👵", {
-          description: "Agora você pode dar todos os palpites que quiser. Finalmente.",
+        toast.success("Conta criada, vovó! 👵🧶", {
+          description: "Agora você pode dar todos os palpites que quiser. A família que se prepare.",
         });
       } else {
         await signIn(form.email, form.password);
         toast.success("A vovó chegou! 👵", {
-          description: "Preparem-se, ela tem opinião sobre TUDO.",
+          description: "Preparem-se, ela tem opinião sobre TUDO. E vai compartilhar.",
         });
       }
     } catch (err: any) {
-      toast.error("Ops!", {
-        description: err.message || "Algo deu errado. Mas na época da vovó isso não acontecia.",
+      toast.error("Eita, deu ruim!", {
+        description: err.message || "Algo deu errado. Na época da vovó isso não acontecia.",
       });
     } finally {
       setLoading(false);
@@ -46,31 +59,46 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <Card className="w-full max-w-md shadow-xl border-0 bg-gradient-to-br from-[hsl(270,80%,97%)] to-[hsl(270,60%,92%)]">
-      <CardContent className="pt-6">
-        <div className="flex items-center justify-between mb-2">
+    <Card className="w-full max-w-md shadow-2xl border-0 overflow-hidden">
+      {/* Decorative header */}
+      <div className="bg-gradient-to-r from-avo to-avo-glow p-4 relative overflow-hidden">
+        <div className="absolute top-0 right-0 text-7xl opacity-10 -rotate-12 translate-x-4 -translate-y-2">🧶</div>
+        <div className="absolute bottom-0 left-0 text-5xl opacity-10 rotate-12 -translate-x-2 translate-y-2">👓</div>
+        <div className="flex items-center justify-between relative z-10">
           <button
             onClick={onBack}
-            className="flex items-center gap-1 text-sm font-body text-muted-foreground hover:text-avo transition-colors"
+            className="flex items-center gap-1 text-sm font-body text-white/80 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </button>
-          <span className="text-2xl">👵</span>
+          <div className="flex items-center gap-2">
+            <span className="text-3xl">👵</span>
+            <div>
+              <h2 className="font-display text-lg font-bold text-white leading-tight">Área da Vovó</h2>
+              <p className="text-[10px] text-white/70 font-body">{randomTip}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <CardContent className="pt-5 bg-gradient-to-b from-avo-bg to-white">
+        {/* Sarcastic quote */}
+        <div className="bg-avo/5 border border-avo-border rounded-xl p-3 mb-4 text-center">
+          <p className="text-xs font-body italic text-avo-text">
+            "{randomPhrase}"
+          </p>
+          <p className="text-[10px] text-muted-foreground mt-1">— Toda avó, sempre</p>
         </div>
 
-        <p className="text-xs font-body italic text-avo-text mb-4 text-center">
-          "{randomPhrase}"
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           {isSignUp && (
             <div>
               <label className="text-sm font-body font-semibold text-foreground mb-1 block">
                 Como os netos te chamam? 👵
               </label>
               <Input
-                placeholder="Ex: Dona Maria, Vó Lourdes"
+                placeholder="Ex: Vó Lourdes, Dona Maria, Vovó do Bolo"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 required={isSignUp}
@@ -81,7 +109,7 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
 
           <div>
             <label className="text-sm font-body font-semibold text-foreground mb-1 block">
-              E-mail
+              E-mail {isSignUp && "(o que a neta criou pra você)"}
             </label>
             <Input
               type="email"
@@ -95,7 +123,7 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
 
           <div>
             <label className="text-sm font-body font-semibold text-foreground mb-1 block">
-              Senha {isSignUp && "(não conta pra ninguém, viu?)"}
+              Senha {isSignUp && "(não é 123456, vovó!)"}
             </label>
             <Input
               type="password"
@@ -110,18 +138,19 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
 
           <Button
             type="submit"
-            className="w-full font-display text-lg h-12 bg-avo hover:bg-avo/80 text-white"
+            className="w-full font-display text-lg h-12 bg-avo hover:bg-avo/80 text-white shadow-lg"
             disabled={loading}
+            style={{ boxShadow: "0 6px 20px -4px hsl(270 60% 55% / 0.4)" }}
           >
             {loading ? (
-              "Carregando..."
+              "A vovó tá pensando..."
             ) : isSignUp ? (
               <span className="flex items-center gap-2">
-                <UserPlus className="w-5 h-5" /> Criar Minha Conta
+                <UserPlus className="w-5 h-5" /> Criar Conta de Vovó
               </span>
             ) : (
               <span className="flex items-center gap-2">
-                <LogIn className="w-5 h-5" /> Entrar
+                <LogIn className="w-5 h-5" /> Entrar como Vovó
               </span>
             )}
           </Button>
@@ -133,7 +162,7 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
               <span className="w-full border-t border-avo-border" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-[hsl(270,80%,95%)] px-2 text-muted-foreground font-body">ou</span>
+              <span className="bg-avo-bg px-2 text-muted-foreground font-body">ou</span>
             </div>
           </div>
           <Button
@@ -145,7 +174,7 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
                 redirect_uri: window.location.origin,
               });
               if (result.error) {
-                toast.error("Ops!", { description: "Erro ao entrar com Google." });
+                toast.error("Ops!", { description: "Erro ao entrar com Google. Pede ajuda pra neta." });
               }
             }}
           >
@@ -159,17 +188,26 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
           </Button>
         </div>
 
-        <div className="mt-6 text-center">
+        <div className="mt-5 text-center">
           <button
             type="button"
             onClick={() => setIsSignUp(!isSignUp)}
             className="text-sm font-body text-muted-foreground hover:text-avo transition-colors"
           >
             {isSignUp
-              ? "Já tem conta? Entra, vovó."
-              : "Primeira vez? Cria sua conta. Os netos agradecem."}
+              ? "Já tem conta? Entra, vovó. A família espera."
+              : "Primeira vez? Cria sua conta. Os netos precisam de palpite."}
           </button>
         </div>
+
+        {isSignUp && (
+          <div className="mt-4 bg-avo/5 border border-avo-border rounded-xl p-3">
+            <p className="text-[11px] font-body text-avo-text text-center">
+              🧶 <strong>Depois de criar sua conta</strong>, peça o <strong>código de convite</strong> para a mãe da família. 
+              É assim que você se conecta e começa a dar seus palpites!
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
