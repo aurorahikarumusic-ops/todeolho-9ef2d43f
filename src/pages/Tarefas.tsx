@@ -1,75 +1,74 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useFamilyPartner, useIsMom } from "@/hooks/useFamily";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { format, isBefore, isToday, differenceInHours } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { Plus, CheckSquare, Camera, Star, LifeBuoy, Trash2 } from "lucide-react";
+import {
+  Plus, CheckSquare, Camera, Star, LifeBuoy, Trash2,
+  Clock, AlertTriangle, Flame, Trophy, ChevronRight, Zap, Shield
+} from "lucide-react";
 import TaskCelebration from "@/components/tasks/TaskCelebration";
 import { notifyCrossPanel } from "@/lib/notify";
 import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 import MomTaskApproval from "@/components/tasks/MomTaskApproval";
 
-const CATEGORIES: Record<string, { label: string; emoji: string }> = {
-  school: { label: "Escola", emoji: "🏫" },
-  health: { label: "Saúde", emoji: "🏥" },
-  home: { label: "Casa", emoji: "🏠" },
-  finances: { label: "Finanças", emoji: "💰" },
-  fun: { label: "Diversão", emoji: "🎮" },
+const CATEGORIES: Record<string, { label: string; emoji: string; color: string }> = {
+  school: { label: "Escola", emoji: "🏫", color: "#6366f1" },
+  health: { label: "Saúde", emoji: "🏥", color: "#ef4444" },
+  home: { label: "Casa", emoji: "🏠", color: "#22c55e" },
+  finances: { label: "Finanças", emoji: "💰", color: "#f59e0b" },
+  fun: { label: "Diversão", emoji: "🎮", color: "#8b5cf6" },
 };
 
-const MISSIONS = [
-  "Manda uma mensagem de voz pro seu filho antes do almoço.",
-  "Pergunta pra sua esposa como ela tá. De verdade. Sem celular na mão.",
-  "Anota uma coisa que seu filho gosta que você sempre esquece.",
-  "Verifica a agenda. Tem algo essa semana que você não sabia.",
-  "Manda uma foto sua com seu filho pro álbum do app.",
-  "Descobre o nome do melhor amigo do seu filho.",
-  "Lembra o nome da professora sem perguntar pra mãe.",
-  "Chega em casa hoje sem olhar o celular nos primeiros 10 minutos.",
-  "Conta uma história pro seu filho antes de dormir.",
-  "Pergunta o que aconteceu na escola hoje. E escuta a resposta.",
+const URGENCY_CONFIG: Record<string, { label: string; color: string; icon: any; glow: string }> = {
+  normal: { label: "Normal", color: "#22c55e", icon: CheckSquare, glow: "rgba(34,197,94,0.3)" },
+  urgente: { label: "Urgente", color: "#f59e0b", icon: Zap, glow: "rgba(245,158,11,0.4)" },
+  critico: { label: "Crítico", color: "#ef4444", icon: AlertTriangle, glow: "rgba(239,68,68,0.5)" },
+};
+
+const DAD_COMMENTS = [
+  "Feito. Atrasado, mas feito. Conta (um pouco).",
+  "Parabéns por fazer o mínimo. A barra era baixa.",
+  "Completou sem a mãe mandar? Isso merece um troféu.",
+  "Registrado no histórico. Pra quando disserem que você não faz nada.",
 ];
 
-function getDailyMission(): string {
-  const today = new Date();
-  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-  return MISSIONS[seed % MISSIONS.length];
-}
+const MOM_COMMENTS = [
+  "Ele fez. Sem reclamar? Duvidoso.",
+  "Tarefa concluída. Milagres acontecem.",
+  "Registrado. Agora faltam só mais 47.",
+  "A prova está nos autos. Literalmente.",
+];
 
-function getTaskIronicComment(task: any) {
-  if (task.rescued_by_mom) return "A mãe fez. De novo.";
+function getTaskIronicComment(task: any, isMom: boolean) {
+  if (task.rescued_by_mom) return "A mãe fez. De novo. Como sempre.";
   if (task.completed_at) {
     const dueDate = task.due_date ? new Date(task.due_date) : null;
     const completedAt = new Date(task.completed_at);
-    if (dueDate && isBefore(dueDate, completedAt)) {
-      return "Feito. Atrasado, mas feito. Conta (um pouco).";
-    }
-    return "Feito no prazo. Guardamos pra história. ✓";
+    if (dueDate && isBefore(dueDate, completedAt)) return "Feito. Atrasado. Típico.";
+    const idx = Math.floor(Math.random() * (isMom ? MOM_COMMENTS : DAD_COMMENTS).length);
+    return (isMom ? MOM_COMMENTS : DAD_COMMENTS)[idx];
   }
-  if (!task.due_date) return "Ainda dá tempo. Não desperdiça.";
+  if (!task.due_date) return isMom ? "Sem prazo. Vai cobrar quando?" : "Sem prazo. Não desperdiça.";
   const dueDate = new Date(task.due_date);
-  if (isToday(dueDate)) return "É hoje. Não é amanhã. É hoje.";
+  if (isToday(dueDate)) return isMom ? "É HOJE. Ele sabe?" : "É HOJE. Não é amanhã.";
   if (isBefore(dueDate, new Date())) {
     const hoursLate = differenceInHours(new Date(), dueDate);
-    if (hoursLate <= 12) return "Atrasou. Dá pra recuperar. Talvez.";
-    return "A mãe já resolveu isso. Mas vamos fingir que não.";
+    if (hoursLate <= 12) return isMom ? "Atrasou. Surpresa zero." : "Atrasou. Dá pra recuperar. Talvez.";
+    return isMom ? "Passou do prazo. Quer resgatar?" : "A mãe já sabe. Corre.";
   }
-  return "Ainda dá tempo. Não desperdiça.";
+  return isMom ? "Aguardando. Tick tock." : "Ainda dá tempo. Não desperdiça.";
 }
 
 function calculatePoints(task: any, withPhoto: boolean): number {
@@ -90,6 +89,7 @@ export default function Tarefas() {
   const [showAddSheet, setShowAddSheet] = useState(false);
   const [completingTask, setCompletingTask] = useState<any>(null);
   const [proofFile, setProofFile] = useState<File | null>(null);
+  const [expandedTask, setExpandedTask] = useState<string | null>(null);
   const [newTask, setNewTask] = useState({
     title: "", description: "", due_date: "", due_time: "18:00",
     category: "home", proof_required: isMom, urgency: "normal",
@@ -115,14 +115,12 @@ export default function Tarefas() {
     enabled: !!profile?.family_id,
   });
 
-  // Daily mission via edge function (server-side creation)
   const { data: todayMission } = useQuery({
     queryKey: ["daily-mission", user?.id],
     queryFn: async () => {
       if (!user) return null;
       const { data, error } = await supabase.functions.invoke("create-daily-mission");
       if (error) {
-        // Fallback: try to read existing mission
         const today = new Date().toISOString().split("T")[0];
         const { data: existing } = await supabase
           .from("daily_missions")
@@ -145,15 +143,7 @@ export default function Tarefas() {
     !t.completed_at && !t.rescued_by_mom && t.due_date && isBefore(new Date(t.due_date), new Date())
   );
 
-  // Header subtitle
-  let subtitle = isMom
-    ? `Você cria. Ele faz. Ou a gente registra que não fez.`
-    : `${pending.length} pendentes, ${completed.length} concluídas. Tá indo.`;
-  if (!isMom && pending.length === 0 && completed.length > 0) subtitle = "Tudo feito! Isso não acontece toda semana. Aproveita.";
-  if (!isMom && overdue.length > 0) subtitle = `Você tem ${overdue.length} tarefa${overdue.length > 1 ? "s" : ""} atrasada${overdue.length > 1 ? "s" : ""}. A mãe já sabe.`;
-  if (isMom && awaitingApproval.length > 0) subtitle = `${awaitingApproval.length} tarefa(s) aguardando sua aprovação.`;
-
-  // Photo upload helper
+  // Photo upload
   const uploadProofPhoto = async (taskId: string, file: File): Promise<string | null> => {
     if (!user) return null;
     const ext = file.name.split(".").pop() || "jpg";
@@ -164,13 +154,11 @@ export default function Tarefas() {
     return urlData.publicUrl;
   };
 
-  // Complete task mutation
   const completeTaskMutation = useMutation({
     mutationFn: async ({ taskId, withPhoto, photoFile }: { taskId: string; withPhoto: boolean; photoFile?: File }) => {
       const task = tasks.find(t => t.id === taskId);
       if (!task || !user) throw new Error("Erro");
       const pts = calculatePoints(task, withPhoto);
-
       let photoUrl: string | null = null;
       let storagePath: string | null = null;
       if (withPhoto && photoFile) {
@@ -178,12 +166,10 @@ export default function Tarefas() {
         const ext = photoFile.name.split(".").pop() || "jpg";
         storagePath = `${user.id}/${taskId}.${ext}`;
       }
-
       await supabase.from("tasks").update({
         completed_at: new Date().toISOString(),
         photo_proof_url: photoUrl,
       }).eq("id", taskId);
-      
       if (pts > 0) {
         await supabase.from("profiles").update({ points: (profile?.points || 0) + pts }).eq("user_id", user.id);
       }
@@ -194,31 +180,17 @@ export default function Tarefas() {
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       setCompletingTask(null);
       setProofFile(null);
-      
-      // Show celebration overlay
-      if (pts > 0) {
-        setCelebration({ points: pts });
-      }
-
-      // Show proof photo viewer if photo was uploaded
+      if (pts > 0) setCelebration({ points: pts });
       if (photoUrl && storagePath) {
-        setTimeout(() => {
-          setProofViewer({ photoUrl, taskTitle, storagePath });
-        }, pts > 0 ? 2000 : 300);
+        setTimeout(() => setProofViewer({ photoUrl, taskTitle, storagePath }), pts > 0 ? 2000 : 300);
       }
-
-      // Send cross-panel notification to mom
       if (user && profile?.family_id) {
-        notifyCrossPanel("task_completed", profile.family_id, user.id, {
-          title: taskTitle,
-          has_photo: !!photoUrl,
-        });
+        notifyCrossPanel("task_completed", profile.family_id, user.id, { title: taskTitle, has_photo: !!photoUrl });
       }
     },
-    onError: () => toast.error("Erro ao concluir. Tenta de novo, pai."),
+    onError: () => toast.error("Erro ao concluir. Tenta de novo."),
   });
 
-  // Complete daily mission
   const completeMissionMutation = useMutation({
     mutationFn: async () => {
       if (!todayMission || !user) throw new Error("Sem missão");
@@ -228,17 +200,14 @@ export default function Tarefas() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["daily-mission"] });
       queryClient.invalidateQueries({ queryKey: ["profile"] });
-      toast.success(`Missão cumprida! +40 pontos.\n${profile?.display_name}, você fez isso sem a mãe pedir.\nIsso tem nome. Chama-se ser pai.`, { duration: 5000 });
+      toast.success("Missão cumprida! +40pts 🎯\nVocê fez sem a mãe pedir. Histórico.", { duration: 5000 });
     },
   });
 
-  // Add task mutation
   const addTaskMutation = useMutation({
     mutationFn: async () => {
       if (!profile?.family_id || !user) throw new Error("Sem família");
-      const dueDate = newTask.due_date
-        ? new Date(`${newTask.due_date}T${newTask.due_time}`).toISOString()
-        : null;
+      const dueDate = newTask.due_date ? new Date(`${newTask.due_date}T${newTask.due_time}`).toISOString() : null;
       const pointsByUrgency: Record<string, number> = { normal: 30, urgente: 40, critico: 50 };
       const { data: inserted, error } = await supabase.from("tasks").insert({
         title: newTask.title,
@@ -259,20 +228,18 @@ export default function Tarefas() {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       setShowAddSheet(false);
       setNewTask({ title: "", description: "", due_date: "", due_time: "18:00", category: "home", proof_required: false, urgency: "normal" });
-      toast.success(isMom ? "Tarefa criada! Ele recebeu uma notificação. Agora é com ele." : "Tarefa criada! Você adicionou sozinho. +30 pontos de iniciativa. ✨", { duration: 4000 });
-
-      // Send cross-panel notification
+      toast.success(
+        isMom
+          ? `Tarefa enviada pro ${dadName}! Ele já foi notificado. 😈`
+          : "Tarefa criada! Você adicionou sozinho. +30pts de iniciativa ✨"
+      );
       if (inserted && user && profile?.family_id) {
-        notifyCrossPanel("task_created", profile.family_id, user.id, {
-          title: inserted.title,
-          urgency: inserted.urgency,
-        });
+        notifyCrossPanel("task_created", profile.family_id, user.id, { title: inserted.title, urgency: inserted.urgency });
       }
     },
     onError: () => toast.error("Erro ao criar tarefa."),
   });
 
-  // Delete task mutation
   const deleteTaskMutation = useMutation({
     mutationFn: async (taskId: string) => {
       const { error } = await supabase.from("tasks").delete().eq("id", taskId);
@@ -280,209 +247,353 @@ export default function Tarefas() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
-      toast.success("Tarefa removida. Como se nunca tivesse existido. 🗑️", { duration: 3000 });
+      toast.success("Tarefa removida. Puf. Nunca existiu. 🗑️");
     },
-    onError: () => toast.error("Erro ao excluir."),
   });
 
   const renderTaskCard = (task: any) => {
     const cat = CATEGORIES[task.category] || CATEGORIES.home;
+    const urgency = URGENCY_CONFIG[task.urgency] || URGENCY_CONFIG.normal;
     const isDadTask = task.created_by === user?.id;
     const isOverdue = task.due_date && isBefore(new Date(task.due_date), new Date()) && !task.completed_at;
+    const isExpanded = expandedTask === task.id;
+    const UrgencyIcon = urgency.icon;
 
     return (
-      <Card key={task.id} className={`relative overflow-hidden ${task.rescued_by_mom ? "border-secondary/40" : ""}`}>
+      <div
+        key={task.id}
+        className={`rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${
+          isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
+        } ${task.rescued_by_mom ? "opacity-70" : ""}`}
+        style={{
+          background: "hsl(var(--card))",
+          boxShadow: isExpanded
+            ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
+            : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`,
+        }}
+        onClick={() => setExpandedTask(isExpanded ? null : task.id)}
+      >
+        {/* Rescued banner */}
         {task.rescued_by_mom && (
-          <div className="bg-secondary/10 px-4 py-1.5 flex items-center gap-2 border-b border-secondary/20">
-            <LifeBuoy className="w-3.5 h-3.5 text-secondary" />
-            <span className="text-[10px] font-body font-semibold text-secondary">
-              🛟 Resgate da mãe
+          <div className="px-4 py-2 flex items-center gap-2"
+            style={{ background: "linear-gradient(90deg, rgba(244,63,94,0.1), transparent)" }}>
+            <LifeBuoy className="w-3.5 h-3.5 text-rose-500" />
+            <span className="text-[10px] font-display font-bold text-rose-500 uppercase tracking-wider">
+              🛟 Resgate da mãe — Ela fez. De novo.
             </span>
           </div>
         )}
-        <CardContent className="p-4">
+
+        {/* Urgency banner for critical */}
+        {task.urgency === "critico" && !task.completed_at && !task.rescued_by_mom && (
+          <div className="px-4 py-1.5 flex items-center gap-2 animate-pulse"
+            style={{ background: "linear-gradient(90deg, rgba(239,68,68,0.15), transparent)" }}>
+            <AlertTriangle className="w-3 h-3 text-red-500" />
+            <span className="text-[10px] font-display font-bold text-red-500 uppercase tracking-wider">
+              🔴 Crítico — A mãe tá de olho
+            </span>
+          </div>
+        )}
+
+        <div className="p-4">
           <div className="flex items-start gap-3">
-            {/* Checkbox */}
-            {!task.completed_at && !task.rescued_by_mom && (
-              <Checkbox
-                className="mt-1 border-primary data-[state=checked]:bg-primary"
-                onCheckedChange={() => {
-                  if (task.proof_required) {
-                    setCompletingTask(task);
-                  } else {
-                    setCompletingTask(task);
-                  }
+            {/* Status indicator */}
+            {!task.completed_at && !task.rescued_by_mom ? (
+              <button
+                onClick={(e) => { e.stopPropagation(); setCompletingTask(task); }}
+                className="mt-0.5 w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all hover:scale-110 active:scale-95"
+                style={{
+                  background: `linear-gradient(135deg, ${urgency.color}20, ${urgency.color}10)`,
+                  border: `2px solid ${urgency.color}50`,
                 }}
-              />
-            )}
-            {(task.completed_at || task.rescued_by_mom) && (
-              <div className="mt-1 w-4 h-4 rounded-sm bg-primary/20 flex items-center justify-center">
-                <CheckSquare className="w-3.5 h-3.5 text-primary" />
+              >
+                <UrgencyIcon className="w-4 h-4" style={{ color: urgency.color }} />
+              </button>
+            ) : (
+              <div
+                className="mt-0.5 w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+                style={{
+                  background: task.rescued_by_mom
+                    ? "linear-gradient(135deg, rgba(244,63,94,0.2), rgba(244,63,94,0.1))"
+                    : "linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--primary) / 0.1))",
+                }}
+              >
+                <CheckSquare className="w-4 h-4" style={{ color: task.rescued_by_mom ? "#f43f5e" : "hsl(var(--primary))" }} />
               </div>
             )}
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-sm">{cat.emoji}</span>
                 <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through text-muted-foreground" : ""}`}>
-                  {task.title}
+                  {cat.emoji} {task.title}
                 </h3>
               </div>
 
-              {task.due_date && (
-                <p className={`text-xs mb-1.5 ${isOverdue ? "text-destructive font-semibold" : "text-muted-foreground"}`}>
-                  {format(new Date(task.due_date), "dd/MM · HH:mm")}
-                  {isOverdue && " ⚠️"}
-                </p>
-              )}
-
-              <div className="flex items-center gap-2 mb-1.5">
-                <Badge
-                  variant={isDadTask ? "default" : "secondary"}
-                  className="text-[10px]"
+              <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                {task.due_date && (
+                  <span className={`text-[10px] flex items-center gap-1 px-2 py-0.5 rounded-full ${
+                    isOverdue
+                      ? "bg-red-500/10 text-red-500 font-bold"
+                      : "bg-muted/50 text-muted-foreground"
+                  }`}>
+                    <Clock className="w-2.5 h-2.5" />
+                    {format(new Date(task.due_date), "dd/MM · HH:mm")}
+                    {isOverdue && " ⚠️"}
+                  </span>
+                )}
+                <span
+                  className="text-[9px] px-2 py-0.5 rounded-full font-display font-bold"
+                  style={{
+                    background: `${urgency.color}15`,
+                    color: urgency.color,
+                  }}
                 >
-                  {isDadTask ? "Missão do app" : "Mãe atribuiu"}
-                </Badge>
+                  {urgency.label}
+                </span>
                 {task.proof_required && (
-                  <Badge variant="outline" className="text-[10px]">
-                    📸 Prova exigida
-                  </Badge>
+                  <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-display font-bold">
+                    📸 Prova
+                  </span>
                 )}
               </div>
 
-              <p className="text-xs font-body italic text-muted-foreground">
-                {getTaskIronicComment(task)}
+              <p className="text-[10px] font-body italic text-muted-foreground/70">
+                {getTaskIronicComment(task, isMom)}
               </p>
             </div>
 
-            {/* Points + Delete for completed */}
-            {(task.completed_at || task.rescued_by_mom) && (
-              <div className="flex flex-col items-end gap-2 shrink-0">
-                {!task.rescued_by_mom && (
-                  <span className="text-xs font-display font-bold text-primary">
-                    +{task.points || 50}pts
-                  </span>
-                )}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
-                  onClick={() => deleteTaskMutation.mutate(task.id)}
-                  disabled={deleteTaskMutation.isPending}
-                  title="Excluir tarefa"
+            <div className="flex flex-col items-end gap-1 shrink-0">
+              {task.points && !task.rescued_by_mom && (
+                <span
+                  className="text-xs font-display font-black"
+                  style={{
+                    background: task.completed_at
+                      ? "linear-gradient(135deg, hsl(var(--primary)), #22c55e)"
+                      : "linear-gradient(135deg, hsl(var(--muted-foreground)), hsl(var(--foreground)))",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </Button>
-              </div>
-            )}
+                  {task.completed_at ? "+" : ""}{task.points}pts
+                </span>
+              )}
+              {task.rescued_by_mom && (
+                <span className="text-xs font-display font-black text-red-500">-30pts</span>
+              )}
+              <ChevronRight className={`w-3.5 h-3.5 text-muted-foreground/30 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} />
+            </div>
           </div>
-        </CardContent>
-      </Card>
-    );
-  };
 
-  const renderEmptyState = (type: "pending" | "overdue" | "completed") => {
-    const messages = {
-      pending: {
-        emoji: "🎯",
-        title: "Nenhuma tarefa pendente!",
-        text: "Ou você fez tudo, ou a mãe ainda não atualizou.\nDas duas, uma é mais provável.",
-      },
-      overdue: {
-        emoji: "🎉",
-        title: "Nada atrasado!",
-        text: "Isso é incomum. Aproveita o momento.",
-      },
-      completed: {
-        emoji: "🤷",
-        title: "Nada concluído ainda",
-        text: "Tudo feito essa semana.\nA gente tá orgulhoso.\n(Não esperávamos isso.)",
-      },
-    };
-    const m = messages[type];
-    return (
-      <Card className="border-dashed">
-        <CardContent className="py-10 text-center">
-          <p className="text-4xl mb-3">{m.emoji}</p>
-          <p className="font-display text-lg font-bold mb-1">{m.title}</p>
-          <p className="text-sm text-muted-foreground font-body italic whitespace-pre-line">{m.text}</p>
-        </CardContent>
-      </Card>
-    );
-  };
+          {/* Expanded details */}
+          {isExpanded && (
+            <div className="mt-3 pt-3 border-t border-muted/20 space-y-3 animate-fade-in">
+              {task.description && (
+                <p className="text-xs font-body text-muted-foreground">📝 {task.description}</p>
+              )}
 
-  return (
-    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-8 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-2 mb-1">
-          <CheckSquare className={`w-6 h-6 ${isMom ? "text-mom" : "text-primary"}`} />
-          <h1 className="font-display text-2xl font-bold">
-            {isMom ? "Lista do Pai" : "A Lista da Mãe"}
-          </h1>
-        </div>
-        <p className="text-sm text-muted-foreground font-body italic">{subtitle}</p>
-      </div>
-
-      {/* Daily Mission */}
-      {todayMission && !todayMission.completed_at && (
-        <Card className="border-accent bg-accent/10 overflow-hidden">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0">
-                <Star className="w-4 h-4 text-accent-foreground" />
-              </div>
-              <div className="flex-1">
-                <Badge className="bg-accent text-accent-foreground text-[10px] mb-2">
-                  ⭐ Missão Surpresa do Dia
+              <div className="flex items-center gap-2">
+                <Badge variant={isDadTask ? "default" : "secondary"} className="text-[9px] h-5">
+                  {isDadTask ? (
+                    <><Sparkles className="w-2.5 h-2.5 mr-1" /> Iniciativa do pai</>
+                  ) : (
+                    <>{isMom ? "Você criou" : "Mãe mandou"}</>
+                  )}
                 </Badge>
-                <p className="font-body text-sm mb-3">{todayMission.mission_text}</p>
-                <Button
-                  size="sm"
-                  className="bg-primary text-xs"
-                  onClick={() => completeMissionMutation.mutate()}
-                  disabled={completeMissionMutation.isPending}
-                >
-                  {completeMissionMutation.isPending ? "..." : "✅ Missão cumprida! (+40pts)"}
-                </Button>
+                <span className="text-[9px] text-muted-foreground/50">
+                  {format(new Date(task.created_at), "dd/MM")}
+                </span>
+              </div>
+
+              <div className="flex gap-2">
+                {!task.completed_at && !task.rescued_by_mom && (
+                  <Button
+                    size="sm"
+                    className="text-xs h-8 flex-1 rounded-xl font-display font-bold"
+                    style={{
+                      background: `linear-gradient(135deg, ${urgency.color}, ${urgency.color}cc)`,
+                      boxShadow: `0 4px 12px ${urgency.glow}`,
+                    }}
+                    onClick={(e) => { e.stopPropagation(); setCompletingTask(task); }}
+                  >
+                    ✅ Concluir
+                  </Button>
+                )}
+                {(task.completed_at || task.rescued_by_mom) && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs h-8 text-muted-foreground hover:text-red-500 rounded-xl"
+                    onClick={(e) => { e.stopPropagation(); deleteTaskMutation.mutate(task.id); }}
+                  >
+                    <Trash2 className="w-3.5 h-3.5 mr-1" />
+                    Excluir
+                  </Button>
+                )}
+                {task.photo_proof_url && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs h-8 rounded-xl"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const ext = task.photo_proof_url?.split(".").pop()?.split("?")[0] || "jpg";
+                      setProofViewer({
+                        photoUrl: task.photo_proof_url!,
+                        taskTitle: task.title,
+                        storagePath: `${task.assigned_to || task.created_by}/${task.id}.${ext}`,
+                      });
+                    }}
+                  >
+                    <Camera className="w-3.5 h-3.5 mr-1" />
+                    Ver foto
+                  </Button>
+                )}
               </div>
             </div>
-          </CardContent>
-        </Card>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const renderEmptyState = (emoji: string, title: string, text: string) => (
+    <div className="rounded-3xl border-2 border-dashed border-muted p-10 text-center"
+      style={{ boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)" }}>
+      <p className="text-5xl mb-3">{emoji}</p>
+      <p className="font-display text-lg font-bold mb-1">{title}</p>
+      <p className="text-sm text-muted-foreground font-body italic whitespace-pre-line">{text}</p>
+    </div>
+  );
+
+  // Subtitle
+  let subtitle = isMom
+    ? `Você cria. Ele faz. Ou a gente registra que não fez.`
+    : `${pending.length} pendentes. Tá indo.`;
+  if (!isMom && pending.length === 0 && completed.length > 0) subtitle = "Tudo feito! Isso não acontece sempre. Aproveita.";
+  if (!isMom && overdue.length > 0) subtitle = `${overdue.length} atrasada${overdue.length > 1 ? "s" : ""}. A mãe já sabe. 👀`;
+  if (isMom && awaitingApproval.length > 0) subtitle = `${awaitingApproval.length} aguardando sua aprovação. Hora de julgar.`;
+
+  return (
+    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
+      {/* Hero Header */}
+      <div
+        className="relative rounded-3xl p-5 overflow-hidden"
+        style={{
+          background: isMom
+            ? "linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1)"
+            : "linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(var(--primary) / 0.05))",
+          perspective: "800px",
+        }}
+      >
+        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
+          style={{ background: isMom ? "#e91e63" : "hsl(var(--primary))" }} />
+
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-2">
+            {isMom ? <Shield className="w-6 h-6 text-pink-600" /> : <CheckSquare className="w-6 h-6 text-primary" />}
+            <h1 className="font-display text-xl font-bold">
+              {isMom ? "Painel de Controle" : "Missões do Pai"}
+            </h1>
+          </div>
+          <p className="text-xs text-muted-foreground font-body italic mb-4">{subtitle}</p>
+
+          {/* Quick stats */}
+          <div className="flex gap-2">
+            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
+              <p className="font-display text-2xl font-black">{pending.length}</p>
+              <p className="text-[8px] text-muted-foreground font-body uppercase tracking-wider">Pendentes</p>
+            </div>
+            {isMom && (
+              <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
+                style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
+                <p className="font-display text-2xl font-black text-amber-500">{awaitingApproval.length}</p>
+                <p className="text-[8px] text-muted-foreground font-body uppercase tracking-wider">Aprovação</p>
+              </div>
+            )}
+            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
+              <p className="font-display text-2xl font-black" style={{ color: "hsl(var(--primary))" }}>{completed.length}</p>
+              <p className="text-[8px] text-muted-foreground font-body uppercase tracking-wider">Feitas</p>
+            </div>
+            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
+              <p className="font-display text-2xl font-black text-red-500">{isMom ? rescued.length : overdue.length}</p>
+              <p className="text-[8px] text-muted-foreground font-body uppercase tracking-wider">{isMom ? "Resgates" : "Atrasadas"}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Daily Mission - Dad only */}
+      {!isMom && todayMission && !todayMission.completed_at && (
+        <div
+          className="rounded-2xl p-4 overflow-hidden relative"
+          style={{
+            background: "linear-gradient(135deg, #fef3c7, #fde68a)",
+            boxShadow: "0 6px 20px rgba(245,158,11,0.2), inset 0 1px 0 rgba(255,255,255,0.4)",
+          }}
+        >
+          <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full blur-xl opacity-30"
+            style={{ background: "#f59e0b" }} />
+          <div className="relative z-10 flex items-start gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center shrink-0"
+              style={{ boxShadow: "0 3px 8px rgba(245,158,11,0.4)" }}>
+              <Star className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex-1">
+              <p className="font-display text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">
+                ⭐ Missão Surpresa do Dia
+              </p>
+              <p className="font-body text-sm text-amber-900 mb-3">{todayMission.mission_text}</p>
+              <Button
+                size="sm"
+                className="bg-amber-600 hover:bg-amber-700 text-white text-xs font-display font-bold rounded-xl"
+                onClick={() => completeMissionMutation.mutate()}
+                disabled={completeMissionMutation.isPending}
+              >
+                {completeMissionMutation.isPending ? "..." : "✅ Missão cumprida! (+40pts)"}
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
 
-      {todayMission?.completed_at && (
-        <Card className="border-primary/30 bg-primary/5">
-          <CardContent className="p-3 text-center">
-            <p className="text-xs font-body italic text-primary">
-              ✅ Missão do dia cumprida! Você fez sem a mãe pedir. Respeito.
-            </p>
-          </CardContent>
-        </Card>
+      {!isMom && todayMission?.completed_at && (
+        <div className="rounded-2xl p-3 text-center"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--primary) / 0.03))",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+          }}>
+          <p className="text-xs font-body italic" style={{ color: "hsl(var(--primary))" }}>
+            ✅ Missão do dia cumprida! Sem a mãe pedir. Isso sim é evolução.
+          </p>
+        </div>
       )}
 
       {/* Tabs */}
       <Tabs defaultValue={isMom && awaitingApproval.length > 0 ? "approval" : "pending"}>
-        <TabsList className={`w-full grid ${isMom ? "grid-cols-4" : "grid-cols-3"}`}>
-          <TabsTrigger value="pending" className="text-xs font-display">
-            Pendentes ({pending.length})
+        <TabsList className={`w-full grid rounded-2xl h-11 ${isMom ? "grid-cols-4" : "grid-cols-3"}`}>
+          <TabsTrigger value="pending" className="text-[10px] font-display font-bold rounded-xl data-[state=active]:shadow-md">
+            🎯 Pendentes ({pending.length})
           </TabsTrigger>
           {isMom && (
-            <TabsTrigger value="approval" className="text-xs font-display">
-              Aprovação ({awaitingApproval.length})
+            <TabsTrigger value="approval" className="text-[10px] font-display font-bold rounded-xl data-[state=active]:shadow-md">
+              👩‍⚖️ Julgar ({awaitingApproval.length})
             </TabsTrigger>
           )}
-          <TabsTrigger value="completed" className="text-xs font-display">
-            Concluídas ({completed.length})
+          <TabsTrigger value="completed" className="text-[10px] font-display font-bold rounded-xl data-[state=active]:shadow-md">
+            ✅ Feitas ({completed.length})
           </TabsTrigger>
-          <TabsTrigger value="overdue" className="text-xs font-display">
-            {isMom ? "Resgatadas" : "Atrasadas"} ({isMom ? rescued.length : overdue.length})
+          <TabsTrigger value="overdue" className="text-[10px] font-display font-bold rounded-xl data-[state=active]:shadow-md">
+            {isMom ? "🛟 Resgates" : "⚠️ Atrasadas"} ({isMom ? rescued.length : overdue.length})
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="pending" className="space-y-3 mt-3">
           {pending.length === 0
-            ? renderEmptyState("pending")
+            ? renderEmptyState("🎯", isMom ? "Nada pendente!" : "Tudo limpo!",
+                isMom ? `O ${dadName} fez tudo? Guarda esse print.` : "Ou você fez tudo, ou a mãe ainda não atualizou.\nDas duas, uma é mais provável.")
             : isMom
               ? pending.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
               : pending.map(renderTaskCard)}
@@ -490,23 +601,17 @@ export default function Tarefas() {
 
         {isMom && (
           <TabsContent value="approval" className="space-y-3 mt-3">
-            {awaitingApproval.length === 0 ? (
-              <Card className="border-dashed">
-                <CardContent className="py-8 text-center">
-                  <p className="text-3xl mb-2">✅</p>
-                  <p className="font-display font-bold">Nada para aprovar</p>
-                  <p className="text-xs text-muted-foreground font-body italic">
-                    O {dadName} ainda não concluiu nada. Típico.
-                  </p>
-                </CardContent>
-              </Card>
-            ) : awaitingApproval.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)}
+            {awaitingApproval.length === 0
+              ? renderEmptyState("👩‍⚖️", "Tribunal vazio",
+                  `O ${dadName} não concluiu nada ainda.\nPor que você tá surpresa?`)
+              : awaitingApproval.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)}
           </TabsContent>
         )}
 
         <TabsContent value="completed" className="space-y-3 mt-3">
           {completed.length === 0
-            ? renderEmptyState("completed")
+            ? renderEmptyState("🤷", "Nada concluído",
+                isMom ? `O ${dadName} não fez nada ainda. Chocante.` : "Nenhuma tarefa concluída.\nA gente tá orgulhoso. (Não esperávamos isso.)")
             : isMom
               ? completed.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
               : completed.map(renderTaskCard)}
@@ -514,19 +619,15 @@ export default function Tarefas() {
 
         <TabsContent value="overdue" className="space-y-3 mt-3">
           {isMom ? (
-            rescued.length === 0 ? (
-              <Card className="border-dashed">
-                <CardContent className="py-8 text-center">
-                  <p className="text-3xl mb-2">🏆</p>
-                  <p className="font-display font-bold">Zero resgates</p>
-                  <p className="text-xs text-muted-foreground font-body italic">
-                    O {dadName} tá fazendo tudo sozinho. Guarda esse print.
-                  </p>
-                </CardContent>
-              </Card>
-            ) : rescued.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
+            rescued.length === 0
+              ? renderEmptyState("🏆", "Zero resgates!",
+                  `O ${dadName} fez tudo sozinho.\nIsso é real? Guarda esse print.`)
+              : rescued.map((t) => <MomTaskApproval key={t.id} task={t} dadName={dadName} />)
           ) : (
-            overdue.length === 0 ? renderEmptyState("overdue") : overdue.map(renderTaskCard)
+            overdue.length === 0
+              ? renderEmptyState("🎉", "Nada atrasado!",
+                  "Isso é raro. Aproveita o momento.\nAmanhã é outro dia.")
+              : overdue.map(renderTaskCard)
           )}
         </TabsContent>
       </Tabs>
@@ -534,65 +635,70 @@ export default function Tarefas() {
       {/* FAB */}
       <button
         onClick={() => setShowAddSheet(true)}
-        className={`fixed bottom-20 right-4 z-40 rounded-full shadow-lg flex items-center gap-2 transition-all active:scale-95 px-4 h-12 ${isMom ? "bg-mom text-white hover:bg-mom/90" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}
-        title="Criar nova tarefa"
+        className="fixed bottom-20 right-4 z-40 rounded-2xl flex items-center gap-2 transition-all active:scale-95 px-5 h-12"
+        style={{
+          background: isMom
+            ? "linear-gradient(135deg, #e91e63, #c2185b)"
+            : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+          color: "white",
+          boxShadow: isMom
+            ? "0 6px 20px rgba(233,30,99,0.4)"
+            : "0 6px 20px hsl(var(--primary) / 0.35)",
+        }}
       >
         <Plus className="w-5 h-5" />
-        <span className="font-display text-sm">Nova tarefa</span>
+        <span className="font-display text-sm font-bold">{isMom ? "Criar tarefa" : "Nova tarefa"}</span>
       </button>
 
       {/* Complete Task Sheet */}
       <Sheet open={!!completingTask} onOpenChange={(open) => { if (!open) { setCompletingTask(null); setProofFile(null); } }}>
-        <SheetContent side="bottom" className="rounded-t-2xl">
+        <SheetContent side="bottom" className="rounded-t-3xl">
           <SheetHeader>
-            <SheetTitle className="font-display text-lg">Tarefa concluída! 🎉</SheetTitle>
+            <SheetTitle className="font-display text-lg">🎉 Tarefa concluída!</SheetTitle>
           </SheetHeader>
           {completingTask && (
-            <div className="space-y-3 mt-4">
-              <p className="text-sm font-body text-muted-foreground">
-                {completingTask.title}
-              </p>
-
-              {/* File input for photo */}
-              <div className="space-y-2">
-                <input
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                  id="proof-photo"
-                  className="hidden"
-                  onChange={(e) => setProofFile(e.target.files?.[0] || null)}
-                />
-                {proofFile && (
-                  <p className="text-xs text-primary font-body">📷 {proofFile.name}</p>
-                )}
+            <div className="space-y-4 mt-4">
+              <div className="rounded-2xl p-4 bg-muted/30">
+                <p className="font-display font-bold text-sm">{completingTask.title}</p>
+                <p className="text-[10px] text-muted-foreground font-body mt-1">
+                  {completingTask.proof_required ? "📸 A mãe exigiu foto. Sem foto, sem pontos." : "Foto é opcional, mas vale +15pts bônus."}
+                </p>
               </div>
 
-              {completingTask.proof_required ? (
-                <div className="space-y-3">
-                  <p className="text-xs font-body italic text-secondary">
-                    📸 A mãe exigiu foto como prova. Sem foto, sem pontos.
-                  </p>
-                  <Button
-                    className="w-full bg-primary font-display"
-                    onClick={() => {
-                      if (!proofFile) {
-                        document.getElementById("proof-photo")?.click();
-                        return;
-                      }
-                      completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
-                    }}
-                    disabled={completeTaskMutation.isPending}
-                  >
-                    <Camera className="w-4 h-4 mr-2" />
-                    {proofFile ? `Enviar foto e concluir (+50pts)` : "Tirar foto como prova (+50pts)"}
-                  </Button>
+              <input type="file" accept="image/*" capture="environment" id="proof-photo" className="hidden"
+                onChange={(e) => setProofFile(e.target.files?.[0] || null)} />
+
+              {proofFile && (
+                <div className="rounded-xl bg-green-500/10 p-2 flex items-center gap-2">
+                  <Camera className="w-4 h-4 text-green-600" />
+                  <p className="text-xs text-green-700 font-body font-bold">📷 {proofFile.name}</p>
                 </div>
+              )}
+
+              {completingTask.proof_required ? (
+                <Button
+                  className="w-full font-display font-bold h-12 rounded-xl"
+                  style={{
+                    background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+                    boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
+                  }}
+                  onClick={() => {
+                    if (!proofFile) { document.getElementById("proof-photo")?.click(); return; }
+                    completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
+                  }}
+                  disabled={completeTaskMutation.isPending}
+                >
+                  <Camera className="w-4 h-4 mr-2" />
+                  {proofFile ? "Enviar foto e concluir (+50pts)" : "Tirar foto como prova (+50pts)"}
+                </Button>
               ) : (
-                <div className="space-y-3">
-                  {/* Primary action: conclude without photo */}
+                <div className="space-y-2">
                   <Button
-                    className="w-full bg-primary font-display"
+                    className="w-full font-display font-bold h-12 rounded-xl"
+                    style={{
+                      background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+                      boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
+                    }}
                     onClick={() => {
                       if (proofFile) {
                         completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
@@ -602,15 +708,13 @@ export default function Tarefas() {
                     }}
                     disabled={completeTaskMutation.isPending}
                   >
-                    {proofFile ? `Enviar foto e concluir (+50pts)` : "✅ Concluir tarefa (+35pts)"}
+                    {proofFile ? "Enviar foto e concluir (+50pts)" : "✅ Concluir tarefa (+35pts)"}
                   </Button>
-                  {/* Secondary: add photo for bonus */}
                   {!proofFile && (
                     <Button
                       variant="outline"
-                      className="w-full font-display text-muted-foreground"
+                      className="w-full font-display text-muted-foreground rounded-xl"
                       onClick={() => document.getElementById("proof-photo")?.click()}
-                      disabled={completeTaskMutation.isPending}
                     >
                       <Camera className="w-4 h-4 mr-2" />
                       Adicionar foto (+15pts bônus)
@@ -625,126 +729,131 @@ export default function Tarefas() {
 
       {/* Add Task Sheet */}
       <Sheet open={showAddSheet} onOpenChange={setShowAddSheet}>
-        <SheetContent side="bottom" className="rounded-t-2xl max-h-[85vh] overflow-y-auto">
+        <SheetContent side="bottom" className="rounded-t-3xl max-h-[85vh] overflow-y-auto">
           <SheetHeader>
-            <SheetTitle className="font-display text-lg">Nova Tarefa</SheetTitle>
+            <SheetTitle className="font-display text-lg">
+              {isMom ? "📋 Nova Missão pro Pai" : "✨ Nova Tarefa"}
+            </SheetTitle>
           </SheetHeader>
 
           <div className="space-y-4 mt-4">
             <div>
-              <Label className="text-xs font-body">Nome da tarefa</Label>
-              <Input
-                placeholder="Ex: Levar filho no médico"
-                value={newTask.title}
-                onChange={e => setNewTask(p => ({ ...p, title: e.target.value }))}
-                className="mt-1"
-              />
+              <Label className="text-xs font-display font-bold">Nome da tarefa</Label>
+              <Input placeholder="Ex: Levar filho no médico" value={newTask.title}
+                onChange={e => setNewTask(p => ({ ...p, title: e.target.value }))} className="mt-1 rounded-xl" />
             </div>
 
             <div className="flex gap-3">
               <div className="flex-1">
-                <Label className="text-xs font-body">Prazo</Label>
-                <Input
-                  type="date"
-                  value={newTask.due_date}
-                  onChange={e => setNewTask(p => ({ ...p, due_date: e.target.value }))}
-                  className="mt-1"
-                />
+                <Label className="text-xs font-display font-bold">Prazo</Label>
+                <Input type="date" value={newTask.due_date}
+                  onChange={e => setNewTask(p => ({ ...p, due_date: e.target.value }))} className="mt-1 rounded-xl" />
               </div>
               <div className="w-28">
-                <Label className="text-xs font-body">Hora</Label>
-                <Input
-                  type="time"
-                  value={newTask.due_time}
-                  onChange={e => setNewTask(p => ({ ...p, due_time: e.target.value }))}
-                  className="mt-1"
-                />
+                <Label className="text-xs font-display font-bold">Hora</Label>
+                <Input type="time" value={newTask.due_time}
+                  onChange={e => setNewTask(p => ({ ...p, due_time: e.target.value }))} className="mt-1 rounded-xl" />
               </div>
             </div>
 
             <div>
-              <Label className="text-xs font-body">Categoria</Label>
-              <Select
-                value={newTask.category}
-                onValueChange={v => setNewTask(p => ({ ...p, category: v }))}
-              >
-                <SelectTrigger className="mt-1">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(CATEGORIES).map(([key, c]) => (
-                    <SelectItem key={key} value={key}>{c.emoji} {c.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label className="text-xs font-display font-bold">Categoria</Label>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {Object.entries(CATEGORIES).map(([key, c]) => (
+                  <button key={key}
+                    onClick={() => setNewTask(p => ({ ...p, category: key }))}
+                    className={`px-3 py-2 rounded-xl text-xs font-display font-bold transition-all ${
+                      newTask.category === key ? "scale-105 ring-2 ring-offset-1" : "opacity-60 hover:opacity-100"
+                    }`}
+                    style={{
+                      background: newTask.category === key ? `${c.color}20` : "hsl(var(--muted))",
+                      color: newTask.category === key ? c.color : undefined,
+                      ["--tw-ring-color" as any]: c.color,
+                    }}
+                  >
+                    {c.emoji} {c.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div>
-              <Label className="text-xs font-body">Notas (opcional)</Label>
-              <Textarea
-                placeholder="Detalhes da tarefa..."
-                value={newTask.description}
+              <Label className="text-xs font-display font-bold">Notas (opcional)</Label>
+              <Textarea placeholder="Detalhes da tarefa..." value={newTask.description}
                 onChange={e => setNewTask(p => ({ ...p, description: e.target.value }))}
-                className="mt-1 min-h-[60px]"
-              />
+                className="mt-1 min-h-[60px] rounded-xl" />
             </div>
 
-            <div className="flex items-center justify-between">
-              <Label className="text-xs font-body">Exigir foto como prova?</Label>
-              <Switch
-                checked={newTask.proof_required}
-                onCheckedChange={v => setNewTask(p => ({ ...p, proof_required: v }))}
-              />
+            <div className="flex items-center justify-between bg-muted/30 rounded-xl p-3">
+              <div>
+                <Label className="text-xs font-display font-bold">Exigir foto como prova?</Label>
+                <p className="text-[9px] text-muted-foreground font-body">
+                  {isMom ? "Sem foto, ele não ganha ponto." : "Foto vale +15pts bônus."}
+                </p>
+              </div>
+              <Switch checked={newTask.proof_required}
+                onCheckedChange={v => setNewTask(p => ({ ...p, proof_required: v }))} />
             </div>
 
             {isMom && (
               <div>
-                <Label className="text-xs font-body">Urgência</Label>
-                <Select
-                  value={newTask.urgency}
-                  onValueChange={v => setNewTask(p => ({ ...p, urgency: v }))}
-                >
-                  <SelectTrigger className="mt-1">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="normal">Normal (30pts)</SelectItem>
-                    <SelectItem value="urgente">⚡ Urgente (40pts)</SelectItem>
-                    <SelectItem value="critico">⚠️ Crítico (50pts)</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label className="text-xs font-display font-bold">Nível de urgência</Label>
+                <div className="flex gap-2 mt-2">
+                  {Object.entries(URGENCY_CONFIG).map(([key, u]) => {
+                    const Icon = u.icon;
+                    return (
+                      <button key={key}
+                        onClick={() => setNewTask(p => ({ ...p, urgency: key }))}
+                        className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-display font-bold transition-all ${
+                          newTask.urgency === key ? "scale-105 ring-2 ring-offset-1" : "opacity-50 hover:opacity-80"
+                        }`}
+                        style={{
+                          background: newTask.urgency === key ? `${u.color}15` : "hsl(var(--muted))",
+                          color: newTask.urgency === key ? u.color : undefined,
+                          ["--tw-ring-color" as any]: u.color,
+                        }}
+                      >
+                        <Icon className="w-3.5 h-3.5" />
+                        {u.label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
 
             <Button
-              className={`w-full font-display ${isMom ? "bg-mom hover:bg-mom/90" : "bg-primary"}`}
+              className="w-full font-display font-bold h-12 rounded-xl text-sm"
+              style={{
+                background: isMom
+                  ? "linear-gradient(135deg, #e91e63, #c2185b)"
+                  : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+                boxShadow: isMom ? "0 4px 16px rgba(233,30,99,0.3)" : "0 4px 16px hsl(var(--primary) / 0.25)",
+              }}
               onClick={() => addTaskMutation.mutate()}
               disabled={!newTask.title || addTaskMutation.isPending}
             >
-              {addTaskMutation.isPending ? "Salvando..." : "Criar Tarefa"}
+              {addTaskMutation.isPending ? "Salvando..." : isMom ? "😈 Enviar pro pai" : "✅ Criar Tarefa"}
             </Button>
           </div>
         </SheetContent>
       </Sheet>
 
-      {/* Celebration Overlay */}
-      {celebration && (
-        <TaskCelebration
-          points={celebration.points}
-          onClose={() => setCelebration(null)}
-        />
-      )}
-
-      {/* Proof Photo Viewer */}
+      {/* Celebration & Proof Viewer */}
+      {celebration && <TaskCelebration points={celebration.points} onClose={() => setCelebration(null)} />}
       {proofViewer && (
-        <ProofPhotoViewer
-          open={!!proofViewer}
-          onClose={() => setProofViewer(null)}
-          photoUrl={proofViewer.photoUrl}
-          taskTitle={proofViewer.taskTitle}
-          storagePath={proofViewer.storagePath}
-        />
+        <ProofPhotoViewer open={!!proofViewer} onClose={() => setProofViewer(null)}
+          photoUrl={proofViewer.photoUrl} taskTitle={proofViewer.taskTitle} storagePath={proofViewer.storagePath} />
       )}
     </div>
+  );
+}
+
+// Small helper component used inline
+function Sparkles({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5z" />
+    </svg>
   );
 }
