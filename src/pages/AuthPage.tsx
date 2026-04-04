@@ -310,7 +310,7 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
 }
 
 export default function AuthPage() {
-  const [showMom, setShowMom] = useState(false);
+  const [view, setView] = useState<"dad" | "mom" | "grandma">("dad");
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
@@ -329,47 +329,32 @@ export default function AuthPage() {
 
       {/* Flip container */}
       <div className="w-full max-w-md" style={{ perspective: "1200px" }}>
-        <div
-          className="relative w-full transition-transform duration-700 ease-in-out"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: showMom ? "rotateY(180deg)" : "rotateY(0deg)",
-          }}
-        >
-          {/* Front - Dad login */}
-          <div
-            className="w-full"
-            style={{
-              backfaceVisibility: "hidden",
-              ...(showMom ? { position: "absolute", top: 0, left: 0 } : {}),
-            }}
-          >
-            <DadLoginForm />
-          </div>
-
-          {/* Back - Mom login */}
-          <div
-            className="w-full"
-            style={{
-              backfaceVisibility: "hidden",
-              transform: "rotateY(180deg)",
-              ...(showMom ? {} : { position: "absolute", top: 0, left: 0 }),
-            }}
-          >
-            <MomLoginForm onBack={() => setShowMom(false)} />
-          </div>
-        </div>
+        {view === "dad" && <DadLoginForm />}
+        {view === "mom" && <MomLoginForm onBack={() => setView("dad")} />}
+        {view === "grandma" && <GrandmaLoginForm onBack={() => setView("dad")} />}
       </div>
 
-      {/* "Sou a Chefe" button - only visible on dad side */}
-      {!showMom && (
-        <Button
-          onClick={() => setShowMom(true)}
-          className="mt-6 w-full max-w-md h-14 font-display text-xl bg-[hsl(340,72%,57%)] hover:bg-[hsl(340,72%,47%)] text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
-        >
-          <Crown className="w-6 h-6 mr-2" />
-          Sou a Chefe 👑
-        </Button>
+      {/* Role buttons - only visible on dad side */}
+      {view === "dad" && (
+        <div className="mt-6 w-full max-w-md space-y-3">
+          <Button
+            onClick={() => setView("mom")}
+            className="w-full h-14 font-display text-xl bg-mom hover:bg-mom/80 text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+          >
+            <Crown className="w-6 h-6 mr-2" />
+            Sou a Chefe 👑
+          </Button>
+          <Button
+            onClick={() => setView("grandma")}
+            className="w-full h-12 font-display text-lg bg-avo hover:bg-avo/80 text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+            style={{
+              boxShadow: "0 6px 20px -4px hsl(270 60% 55% / 0.3)",
+            }}
+          >
+            <span className="text-xl mr-2">👵</span>
+            Sou a Avó (e tenho palpite)
+          </Button>
+        </div>
       )}
 
       <p className="mt-6 text-xs text-muted-foreground text-center font-body max-w-xs">
