@@ -633,10 +633,10 @@ function BadgeCard({ emoji, name, desc, earned, type, onClick }: {
 }) {
   const bgMap = {
     good: earned
-      ? "bg-gradient-to-br from-primary/15 to-primary/5 border-primary/30"
+      ? "bg-dad-bg border-dad-border"
       : "bg-muted/30 border-muted-foreground/10",
     shame: earned
-      ? "bg-gradient-to-br from-secondary/15 to-orange-500/5 border-secondary/30"
+      ? "bg-secondary/10 border-secondary/30"
       : "bg-muted/30 border-muted-foreground/10",
     locked: "bg-muted/20 border-dashed border-muted-foreground/20",
   };
@@ -644,10 +644,10 @@ function BadgeCard({ emoji, name, desc, earned, type, onClick }: {
   return (
     <button
       onClick={onClick}
-      className={`flex-shrink-0 w-28 rounded-xl border p-3 text-center transition-all ${bgMap[type]} ${earned ? "shadow-sm hover:shadow-md hover:scale-105" : "opacity-50"}`}
+      className={`flex-shrink-0 w-28 rounded-xl border-2 p-3 text-center transition-all ${bgMap[type]} ${earned ? "shadow-sm hover:shadow-md hover:scale-105" : "opacity-50"}`}
     >
       <span className={`text-3xl block mb-1.5 ${earned ? "" : "grayscale"}`}>{emoji}</span>
-      <p className={`font-display text-[11px] font-bold leading-tight ${earned ? "" : "text-muted-foreground"}`}>{name}</p>
+      <p className={`font-display text-[11px] font-bold leading-tight ${earned ? "text-foreground" : "text-muted-foreground"}`}>{name}</p>
     </button>
   );
 }
