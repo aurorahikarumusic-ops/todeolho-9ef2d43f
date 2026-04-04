@@ -14,8 +14,15 @@ export default function BottomNav() {
   const { data: profile } = useProfile();
 
   const isMom = profile?.role === "mae";
+  const isAvo = profile?.role === "avo";
 
-  const NAV_ITEMS = isMom
+  const NAV_ITEMS = isAvo
+    ? [
+        { path: "/app", icon: Home, label: "Home" },
+        { path: "/ranking", icon: Trophy, label: "Ranking" },
+        { path: "/perfil", icon: User, label: "Perfil" },
+      ]
+    : isMom
     ? [
         { path: "/app", icon: Home, label: "Home" },
         { path: "/agenda", icon: CalendarDays, label: "Agenda" },
@@ -31,7 +38,7 @@ export default function BottomNav() {
         { path: "/ranking", icon: Trophy, label: "Ranking" },
       ];
 
-  const accentColor = isMom ? "text-mom" : "text-primary";
+  const accentColor = isAvo ? "text-avo" : isMom ? "text-mom" : "text-primary";
 
   return (
     <nav
