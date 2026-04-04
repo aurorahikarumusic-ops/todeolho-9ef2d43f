@@ -752,6 +752,9 @@ export default function LandingPage() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* FOOTER */}
       <footer style={{ background: "#1B2B23", color: "white", padding: "3rem 1.5rem", textAlign: "center" }}>
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
           <div style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.5rem", marginBottom: "0.5rem" }}>
