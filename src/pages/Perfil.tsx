@@ -400,21 +400,21 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 5: Pérolas (Mom only) ═══════════════════ */}
       {isMom && (
         <section>
-          <Card className="border-pink-300/50 bg-gradient-to-br from-pink-50 to-fuchsia-50 dark:from-pink-950/20 dark:to-fuchsia-950/20 cursor-pointer hover:shadow-md transition-all hover:scale-[1.01]"
+          <Card className="border-mom-border bg-mom-bg cursor-pointer hover:shadow-md transition-all hover:scale-[1.01]"
             onClick={() => navigate("/mural")}>
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2.5 rounded-full bg-gradient-to-br from-pink-500 to-fuchsia-600 shadow-lg shadow-pink-500/30">
+              <div className="p-2.5 rounded-full bg-mom shadow-md">
                 <Gem className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <p className="font-display font-bold text-sm bg-gradient-to-r from-pink-500 to-fuchsia-600 bg-clip-text text-transparent">
+                <p className="font-display font-bold text-sm text-mom-text">
                   Mural de Pérolas 💎
                 </p>
                 <p className="text-[10px] text-muted-foreground font-body">
                   Veja as maiores cabeçadas dos maridos
                 </p>
               </div>
-              <ChevronRight className="w-4 h-4 text-pink-400" />
+              <ChevronRight className="w-4 h-4 text-mom" />
             </CardContent>
           </Card>
         </section>
