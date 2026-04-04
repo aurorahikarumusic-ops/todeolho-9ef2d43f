@@ -398,9 +398,9 @@ export default function Perfil() {
         </div>
       )}
 
-      {/* ═══════════════════ SECTION 5: Pérolas / Banco dos Réus ═══════════════════ */}
-      <section>
-        {isMom ? (
+      {/* ═══════════════════ SECTION 5: Pérolas (Mom only) ═══════════════════ */}
+      {isMom && (
+        <section>
           <Card className="border-pink-300/50 bg-gradient-to-br from-pink-50 to-fuchsia-50 dark:from-pink-950/20 dark:to-fuchsia-950/20 cursor-pointer hover:shadow-md transition-all hover:scale-[1.01]"
             onClick={() => navigate("/mural")}>
             <CardContent className="p-4 flex items-center gap-3">
@@ -418,10 +418,8 @@ export default function Perfil() {
               <ChevronRight className="w-4 h-4 text-pink-400" />
             </CardContent>
           </Card>
-        ) : (
-          <BancoReus userId={user?.id} familyId={profile.family_id} />
-        )}
-      </section>
+        </section>
+      )}
 
       <Separator className="my-2" />
 
