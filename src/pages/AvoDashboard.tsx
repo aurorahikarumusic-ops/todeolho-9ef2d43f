@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { Send, Trophy, CheckCircle, XCircle, Clock, Lightbulb, CalendarDays, MessageSquare } from "lucide-react";
-import JoinFamily from "@/components/family/JoinFamily";
+import JoinFamilyAvo from "@/components/grandma/JoinFamilyAvo";
 import { useFamilyPartner } from "@/hooks/useFamily";
 
 const SUGGESTION_TYPES = [
