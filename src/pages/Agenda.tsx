@@ -17,38 +17,31 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import {
   format, isSameDay, isBefore, isWithinInterval, addHours, subHours,
-  startOfMonth, endOfMonth, isToday, isTomorrow, parseISO
+  startOfMonth, endOfMonth, isToday, isTomorrow, differenceInDays, addDays
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Plus, Camera, CalendarDays, Eye, Sparkles } from "lucide-react";
+import { Plus, Camera, CalendarDays, Sparkles, Clock, MapPin, ChevronRight, AlertTriangle } from "lucide-react";
 import { notifyCrossPanel } from "@/lib/notify";
 
 const EVENT_CATEGORIES = [
-  { value: "escola", label: "🏫 Escola" },
-  { value: "saude", label: "🏥 Saúde" },
-  { value: "aniversario", label: "🎂 Aniversário" },
-  { value: "casa", label: "🏠 Casa" },
-  { value: "outro", label: "⭐ Outro" },
+  { value: "escola", label: "🏫 Escola", color: "#6366f1" },
+  { value: "saude", label: "🏥 Saúde", color: "#ef4444" },
+  { value: "aniversario", label: "🎂 Aniversário", color: "#f59e0b" },
+  { value: "casa", label: "🏠 Casa", color: "#22c55e" },
+  { value: "outro", label: "⭐ Outro", color: "#8b5cf6" },
 ] as const;
 
-function getEventDotColor(event: any, userId: string | undefined) {
-  const eventDate = new Date(event.event_date);
-  if (isBefore(eventDate, new Date()) && !isToday(eventDate)) return "bg-muted-foreground/40";
-  if (event.event_type === "escola") return "bg-accent";
-  if (event.created_by === userId) return "bg-primary";
-  return "bg-secondary";
+function getCategoryInfo(type: string) {
+  return EVENT_CATEGORIES.find(c => c.value === type) || EVENT_CATEGORIES[4];
 }
 
-function getEventIronicComment(event: any, userId: string | undefined) {
-  const eventDate = new Date(event.event_date);
-  const isPast = isBefore(eventDate, new Date()) && !isToday(eventDate);
-  const isDadEvent = event.created_by === userId;
-
-  if (isToday(eventDate)) return "É HOJE. Não precisa de mais nada.";
-  if (isPast && !event.checkin_done) return "Passou. Você foi? Não registrou nada. Típico.";
-  if (isPast && event.checkin_done) return "Você foi. Temos foto como prova.";
-  if (isDadEvent) return "Você mesmo adicionou. Histórico.";
-  return "A mãe adicionou isso. Você não sabia.";
+function getTimeLabel(eventDate: Date) {
+  if (isToday(eventDate)) return "Hoje";
+  if (isTomorrow(eventDate)) return "Amanhã";
+  const diff = differenceInDays(eventDate, new Date());
+  if (diff < 0) return `${Math.abs(diff)}d atrás`;
+  if (diff <= 7) return `Em ${diff}d`;
+  return format(eventDate, "dd/MM");
 }
 
 function isCheckinWindow(eventDate: string) {
@@ -65,12 +58,11 @@ export default function Agenda() {
   const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [showAddSheet, setShowAddSheet] = useState(false);
+  const [expandedEvent, setExpandedEvent] = useState<string | null>(null);
   const [newEvent, setNewEvent] = useState({
     title: "", description: "", event_date: "", event_time: "09:00",
     event_type: "outro", notify_partner: true,
   });
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [checkinEventId, setCheckinEventId] = useState<string | null>(null);
   const dadName = partner?.display_name || "o pai";
 
   const monthStart = startOfMonth(selectedDate || new Date()).toISOString();
@@ -92,30 +84,23 @@ export default function Agenda() {
     enabled: !!profile?.family_id,
   });
 
-  const momCount = events.filter(e => e.created_by !== user?.id).length;
-  const dadCount = events.filter(e => e.created_by === user?.id).length;
-
-  // Header subtitle
+  // Stats
   const todayEvents = events.filter(e => isToday(new Date(e.event_date)));
-  const overdueEvents = events.filter(e => {
+  const upcomingEvents = events.filter(e => {
+    const d = new Date(e.event_date);
+    return !isBefore(d, new Date()) || isToday(d);
+  });
+  const pastEvents = events.filter(e => {
     const d = new Date(e.event_date);
     return isBefore(d, new Date()) && !isToday(d);
   });
+  const momCount = events.filter(e => e.created_by !== user?.id).length;
+  const dadCount = events.filter(e => e.created_by === user?.id).length;
 
-  let subtitle = "Dia livre. A mãe já preencheu o resto da semana.";
-  if (todayEvents.length > 0) subtitle = `Você tem ${todayEvents.length} compromisso${todayEvents.length > 1 ? "s" : ""} hoje. Sabia disso?`;
-  if (overdueEvents.length > 0) subtitle = "Tem coisa atrasada aqui. Vai olhar.";
-
-  // Events for selected date or upcoming
   const filteredEvents = selectedDate
     ? events.filter(e => isSameDay(new Date(e.event_date), selectedDate))
-    : events.filter(e => !isBefore(new Date(e.event_date), new Date()) || isToday(new Date(e.event_date)));
+    : upcomingEvents;
 
-  const upcomingEvents = events
-    .filter(e => !isBefore(new Date(e.event_date), new Date()) || isToday(new Date(e.event_date)))
-    .slice(0, 10);
-
-  // Dates with events for calendar dots
   const eventDates = events.map(e => new Date(e.event_date));
 
   // Add event mutation
@@ -139,299 +124,475 @@ export default function Agenda() {
       setNewEvent({ title: "", description: "", event_date: "", event_time: "09:00", event_type: "outro", notify_partner: true });
       toast.success(
         isMom
-          ? `Evento adicionado! O ${dadName} já vai saber.\n(Mesmo que ele diga que não sabia.)`
-          : "Evento salvo! Você adicionou sozinho. Isso vai pro seu histórico. ✨",
-        { duration: 4000 }
+          ? `Evento adicionado! O ${dadName} já vai saber.`
+          : "Evento salvo! Você adicionou sozinho. ✨"
       );
-      // Cross-panel notification
       if (user && profile?.family_id) {
-        notifyCrossPanel("event_created", profile.family_id, user.id, {
-          title: newEvent.title,
-        });
+        notifyCrossPanel("event_created", profile.family_id, user.id, { title: newEvent.title });
       }
     },
-    onError: () => toast.error("Erro ao salvar. Tenta de novo, pai."),
+    onError: () => toast.error("Erro ao salvar. Tenta de novo."),
   });
 
-  // "Eu já sabia" mutation
-  const euJaSabiaMutation = useMutation({
-    mutationFn: async (eventId: string) => {
-      // Just award negative ironic points - we track via a simple approach
-      toast("Claro, você sabia. A gente acredita. 🙄", { duration: 3000 });
-    },
-  });
-
-  // Check-in mutation
   const checkinMutation = useMutation({
-    mutationFn: async ({ eventId, caption }: { eventId: string; caption?: string }) => {
+    mutationFn: async ({ eventId }: { eventId: string }) => {
       if (!user) throw new Error("Não autenticado");
-      // Award points
       const event = events.find(e => e.id === eventId);
       const isOwnEvent = event?.created_by === user.id;
       const pts = isOwnEvent ? 80 : 50;
-
       await supabase.from("profiles").update({
         points: (profile?.points || 0) + pts,
       }).eq("user_id", user.id);
-
       return pts;
     },
     onSuccess: (pts) => {
       queryClient.invalidateQueries({ queryKey: ["events"] });
       queryClient.invalidateQueries({ queryKey: ["profile"] });
-      setCheckinEventId(null);
-      toast.success(`Check-in confirmado! +${pts}pts 📸\nVocê foi. De verdade. Guardamos como prova histórica.`, { duration: 5000 });
+      toast.success(`Check-in confirmado! +${pts}pts 📸`);
     },
   });
 
-  // Empty state
-  const noEvents = events.length === 0;
-  const noFilteredEvents = filteredEvents.length === 0 && upcomingEvents.length === 0;
+  // Next 3 days preview
+  const next3Days = Array.from({ length: 3 }, (_, i) => {
+    const day = addDays(new Date(), i);
+    const dayEvents = events.filter(e => isSameDay(new Date(e.event_date), day));
+    return { day, events: dayEvents };
+  });
 
   return (
-    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-8 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-2 mb-1">
-          <CalendarDays className={`w-6 h-6 ${isMom ? "text-mom" : "text-primary"}`} />
-          <h1 className="font-display text-2xl font-bold">
-            {isMom ? "Agenda da Família" : "O Que Você Ia Esquecer"}
-          </h1>
+    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
+      {/* Hero Header */}
+      <div
+        className="relative rounded-3xl p-5 overflow-hidden"
+        style={{
+          background: isMom
+            ? "linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1)"
+            : "linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(var(--primary) / 0.05))",
+          perspective: "800px",
+        }}
+      >
+        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
+          style={{ background: isMom ? "#e91e63" : "hsl(var(--primary))" }} />
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-2">
+            <CalendarDays className={`w-6 h-6 ${isMom ? "text-pink-600" : "text-primary"}`} />
+            <h1 className="font-display text-xl font-bold">
+              {isMom ? "Agenda da Família" : "Compromissos"}
+            </h1>
+          </div>
+          <p className="text-xs text-muted-foreground font-body italic mb-4">
+            {isMom
+              ? "Organize tudo. Ele não tem desculpa."
+              : todayEvents.length > 0
+                ? `${todayEvents.length} compromisso${todayEvents.length > 1 ? "s" : ""} hoje. Sabia?`
+                : "Nada hoje. Ou a mãe ainda não atualizou."
+            }
+          </p>
+
+          {/* Quick stats */}
+          <div className="flex gap-2">
+            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
+              <p className="font-display text-2xl font-black">{todayEvents.length}</p>
+              <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wider">Hoje</p>
+            </div>
+            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
+              <p className="font-display text-2xl font-black">{upcomingEvents.length}</p>
+              <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wider">Próximos</p>
+            </div>
+            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
+              <p className="font-display text-2xl font-black">{events.length}</p>
+              <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wider">Este mês</p>
+            </div>
+          </div>
         </div>
-        <p className="text-sm text-muted-foreground font-body italic">
-          {isMom ? "Só você adiciona. Ele não tem desculpa de não saber." : subtitle}
+      </div>
+
+      {/* Next 3 days timeline */}
+      <div className="space-y-1">
+        <p className="text-xs font-display font-bold text-muted-foreground uppercase tracking-wider px-1">
+          Próximos dias
         </p>
+        <div className="flex gap-2">
+          {next3Days.map(({ day, events: dayEvts }, i) => {
+            const isSelected = selectedDate && isSameDay(day, selectedDate);
+            return (
+              <button
+                key={i}
+                onClick={() => setSelectedDate(day)}
+                className={`flex-1 rounded-2xl p-3 transition-all duration-300 text-center ${
+                  isSelected
+                    ? "bg-primary text-primary-foreground shadow-lg scale-[1.02]"
+                    : "bg-card hover:bg-muted/50"
+                }`}
+                style={{
+                  boxShadow: isSelected
+                    ? "0 8px 20px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2)"
+                    : "0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
+                }}
+              >
+                <p className={`text-[9px] font-body uppercase tracking-wider ${isSelected ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                  {isToday(day) ? "Hoje" : isTomorrow(day) ? "Amanhã" : format(day, "EEE", { locale: ptBR })}
+                </p>
+                <p className={`font-display text-lg font-black ${isSelected ? "" : ""}`}>
+                  {format(day, "dd")}
+                </p>
+                {dayEvts.length > 0 ? (
+                  <div className="flex justify-center gap-0.5 mt-1">
+                    {dayEvts.slice(0, 3).map((e, j) => (
+                      <div
+                        key={j}
+                        className="w-1.5 h-1.5 rounded-full"
+                        style={{ background: getCategoryInfo(e.event_type).color }}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className={`text-[8px] mt-1 ${isSelected ? "text-primary-foreground/50" : "text-muted-foreground/40"}`}>—</p>
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Month counter */}
-      <div className="flex justify-end">
-        <span className="text-xs text-muted-foreground font-body">
-          Este mês: <span className="text-secondary font-semibold">{momCount} da mãe</span>,{" "}
-          <span className="text-primary font-semibold">{dadCount} do pai</span>
-          {dadCount === 0 && <span className="text-muted-foreground"> (ainda)</span>}
-        </span>
+      {/* Calendar with 3D card */}
+      <div
+        className="rounded-3xl overflow-hidden bg-card"
+        style={{
+          boxShadow: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)",
+        }}
+      >
+        <div className="px-4 pt-3 pb-1 flex items-center justify-between">
+          <p className="text-xs font-display font-bold text-muted-foreground uppercase tracking-wider">
+            📅 Calendário
+          </p>
+          <div className="flex gap-2 text-[9px] font-body">
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-secondary inline-block" /> Mãe ({momCount})
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-primary inline-block" /> Pai ({dadCount})
+            </span>
+          </div>
+        </div>
+        <Calendar
+          mode="single"
+          selected={selectedDate}
+          onSelect={setSelectedDate}
+          locale={ptBR}
+          className="pointer-events-auto px-2 pb-2"
+          modifiers={{ hasEvent: eventDates }}
+          modifiersClassNames={{
+            hasEvent: "relative after:absolute after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:rounded-full after:bg-secondary",
+          }}
+        />
       </div>
 
-      {/* Calendar */}
-      <Card className="overflow-hidden">
-        <CardContent className="p-2">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={setSelectedDate}
-            locale={ptBR}
-            className="pointer-events-auto"
-            modifiers={{
-              hasEvent: eventDates,
-            }}
-            modifiersClassNames={{
-              hasEvent: "relative after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:rounded-full after:bg-secondary",
-            }}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Selected date label */}
+      {/* Selected date header */}
       {selectedDate && (
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-lg font-bold">
-            {isToday(selectedDate)
-              ? "Hoje"
-              : isTomorrow(selectedDate)
-                ? "Amanhã"
-                : format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
+        <div className="flex items-center justify-between px-1">
+          <h2 className="font-display text-base font-bold">
+            {isToday(selectedDate) ? "📍 Hoje" : isTomorrow(selectedDate) ? "⏰ Amanhã" : format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
           </h2>
-          {filteredEvents.length > 0 && (
-            <Badge variant="secondary" className="text-xs">
-              {filteredEvents.length} evento{filteredEvents.length > 1 ? "s" : ""}
-            </Badge>
-          )}
+          <Badge variant="secondary" className="text-[10px] font-display">
+            {filteredEvents.length} evento{filteredEvents.length !== 1 ? "s" : ""}
+          </Badge>
         </div>
       )}
 
-      {/* Event list */}
-      {noEvents ? (
-        <Card className="border-dashed">
-          <CardContent className="py-10 text-center">
-            <p className="text-4xl mb-3">📅</p>
-            <p className="font-display text-lg font-bold mb-1">Nada agendado</p>
-            <p className="text-sm text-muted-foreground font-body italic">
-              Mês livre? Improvável. Vai confirmar com a mãe.
-            </p>
-          </CardContent>
-        </Card>
-      ) : noFilteredEvents && selectedDate ? (
-        <Card className="border-dashed">
-          <CardContent className="py-8 text-center">
-            <p className="text-3xl mb-2">🤷</p>
-            <p className="text-sm text-muted-foreground font-body italic">
-              Nada nesse dia. Ou a mãe ainda não atualizou. Ou você tá com sorte.
-              <br />Provavelmente a mãe ainda não atualizou.
-            </p>
-          </CardContent>
-        </Card>
+      {/* Events list - 3D cards */}
+      {events.length === 0 ? (
+        <div
+          className="rounded-3xl border-2 border-dashed border-muted p-10 text-center"
+          style={{ boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)" }}
+        >
+          <p className="text-5xl mb-3">📅</p>
+          <p className="font-display text-lg font-bold mb-1">Nada agendado</p>
+          <p className="text-sm text-muted-foreground font-body italic">
+            {isMom ? "Adicione o primeiro compromisso da família." : "Mês livre? Vai confirmar com a mãe."}
+          </p>
+        </div>
+      ) : filteredEvents.length === 0 ? (
+        <div className="rounded-3xl border-2 border-dashed border-muted p-8 text-center">
+          <p className="text-3xl mb-2">🤷</p>
+          <p className="text-sm text-muted-foreground font-body italic">
+            Nada nesse dia. Ou a mãe ainda não atualizou.
+          </p>
+        </div>
       ) : (
         <div className="space-y-3">
-          {(filteredEvents.length > 0 ? filteredEvents : upcomingEvents).map((event) => {
+          {filteredEvents.map((event) => {
             const eventDate = new Date(event.event_date);
             const isDadEvent = event.created_by === user?.id;
             const inCheckinWindow = isCheckinWindow(event.event_date);
-            const category = EVENT_CATEGORIES.find(c => c.value === event.event_type);
+            const category = getCategoryInfo(event.event_type);
+            const isPast = isBefore(eventDate, new Date()) && !isToday(eventDate);
+            const isExpanded = expandedEvent === event.id;
 
             return (
-              <Card key={event.id} className="relative overflow-hidden">
+              <div
+                key={event.id}
+                onClick={() => setExpandedEvent(isExpanded ? null : event.id)}
+                className={`rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${
+                  isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
+                } ${isPast ? "opacity-60" : ""}`}
+                style={{
+                  background: "hsl(var(--card))",
+                  boxShadow: isExpanded
+                    ? `0 12px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${category.color}`
+                    : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${category.color}`,
+                }}
+              >
                 {/* Check-in banner */}
                 {inCheckinWindow && (
-                  <div className="bg-secondary/10 px-4 py-2 flex items-center gap-2 border-b border-secondary/20">
-                    <span className="text-sm">📍</span>
-                    <span className="text-xs font-body font-semibold text-secondary">
-                      Esse evento é agora. Faz o check-in!
+                  <div
+                    className="px-4 py-2 flex items-center gap-2"
+                    style={{ background: "linear-gradient(90deg, hsl(var(--primary) / 0.15), transparent)" }}
+                  >
+                    <MapPin className="w-3.5 h-3.5 text-primary animate-pulse" />
+                    <span className="text-[10px] font-display font-bold text-primary uppercase tracking-wider">
+                      Acontecendo agora — Faça check-in!
                     </span>
                   </div>
                 )}
 
-                <CardContent className="p-4">
+                <div className="p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${getEventDotColor(event, user?.id)}`} />
-                        <h3 className="font-display font-bold text-base truncate">{event.title}</h3>
-                      </div>
-
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-                        <span>{format(eventDate, "dd/MM · HH:mm")}</span>
-                        {category && <span>{category.label}</span>}
-                      </div>
-
-                      <Badge
-                        variant={isDadEvent ? "default" : "secondary"}
-                        className="text-[10px] mb-2"
-                      >
-                        {isDadEvent ? (
-                          <><Sparkles className="w-3 h-3 mr-1" /> Pai lembrou ✨</>
-                        ) : (
-                          "Mãe adicionou"
-                        )}
-                      </Badge>
-
-                      <p className="text-xs font-body italic text-muted-foreground">
-                        {getEventIronicComment(event, user?.id)}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-col items-end gap-2 shrink-0">
-                      {/* "Eu já sabia" button - only for mom events */}
-                      {!isDadEvent && !isBefore(eventDate, new Date()) && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-[10px] h-7 border-secondary text-secondary hover:bg-secondary/10"
-                          onClick={() => {
-                            euJaSabiaMutation.mutate(event.id);
+                      {/* Time + category */}
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <div
+                          className="w-8 h-8 rounded-xl flex items-center justify-center text-white text-sm font-bold shrink-0"
+                          style={{
+                            background: `linear-gradient(135deg, ${category.color}, ${category.color}cc)`,
+                            boxShadow: `0 3px 8px ${category.color}40`,
                           }}
                         >
-                          👆 Eu já sabia!
-                        </Button>
+                          {format(eventDate, "HH")}
+                        </div>
+                        <div>
+                          <h3 className="font-display font-bold text-sm leading-tight">{event.title}</h3>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <Clock className="w-3 h-3 text-muted-foreground" />
+                            <span className="text-[10px] text-muted-foreground font-body">
+                              {format(eventDate, "HH:mm")} · {category.label}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Who added it */}
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge
+                          variant={isDadEvent ? "default" : "secondary"}
+                          className="text-[9px] h-5"
+                        >
+                          {isDadEvent ? (
+                            <><Sparkles className="w-2.5 h-2.5 mr-1" /> Pai adicionou</>
+                          ) : (
+                            "Mãe adicionou"
+                          )}
+                        </Badge>
+                        <span className="text-[9px] text-muted-foreground/50 font-body">
+                          {getTimeLabel(eventDate)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <ChevronRight className={`w-4 h-4 text-muted-foreground/40 transition-transform duration-300 mt-2 ${isExpanded ? "rotate-90" : ""}`} />
+                  </div>
+
+                  {/* Expanded content */}
+                  {isExpanded && (
+                    <div className="mt-3 pt-3 border-t border-muted/30 space-y-3 animate-fade-in">
+                      {event.description && (
+                        <p className="text-xs font-body text-muted-foreground">
+                          📝 {event.description}
+                        </p>
                       )}
 
-                      {/* Check-in button */}
-                      {inCheckinWindow && (
-                        <Button
-                          size="sm"
-                          className="text-xs h-8 bg-primary"
-                          onClick={() => checkinMutation.mutate({ eventId: event.id })}
-                        >
-                          <Camera className="w-3.5 h-3.5 mr-1" />
-                          Check-in
-                        </Button>
-                      )}
+                      <p className="text-[10px] font-body italic text-muted-foreground/70">
+                        {isDadEvent
+                          ? "Você mesmo adicionou. Parabéns pela iniciativa."
+                          : isPast
+                            ? "Passou. Espero que você tenha ido."
+                            : "A mãe adicionou. Sem surpresas, né?"
+                        }
+                      </p>
+
+                      <div className="flex gap-2">
+                        {inCheckinWindow && (
+                          <Button
+                            size="sm"
+                            className="text-xs h-8 bg-primary flex-1"
+                            onClick={(e) => { e.stopPropagation(); checkinMutation.mutate({ eventId: event.id }); }}
+                          >
+                            <Camera className="w-3.5 h-3.5 mr-1" />
+                            Check-in 📸
+                          </Button>
+                        )}
+                        {!isDadEvent && !isPast && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-[10px] h-8 border-secondary/50 text-secondary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toast("Claro, você sabia. A gente acredita. 🙄");
+                            }}
+                          >
+                            👆 Eu já sabia!
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  )}
+                </div>
+              </div>
             );
           })}
         </div>
       )}
 
-      {/* FAB - Add Event */}
+      {/* Upcoming section when no date selected or showing all */}
+      {upcomingEvents.length > 0 && filteredEvents.length === 0 && (
+        <div className="space-y-2 mt-2">
+          <p className="text-xs font-display font-bold text-muted-foreground uppercase tracking-wider px-1">
+            Próximos eventos
+          </p>
+          {upcomingEvents.slice(0, 5).map(event => {
+            const eventDate = new Date(event.event_date);
+            const category = getCategoryInfo(event.event_type);
+            return (
+              <div
+                key={event.id}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-card"
+                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.04)" }}
+              >
+                <div
+                  className="w-2 h-8 rounded-full shrink-0"
+                  style={{ background: category.color }}
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="font-display text-xs font-bold truncate">{event.title}</p>
+                  <p className="text-[9px] text-muted-foreground font-body">
+                    {format(eventDate, "dd/MM · HH:mm")}
+                  </p>
+                </div>
+                <span className="text-[9px] text-muted-foreground font-body shrink-0">
+                  {getTimeLabel(eventDate)}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* FAB */}
       <button
         onClick={() => setShowAddSheet(true)}
-        className={`fixed bottom-20 right-4 z-40 rounded-full shadow-lg flex items-center gap-2 transition-all active:scale-95 px-4 h-12 ${isMom ? "bg-mom text-white hover:bg-mom/90" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}
-        title="Adicionar novo evento"
+        className="fixed bottom-20 right-4 z-40 rounded-2xl shadow-xl flex items-center gap-2 transition-all active:scale-95 px-5 h-12"
+        style={{
+          background: isMom
+            ? "linear-gradient(135deg, #e91e63, #c2185b)"
+            : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+          color: "white",
+          boxShadow: isMom
+            ? "0 6px 20px rgba(233,30,99,0.4)"
+            : "0 6px 20px hsl(var(--primary) / 0.35)",
+        }}
       >
         <Plus className="w-5 h-5" />
-        <span className="font-display text-sm">Novo evento</span>
+        <span className="font-display text-sm font-bold">Novo evento</span>
       </button>
 
       {/* Add Event Sheet */}
       <Sheet open={showAddSheet} onOpenChange={setShowAddSheet}>
-        <SheetContent side="bottom" className="rounded-t-2xl max-h-[85vh] overflow-y-auto">
+        <SheetContent side="bottom" className="rounded-t-3xl max-h-[85vh] overflow-y-auto">
           <SheetHeader>
-            <SheetTitle className="font-display text-lg">Novo Evento</SheetTitle>
+            <SheetTitle className="font-display text-lg">
+              {isMom ? "📋 Novo Compromisso" : "✨ Novo Evento"}
+            </SheetTitle>
           </SheetHeader>
 
           <div className="space-y-4 mt-4">
             <div>
-              <Label className="text-xs font-body">Nome do evento</Label>
+              <Label className="text-xs font-display font-bold">Nome do evento</Label>
               <Input
                 placeholder="Ex: Reunião na escola"
                 value={newEvent.title}
                 onChange={e => setNewEvent(p => ({ ...p, title: e.target.value }))}
-                className="mt-1"
+                className="mt-1 rounded-xl"
               />
             </div>
 
             <div className="flex gap-3">
               <div className="flex-1">
-                <Label className="text-xs font-body">Data</Label>
+                <Label className="text-xs font-display font-bold">Data</Label>
                 <Input
                   type="date"
                   value={newEvent.event_date}
                   onChange={e => setNewEvent(p => ({ ...p, event_date: e.target.value }))}
-                  className="mt-1"
+                  className="mt-1 rounded-xl"
                 />
               </div>
               <div className="w-28">
-                <Label className="text-xs font-body">Hora</Label>
+                <Label className="text-xs font-display font-bold">Hora</Label>
                 <Input
                   type="time"
                   value={newEvent.event_time}
                   onChange={e => setNewEvent(p => ({ ...p, event_time: e.target.value }))}
-                  className="mt-1"
+                  className="mt-1 rounded-xl"
                 />
               </div>
             </div>
 
             <div>
-              <Label className="text-xs font-body">Categoria</Label>
-              <Select
-                value={newEvent.event_type}
-                onValueChange={v => setNewEvent(p => ({ ...p, event_type: v }))}
-              >
-                <SelectTrigger className="mt-1">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {EVENT_CATEGORIES.map(c => (
-                    <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label className="text-xs font-display font-bold">Categoria</Label>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {EVENT_CATEGORIES.map(c => (
+                  <button
+                    key={c.value}
+                    onClick={() => setNewEvent(p => ({ ...p, event_type: c.value }))}
+                    className={`px-3 py-2 rounded-xl text-xs font-display font-bold transition-all ${
+                      newEvent.event_type === c.value
+                        ? "scale-105 ring-2 ring-offset-1"
+                        : "opacity-60 hover:opacity-100"
+                    }`}
+                    style={{
+                      background: newEvent.event_type === c.value ? `${c.color}20` : "hsl(var(--muted))",
+                      color: newEvent.event_type === c.value ? c.color : undefined,
+                      ["--tw-ring-color" as any]: c.color,
+                    }}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div>
-              <Label className="text-xs font-body">Notas (opcional)</Label>
+              <Label className="text-xs font-display font-bold">Notas (opcional)</Label>
               <Textarea
                 placeholder="Detalhes, endereço, etc."
                 value={newEvent.description}
                 onChange={e => setNewEvent(p => ({ ...p, description: e.target.value }))}
-                className="mt-1 min-h-[60px]"
+                className="mt-1 min-h-[60px] rounded-xl"
               />
             </div>
 
-            <div className="flex items-center justify-between">
-              <Label className="text-xs font-body">Avisar a mãe também?</Label>
+            <div className="flex items-center justify-between bg-muted/30 rounded-xl p-3">
+              <div>
+                <Label className="text-xs font-display font-bold">
+                  {isMom ? "Avisar o pai?" : "Avisar a mãe?"}
+                </Label>
+                <p className="text-[9px] text-muted-foreground font-body">
+                  {isMom ? "Ele provavelmente não vai ler, mas tenta." : "Ela vai ver."}
+                </p>
+              </div>
               <Switch
                 checked={newEvent.notify_partner}
                 onCheckedChange={v => setNewEvent(p => ({ ...p, notify_partner: v }))}
@@ -439,11 +600,19 @@ export default function Agenda() {
             </div>
 
             <Button
-              className="w-full bg-primary font-display"
+              className="w-full font-display font-bold h-12 rounded-xl text-sm"
+              style={{
+                background: isMom
+                  ? "linear-gradient(135deg, #e91e63, #c2185b)"
+                  : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+                boxShadow: isMom
+                  ? "0 4px 16px rgba(233,30,99,0.3)"
+                  : "0 4px 16px hsl(var(--primary) / 0.25)",
+              }}
               onClick={() => addEventMutation.mutate()}
               disabled={!newEvent.title || !newEvent.event_date || addEventMutation.isPending}
             >
-              {addEventMutation.isPending ? "Salvando..." : "Salvar Evento"}
+              {addEventMutation.isPending ? "Salvando..." : "✅ Salvar Evento"}
             </Button>
           </div>
         </SheetContent>
