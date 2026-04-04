@@ -1,8 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import screenshotDashboard from "@/assets/screenshot-dashboard.jpg";
 import screenshotTarefas from "@/assets/screenshot-tarefas.jpg";
 import screenshotRanking from "@/assets/screenshot-ranking.jpg";
+import tutorialStep1 from "@/assets/tutorial-step1.jpg";
+import tutorialStep2 from "@/assets/tutorial-step2.jpg";
+import tutorialStep3 from "@/assets/tutorial-step3.jpg";
+import tutorialStep4 from "@/assets/tutorial-step4.jpg";
 
 const APK_URL = "https://github.com/aurorahikarumusic-ops/todeolho-9ef2d43f/releases/download/v1.0.0/estoudeolho.apk";
 
@@ -607,6 +611,146 @@ export default function LandingPage() {
             Ou acesse direto no navegador em <strong>estoudeolho.lovable.app</strong> — sem precisar instalar nada.<br />
             Gratuito para sempre no plano básico. Seu filho não tem preço.
           </p>
+        </div>
+      </section>
+
+      {/* SECTION — TUTORIAL: COMO CONECTAR */}
+      <section id="tutorial" style={{ background: "#1B2B23", padding: "5rem 1.5rem", overflow: "hidden" }}>
+        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+            <div style={{
+              display: "inline-block", background: "#F4845F", color: "white",
+              borderRadius: "50px", padding: "0.4rem 1.25rem", fontSize: "0.85rem", fontWeight: 700, marginBottom: "1rem",
+            }}>
+              📖 Passo a passo
+            </div>
+            <h2 style={{
+              fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "clamp(2rem, 4vw, 2.75rem)",
+              color: "white", lineHeight: 1.2, marginBottom: "0.75rem",
+            }}>
+              Como adicionar o <span style={{ color: "#F4845F" }}>marido</span> à família
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1.05rem", maxWidth: "550px", margin: "0 auto" }}>
+              Em 4 passos simples. Até ele consegue. (provavelmente.)
+            </p>
+          </div>
+
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gap: "2rem",
+            perspective: "1200px",
+          }}>
+            {[
+              {
+                img: tutorialStep1,
+                step: "1",
+                title: "Mãe cria a conta",
+                desc: "Abra o app e clique em \"Sou a Chefe\" 👑. Crie sua conta com email e senha. Você é a CEO da família.",
+                color: "#FF6B9D",
+                rotate: "-3deg",
+              },
+              {
+                img: tutorialStep2,
+                step: "2",
+                title: "Gere o código de convite",
+                desc: "No perfil, clique em \"Convidar Parceiro\". Um código único será gerado. Copie e envie pelo WhatsApp com a mensagem irônica.",
+                color: "#2D6A4F",
+                rotate: "2deg",
+              },
+              {
+                img: tutorialStep3,
+                step: "3",
+                title: "Pai recebe e entra",
+                desc: "O pai abre o app, cria a conta dele (login normal) e cola o código no campo \"Código de Convite\" na tela inicial.",
+                color: "#F4845F",
+                rotate: "-2deg",
+              },
+              {
+                img: tutorialStep4,
+                step: "4",
+                title: "Família conectada! 🎉",
+                desc: "Pronto! Agora a mãe cria tarefas, o pai executa, e o ranking começa a contar. Sem escapatória.",
+                color: "#8B5CF6",
+                rotate: "3deg",
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  transform: `rotateY(${item.rotate}) rotateX(1deg)`,
+                  transformStyle: "preserve-3d",
+                  transition: "transform 0.5s ease, box-shadow 0.5s ease",
+                  borderRadius: "24px",
+                  overflow: "hidden",
+                  background: "#fff",
+                  boxShadow: `0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05)`,
+                  cursor: "default",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "rotateY(0deg) rotateX(0deg) translateY(-12px) scale(1.03)";
+                  e.currentTarget.style.boxShadow = `0 30px 80px rgba(0,0,0,0.4), 0 0 30px ${item.color}40`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = `rotateY(${item.rotate}) rotateX(1deg)`;
+                  e.currentTarget.style.boxShadow = `0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05)`;
+                }}
+              >
+                {/* Step number badge */}
+                <div style={{ position: "relative" }}>
+                  <img
+                    src={item.img}
+                    alt={`Passo ${item.step}: ${item.title}`}
+                    loading="lazy"
+                    width={640}
+                    height={960}
+                    style={{ width: "100%", height: "220px", objectFit: "cover", display: "block" }}
+                  />
+                  <div style={{
+                    position: "absolute", top: "12px", left: "12px",
+                    width: "44px", height: "44px", borderRadius: "50%",
+                    background: item.color, color: "white",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontFamily: "'Baloo 2', cursive", fontWeight: 900, fontSize: "1.3rem",
+                    boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
+                    border: "3px solid white",
+                  }}>
+                    {item.step}
+                  </div>
+                  {/* Gradient overlay */}
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0, height: "60px",
+                    background: "linear-gradient(to top, white, transparent)",
+                  }} />
+                </div>
+                <div style={{ padding: "1.25rem 1.5rem 1.75rem" }}>
+                  <h3 style={{
+                    fontFamily: "'Baloo 2', cursive", fontWeight: 800,
+                    fontSize: "1.15rem", color: "#1B2B23", marginBottom: "0.5rem",
+                  }}>
+                    {item.title}
+                  </h3>
+                  <p style={{
+                    fontSize: "0.9rem", color: "#555", lineHeight: 1.65, margin: 0,
+                  }}>
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom tip */}
+          <div style={{
+            textAlign: "center", marginTop: "3rem",
+            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: "16px", padding: "1.5rem 2rem", maxWidth: "600px", marginLeft: "auto", marginRight: "auto",
+          }}>
+            <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>
+              💡 <strong>Dica:</strong> Se o pai "esqueceu" de entrar com o código, a mãe pode reenviar o convite pelo WhatsApp quantas vezes quiser.
+              O código não expira. <span style={{ color: "#F4845F", fontStyle: "italic" }}>A paciência da mãe, talvez.</span>
+            </p>
+          </div>
         </div>
       </section>
 
