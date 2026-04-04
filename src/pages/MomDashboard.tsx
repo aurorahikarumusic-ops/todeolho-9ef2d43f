@@ -134,7 +134,7 @@ export default function MomDashboard() {
       </Card>
 
       {/* Partner banner */}
-      {!partner && (
+      {!partnerLoading && !partner && (
         <div className="space-y-2">
           <Card className="border-mom-border border-dashed bg-mom-bg/50">
             <CardContent className="p-4 text-center">

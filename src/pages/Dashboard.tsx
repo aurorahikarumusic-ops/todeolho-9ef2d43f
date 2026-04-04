@@ -144,7 +144,7 @@ export default function Dashboard() {
       <PushPermissionBanner />
 
       {/* Connect with Mom Banner */}
-      {!partner && (
+      {!partnerLoading && !partner && (
         <Card className="border-primary/30 border-dashed bg-dad-bg">
           <CardContent className="p-4 text-center">
             <Users className="w-8 h-8 text-primary mx-auto mb-2" />
