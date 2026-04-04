@@ -273,82 +273,82 @@ export default function Perfil() {
     <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-6">
 
       {/* ═══════════════════ SECTION 1: Profile Header ═══════════════════ */}
-      <section
-        className="relative rounded-2xl p-5 overflow-hidden"
-        style={{
-          background: isMom
-            ? "linear-gradient(135deg, hsl(var(--mom)) 0%, hsl(330 80% 55%) 100%)"
-            : "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(220 70% 45%) 100%)",
-        }}
-      >
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 20% 80%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)", backgroundSize: "30px 30px" }} />
-        <div className="relative flex items-center gap-4">
-          <label className="cursor-pointer relative group shrink-0">
-            <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
-            <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-3 border-white/50 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform shadow-lg">
-              {profile.avatar_url ? (
-                <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+      <section className={`relative rounded-2xl overflow-hidden border-2 ${isMom ? "border-mom-border bg-mom-bg" : "border-dad-border bg-dad-bg"}`}>
+        {/* Subtle pattern */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+        
+        {/* Top accent bar */}
+        <div className={`h-2 ${isMom ? "bg-mom" : "bg-primary"}`} />
+        
+        <div className="relative p-5">
+          <div className="flex items-center gap-4">
+            <label className="cursor-pointer relative group shrink-0">
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+              <div className={`w-20 h-20 rounded-full border-4 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform shadow-lg ${isMom ? "border-mom bg-mom/10" : "border-primary bg-primary/10"}`}>
+                {profile.avatar_url ? (
+                  <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  <span className={`font-display text-3xl font-bold ${isMom ? "text-mom-text" : "text-dad-text"}`}>
+                    {(profile.display_name || "U")[0].toUpperCase()}
+                  </span>
+                )}
+              </div>
+              <div className={`absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md border-2 border-white ${isMom ? "bg-mom" : "bg-primary"}`}>
+                <Edit2 className="w-3.5 h-3.5 text-white" />
+              </div>
+            </label>
+
+            <div className="flex-1 min-w-0">
+              {editMode ? (
+                <div className="flex gap-2">
+                  <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm bg-white" autoFocus />
+                  <Button size="sm" className={`h-8 text-xs text-white ${isMom ? "bg-mom hover:bg-mom/90" : "bg-primary hover:bg-primary/90"}`} onClick={handleSaveName}>Salvar</Button>
+                </div>
               ) : (
-                <span className="font-display text-3xl font-bold text-white">
-                  {(profile.display_name || "U")[0].toUpperCase()}
-                </span>
+                <div className="flex items-center gap-2">
+                  <h1 className="font-display text-xl font-bold text-foreground truncate">{profile.display_name}</h1>
+                  <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
+                    <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+                  </button>
+                </div>
               )}
-            </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-md">
-              <Edit2 className="w-3.5 h-3.5 text-foreground" />
-            </div>
-          </label>
-
-          <div className="flex-1 min-w-0">
-            {editMode ? (
-              <div className="flex gap-2">
-                <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm bg-white/90" autoFocus />
-                <Button size="sm" className="h-8 text-xs bg-white text-foreground hover:bg-white/90" onClick={handleSaveName}>Salvar</Button>
+              <div className="mt-1">
+                <Badge className={`text-[10px] text-white border-0 ${isMom ? "bg-mom" : "bg-primary"}`}>
+                  {isMom ? "👑 CEO da Família" : `${dadTitle.emoji} ${dadTitle.title}`}
+                </Badge>
               </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <h1 className="font-display text-xl font-bold text-white truncate">{profile.display_name}</h1>
-                <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
-                  <Edit2 className="w-4 h-4 text-white/70 hover:text-white transition-colors" />
-                </button>
-              </div>
-            )}
-            <div className="mt-1">
-              <Badge className="bg-white/20 text-white border-white/30 text-[10px] backdrop-blur-sm">
-                {isMom ? "👑 CEO da Família" : `${dadTitle.emoji} ${dadTitle.title}`}
-              </Badge>
+              <p className="text-[11px] text-muted-foreground font-body italic mt-1.5 leading-tight">
+                {isMom
+                  ? tasksCreatedByMe > 0
+                    ? `${tasksCreatedByMe} tarefa(s) criadas esse mês`
+                    : "A família funciona porque você funciona."
+                  : rescues > 0
+                    ? `A mãe te salvou ${rescues}x esse mês`
+                    : lastActiveHours > 24 ? `Última ação: ${lastActiveHours}h atrás` : "Ativo hoje. Bom começo."}
+              </p>
             </div>
-            <p className="text-[11px] text-white/80 font-body italic mt-1.5 leading-tight">
-              {isMom
-                ? tasksCreatedByMe > 0
-                  ? `${tasksCreatedByMe} tarefa(s) criadas esse mês`
-                  : "A família funciona porque você funciona."
-                : rescues > 0
-                  ? `A mãe te salvou ${rescues}x esse mês`
-                  : lastActiveHours > 24 ? `Última ação: ${lastActiveHours}h atrás` : "Ativo hoje. Bom começo."}
-            </p>
           </div>
-        </div>
 
-        {/* Stats row inside header */}
-        <div className="relative grid grid-cols-3 gap-2 mt-4">
-          {stats.slice(0, 3).map((s, i) => (
-            <div key={i} className="bg-white/15 backdrop-blur-sm rounded-xl p-2.5 text-center">
-              <p className="font-display font-bold text-lg text-white">{s.value}</p>
-              <p className="text-[9px] text-white/70 font-body">{s.label}</p>
-            </div>
-          ))}
+          {/* Stats row */}
+          <div className="grid grid-cols-3 gap-2.5 mt-4">
+            {stats.slice(0, 3).map((s, i) => (
+              <div key={i} className="bg-white rounded-xl p-2.5 text-center shadow-sm border border-border">
+                <p className="font-display font-bold text-lg text-foreground">{s.value}</p>
+                <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ═══════════════════ SECTION 2: Secondary Stats ═══════════════════ */}
-      <section className="grid grid-cols-3 gap-2">
+      <section className="grid grid-cols-3 gap-2.5">
         {stats.slice(3).map((s, i) => (
-          <Card key={i} className="border-0 shadow-sm">
+          <Card key={i} className="border shadow-sm bg-white">
             <CardContent className="p-3 text-center">
               <div className="flex justify-center mb-1">{s.icon}</div>
-              <p className="font-display font-bold text-lg">{s.value}</p>
-              <p className="text-[9px] text-muted-foreground font-body">{s.label}</p>
+              <p className="font-display font-bold text-lg text-foreground">{s.value}</p>
+              <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
             </CardContent>
           </Card>
         ))}
@@ -400,21 +400,21 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 5: Pérolas (Mom only) ═══════════════════ */}
       {isMom && (
         <section>
-          <Card className="border-pink-300/50 bg-gradient-to-br from-pink-50 to-fuchsia-50 dark:from-pink-950/20 dark:to-fuchsia-950/20 cursor-pointer hover:shadow-md transition-all hover:scale-[1.01]"
+          <Card className="border-mom-border bg-mom-bg cursor-pointer hover:shadow-md transition-all hover:scale-[1.01]"
             onClick={() => navigate("/mural")}>
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2.5 rounded-full bg-gradient-to-br from-pink-500 to-fuchsia-600 shadow-lg shadow-pink-500/30">
+              <div className="p-2.5 rounded-full bg-mom shadow-md">
                 <Gem className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <p className="font-display font-bold text-sm bg-gradient-to-r from-pink-500 to-fuchsia-600 bg-clip-text text-transparent">
+                <p className="font-display font-bold text-sm text-mom-text">
                   Mural de Pérolas 💎
                 </p>
                 <p className="text-[10px] text-muted-foreground font-body">
                   Veja as maiores cabeçadas dos maridos
                 </p>
               </div>
-              <ChevronRight className="w-4 h-4 text-pink-400" />
+              <ChevronRight className="w-4 h-4 text-mom" />
             </CardContent>
           </Card>
         </section>
@@ -633,10 +633,10 @@ function BadgeCard({ emoji, name, desc, earned, type, onClick }: {
 }) {
   const bgMap = {
     good: earned
-      ? "bg-gradient-to-br from-primary/15 to-primary/5 border-primary/30"
+      ? "bg-dad-bg border-dad-border"
       : "bg-muted/30 border-muted-foreground/10",
     shame: earned
-      ? "bg-gradient-to-br from-secondary/15 to-orange-500/5 border-secondary/30"
+      ? "bg-secondary/10 border-secondary/30"
       : "bg-muted/30 border-muted-foreground/10",
     locked: "bg-muted/20 border-dashed border-muted-foreground/20",
   };
@@ -644,10 +644,10 @@ function BadgeCard({ emoji, name, desc, earned, type, onClick }: {
   return (
     <button
       onClick={onClick}
-      className={`flex-shrink-0 w-28 rounded-xl border p-3 text-center transition-all ${bgMap[type]} ${earned ? "shadow-sm hover:shadow-md hover:scale-105" : "opacity-50"}`}
+      className={`flex-shrink-0 w-28 rounded-xl border-2 p-3 text-center transition-all ${bgMap[type]} ${earned ? "shadow-sm hover:shadow-md hover:scale-105" : "opacity-50"}`}
     >
       <span className={`text-3xl block mb-1.5 ${earned ? "" : "grayscale"}`}>{emoji}</span>
-      <p className={`font-display text-[11px] font-bold leading-tight ${earned ? "" : "text-muted-foreground"}`}>{name}</p>
+      <p className={`font-display text-[11px] font-bold leading-tight ${earned ? "text-foreground" : "text-muted-foreground"}`}>{name}</p>
     </button>
   );
 }
