@@ -81,7 +81,7 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
       }
     } catch (err: any) {
       toast.error("Eita, deu ruim!", {
-        description: err.message || "Algo deu errado. Na época da vovó isso não acontecia.",
+        description: translateAuthError(err.message),
       });
     } finally {
       setLoading(false);
