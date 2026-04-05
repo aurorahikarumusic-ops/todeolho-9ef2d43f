@@ -135,6 +135,9 @@ export default function MomDashboard() {
         </CardContent>
       </Card>
 
+      {/* Love Letter Notification */}
+      <MomLetterNotification />
+
       {/* Partner banner */}
       {!partnerLoading && !partner && (
         <div className="space-y-2">
