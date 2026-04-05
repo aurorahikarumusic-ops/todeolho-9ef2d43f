@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, LogIn, UserPlus, Link } from "lucide-react";
+import { ArrowLeft, LogIn, UserPlus, Link, Eye, EyeOff } from "lucide-react";
 
 function translateAuthError(msg: string): string {
   if (!msg) return "Algo deu errado. Tenta de novo, vovó.";
