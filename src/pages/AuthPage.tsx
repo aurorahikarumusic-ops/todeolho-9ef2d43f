@@ -58,35 +58,37 @@ function DadLoginForm() {
       <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           {isSignUp && (
-            <div>
-              <label className="text-sm font-body font-semibold text-foreground mb-1 block">
-                Seu nome (o que a mãe grita quando tá brava)
-              </label>
-              <Input
-                placeholder="Ex: Carlos, Pai do Pedro"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required={isSignUp}
-                className="font-body"
-              />
-            </div>
+            <>
+              <div>
+                <label className="text-sm font-body font-semibold text-foreground mb-1 block">
+                  Seu nome (o que a mãe grita quando tá brava)
+                </label>
+                <Input
+                  placeholder="Ex: Carlos, Pai do Pedro"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required={isSignUp}
+                  className="font-body"
+                />
+              </div>
 
-            <div>
-              <label className="text-sm font-body font-semibold text-foreground mb-1 block">
-                <Link className="w-3.5 h-3.5 inline mr-1" />
-                Código de convite <span className="text-muted-foreground font-normal">(opcional)</span>
-              </label>
-              <Input
-                placeholder="Ex: A1B2C3D4"
-                value={form.inviteCode}
-                onChange={(e) => setForm({ ...form, inviteCode: e.target.value.toUpperCase() })}
-                maxLength={8}
-                className="font-body text-center tracking-[0.15em]"
-              />
-              <p className="text-[10px] text-muted-foreground mt-1">
-                Recebeu da mãe? Cola aqui pra já entrar na família.
-              </p>
-            </div>
+              <div>
+                <label className="text-sm font-body font-semibold text-foreground mb-1 block">
+                  <Link className="w-3.5 h-3.5 inline mr-1" />
+                  Código de convite <span className="text-muted-foreground font-normal">(opcional)</span>
+                </label>
+                <Input
+                  placeholder="Ex: A1B2C3D4"
+                  value={form.inviteCode}
+                  onChange={(e) => setForm({ ...form, inviteCode: e.target.value.toUpperCase() })}
+                  maxLength={8}
+                  className="font-body text-center tracking-[0.15em]"
+                />
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  Recebeu da mãe? Cola aqui pra já entrar na família.
+                </p>
+              </div>
+            </>
           )}
 
           <div>
