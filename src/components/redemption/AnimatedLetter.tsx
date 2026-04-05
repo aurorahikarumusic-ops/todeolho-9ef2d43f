@@ -269,7 +269,7 @@ function FullScreenLetter({ letter, paragraphs, onClose }: {
 
         {letter.include_signature && (
           <p className="text-[10px] text-[hsl(340,72%,57%)] opacity-70 mt-3 font-body">
-            enviado pelo Tô de Olho 👁️
+            enviado pelo Estou de Olho 👁️
           </p>
         )}
       </div>

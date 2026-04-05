@@ -153,7 +153,7 @@ export default function LetterPreview({
             <Switch checked={includeDate} onCheckedChange={setIncludeDate} />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-xs font-body text-muted-foreground">Incluir assinatura 'Tô de Olho'</span>
+            <span className="text-xs font-body text-muted-foreground">Incluir assinatura 'Estou de Olho'</span>
             <Switch checked={includeSignature} onCheckedChange={onToggleSignature} />
           </div>
         </div>
