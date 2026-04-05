@@ -175,7 +175,7 @@ export default function Dashboard() {
       <DailyQuote />
 
       {/* 4. Presence Streak */}
-      <PresenceStreak streakDays={profile.streak_days} weekActivity={weekActivity} />
+      <PresenceStreak streakDays={profile.streak_days} weekActivity={weekActivity} lastActiveAt={profile.last_active_at} />
 
       {/* 5. Summary Cards */}
       <SummaryCards
