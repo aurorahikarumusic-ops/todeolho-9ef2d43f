@@ -369,25 +369,27 @@ export default function Agenda() {
         <div
           className="rounded-3xl border-2 border-dashed p-10 text-center"
           style={{
-            borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.15)",
-            background: isMom ? undefined : "hsl(var(--arena-dark) / 0.3)",
-            boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
+            borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.2)",
+            background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+            boxShadow: isMom ? "inset 0 2px 8px rgba(0,0,0,0.03)" : "0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)",
+            border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.12)",
           }}
         >
           <p className="text-5xl mb-3">📅</p>
-          <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(220 15% 88%)" } : undefined}>Nada agendado</p>
-          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(220 15% 70%)" } : undefined}>
+          <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(0 0% 100%)" } : undefined}>Nada agendado</p>
+          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(220 20% 85%)" } : undefined}>
             {isMom ? "Adicione o primeiro compromisso da família." : "Mês livre? Vai confirmar com a mãe."}
           </p>
         </div>
       ) : filteredEvents.length === 0 ? (
-        <div className="rounded-3xl border-2 border-dashed p-8 text-center"
+        <div className="rounded-3xl p-8 text-center"
           style={{
-            borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.15)",
-            background: isMom ? undefined : "hsl(var(--arena-dark) / 0.3)",
+            background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+            boxShadow: isMom ? undefined : "0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)",
+            border: isMom ? "2px dashed hsl(var(--muted))" : "1px solid hsl(var(--arena-gold) / 0.12)",
           }}>
           <p className="text-3xl mb-2">🤷</p>
-          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(220 15% 70%)" } : undefined}>
+          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(220 20% 85%)" } : undefined}>
             Nada nesse dia. Ou a mãe ainda não atualizou.
           </p>
         </div>
