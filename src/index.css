@@ -58,6 +58,16 @@
     --dad-border: 153 40% 76%;
     --dad-text: 153 42% 20%;
 
+    /* Dad arena tokens (vibrant competition) */
+    --arena-gold: 43 96% 56%;
+    --arena-silver: 220 14% 70%;
+    --arena-bronze: 25 70% 50%;
+    --arena-fire: 15 90% 55%;
+    --arena-neon: 153 80% 45%;
+    --arena-electric: 200 100% 50%;
+    --arena-dark: 220 30% 12%;
+    --arena-glow: 153 60% 60%;
+
     /* Grandma panel tokens */
     --avo-accent: 270 60% 55%;
     --avo-bg: 270 80% 97%;
