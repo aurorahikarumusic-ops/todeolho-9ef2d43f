@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { usePublicSuggestions, useAdoptSuggestion } from "@/hooks/useGrandmaSuggestions";
 import { useProfile } from "@/hooks/useProfile";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,11 +18,28 @@ export default function GrandmaPalpitesCard() {
   const isMom = profile?.role === "mae";
   const isDad = profile?.role === "pai";
 
-  // For moms: show public palpites they can adopt
-  // For dads: show palpites adopted for their family (sarcastic tone)
-  const publicPending = suggestions.slice(0, 3);
+  // For dads: fetch suggestions adopted for their family (accepted by mom)
+  const { data: familyAdopted = [] } = useQuery({
+    queryKey: ["family-adopted-suggestions", profile?.family_id],
+    queryFn: async () => {
+      if (!profile?.family_id) return [];
+      const { data } = await supabase
+        .from("grandma_suggestions")
+        .select("*")
+        .eq("adopted_family_id", profile.family_id)
+        .eq("status", "aceito")
+        .order("created_at", { ascending: false })
+        .limit(5);
+      return data || [];
+    },
+    enabled: !!profile?.family_id && isDad,
+  });
 
-  if (publicPending.length === 0) return null;
+  // For moms: show public palpites they can adopt
+  // For dads: show adopted palpites for their family
+  const displayItems = isDad ? familyAdopted.slice(0, 3) : suggestions.slice(0, 3);
+
+  if (displayItems.length === 0) return null;
 
   const handleAdopt = async (id: string) => {
     try {
