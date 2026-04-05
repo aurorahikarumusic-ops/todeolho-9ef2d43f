@@ -199,7 +199,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
             {statusLabel}
           </div>
           {checkedToday && (
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/15 border border-green-500/30">
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/20 border border-green-500/30">
               <span className="text-green-500 text-[10px]">✓</span>
               <span className="text-[9px] font-display font-bold text-green-600">PRESENTE HOJE</span>
             </div>
@@ -282,7 +282,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                         ? isToday
                           ? `linear-gradient(180deg, ${gradientFrom}, ${gradientTo})`
                           : "linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary) / 0.7))"
-                        : "linear-gradient(180deg, hsl(var(--muted) / 0.8), hsl(var(--muted) / 0.4))",
+                        : "linear-gradient(180deg, hsl(220 30% 22%), hsl(220 30% 18%))",
                       boxShadow: blockActive
                         ? isToday
                           ? `0 4px 16px ${glowColor}, inset 0 1px 0 rgba(255,255,255,0.3)`
@@ -334,7 +334,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
               {displayStreak >= 30 ? "🏆 MAX" : displayStreak >= 14 ? "30 dias" : displayStreak >= 7 ? "14 dias" : displayStreak >= 3 ? "7 dias" : "3 dias"}
             </span>
           </div>
-          <div className="h-2 bg-muted/40 rounded-full overflow-hidden relative">
+          <div className="h-2 bg-white/10 rounded-full overflow-hidden relative">
             <div
               className="h-full rounded-full transition-all duration-1000 ease-out relative"
               style={{
