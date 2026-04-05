@@ -166,7 +166,7 @@ export default function Agenda() {
         className="relative rounded-3xl p-5 overflow-hidden"
         style={{
           background: isMom
-169:             ? "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))"
+? "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))"
             : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%), hsl(var(--arena-dark)))",
           perspective: "800px",
         }}
