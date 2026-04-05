@@ -163,7 +163,7 @@ export default function Dashboard() {
                 {profile.display_name?.charAt(0)?.toUpperCase() || "P"}
               </AvatarFallback>
             </Avatar>
-            <span className="text-[9px] group-hover:text-primary transition-colors" style={{ color: "hsl(0 0% 50%)" }}>Ver perfil</span>
+            <span className="text-[9px] group-hover:text-primary transition-colors" style={{ color: "hsl(220 15% 70%)" }}>Ver perfil</span>
           </button>
         </div>
       </div>
@@ -182,7 +182,7 @@ export default function Dashboard() {
             <p className="font-display font-bold text-sm mb-1" style={{ color: "hsl(0 0% 85%)" }}>
               Conecte-se com a mãe
             </p>
-            <p className="font-body text-xs mb-3" style={{ color: "hsl(0 0% 50%)" }}>
+            <p className="font-body text-xs mb-3" style={{ color: "hsl(220 15% 70%)" }}>
               Peça o código de 6 dígitos pra ela. Sem ele, você tá jogando sozinho.
             </p>
             <JoinFamily />
