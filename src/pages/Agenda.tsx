@@ -353,10 +353,12 @@ export default function Agenda() {
       {/* Selected date header */}
       {selectedDate && (
         <div className="flex items-center justify-between px-1">
-          <h2 className="font-display text-base font-bold">
+          <h2 className="font-display text-base font-bold"
+            style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
             {isToday(selectedDate) ? "📍 Hoje" : isTomorrow(selectedDate) ? "⏰ Amanhã" : format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
           </h2>
-          <Badge variant="secondary" className="text-[10px] font-display">
+          <Badge variant="secondary" className="text-[10px] font-display"
+            style={!isMom ? { background: "hsl(var(--arena-neon) / 0.12)", color: "hsl(var(--arena-neon))", border: "none" } : undefined}>
             {filteredEvents.length} evento{filteredEvents.length !== 1 ? "s" : ""}
           </Badge>
         </div>
