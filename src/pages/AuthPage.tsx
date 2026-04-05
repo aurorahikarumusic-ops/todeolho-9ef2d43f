@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Eye, UserPlus, LogIn, Crown, ArrowLeft } from "lucide-react";
+import { Eye, UserPlus, LogIn, Crown, ArrowLeft, Link } from "lucide-react";
 import GrandmaLoginForm from "@/components/grandma/GrandmaLoginForm";
 
 function DadLoginForm() {
   const { signUp, signIn } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: "" });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,6 +21,20 @@ function DadLoginForm() {
     try {
       if (isSignUp) {
         await signUp(form.email, form.password, form.name, "pai");
+        // Auto-join family if invite code provided
+        if (form.inviteCode.trim()) {
+          const { data } = await supabase.rpc("join_family_by_code", {
+            invite_code: form.inviteCode.trim(),
+          });
+          const result = data as any;
+          if (result?.success) {
+            toast.success("Conta criada e família conectada! 🎉", {
+              description: `Conectado com ${result.host_name}. A mãe já está de olho. 👁️`,
+              duration: 5000,
+            });
+            return;
+          }
+        }
         toast.success("Conta criada! 🎉", {
           description: "Bem-vindo ao clube dos pais que tentam. A barra é baixa, relaxa.",
         });
@@ -43,18 +58,37 @@ function DadLoginForm() {
       <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           {isSignUp && (
-            <div>
-              <label className="text-sm font-body font-semibold text-foreground mb-1 block">
-                Seu nome (o que a mãe grita quando tá brava)
-              </label>
-              <Input
-                placeholder="Ex: Carlos, Pai do Pedro"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required={isSignUp}
-                className="font-body"
-              />
-            </div>
+            <>
+              <div>
+                <label className="text-sm font-body font-semibold text-foreground mb-1 block">
+                  Seu nome (o que a mãe grita quando tá brava)
+                </label>
+                <Input
+                  placeholder="Ex: Carlos, Pai do Pedro"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required={isSignUp}
+                  className="font-body"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-body font-semibold text-foreground mb-1 block">
+                  <Link className="w-3.5 h-3.5 inline mr-1" />
+                  Código de convite <span className="text-muted-foreground font-normal">(opcional)</span>
+                </label>
+                <Input
+                  placeholder="Ex: A1B2C3D4"
+                  value={form.inviteCode}
+                  onChange={(e) => setForm({ ...form, inviteCode: e.target.value.toUpperCase() })}
+                  maxLength={8}
+                  className="font-body text-center tracking-[0.15em]"
+                />
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  Recebeu da mãe? Cola aqui pra já entrar na família.
+                </p>
+              </div>
+            </>
           )}
 
           <div>

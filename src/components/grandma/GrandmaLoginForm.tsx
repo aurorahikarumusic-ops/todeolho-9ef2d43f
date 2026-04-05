@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, LogIn, UserPlus } from "lucide-react";
+import { ArrowLeft, LogIn, UserPlus, Link } from "lucide-react";
 
 const GRANDMA_PHRASES = [
   "Na minha época a gente criava filho sem app...",
@@ -29,7 +30,7 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
   const { signUp, signIn } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: "" });
 
   const randomPhrase = GRANDMA_PHRASES[Math.floor(Math.random() * GRANDMA_PHRASES.length)];
   const randomTip = GRANDMA_SIGNUP_TIPS[Math.floor(Math.random() * GRANDMA_SIGNUP_TIPS.length)];
@@ -40,6 +41,19 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
     try {
       if (isSignUp) {
         await signUp(form.email, form.password, form.name, "avo");
+        if (form.inviteCode.trim()) {
+          const { data } = await supabase.rpc("join_family_by_code", {
+            invite_code: form.inviteCode.trim(),
+          });
+          const result = data as any;
+          if (result?.success) {
+            toast.success("Conta criada e família conectada, vovó! 👵🧶", {
+              description: `Conectada com ${result.host_name}. Agora pode dar todos os palpites!`,
+              duration: 5000,
+            });
+            return;
+          }
+        }
         toast.success("Conta criada, vovó! 👵🧶", {
           description: "Agora você pode dar todos os palpites que quiser. A família que se prepare.",
         });
@@ -93,18 +107,37 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
 
         <form onSubmit={handleSubmit} className="space-y-3">
           {isSignUp && (
-            <div>
-              <label className="text-sm font-body font-semibold text-foreground mb-1 block">
-                Como os netos te chamam? 👵
-              </label>
-              <Input
-                placeholder="Ex: Vó Lourdes, Dona Maria, Vovó do Bolo"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required={isSignUp}
-                className="font-body border-avo-border focus-visible:ring-avo"
-              />
-            </div>
+            <>
+              <div>
+                <label className="text-sm font-body font-semibold text-foreground mb-1 block">
+                  Como os netos te chamam? 👵
+                </label>
+                <Input
+                  placeholder="Ex: Vó Lourdes, Dona Maria, Vovó do Bolo"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required={isSignUp}
+                  className="font-body border-avo-border focus-visible:ring-avo"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-body font-semibold text-foreground mb-1 block">
+                  <Link className="w-3.5 h-3.5 inline mr-1" />
+                  Código de convite <span className="text-muted-foreground font-normal">(opcional)</span>
+                </label>
+                <Input
+                  placeholder="Ex: A1B2C3D4"
+                  value={form.inviteCode}
+                  onChange={(e) => setForm({ ...form, inviteCode: e.target.value.toUpperCase() })}
+                  maxLength={8}
+                  className="font-body border-avo-border focus-visible:ring-avo text-center tracking-[0.15em]"
+                />
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  Tem o código da família? Cola aqui pra já se conectar.
+                </p>
+              </div>
+            </>
           )}
 
           <div>
@@ -200,14 +233,6 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
           </button>
         </div>
 
-        {isSignUp && (
-          <div className="mt-4 bg-avo/5 border border-avo-border rounded-xl p-3">
-            <p className="text-[11px] font-body text-avo-text text-center">
-              🧶 <strong>Depois de criar sua conta</strong>, peça o <strong>código de convite</strong> para a mãe da família. 
-              É assim que você se conecta e começa a dar seus palpites!
-            </p>
-          </div>
-        )}
       </CardContent>
     </Card>
   );
