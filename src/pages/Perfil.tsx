@@ -22,7 +22,7 @@ import { format, differenceInHours, startOfMonth, endOfMonth, startOfWeek, forma
 import { ptBR } from "date-fns/locale";
 import {
   User, Edit2, Trophy, Flame, Star, LifeBuoy, CheckSquare, CalendarDays,
-  LogOut, Share2, ChevronRight, Baby, Shield, Clock, Bell, Crown, Gem, Gavel, Lock, ChevronLeft
+  LogOut, Share2, ChevronRight, Baby, Shield, Clock, Bell, Crown, Gem, Gavel, Lock, ChevronLeft, Trash2
 } from "lucide-react";
 import { getDadTitle } from "@/lib/constants";
 import { MOM_BADGES } from "@/lib/mom-constants";
