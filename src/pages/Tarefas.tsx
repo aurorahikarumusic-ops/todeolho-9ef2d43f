@@ -562,25 +562,42 @@ export default function Tarefas() {
         <div
           className="rounded-2xl p-4 overflow-hidden relative"
           style={{
-            background: "linear-gradient(135deg, #fef3c7, #fde68a)",
-            boxShadow: "0 6px 20px rgba(245,158,11,0.2), inset 0 1px 0 rgba(255,255,255,0.4)",
+            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 20% 14%))",
+            boxShadow: "0 6px 24px rgba(0,0,0,0.2), 0 0 30px hsl(var(--arena-gold) / 0.1), inset 0 1px 0 rgba(255,255,255,0.05)",
+            border: "1px solid hsl(var(--arena-gold) / 0.25)",
           }}
         >
-          <div className="absolute -top-4 -right-4 w-20 h-20 rounded-full blur-xl opacity-30"
-            style={{ background: "#f59e0b" }} />
+          <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full blur-2xl opacity-30"
+            style={{ background: "hsl(var(--arena-gold))" }} />
+          <div className="absolute bottom-0 left-0 w-16 h-16 rounded-full blur-xl opacity-20"
+            style={{ background: "hsl(var(--arena-fire))" }} />
+          <div className="absolute top-0 left-4 right-4 h-px" style={{
+            background: "linear-gradient(90deg, transparent, hsl(var(--arena-gold) / 0.5), transparent)",
+          }} />
           <div className="relative z-10 flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center shrink-0"
-              style={{ boxShadow: "0 3px 8px rgba(245,158,11,0.4)" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+              style={{
+                background: "linear-gradient(135deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
+                boxShadow: "0 4px 12px hsl(var(--arena-gold) / 0.4), 0 0 16px hsl(var(--arena-gold) / 0.2)",
+              }}>
               <Star className="w-5 h-5 text-white" />
             </div>
             <div className="flex-1">
-              <p className="font-display text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">
+              <p className="font-display text-xs font-bold uppercase tracking-wider mb-1" style={{
+                background: "linear-gradient(90deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>
                 ⭐ Missão Surpresa do Dia
               </p>
-              <p className="font-body text-sm text-amber-900 mb-3">{todayMission.mission_text}</p>
+              <p className="font-body text-sm mb-3" style={{ color: "hsl(0 0% 85%)" }}>{todayMission.mission_text}</p>
               <Button
                 size="sm"
-                className="bg-amber-600 hover:bg-amber-700 text-white text-xs font-display font-bold rounded-xl"
+                className="text-xs font-display font-bold rounded-xl border-0 text-white"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--arena-neon)), hsl(var(--arena-gold)))",
+                  boxShadow: "0 4px 16px hsl(var(--arena-neon) / 0.3)",
+                }}
                 onClick={() => completeMissionMutation.mutate()}
                 disabled={completeMissionMutation.isPending}
               >
@@ -592,12 +609,13 @@ export default function Tarefas() {
       )}
 
       {!isMom && todayMission?.completed_at && (
-        <div className="rounded-2xl p-3 text-center"
+        <div className="rounded-2xl p-3 text-center relative overflow-hidden"
           style={{
-            background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--primary) / 0.03))",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.6), hsl(var(--arena-neon) / 0.08))",
+            border: "1px solid hsl(var(--arena-neon) / 0.2)",
+            boxShadow: "0 2px 12px hsl(var(--arena-neon) / 0.1)",
           }}>
-          <p className="text-xs font-body italic" style={{ color: "hsl(var(--primary))" }}>
+          <p className="text-xs font-body italic" style={{ color: "hsl(var(--arena-neon))" }}>
             ✅ Missão do dia cumprida! Sem a mãe pedir. Isso sim é evolução.
           </p>
         </div>
