@@ -455,7 +455,7 @@ export default function Perfil() {
                   <div className="flex items-center gap-2">
                     <h1 className="font-display text-xl font-bold truncate" style={{ color: "white" }}>{profile.display_name}</h1>
                     <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
-                      <Edit2 className="w-4 h-4" style={{ color: "hsl(0 0% 60%)" }} />
+                      <Edit2 className="w-4 h-4" style={{ color: "hsl(220 15% 78%)" }} />
                     </button>
                   </div>
                 )}
@@ -488,7 +488,7 @@ export default function Perfil() {
                     color: `hsl(var(${s.color || "--arena-fire"}))`,
                     textShadow: `0 0 8px hsl(var(${s.color || "--arena-fire"}) / 0.3)`,
                   }}>{s.value}</p>
-                  <p className="text-[10px] font-body" style={{ color: "hsl(0 0% 55%)" }}>{s.label}</p>
+                  <p className="text-[10px] font-body" style={{ color: "hsl(220 15% 75%)" }}>{s.label}</p>
                 </div>
               ))}
             </div>
@@ -517,7 +517,7 @@ export default function Perfil() {
               color: `hsl(var(${s.color || "--arena-fire"}))`,
               textShadow: `0 0 6px hsl(var(${s.color || "--arena-fire"}) / 0.25)`,
             }}>{s.value}</p>
-            <p className="text-[10px] font-body" style={{ color: "hsl(0 0% 50%)" }}>{s.label}</p>
+            <p className="text-[10px] font-body" style={{ color: "hsl(220 15% 70%)" }}>{s.label}</p>
           </div>
         ))}
       </section>
@@ -549,7 +549,7 @@ export default function Perfil() {
                   boxShadow: "0 0 10px hsl(var(--arena-fire) / 0.5)",
                 }} />
               </div>
-              <p className="text-[10px] font-body italic mt-2" style={{ color: "hsl(0 0% 50%)" }}>
+              <p className="text-[10px] font-body italic mt-2" style={{ color: "hsl(220 15% 70%)" }}>
                 {profile.points < 200 ? "Próximo: 'Pai Tentando' — 201 pts"
                   : profile.points < 500 ? "Próximo: 'Pai Promissor' — 501 pts"
                   : profile.points < 900 ? "Próximo: 'Pai de Verdade' — 901 pts"
@@ -719,7 +719,7 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}
       <section>
         <h2 className={`font-display text-base font-bold mb-3 flex items-center gap-2 ${!isMom ? "" : ""}`}
-          style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+          style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>
           <User className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Conexão Familiar
         </h2>
         {!partner ? (
@@ -746,7 +746,7 @@ export default function Perfil() {
                 <span className="text-lg">👩</span>
               </div>
               <div className="flex-1">
-                <p className="font-display font-bold text-sm" style={{ color: "hsl(0 0% 88%)" }}>{partner.display_name}</p>
+                <p className="font-display font-bold text-sm" style={{ color: "hsl(220 15% 90%)" }}>{partner.display_name}</p>
                 <p className="text-[10px] font-body" style={{ color: "hsl(var(--arena-neon) / 0.6)" }}>A mãe — conectado ✓</p>
               </div>
             </div>
@@ -760,7 +760,7 @@ export default function Perfil() {
       <section>
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-display text-base font-bold flex items-center gap-2"
-            style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+            style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>
             <Baby className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Filhos
           </h2>
           {isMom ? (
@@ -778,7 +778,7 @@ export default function Perfil() {
 
         {children.length === 0 ? (
           <p className={isMom ? "text-xs text-muted-foreground font-body italic text-center py-4" : "text-xs font-body italic text-center py-4"}
-            style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>
+            style={!isMom ? { color: "hsl(220 15% 70%)" } : undefined}>
             {isMom ? "Nenhum filho cadastrado ainda." : "Nenhum filho cadastrado. Você tem filhos, né?"}
           </p>
         ) : (
@@ -813,8 +813,8 @@ export default function Perfil() {
                   <div className="flex items-center gap-3 mb-1.5">
                     <div className="w-9 h-9 rounded-full flex items-center justify-center text-base" style={{ background: "hsl(var(--arena-gold) / 0.12)" }}>👶</div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-display font-bold text-sm" style={{ color: "hsl(0 0% 88%)" }}>{child.name}</p>
-                      {child.birth_date && <p className="text-[10px]" style={{ color: "hsl(0 0% 50%)" }}>{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
+                      <p className="font-display font-bold text-sm" style={{ color: "hsl(220 15% 90%)" }}>{child.name}</p>
+                      {child.birth_date && <p className="text-[10px]" style={{ color: "hsl(220 15% 70%)" }}>{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
                     </div>
                     <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{pct}%</span>
                   </div>
@@ -842,7 +842,7 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 8: Settings & Legal ═══════════════════ */}
       <section className="space-y-2">
         <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3"
-          style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+          style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>
           <Shield className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Configurações
         </h2>
 
@@ -867,14 +867,14 @@ export default function Perfil() {
               background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
               border: "1px solid hsl(var(--arena-gold) / 0.12)",
             }}>
-              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(0 0% 50%)" }}>Código família</p>
+              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(220 15% 70%)" }}>Código família</p>
               <p className="text-xs font-mono font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{profile.family_code || "—"}</p>
             </div>
             <div className="rounded-xl p-3 text-center" style={{
               background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
               border: "1px solid hsl(var(--arena-gold) / 0.12)",
             }}>
-              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(0 0% 50%)" }}>Membro desde</p>
+              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(220 15% 70%)" }}>Membro desde</p>
               <p className="text-xs font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{format(new Date(profile.created_at), "dd/MM/yy")}</p>
             </div>
           </div>
@@ -934,9 +934,9 @@ export default function Perfil() {
           ].map(link => (
             <button key={link.path} onClick={() => navigate(link.path)}
               className={isMom ? "text-left text-xs text-muted-foreground font-body hover:text-foreground transition-colors py-2 px-3 rounded-lg hover:bg-muted/50 flex items-center gap-1.5" : "text-left text-xs font-body transition-colors py-2 px-3 rounded-lg flex items-center gap-1.5"}
-              style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}
+              style={!isMom ? { color: "hsl(220 15% 70%)" } : undefined}
               onMouseEnter={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--arena-gold))"); }}
-              onMouseLeave={e => { if (!isMom) (e.currentTarget.style.color = "hsl(0 0% 50%)"); }}>
+              onMouseLeave={e => { if (!isMom) (e.currentTarget.style.color = "hsl(220 15% 70%)"); }}>
               <span>{link.icon}</span> {link.label}
             </button>
           ))}
@@ -1021,12 +1021,12 @@ function BadgeCard({ emoji, name, desc, earned, type, onClick, isDad }: {
       shame: earned
         ? { background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(var(--arena-fire) / 0.08))", border: "1px solid hsl(var(--arena-fire) / 0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.2), 0 0 12px hsl(var(--arena-fire) / 0.08)" }
         : { background: "hsl(var(--arena-dark) / 0.5)", border: "1px solid hsl(0 0% 25%)" },
-      locked: { background: "hsl(var(--arena-dark) / 0.4)", border: "1px dashed hsl(0 0% 30%)" },
+      locked: { background: "hsl(var(--arena-dark) / 0.4)", border: "1px dashed hsl(220 15% 50%)" },
     };
     return (
       <button onClick={onClick} className={`flex-shrink-0 w-28 rounded-xl p-3 text-center transition-all ${earned ? "hover:scale-105" : "opacity-40"}`} style={styleMap[type]}>
         <span className={`text-3xl block mb-1.5 ${earned ? "" : "grayscale"}`} style={earned ? { filter: "drop-shadow(0 0 6px rgba(255,255,255,0.2))" } : undefined}>{emoji}</span>
-        <p className="font-display text-[11px] font-bold leading-tight" style={{ color: earned ? "hsl(0 0% 85%)" : "hsl(0 0% 45%)" }}>{name}</p>
+        <p className="font-display text-[11px] font-bold leading-tight" style={{ color: earned ? "hsl(220 15% 88%)" : "hsl(220 15% 65%)" }}>{name}</p>
       </button>
     );
   }
@@ -1113,7 +1113,7 @@ function DadBadgesCarousel({ earnedKeys, onSelect }: { earnedKeys: string[]; onS
         ))}
       </HorizontalScroll>
 
-      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5" style={{ color: "hsl(0 0% 45%)" }} />}>
+      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5" style={{ color: "hsl(220 15% 65%)" }} />}>
         {DAD_ACHIEVEMENTS.locked.map((a, i) => (
           <BadgeCard key={i} emoji="🔒" name={a.hint} desc="Continue jogando para desbloquear"
             earned={false} type="locked" isDad

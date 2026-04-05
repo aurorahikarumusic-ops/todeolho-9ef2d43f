@@ -71,7 +71,7 @@ export default function GreetingHeader(props: GreetingHeaderProps) {
         background: "linear-gradient(90deg, transparent, hsl(var(--arena-neon) / 0.4), transparent)",
       }} />
       <span className="absolute top-3 right-4 text-3xl opacity-10 select-none">👁️</span>
-      <p className="font-display text-base leading-relaxed relative z-10" style={{ color: "hsl(0 0% 85%)" }}>
+      <p className="font-display text-base leading-relaxed relative z-10" style={{ color: "hsl(220 15% 88%)" }}>
         {greeting}
       </p>
     </div>

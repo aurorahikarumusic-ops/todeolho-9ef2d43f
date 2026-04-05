@@ -60,8 +60,8 @@ export default function DailyQuote() {
         "{quote}"
       </p>
       <div className="flex items-center justify-end gap-1 mt-2">
-        <CalendarDays className="w-3 h-3" style={{ color: "hsl(0 0% 50%)" }} />
-        <span className="text-[10px] font-body" style={{ color: "hsl(0 0% 50%)" }}>{today}</span>
+        <CalendarDays className="w-3 h-3" style={{ color: "hsl(220 15% 70%)" }} />
+        <span className="text-[10px] font-body" style={{ color: "hsl(220 15% 70%)" }}>{today}</span>
       </div>
     </div>
   );

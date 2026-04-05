@@ -102,7 +102,7 @@ function ArenaCard({
     >
       <div className="flex items-center gap-1.5 mb-1.5">
         {icon}
-        <span className="text-[11px] font-body" style={{ color: "hsl(0 0% 55%)" }}>{label}</span>
+        <span className="text-[11px] font-body" style={{ color: "hsl(220 15% 75%)" }}>{label}</span>
       </div>
       <p
         className="font-display text-xl font-bold truncate"
@@ -120,14 +120,14 @@ function ArenaCard({
               key={s}
               className="w-3 h-3"
               style={{
-                color: s <= stars ? "hsl(var(--arena-gold))" : "hsl(0 0% 30%)",
+                color: s <= stars ? "hsl(var(--arena-gold))" : "hsl(220 15% 50%)",
                 fill: s <= stars ? "hsl(var(--arena-gold))" : "none",
               }}
             />
           ))}
         </div>
       )}
-      <p className="text-[10px] font-body italic mt-1" style={{ color: "hsl(0 0% 50%)" }}>
+      <p className="text-[10px] font-body italic mt-1" style={{ color: "hsl(220 15% 70%)" }}>
         {comment}
       </p>
     </div>

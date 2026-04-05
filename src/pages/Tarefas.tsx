@@ -274,7 +274,7 @@ export default function Tarefas() {
             : isMom
               ? `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`
               : `0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03), -4px 0 0 ${cat.color}`,
-          border: isMom ? undefined : "1px solid hsl(0 0% 20%)",
+          border: isMom ? undefined : "1px solid hsl(220 30% 22%)",
         }}
         onClick={() => setExpandedTask(isExpanded ? null : task.id)}
       >
@@ -329,7 +329,7 @@ export default function Tarefas() {
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through" : ""}`} style={!isMom && !task.completed_at ? { color: "hsl(0 0% 88%)" } : !isMom ? { color: "hsl(0 0% 50%)" } : undefined}>
+                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through" : ""}`} style={!isMom && !task.completed_at ? { color: "hsl(220 15% 90%)" } : !isMom ? { color: "hsl(220 15% 70%)" } : undefined}>
                   {cat.emoji} {task.title}
                 </h3>
               </div>
@@ -341,7 +341,7 @@ export default function Tarefas() {
                       ? "bg-red-500/10 text-red-500 font-bold"
                       : isMom ? "bg-muted/50 text-muted-foreground" : ""
                   }`}
-                  style={!isMom && !isOverdue ? { background: "hsl(0 0% 20%)", color: "hsl(0 0% 60%)" } : undefined}>
+                  style={!isMom && !isOverdue ? { background: "hsl(220 30% 22%)", color: "hsl(220 15% 78%)" } : undefined}>
                     <Clock className="w-2.5 h-2.5" />
                     {format(new Date(task.due_date), "dd/MM · HH:mm")}
                     {isOverdue && " ⚠️"}
@@ -363,7 +363,7 @@ export default function Tarefas() {
                 )}
               </div>
 
-              <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(0 0% 45%)" } : undefined}>
+              <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(220 15% 65%)" } : undefined}>
                 {getTaskIronicComment(task, isMom)}
               </p>
             </div>
@@ -386,15 +386,15 @@ export default function Tarefas() {
               {task.rescued_by_mom && (
                 <span className="text-xs font-display font-black text-red-500">-30pts</span>
               )}
-              <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} style={!isMom ? { color: "hsl(0 0% 30%)" } : { color: "hsl(var(--muted-foreground) / 0.3)" }} />
+              <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} style={!isMom ? { color: "hsl(220 15% 50%)" } : { color: "hsl(var(--muted-foreground) / 0.3)" }} />
             </div>
           </div>
 
           {/* Expanded details */}
           {isExpanded && (
-            <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.2)" : "1px solid hsl(0 0% 22%)" }}>
+            <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.2)" : "1px solid hsl(220 30% 22%)" }}>
               {task.description && (
-                <p className="text-xs font-body" style={!isMom ? { color: "hsl(0 0% 55%)" } : { color: "hsl(var(--muted-foreground))" }}>📝 {task.description}</p>
+                <p className="text-xs font-body" style={!isMom ? { color: "hsl(220 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>📝 {task.description}</p>
               )}
 
               <div className="flex items-center gap-2">
@@ -405,7 +405,7 @@ export default function Tarefas() {
                     <>{isMom ? "Você criou" : "Mãe mandou"}</>
                   )}
                 </Badge>
-                <span className="text-[9px]" style={!isMom ? { color: "hsl(0 0% 40%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
+                <span className="text-[9px]" style={!isMom ? { color: "hsl(220 15% 60%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
                   {format(new Date(task.created_at), "dd/MM")}
                 </span>
               </div>
@@ -470,8 +470,8 @@ export default function Tarefas() {
         boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
       }}>
       <p className="text-5xl mb-3">{emoji}</p>
-      <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(0 0% 85%)" } : undefined}>{title}</p>
-      <p className="text-sm font-body italic whitespace-pre-line" style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>{text}</p>
+      <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(220 15% 88%)" } : undefined}>{title}</p>
+      <p className="text-sm font-body italic whitespace-pre-line" style={!isMom ? { color: "hsl(220 15% 70%)" } : undefined}>{text}</p>
     </div>
   );
 
@@ -536,7 +536,7 @@ export default function Tarefas() {
                 border: isMom ? undefined : "1px solid hsl(var(--arena-neon) / 0.15)",
               }}>
               <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-neon))", textShadow: "0 0 8px hsl(var(--arena-neon) / 0.4)" } : undefined}>{pending.length}</p>
-              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(0 0% 60%)" } : undefined}>Pendentes</p>
+              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(220 15% 78%)" } : undefined}>Pendentes</p>
             </div>
             {isMom && (
               <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
@@ -552,7 +552,7 @@ export default function Tarefas() {
                 border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.15)",
               }}>
               <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-gold))", textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)" } : { color: "hsl(var(--primary))" }}>{completed.length}</p>
-              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(0 0% 60%)" } : undefined}>Feitas</p>
+              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(220 15% 78%)" } : undefined}>Feitas</p>
             </div>
             <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
               style={{
@@ -561,7 +561,7 @@ export default function Tarefas() {
                 border: isMom ? undefined : "1px solid hsl(var(--arena-fire) / 0.15)",
               }}>
               <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-fire))", textShadow: "0 0 8px hsl(var(--arena-fire) / 0.3)" } : { color: "#ef4444" }}>{isMom ? rescued.length : overdue.length}</p>
-              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(0 0% 60%)" } : undefined}>{isMom ? "Resgates" : "Atrasadas"}</p>
+              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(220 15% 78%)" } : undefined}>{isMom ? "Resgates" : "Atrasadas"}</p>
             </div>
           </div>
         </div>
@@ -600,7 +600,7 @@ export default function Tarefas() {
               }}>
                 ⭐ Missão Surpresa do Dia
               </p>
-              <p className="font-body text-sm mb-3" style={{ color: "hsl(0 0% 85%)" }}>{todayMission.mission_text}</p>
+              <p className="font-body text-sm mb-3" style={{ color: "hsl(220 15% 88%)" }}>{todayMission.mission_text}</p>
               <Button
                 size="sm"
                 className="text-xs font-display font-bold rounded-xl border-0 text-white"
