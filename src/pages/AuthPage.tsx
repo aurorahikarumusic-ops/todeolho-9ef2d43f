@@ -68,7 +68,7 @@ function DadLoginForm() {
       }
     } catch (err: any) {
       toast.error("Ops!", {
-        description: err.message || "Algo deu errado. Como sempre.",
+        description: translateAuthError(err.message),
       });
     } finally {
       setLoading(false);
