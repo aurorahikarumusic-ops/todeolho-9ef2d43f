@@ -14,10 +14,22 @@ export function useProfile() {
         .select("*")
         .eq("user_id", user.id)
         .single();
-      if (error) throw error;
+      if (error) {
+        // If profile not found, user was likely deleted — sign out
+        if (error.code === 'PGRST116') {
+          await supabase.auth.signOut();
+          return null;
+        }
+        throw error;
+      }
       return data;
     },
     enabled: !!user,
+    retry: (failureCount, error: any) => {
+      // Don't retry if profile not found
+      if (error?.code === 'PGRST116') return false;
+      return failureCount < 2;
+    },
   });
 }
 
