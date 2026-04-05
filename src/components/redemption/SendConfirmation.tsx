@@ -456,7 +456,7 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center px-6"
       style={{ 
-        background: "linear-gradient(165deg, hsl(340,30%,12%) 0%, hsl(300,20%,8%) 50%, hsl(260,25%,10%) 100%)",
+        background: "linear-gradient(175deg, hsl(345,35%,14%) 0%, hsl(350,25%,9%) 50%, hsl(340,20%,7%) 100%)",
         animation: "fadeIn 0.8s ease",
       }}>
       
