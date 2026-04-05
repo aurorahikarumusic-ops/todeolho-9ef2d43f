@@ -46,7 +46,7 @@ const AVO_BADGES = [
 export default function AvoPerfil() {
   const { user, signOut } = useAuth();
   const { data: profile } = useProfile();
-  const { data: partner } = useFamilyPartner();
+  const { data: partner, allMembers } = useFamilyPartner();
   const updateProfile = useUpdateProfile();
   const navigate = useNavigate();
   const { data: suggestions = [] } = useGrandmaSuggestions();
