@@ -52,21 +52,21 @@
     --mom-border: 340 50% 82%;
     --mom-text: 340 50% 35%;
 
-    /* Dad panel tokens */
-    --dad-accent: 153 42% 30%;
-    --dad-bg: 153 60% 94%;
-    --dad-border: 153 40% 76%;
-    --dad-text: 153 42% 20%;
+    /* Dad panel tokens — Monochromatic Blue */
+    --dad-accent: 215 80% 58%;
+    --dad-bg: 220 50% 95%;
+    --dad-border: 220 40% 72%;
+    --dad-text: 220 50% 18%;
 
-    /* Dad arena tokens (vibrant competition) */
-    --arena-gold: 43 96% 56%;
-    --arena-silver: 220 14% 70%;
-    --arena-bronze: 25 70% 50%;
-    --arena-fire: 15 90% 55%;
-    --arena-neon: 153 80% 45%;
-    --arena-electric: 200 100% 50%;
-    --arena-dark: 220 30% 12%;
-    --arena-glow: 153 60% 60%;
+    /* Dad arena tokens — Blue Ramp Premium */
+    --arena-gold: 215 85% 65%;
+    --arena-silver: 220 20% 55%;
+    --arena-bronze: 225 55% 45%;
+    --arena-fire: 210 80% 55%;
+    --arena-neon: 200 90% 65%;
+    --arena-electric: 205 95% 72%;
+    --arena-dark: 220 45% 8%;
+    --arena-glow: 215 70% 60%;
 
     /* Grandma panel tokens */
     --avo-accent: 270 60% 55%;
