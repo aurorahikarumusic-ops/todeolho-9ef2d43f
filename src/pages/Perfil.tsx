@@ -29,6 +29,8 @@ import InvitePartner from "@/components/family/InvitePartner";
 import JoinFamily from "@/components/family/JoinFamily";
 import PalpitesHistorySection from "@/components/profile/PalpitesHistorySection";
 import CartasRecebidas from "@/components/redemption/CartasRecebidas";
+import ModoRedencao from "@/components/redemption/ModoRedencao";
+import { useSentLetters } from "@/hooks/useRedemption";
 import { sendLocalNotification, getNotificationPermission, requestPushSubscription } from "@/lib/pushNotifications";
 
 const DAD_ACHIEVEMENTS = {
@@ -68,6 +70,8 @@ export default function Perfil() {
   const [editMode, setEditMode] = useState(false);
   const [editName, setEditName] = useState("");
   const [showChildSheet, setShowChildSheet] = useState(false);
+  const [showRedencao, setShowRedencao] = useState(false);
+  const { data: sentLetters = [] } = useSentLetters();
   const [newChild, setNewChild] = useState({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" });
   const [selectedBadge, setSelectedBadge] = useState<{ emoji: string; name: string; desc: string } | null>(null);
 
@@ -166,6 +170,16 @@ export default function Perfil() {
   });
 
   if (!profile) return null;
+
+  if (showRedencao) {
+    return (
+      <ModoRedencao
+        onClose={() => setShowRedencao(false)}
+        recipientName={partner?.display_name}
+        recipientId={partner?.user_id}
+      />
+    );
+  }
 
   const dadTitle = getDadTitle(profile.points);
   const monthCompleted = monthTasks.filter(t => t.completed_at).length;
@@ -378,7 +392,41 @@ export default function Perfil() {
         </section>
       )}
 
-      {/* ═══════════════════ SECTION 4: Badges / Selos ═══════════════════ */}
+      {/* ═══════════════════ SECTION 3b: Modo Redenção (Dad) ═══════════════════ */}
+      {!isMom && (
+        <section>
+          <Card className="overflow-hidden border-[1.5px] border-[hsl(340,60%,88%)] bg-[hsl(340,60%,97%)]">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-[hsl(340,72%,57%)] flex items-center justify-center text-xl shadow-md shrink-0">
+                  💌
+                </div>
+                <div className="flex-1">
+                  <p className="font-display font-bold text-sm text-[hsl(340,40%,25%)]">
+                    Modo Redenção
+                  </p>
+                  <p className="font-body text-[11px] text-[hsl(340,50%,55%)] italic leading-snug">
+                    Escreva uma carta do coração pra ela. Chega animada, tipo filme.
+                  </p>
+                  {sentLetters.length > 0 && (
+                    <p className="text-[10px] text-muted-foreground mt-0.5">
+                      {sentLetters.length} carta{sentLetters.length > 1 ? "s" : ""} enviada{sentLetters.length > 1 ? "s" : ""}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <Button
+                onClick={() => setShowRedencao(true)}
+                className="w-full mt-3 rounded-full bg-[hsl(340,72%,57%)] hover:bg-[hsl(340,72%,50%)] text-white font-display font-bold text-sm h-10"
+              >
+                ✉️ Escrever carta
+              </Button>
+            </CardContent>
+          </Card>
+        </section>
+      )}
+
+
       <section>
         {isMom ? (
           <MomBadgesCarousel earnedKeys={earnedKeys} onSelect={setSelectedBadge} />
