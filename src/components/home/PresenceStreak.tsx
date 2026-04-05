@@ -270,7 +270,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                   style={{
                     height: `${height}px`,
                     transitionDelay: `${i * 60}ms`,
-                    transform: isTodayIdx && animating ? "translateY(-6px) scale(1.08)" : "translateY(0)",
+                    transform: isToday && animating ? "translateY(-6px) scale(1.08)" : "translateY(0)",
                     transformStyle: "preserve-3d",
                   }}
                 >
@@ -279,12 +279,12 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                     className="absolute inset-0 rounded-xl transition-all duration-500"
                     style={{
                       background: blockActive
-                        ? isTodayIdx
+                        ? isToday
                           ? `linear-gradient(180deg, ${gradientFrom}, ${gradientTo})`
                           : "linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary) / 0.7))"
                         : "linear-gradient(180deg, hsl(var(--muted) / 0.8), hsl(var(--muted) / 0.4))",
                       boxShadow: blockActive
-                        ? isTodayIdx
+                        ? isToday
                           ? `0 4px 16px ${glowColor}, inset 0 1px 0 rgba(255,255,255,0.3)`
                           : "0 3px 8px hsl(var(--primary) / 0.25), inset 0 1px 0 rgba(255,255,255,0.15)"
                         : "0 1px 3px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.08)",
@@ -303,7 +303,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                   <div className="absolute inset-0 flex items-center justify-center">
                     {blockActive ? (
                       <span className="text-white font-bold text-xs drop-shadow-sm">
-                        {isTodayIdx ? fireEmoji : "✓"}
+                        {isToday ? fireEmoji : "✓"}
                       </span>
                     ) : (
                       <span className="text-muted-foreground/30 text-xs">·</span>
@@ -312,7 +312,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                 </div>
                 <span
                   className={`text-[9px] font-display font-semibold tracking-wide ${
-                    isTodayIdx
+                    isToday
                       ? checkedToday ? "text-green-500 font-black" : "text-orange-500 font-black"
                       : blockActive ? "text-foreground/60" : "text-muted-foreground/40"
                   }`}
