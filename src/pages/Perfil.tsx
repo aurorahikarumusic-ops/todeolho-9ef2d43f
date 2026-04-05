@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
 import { useIsMom, useFamilyPartner } from "@/hooks/useFamily";
@@ -74,6 +75,48 @@ export default function Perfil() {
   const { data: sentLetters = [] } = useSentLetters();
   const [newChild, setNewChild] = useState({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" });
   const [selectedBadge, setSelectedBadge] = useState<{ emoji: string; name: string; desc: string } | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const paymentVerifiedRef = useRef(false);
+
+  // Verify payment after Stripe redirect
+  useEffect(() => {
+    const payment = searchParams.get("payment");
+    const sessionId = searchParams.get("session_id");
+    
+    if (payment === "success" && sessionId && !paymentVerifiedRef.current) {
+      paymentVerifiedRef.current = true;
+      
+      const verifyPayment = async () => {
+        try {
+          const { data, error } = await supabase.functions.invoke("verify-payment", {
+            body: { sessionId },
+          });
+          
+          if (error) throw error;
+          
+          if (data?.success) {
+            toast.success("💌 Pagamento confirmado! Sua carta foi enviada com sucesso!");
+            queryClient.invalidateQueries({ queryKey: ["profile"] });
+            queryClient.invalidateQueries({ queryKey: ["sent-letters"] });
+            queryClient.invalidateQueries({ queryKey: ["received-letters"] });
+          } else {
+            toast.error("Pagamento ainda não confirmado. Tente novamente em instantes.");
+          }
+        } catch (err: any) {
+          console.error("Payment verification error:", err);
+          toast.error("Erro ao verificar pagamento: " + (err.message || "tente novamente"));
+        }
+        
+        // Clean URL params
+        setSearchParams({}, { replace: true });
+      };
+      
+      verifyPayment();
+    } else if (payment === "cancelled") {
+      toast.info("Pagamento cancelado. Sua carta foi salva como rascunho.");
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams]);
 
   const monthStart = startOfMonth(new Date()).toISOString();
   const monthEnd = endOfMonth(new Date()).toISOString();
