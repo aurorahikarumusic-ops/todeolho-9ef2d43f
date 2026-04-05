@@ -41,6 +41,19 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
     try {
       if (isSignUp) {
         await signUp(form.email, form.password, form.name, "avo");
+        if (form.inviteCode.trim()) {
+          const { data } = await supabase.rpc("join_family_by_code", {
+            invite_code: form.inviteCode.trim(),
+          });
+          const result = data as any;
+          if (result?.success) {
+            toast.success("Conta criada e família conectada, vovó! 👵🧶", {
+              description: `Conectada com ${result.host_name}. Agora pode dar todos os palpites!`,
+              duration: 5000,
+            });
+            return;
+          }
+        }
         toast.success("Conta criada, vovó! 👵🧶", {
           description: "Agora você pode dar todos os palpites que quiser. A família que se prepare.",
         });
