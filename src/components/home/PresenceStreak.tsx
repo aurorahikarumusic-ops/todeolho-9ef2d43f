@@ -163,8 +163,8 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
       className="relative rounded-3xl overflow-hidden cursor-pointer select-none"
       style={{
         perspective: "800px",
-        background: "linear-gradient(145deg, hsl(var(--card)), hsl(var(--card) / 0.95))",
-        boxShadow: `0 8px 32px -8px ${glowColor}, 0 2px 8px rgba(0,0,0,0.08)`,
+        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%))",
+        boxShadow: `0 8px 32px -8px ${glowColor}, 0 4px 16px rgba(0,0,0,0.2)`, border: "1px solid hsl(var(--arena-gold) / 0.1)",
       }}
       onClick={handleCheckIn}
     >
@@ -199,9 +199,9 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
             {statusLabel}
           </div>
           {checkedToday && (
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/15 border border-green-500/30">
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/20 border border-green-500/30">
               <span className="text-green-500 text-[10px]">✓</span>
-              <span className="text-[9px] font-display font-bold text-green-600">PRESENTE HOJE</span>
+              <span className="text-[9px] font-display font-bold text-green-400">PRESENTE HOJE</span>
             </div>
           )}
         </div>
@@ -245,11 +245,11 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
               >
                 {displayStreak}
               </span>
-              <span className="font-display text-base font-bold text-muted-foreground">
+              <span className="font-display text-base font-bold text-white/70">
                 dia{displayStreak !== 1 ? "s" : ""}
               </span>
             </div>
-            <span className="font-body text-[10px] text-muted-foreground/60 uppercase tracking-[0.2em]">
+            <span className="font-body text-[10px] text-white/50 uppercase tracking-[0.2em]">
               de sequência
             </span>
           </div>
@@ -282,7 +282,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                         ? isToday
                           ? `linear-gradient(180deg, ${gradientFrom}, ${gradientTo})`
                           : "linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary) / 0.7))"
-                        : "linear-gradient(180deg, hsl(var(--muted) / 0.8), hsl(var(--muted) / 0.4))",
+                        : "linear-gradient(180deg, hsl(220 30% 22%), hsl(220 30% 18%))",
                       boxShadow: blockActive
                         ? isToday
                           ? `0 4px 16px ${glowColor}, inset 0 1px 0 rgba(255,255,255,0.3)`
@@ -306,15 +306,15 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                         {isToday ? fireEmoji : "✓"}
                       </span>
                     ) : (
-                      <span className="text-muted-foreground/30 text-xs">·</span>
+                      <span className="text-white/20 text-xs">·</span>
                     )}
                   </div>
                 </div>
                 <span
                   className={`text-[9px] font-display font-semibold tracking-wide ${
                     isToday
-                      ? checkedToday ? "text-green-500 font-black" : "text-orange-500 font-black"
-                      : blockActive ? "text-foreground/60" : "text-muted-foreground/40"
+                      ? checkedToday ? "text-green-500 font-black" : "text-orange-400 font-black"
+                      : blockActive ? "text-white/60" : "text-white/30"
                   }`}
                 >
                   {days[i]}
@@ -327,14 +327,14 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
         {/* Progress to next milestone */}
         <div className="mb-3">
           <div className="flex justify-between items-center mb-1.5">
-            <span className="text-[9px] font-display text-muted-foreground/50 uppercase tracking-widest">
+            <span className="text-[9px] font-display text-white/40 uppercase tracking-widest">
               Próximo marco
             </span>
             <span className="text-[9px] font-display font-bold" style={{ color: gradientFrom }}>
               {displayStreak >= 30 ? "🏆 MAX" : displayStreak >= 14 ? "30 dias" : displayStreak >= 7 ? "14 dias" : displayStreak >= 3 ? "7 dias" : "3 dias"}
             </span>
           </div>
-          <div className="h-2 bg-muted/40 rounded-full overflow-hidden relative">
+          <div className="h-2 bg-white/10 rounded-full overflow-hidden relative">
             <div
               className="h-full rounded-full transition-all duration-1000 ease-out relative"
               style={{
@@ -360,7 +360,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
             border: `1px solid ${gradientFrom}20`,
           }}
         >
-          <p className="font-body text-xs italic text-foreground/70 leading-relaxed">
+          <p className="font-body text-xs italic text-white/80 leading-relaxed">
             "{msg}"
           </p>
         </div>
@@ -382,7 +382,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                 : "Marcar presença agora"}
             </div>
           ) : (
-            <p className="text-[10px] text-green-500/60 font-body italic">
+            <p className="text-[10px] text-green-400/70 font-body italic">
               ✓ Presença confirmada. Agora vai fazer algo útil ou só veio olhar?
             </p>
           )}
