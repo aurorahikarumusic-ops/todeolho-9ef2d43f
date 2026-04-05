@@ -491,14 +491,14 @@ export default function Tarefas() {
         className="relative rounded-3xl p-5 overflow-hidden"
         style={{
           background: isMom
-            ? "linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1)"
+            ? "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))"
             : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%), hsl(var(--arena-dark)))",
           perspective: "800px",
         }}
       >
         {isMom ? (
           <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
-            style={{ background: "#e91e63" }} />
+            style={{ background: "hsl(var(--mom-accent))" }} />
         ) : (
           <>
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-40"
