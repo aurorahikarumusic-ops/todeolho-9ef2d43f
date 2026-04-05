@@ -171,8 +171,8 @@ export default function Dashboard() {
       {/* Push Notification Banner */}
       <PushPermissionBanner />
 
-      {/* Connect with Mom Banner */}
-      {!partnerLoading && !partner && (
+      {/* Connect with Mom Banner — only if not yet in a family */}
+      {!partnerLoading && !profile.family_id && (
         <Card className="border-dashed" style={{
           borderColor: "hsl(var(--arena-gold) / 0.2)",
           background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.8), hsl(220 25% 16%))",
