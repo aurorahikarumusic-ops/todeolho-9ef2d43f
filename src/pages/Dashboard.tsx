@@ -18,6 +18,7 @@ import SummaryCards from "@/components/home/SummaryCards";
 import ShareWeekCard from "@/components/home/ShareWeekCard";
 import PushPermissionBanner from "@/components/home/PushPermissionBanner";
 import JoinFamily from "@/components/family/JoinFamily";
+import GrandmaPalpitesCard from "@/components/home/GrandmaPalpitesCard";
 import { startOfWeek, endOfWeek } from "date-fns";
 
 export default function Dashboard() {
@@ -185,7 +186,10 @@ export default function Dashboard() {
         momRating={null}
       />
 
-      {/* 6. Share Week Card */}
+      {/* 6. Grandma Palpites */}
+      <GrandmaPalpitesCard />
+
+      {/* 7. Share Week Card */}
       <ShareWeekCard
         displayName={profile.display_name}
         tasksCompleted={tasksCompleted}

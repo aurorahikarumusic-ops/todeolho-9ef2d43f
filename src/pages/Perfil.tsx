@@ -27,6 +27,7 @@ import { getDadTitle } from "@/lib/constants";
 import { MOM_BADGES } from "@/lib/mom-constants";
 import InvitePartner from "@/components/family/InvitePartner";
 import JoinFamily from "@/components/family/JoinFamily";
+import PalpitesHistorySection from "@/components/profile/PalpitesHistorySection";
 import { sendLocalNotification, getNotificationPermission, requestPushSubscription } from "@/lib/pushNotifications";
 
 const DAD_ACHIEVEMENTS = {
@@ -419,6 +420,9 @@ export default function Perfil() {
           </Card>
         </section>
       )}
+
+      {/* ═══════════════════ SECTION 5b: Palpites History (Mom & Dad) ═══════════════════ */}
+      {(isMom || profile.role === "pai") && <PalpitesHistorySection />}
 
       <Separator className="my-2" />
 
