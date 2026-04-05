@@ -171,6 +171,16 @@ export default function Perfil() {
 
   if (!profile) return null;
 
+  if (showRedencao) {
+    return (
+      <ModoRedencao
+        onClose={() => setShowRedencao(false)}
+        recipientName={partner?.display_name}
+        recipientId={partner?.user_id}
+      />
+    );
+  }
+
   const dadTitle = getDadTitle(profile.points);
   const monthCompleted = monthTasks.filter(t => t.completed_at).length;
   const monthTotal = monthTasks.length;
