@@ -391,6 +391,8 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
 type AuthView = "dad" | "mom" | "grandma";
 
 export default function AuthPage() {
+  const [searchParams] = useSearchParams();
+  const inviteCode = useMemo(() => searchParams.get("convite")?.toUpperCase() || "", [searchParams]);
   const [view, setView] = useState<AuthView>("dad");
   const [isFlipped, setIsFlipped] = useState(false);
   const [pendingView, setPendingView] = useState<AuthView | null>(null);
