@@ -14,11 +14,14 @@ const tickerItems = [
   "Pai que esquece lanche",
   "Mãe que organiza tudo",
   "Ranking dos pais",
-  "Consulta que só a mãe sabia",
+  "Sogra que deu palpite",
+  "Avó interferiu (de novo)",
+  "Palpite adotado pela mãe",
   "Reunião que o pai esqueceu",
   "Resgate número 7 da mãe",
-  "Pai presente de verdade",
+  "Avó mandou sugestão às 6h",
   "Nota 2 estrelas essa semana",
+  "Sogra no ranking de palpites",
   "Quem buscou na escola? A mãe.",
 ];
 
@@ -54,21 +57,41 @@ const featureCards = [
     bg: "#E8DAFF",
     border: "#7B2FF2",
     shadow: "#5B1FBF",
+    icon: "👵",
+    title: "Modo Avó (Sogra)",
+    desc: "A avó dá palpites. A mãe adota os melhores e manda pro pai. Com ranking de quem palpita mais.",
+    quote: "'Na minha época...' — Dona Maria, 3° lugar no ranking.",
+  },
+  {
+    bg: "#FFF0E6",
+    border: "#F4845F",
+    shadow: "#D4734F",
     icon: "⭐",
     title: "Avaliação da mãe",
     desc: "Toda sexta, a mãe dá de 1 a 5 estrelas. Nota pública, aparece no ranking.",
     quote: "Ana deu 2 estrelas pro João. Motivo: 'Poderia melhorar.'",
   },
+  {
+    bg: "#D6EAFF",
+    border: "#2B7ACA",
+    shadow: "#1A4B7B",
+    icon: "🔥",
+    title: "Check-in diário",
+    desc: "Streak de presença com mensagens irônicas. Abriu o app? Parabéns, é o mínimo. Não abriu? A mãe sabe.",
+    quote: "5 dias seguidos! Quem é você e o que fez com o pai?",
+  },
 ];
 
 const badges = [
   { emoji: "🔥", label: "7 dias seguidos", bg: "#D8F3DC", color: "#1B4332", border: "#2D6A4F" },
+  { emoji: "👵", label: "Sogra Approved", bg: "#E8DAFF", color: "#5B1FBF", border: "#7B2FF2" },
   { emoji: "😬", label: "Pai Google Maps", bg: "#FFF0E6", color: "#922B21", border: "#F4845F" },
   { emoji: "⭐", label: "Herói do Lanche", bg: "#FFEAAE", color: "#7B6B1A", border: "#D4A10A" },
   { emoji: "💤", label: "Modo Hibernação", bg: "#FFD6D6", color: "#922B21", border: "#C0392B" },
   { emoji: "👑", label: "Pai do Mês", bg: "#E8DAFF", color: "#5B1FBF", border: "#7B2FF2" },
   { emoji: "📊", label: "DNA do Pai", bg: "#D6EAFF", color: "#1A4B7B", border: "#2B7ACA" },
   { emoji: "🛟", label: "Resgatado 5x", bg: "#FFE8CC", color: "#8B5E00", border: "#D4A10A" },
+  { emoji: "🗣️", label: "Avó Palpiteira", bg: "#F3E8FF", color: "#6B21A8", border: "#9333EA" },
 ];
 
 const rankingRows = [
@@ -90,6 +113,14 @@ const testimonials = [
   },
   {
     stars: 5,
+    text: "Minha sogra descobriu o app. Agora manda palpite todo dia. Meu marido tá com medo das duas. Melhor coisa que aconteceu.",
+    name: "Fernanda M.",
+    role: "Mãe de 1 — Curitiba",
+    avatarBg: "#E8DAFF",
+    avatarEmoji: "👵",
+  },
+  {
+    stars: 5,
     text: "Meu marido ficou com raiva quando viu que tava em último. Aí começou a fazer as tarefas sozinho. O app disse por mim.",
     name: "Mariana R.",
     role: "Mãe de 3 — Fortaleza",
@@ -101,7 +132,7 @@ const testimonials = [
     text: "Sou o pai. Eu estava em 4°. O Carlos em 3°. Isso foi suficiente pra eu buscar as crianças 5 vezes seguidas.",
     name: "João L.",
     role: "Pai convertido — Manaus",
-    avatarBg: "#E8DAFF",
+    avatarBg: "#FFEAAE",
     avatarEmoji: "🏃‍♂️",
   },
 ];
