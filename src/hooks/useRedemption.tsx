@@ -183,6 +183,7 @@ export function useSentLetters() {
         .from("love_letters")
         .select("*")
         .eq("sender_id", user.id)
+        .eq("paid", true)
         .order("sent_at", { ascending: false })
         .limit(50);
       return data || [];
