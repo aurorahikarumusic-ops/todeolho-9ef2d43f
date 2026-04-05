@@ -718,25 +718,39 @@ export default function Perfil() {
 
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}
       <section>
-        <h2 className="font-display text-base font-bold mb-3 flex items-center gap-2">
-          <User className="w-4 h-4" /> Conexão Familiar
+        <h2 className={`font-display text-base font-bold mb-3 flex items-center gap-2 ${!isMom ? "" : ""}`}
+          style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+          <User className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Conexão Familiar
         </h2>
         {!partner ? (
           isMom ? <InvitePartner /> : <JoinFamily />
         ) : (
-          <Card className={`border-0 shadow-sm ${isMom ? "bg-primary/5" : "bg-mom/5"}`}>
-            <CardContent className="p-3 flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isMom ? "bg-primary/15" : "bg-mom/15"}`}>
-                <span className="text-lg">{isMom ? "👨" : "👩"}</span>
+          isMom ? (
+            <Card className="border-0 shadow-sm bg-primary/5">
+              <CardContent className="p-3 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/15">
+                  <span className="text-lg">👨</span>
+                </div>
+                <div className="flex-1">
+                  <p className="font-display font-bold text-sm">{partner.display_name}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">O pai — conectado ✓</p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="rounded-xl p-3 flex items-center gap-3" style={{
+              background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+              border: "1px solid hsl(var(--arena-gold) / 0.15)",
+            }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "hsl(var(--arena-fire) / 0.15)" }}>
+                <span className="text-lg">👩</span>
               </div>
               <div className="flex-1">
-                <p className="font-display font-bold text-sm">{partner.display_name}</p>
-                <p className="text-[10px] text-muted-foreground font-body">
-                  {isMom ? "O pai" : "A mãe"} — conectado ✓
-                </p>
+                <p className="font-display font-bold text-sm" style={{ color: "hsl(0 0% 88%)" }}>{partner.display_name}</p>
+                <p className="text-[10px] font-body" style={{ color: "hsl(var(--arena-neon) / 0.6)" }}>A mãe — conectado ✓</p>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          )
         )}
       </section>
 
