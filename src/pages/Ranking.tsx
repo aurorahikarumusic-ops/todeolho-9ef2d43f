@@ -281,7 +281,7 @@ function MomPodiumSection({ ranking }: { ranking: any[] }) {
   );
 }
 
-// Dad stats bar
+// Dad stats bar (Arena style)
 function MyStatsBar({ profile, position, total }: { profile: any; position: number; total: number }) {
   if (!profile || position < 0) return null;
   const percentile = total > 1 ? Math.round(((total - position) / total) * 100) : 100;
@@ -289,51 +289,65 @@ function MyStatsBar({ profile, position, total }: { profile: any; position: numb
 
   return (
     <div className="rounded-2xl p-4 relative overflow-hidden" style={{
-      background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--card)))",
-      boxShadow: "0 8px 32px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
-      border: "1px solid hsl(var(--border))",
+      background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%))",
+      boxShadow: "0 8px 32px rgba(0,0,0,0.2), 0 0 30px hsl(var(--arena-neon) / 0.08), inset 0 1px 0 rgba(255,255,255,0.06)",
+      border: "1px solid hsl(var(--arena-neon) / 0.2)",
     }}>
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: "radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)",
+      <div className="absolute inset-0 opacity-[0.04]" style={{
+        backgroundImage: "linear-gradient(hsl(var(--arena-neon)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-neon)) 1px, transparent 1px)",
         backgroundSize: "24px 24px"
+      }} />
+      <div className="absolute top-0 left-4 right-4 h-px" style={{
+        background: "linear-gradient(90deg, transparent, hsl(var(--arena-neon) / 0.5), transparent)",
       }} />
       <div className="relative flex items-center gap-4">
         <div className="relative">
-          <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-primary/20 to-secondary/20 blur-sm" />
-          <Avatar className="relative h-12 w-12 ring-2 ring-primary/30">
+          <div className="absolute -inset-1.5 rounded-full blur-md" style={{
+            background: "conic-gradient(hsl(var(--arena-gold) / 0.3), hsl(var(--arena-neon) / 0.2), hsl(var(--arena-fire) / 0.3), hsl(var(--arena-gold) / 0.3))",
+          }} />
+          <Avatar className="relative h-12 w-12 ring-2" style={{
+            borderColor: "hsl(var(--arena-neon) / 0.4)",
+            boxShadow: "0 0 16px hsl(var(--arena-neon) / 0.2)",
+          }}>
             <AvatarImage src={profile.avatar_url || undefined} />
-            <AvatarFallback className="bg-primary/10 font-display font-bold">{(profile.display_name || "P")[0]}</AvatarFallback>
+            <AvatarFallback className="font-display font-bold" style={{
+              background: "hsl(var(--arena-neon) / 0.15)", color: "hsl(var(--arena-neon))",
+            }}>{(profile.display_name || "P")[0]}</AvatarFallback>
           </Avatar>
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
-            <span className="font-display font-bold text-lg">#{position + 1}</span>
-            <span className="text-sm text-muted-foreground font-body">de {total}</span>
-            {position <= 2 && <Crown className="w-4 h-4 text-accent-foreground" />}
+            <span className="font-display font-bold text-lg" style={{ color: "hsl(var(--arena-gold))", textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)" }}>#{position + 1}</span>
+            <span className="text-sm font-body" style={{ color: "hsl(0 0% 70%)" }}>de {total}</span>
+            {position <= 2 && <Crown className="w-4 h-4" style={{ color: "hsl(var(--arena-gold))", filter: "drop-shadow(0 0 4px hsl(var(--arena-gold) / 0.5))" }} />}
           </div>
-          <p className="text-xs text-muted-foreground font-body italic truncate">
+          <p className="text-xs font-body italic truncate" style={{ color: "hsl(var(--arena-glow) / 0.7)" }}>
             {title.emoji} {title.title} • Top {percentile}% dos pais
           </p>
         </div>
         <div className="text-right">
           <div className="flex items-center gap-1">
-            <Zap className="w-4 h-4 text-primary" />
-            <span className="font-display font-bold text-xl text-primary">{profile.points}</span>
+            <Zap className="w-4 h-4" style={{ color: "hsl(var(--arena-fire))", filter: "drop-shadow(0 0 4px hsl(var(--arena-fire) / 0.5))" }} />
+            <span className="font-display font-bold text-xl" style={{ color: "hsl(var(--arena-gold))", textShadow: "0 0 10px hsl(var(--arena-gold) / 0.3)" }}>{profile.points}</span>
           </div>
-          <p className="text-[10px] text-muted-foreground">pontos</p>
+          <p className="text-[10px]" style={{ color: "hsl(0 0% 60%)" }}>pontos</p>
         </div>
       </div>
       {position > 0 && (
         <div className="relative mt-3">
-          <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-1">
+          <div className="flex items-center justify-between text-[10px] mb-1" style={{ color: "hsl(var(--arena-glow) / 0.6)" }}>
             <span className="flex items-center gap-1">
               <ChevronUp className="w-3 h-3" />
               Pra subir: +{Math.max(1, ranking_diff(profile, position))}pts
             </span>
             <span className="font-display">{profile.streak_days > 0 ? `🔥 ${profile.streak_days} dias` : ""}</span>
           </div>
-          <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-            <div className="h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-1000" style={{ width: `${Math.min(95, Math.max(5, percentile))}%` }} />
+          <div className="h-2 rounded-full overflow-hidden" style={{ background: "hsl(0 0% 20%)" }}>
+            <div className="h-full rounded-full transition-all duration-1000" style={{
+              width: `${Math.min(95, Math.max(5, percentile))}%`,
+              background: "linear-gradient(90deg, hsl(var(--arena-neon)), hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
+              boxShadow: "0 0 8px hsl(var(--arena-neon) / 0.4)",
+            }} />
           </div>
         </div>
       )}
