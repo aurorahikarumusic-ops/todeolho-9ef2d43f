@@ -425,6 +425,12 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 5b: Palpites History (Mom & Dad) ═══════════════════ */}
       {(isMom || profile.role === "pai") && <PalpitesHistorySection />}
 
+      {/* ═══════════════════ SECTION 5c: Cartas Recebidas (Mom) ═══════════════════ */}
+      {isMom && (
+        <section>
+          <CartasRecebidas />
+        </section>
+      )}
       <Separator className="my-2" />
 
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}
