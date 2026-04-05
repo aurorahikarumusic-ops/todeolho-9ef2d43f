@@ -331,89 +331,174 @@ export default function Perfil() {
     { icon: <Trophy className="w-4 h-4 text-mom" />, value: `${monthPct}%`, label: "completas" },
     { icon: <Crown className="w-4 h-4 text-mom" />, value: `${children.length}`, label: "filhos" },
   ] : [
-    { icon: <Flame className="w-4 h-4 text-secondary" />, value: `${profile.streak_days}`, label: "sequência" },
-    { icon: <Trophy className="w-4 h-4 text-primary" />, value: rankPos ? `#${rankPos}` : "—", label: "ranking" },
-    { icon: <Star className="w-4 h-4 text-accent-foreground" />, value: momRating ? `${momRating.stars}★` : "—", label: "nota mãe" },
-    { icon: <CheckSquare className="w-4 h-4 text-primary" />, value: `${monthPct}%`, label: "tarefas" },
-    { icon: <CalendarDays className="w-4 h-4 text-primary" />, value: `${monthEvents.length}`, label: "eventos" },
-    { icon: <LifeBuoy className="w-4 h-4 text-secondary" />, value: `${rescues}`, label: "resgates" },
+    { icon: <Flame className="w-4 h-4" style={{ color: "hsl(var(--arena-fire))" }} />, value: `${profile.streak_days}`, label: "sequência", color: "--arena-fire" },
+    { icon: <Trophy className="w-4 h-4" style={{ color: "hsl(var(--arena-gold))" }} />, value: rankPos ? `#${rankPos}` : "—", label: "ranking", color: "--arena-gold" },
+    { icon: <Star className="w-4 h-4" style={{ color: "hsl(var(--arena-electric))" }} />, value: momRating ? `${momRating.stars}★` : "—", label: "nota mãe", color: "--arena-electric" },
+    { icon: <CheckSquare className="w-4 h-4" style={{ color: "hsl(var(--arena-neon))" }} />, value: `${monthPct}%`, label: "tarefas", color: "--arena-neon" },
+    { icon: <CalendarDays className="w-4 h-4" style={{ color: "hsl(var(--arena-electric))" }} />, value: `${monthEvents.length}`, label: "eventos", color: "--arena-electric" },
+    { icon: <LifeBuoy className="w-4 h-4" style={{ color: "hsl(var(--arena-fire))" }} />, value: `${rescues}`, label: "resgates", color: "--arena-fire" },
   ];
 
   return (
     <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-6">
 
       {/* ═══════════════════ SECTION 1: Profile Header ═══════════════════ */}
-      <section className={`relative rounded-2xl overflow-hidden border-2 ${isMom ? "border-mom-border bg-mom-bg" : "border-dad-border bg-dad-bg"}`}>
-        {/* Subtle pattern */}
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
-        
-        {/* Top accent bar */}
-        <div className={`h-2 ${isMom ? "bg-mom" : "bg-primary"}`} />
-        
-        <div className="relative p-5">
-          <div className="flex items-center gap-4">
-            <label className="cursor-pointer relative group shrink-0">
-              <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
-              <div className={`w-20 h-20 rounded-full border-4 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform shadow-lg ${isMom ? "border-mom bg-mom/10" : "border-primary bg-primary/10"}`}>
-                {profile.avatar_url ? (
-                  <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+      {isMom ? (
+        <section className="relative rounded-2xl overflow-hidden border-2 border-mom-border bg-mom-bg">
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+          <div className="h-2 bg-mom" />
+          <div className="relative p-5">
+            <div className="flex items-center gap-4">
+              <label className="cursor-pointer relative group shrink-0">
+                <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+                <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform shadow-lg border-mom bg-mom/10">
+                  {profile.avatar_url ? (
+                    <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="font-display text-3xl font-bold text-mom-text">{(profile.display_name || "U")[0].toUpperCase()}</span>
+                  )}
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md border-2 border-white bg-mom">
+                  <Edit2 className="w-3.5 h-3.5 text-white" />
+                </div>
+              </label>
+              <div className="flex-1 min-w-0">
+                {editMode ? (
+                  <div className="flex gap-2">
+                    <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm bg-white" autoFocus />
+                    <Button size="sm" className="h-8 text-xs text-white bg-mom hover:bg-mom/90" onClick={handleSaveName}>Salvar</Button>
+                  </div>
                 ) : (
-                  <span className={`font-display text-3xl font-bold ${isMom ? "text-mom-text" : "text-dad-text"}`}>
-                    {(profile.display_name || "U")[0].toUpperCase()}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <h1 className="font-display text-xl font-bold text-foreground truncate">{profile.display_name}</h1>
+                    <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
+                      <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+                    </button>
+                  </div>
                 )}
-              </div>
-              <div className={`absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md border-2 border-white ${isMom ? "bg-mom" : "bg-primary"}`}>
-                <Edit2 className="w-3.5 h-3.5 text-white" />
-              </div>
-            </label>
-
-            <div className="flex-1 min-w-0">
-              {editMode ? (
-                <div className="flex gap-2">
-                  <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm bg-white" autoFocus />
-                  <Button size="sm" className={`h-8 text-xs text-white ${isMom ? "bg-mom hover:bg-mom/90" : "bg-primary hover:bg-primary/90"}`} onClick={handleSaveName}>Salvar</Button>
+                <div className="mt-1">
+                  <Badge className="text-[10px] text-white border-0 bg-mom">👑 CEO da Família</Badge>
                 </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <h1 className="font-display text-xl font-bold text-foreground truncate">{profile.display_name}</h1>
-                  <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
-                    <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
-                  </button>
-                </div>
-              )}
-              <div className="mt-1">
-                <Badge className={`text-[10px] text-white border-0 ${isMom ? "bg-mom" : "bg-primary"}`}>
-                  {isMom ? "👑 CEO da Família" : `${dadTitle.emoji} ${dadTitle.title}`}
-                </Badge>
+                <p className="text-[11px] text-muted-foreground font-body italic mt-1.5 leading-tight">
+                  {tasksCreatedByMe > 0 ? `${tasksCreatedByMe} tarefa(s) criadas esse mês` : "A família funciona porque você funciona."}
+                </p>
               </div>
-              <p className="text-[11px] text-muted-foreground font-body italic mt-1.5 leading-tight">
-                {isMom
-                  ? tasksCreatedByMe > 0
-                    ? `${tasksCreatedByMe} tarefa(s) criadas esse mês`
-                    : "A família funciona porque você funciona."
-                  : rescues > 0
-                    ? `A mãe te salvou ${rescues}x esse mês`
-                    : lastActiveHours > 24 ? `Última ação: ${lastActiveHours}h atrás` : "Ativo hoje. Bom começo."}
-              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-2.5 mt-4">
+              {stats.slice(0, 3).map((s, i) => (
+                <div key={i} className="bg-white rounded-xl p-2.5 text-center shadow-sm border border-border">
+                  <p className="font-display font-bold text-lg text-foreground">{s.value}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
+                </div>
+              ))}
             </div>
           </div>
+        </section>
+      ) : (
+        <section className="relative rounded-2xl overflow-hidden" style={{
+          background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.97), hsl(220 25% 14%), hsl(var(--arena-dark)))",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.3), 0 0 40px hsl(var(--arena-fire) / 0.08)",
+          border: "1px solid hsl(var(--arena-fire) / 0.2)",
+        }}>
+          {/* Arena grid pattern */}
+          <div className="absolute inset-0 opacity-[0.04]" style={{
+            backgroundImage: "linear-gradient(hsl(var(--arena-fire)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-fire)) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }} />
+          {/* Top fire line */}
+          <div className="absolute top-0 left-0 right-0 h-1" style={{
+            background: "linear-gradient(90deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
+            boxShadow: "0 0 12px hsl(var(--arena-fire) / 0.5)",
+          }} />
+          {/* Glow orbs */}
+          <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full blur-3xl opacity-25" style={{ background: "hsl(var(--arena-fire))" }} />
+          <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-3xl opacity-15" style={{ background: "hsl(var(--arena-gold))" }} />
 
-          {/* Stats row */}
-          <div className="grid grid-cols-3 gap-2.5 mt-4">
-            {stats.slice(0, 3).map((s, i) => (
-              <div key={i} className="bg-white rounded-xl p-2.5 text-center shadow-sm border border-border">
-                <p className="font-display font-bold text-lg text-foreground">{s.value}</p>
-                <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
+          <div className="relative p-5 pt-6">
+            <div className="flex items-center gap-4">
+              <label className="cursor-pointer relative group shrink-0">
+                <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+                <div className="relative">
+                  {/* Conic glow ring */}
+                  <div className="absolute -inset-2 rounded-full blur-md" style={{
+                    background: "conic-gradient(hsl(var(--arena-fire) / 0.5), hsl(var(--arena-gold) / 0.4), hsl(var(--arena-neon) / 0.3), hsl(var(--arena-fire) / 0.5))",
+                  }} />
+                  <div className="relative w-20 h-20 rounded-full border-3 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform" style={{
+                    borderColor: "hsl(var(--arena-fire) / 0.6)",
+                    boxShadow: "0 4px 24px hsl(var(--arena-fire) / 0.3), 0 0 40px hsl(var(--arena-gold) / 0.1)",
+                  }}>
+                    {profile.avatar_url ? (
+                      <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--arena-fire) / 0.2), hsl(var(--arena-dark)))" }}>
+                        <span className="font-display text-3xl font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{(profile.display_name || "U")[0].toUpperCase()}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-lg border-2" style={{
+                  background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+                  borderColor: "hsl(var(--arena-dark))",
+                  boxShadow: "0 0 10px hsl(var(--arena-fire) / 0.4)",
+                }}>
+                  <Edit2 className="w-3.5 h-3.5 text-white" />
+                </div>
+              </label>
+
+              <div className="flex-1 min-w-0">
+                {editMode ? (
+                  <div className="flex gap-2">
+                    <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm" style={{ background: "hsl(var(--arena-dark) / 0.8)", borderColor: "hsl(var(--arena-fire) / 0.3)", color: "white" }} autoFocus />
+                    <Button size="sm" className="h-8 text-xs text-white border-0" style={{ background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))" }} onClick={handleSaveName}>Salvar</Button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <h1 className="font-display text-xl font-bold truncate" style={{ color: "white" }}>{profile.display_name}</h1>
+                    <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
+                      <Edit2 className="w-4 h-4" style={{ color: "hsl(0 0% 60%)" }} />
+                    </button>
+                  </div>
+                )}
+                <div className="mt-1">
+                  <Badge className="text-[10px] border-0" style={{
+                    background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+                    color: "white",
+                    boxShadow: "0 2px 10px hsl(var(--arena-fire) / 0.3)",
+                  }}>
+                    {dadTitle.emoji} {dadTitle.title}
+                  </Badge>
+                </div>
+                <p className="text-[11px] font-body italic mt-1.5 leading-tight" style={{ color: "hsl(var(--arena-glow) / 0.6)" }}>
+                  {rescues > 0
+                    ? `A mãe te salvou ${rescues}x esse mês`
+                    : lastActiveHours > 24 ? `Última ação: ${lastActiveHours}h atrás` : "Ativo hoje. Bom começo."}
+                </p>
               </div>
-            ))}
+            </div>
+
+            {/* Arena stats row */}
+            <div className="grid grid-cols-3 gap-2.5 mt-4">
+              {(stats as any[]).slice(0, 3).map((s: any, i: number) => (
+                <div key={i} className="rounded-xl p-2.5 text-center relative overflow-hidden" style={{
+                  background: "rgba(255,255,255,0.05)",
+                  border: `1px solid hsl(var(${s.color || "--arena-fire"}) / 0.2)`,
+                  boxShadow: `0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)`,
+                }}>
+                  <p className="font-display font-bold text-lg" style={{
+                    color: `hsl(var(${s.color || "--arena-fire"}))`,
+                    textShadow: `0 0 8px hsl(var(${s.color || "--arena-fire"}) / 0.3)`,
+                  }}>{s.value}</p>
+                  <p className="text-[10px] font-body" style={{ color: "hsl(0 0% 55%)" }}>{s.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ═══════════════════ SECTION 2: Secondary Stats ═══════════════════ */}
       <section className="grid grid-cols-3 gap-2.5">
-        {stats.slice(3).map((s, i) => (
+        {(stats as any[]).slice(3).map((s: any, i: number) => isMom ? (
           <Card key={i} className="border shadow-sm bg-white">
             <CardContent className="p-3 text-center">
               <div className="flex justify-center mb-1">{s.icon}</div>
@@ -421,28 +506,58 @@ export default function Perfil() {
               <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
             </CardContent>
           </Card>
+        ) : (
+          <div key={i} className="rounded-xl p-3 text-center relative overflow-hidden" style={{
+            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+            border: `1px solid hsl(var(${s.color || "--arena-fire"}) / 0.15)`,
+            boxShadow: "0 4px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03)",
+          }}>
+            <div className="flex justify-center mb-1">{s.icon}</div>
+            <p className="font-display font-bold text-lg" style={{
+              color: `hsl(var(${s.color || "--arena-fire"}))`,
+              textShadow: `0 0 6px hsl(var(${s.color || "--arena-fire"}) / 0.25)`,
+            }}>{s.value}</p>
+            <p className="text-[10px] font-body" style={{ color: "hsl(0 0% 50%)" }}>{s.label}</p>
+          </div>
         ))}
       </section>
 
       {/* ═══════════════════ SECTION 3: Level Progress (Dad) ═══════════════════ */}
       {!isMom && (
         <section>
-          <Card className="overflow-hidden">
-            <CardContent className="p-4">
+          <div className="rounded-2xl overflow-hidden relative" style={{
+            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 15%))",
+            border: "1px solid hsl(var(--arena-gold) / 0.2)",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-gold) / 0.06)",
+          }}>
+            <div className="absolute top-0 left-4 right-4 h-px" style={{
+              background: "linear-gradient(90deg, transparent, hsl(var(--arena-gold) / 0.4), transparent)",
+            }} />
+            <div className="p-4 relative">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-display font-bold text-sm">{dadTitle.emoji} {dadTitle.title}</span>
-                <span className="text-xs text-muted-foreground font-body">{profile.points} pts</span>
+                <span className="font-display font-bold text-sm" style={{
+                  background: "linear-gradient(90deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>{dadTitle.emoji} {dadTitle.title}</span>
+                <span className="text-xs font-body" style={{ color: "hsl(var(--arena-gold) / 0.7)" }}>{profile.points} pts</span>
               </div>
-              <Progress value={Math.min(100, (profile.points % 200) / 2)} className="h-2 mb-2" />
-              <p className="text-[10px] text-muted-foreground font-body italic">
+              <div className="h-2.5 rounded-full overflow-hidden" style={{ background: "hsl(0 0% 18%)" }}>
+                <div className="h-full rounded-full transition-all duration-1000" style={{
+                  width: `${Math.min(100, (profile.points % 200) / 2)}%`,
+                  background: "linear-gradient(90deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)), hsl(var(--arena-neon)))",
+                  boxShadow: "0 0 10px hsl(var(--arena-fire) / 0.5)",
+                }} />
+              </div>
+              <p className="text-[10px] font-body italic mt-2" style={{ color: "hsl(0 0% 50%)" }}>
                 {profile.points < 200 ? "Próximo: 'Pai Tentando' — 201 pts"
                   : profile.points < 500 ? "Próximo: 'Pai Promissor' — 501 pts"
                   : profile.points < 900 ? "Próximo: 'Pai de Verdade' — 901 pts"
                   : profile.points < 1400 ? "Próximo: 'Pai Lendário' — 1401 pts"
                   : "Você é lendário. Isso não deveria existir."}
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
       )}
 
@@ -807,24 +922,35 @@ export default function Perfil() {
 
 // ═══════════════════ Badge Carousel Components ═══════════════════
 
-function BadgeCard({ emoji, name, desc, earned, type, onClick }: {
-  emoji: string; name: string; desc: string; earned: boolean; type: "good" | "shame" | "locked"; onClick: () => void;
+function BadgeCard({ emoji, name, desc, earned, type, onClick, isDad }: {
+  emoji: string; name: string; desc: string; earned: boolean; type: "good" | "shame" | "locked"; onClick: () => void; isDad?: boolean;
 }) {
+  if (isDad) {
+    const styleMap = {
+      good: earned
+        ? { background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))", border: "1px solid hsl(var(--arena-neon) / 0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.2), 0 0 12px hsl(var(--arena-neon) / 0.08)" }
+        : { background: "hsl(var(--arena-dark) / 0.5)", border: "1px solid hsl(0 0% 25%)" },
+      shame: earned
+        ? { background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(var(--arena-fire) / 0.08))", border: "1px solid hsl(var(--arena-fire) / 0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.2), 0 0 12px hsl(var(--arena-fire) / 0.08)" }
+        : { background: "hsl(var(--arena-dark) / 0.5)", border: "1px solid hsl(0 0% 25%)" },
+      locked: { background: "hsl(var(--arena-dark) / 0.4)", border: "1px dashed hsl(0 0% 30%)" },
+    };
+    return (
+      <button onClick={onClick} className={`flex-shrink-0 w-28 rounded-xl p-3 text-center transition-all ${earned ? "hover:scale-105" : "opacity-40"}`} style={styleMap[type]}>
+        <span className={`text-3xl block mb-1.5 ${earned ? "" : "grayscale"}`} style={earned ? { filter: "drop-shadow(0 0 6px rgba(255,255,255,0.2))" } : undefined}>{emoji}</span>
+        <p className="font-display text-[11px] font-bold leading-tight" style={{ color: earned ? "hsl(0 0% 85%)" : "hsl(0 0% 45%)" }}>{name}</p>
+      </button>
+    );
+  }
+
   const bgMap = {
-    good: earned
-      ? "bg-dad-bg border-dad-border"
-      : "bg-muted/30 border-muted-foreground/10",
-    shame: earned
-      ? "bg-secondary/10 border-secondary/30"
-      : "bg-muted/30 border-muted-foreground/10",
+    good: earned ? "bg-dad-bg border-dad-border" : "bg-muted/30 border-muted-foreground/10",
+    shame: earned ? "bg-secondary/10 border-secondary/30" : "bg-muted/30 border-muted-foreground/10",
     locked: "bg-muted/20 border-dashed border-muted-foreground/20",
   };
 
   return (
-    <button
-      onClick={onClick}
-      className={`flex-shrink-0 w-28 rounded-xl border-2 p-3 text-center transition-all ${bgMap[type]} ${earned ? "shadow-sm hover:shadow-md hover:scale-105" : "opacity-50"}`}
-    >
+    <button onClick={onClick} className={`flex-shrink-0 w-28 rounded-xl border-2 p-3 text-center transition-all ${bgMap[type]} ${earned ? "shadow-sm hover:shadow-md hover:scale-105" : "opacity-50"}`}>
       <span className={`text-3xl block mb-1.5 ${earned ? "" : "grayscale"}`}>{emoji}</span>
       <p className={`font-display text-[11px] font-bold leading-tight ${earned ? "text-foreground" : "text-muted-foreground"}`}>{name}</p>
     </button>
@@ -863,32 +989,46 @@ function DadBadgesCarousel({ earnedKeys, onSelect }: { earnedKeys: string[]; onS
   const totalCount = DAD_ACHIEVEMENTS.earned.length + DAD_ACHIEVEMENTS.shame.length + DAD_ACHIEVEMENTS.locked.length;
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="font-display text-base font-bold">🏅 Seus Selos</h2>
-        <Badge variant="outline" className="text-[10px]">{earnedCount}/{totalCount} desbloqueados</Badge>
+    <div className="space-y-4 rounded-2xl p-4 relative overflow-hidden" style={{
+      background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.92), hsl(220 25% 14%))",
+      border: "1px solid hsl(var(--arena-fire) / 0.15)",
+      boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+    }}>
+      <div className="absolute top-0 left-4 right-4 h-px" style={{
+        background: "linear-gradient(90deg, transparent, hsl(var(--arena-gold) / 0.3), transparent)",
+      }} />
+      <div className="flex items-center justify-between relative">
+        <h2 className="font-display text-base font-bold" style={{
+          background: "linear-gradient(90deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}>⚔️ Arsenal de Selos</h2>
+        <Badge className="text-[10px] border-0" style={{
+          background: "rgba(255,255,255,0.08)",
+          color: "hsl(var(--arena-gold) / 0.8)",
+        }}>{earnedCount}/{totalCount}</Badge>
       </div>
 
-      <HorizontalScroll title="Conquistados" icon={<Star className="w-3.5 h-3.5 text-primary" />}>
+      <HorizontalScroll title="Conquistados" icon={<Star className="w-3.5 h-3.5" style={{ color: "hsl(var(--arena-neon))" }} />}>
         {DAD_ACHIEVEMENTS.earned.map(a => (
           <BadgeCard key={a.key} emoji={a.emoji} name={a.name} desc={a.desc}
-            earned={earnedKeys.includes(a.key)} type="good"
+            earned={earnedKeys.includes(a.key)} type="good" isDad
             onClick={() => onSelect(a)} />
         ))}
       </HorizontalScroll>
 
-      <HorizontalScroll title="Registros Históricos" icon={<Gavel className="w-3.5 h-3.5 text-secondary" />}>
+      <HorizontalScroll title="Registros Históricos" icon={<Gavel className="w-3.5 h-3.5" style={{ color: "hsl(var(--arena-fire))" }} />}>
         {DAD_ACHIEVEMENTS.shame.map(a => (
           <BadgeCard key={a.key} emoji={a.emoji} name={a.name} desc={a.desc}
-            earned={earnedKeys.includes(a.key)} type="shame"
+            earned={earnedKeys.includes(a.key)} type="shame" isDad
             onClick={() => onSelect(a)} />
         ))}
       </HorizontalScroll>
 
-      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5 text-muted-foreground" />}>
+      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5" style={{ color: "hsl(0 0% 45%)" }} />}>
         {DAD_ACHIEVEMENTS.locked.map((a, i) => (
           <BadgeCard key={i} emoji="🔒" name={a.hint} desc="Continue jogando para desbloquear"
-            earned={false} type="locked"
+            earned={false} type="locked" isDad
             onClick={() => {}} />
         ))}
       </HorizontalScroll>
