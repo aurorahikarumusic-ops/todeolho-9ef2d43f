@@ -102,7 +102,7 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
               style={{
                 left: `${10 + Math.random() * 80}%`,
                 top: `${10 + Math.random() * 80}%`,
-                background: i % 2 === 0 ? "hsl(340,72%,57%)" : "hsl(45,90%,70%)",
+                background: i % 2 === 0 ? "hsl(340,72%,57%)" : "hsl(270,60%,55%)",
                 opacity: 0.2,
                 animation: `sparkleFloat ${3 + Math.random() * 2}s ease-in-out infinite`,
                 animationDelay: `${Math.random() * 2}s`,
