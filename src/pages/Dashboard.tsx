@@ -138,23 +138,32 @@ export default function Dashboard() {
       {/* App Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 md:hidden">
-          <Eye className="w-6 h-6 text-primary" />
+          <Eye className="w-6 h-6" style={{ color: "hsl(var(--arena-neon))", filter: "drop-shadow(0 0 4px hsl(var(--arena-neon) / 0.4))" }} />
           <h1 className="font-display text-2xl font-bold">
-            Estou de <span className="text-secondary">Olho</span>
+            Estou de <span style={{ color: "hsl(var(--arena-fire))" }}>Olho</span>
           </h1>
         </div>
         <div className="flex items-center gap-3">
-          <Badge variant="secondary" className="font-display text-xs">
+          <Badge className="font-display text-xs border-0 text-white" style={{
+            background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+            boxShadow: "0 2px 8px hsl(var(--arena-fire) / 0.3)",
+          }}>
             {dadTitle.emoji} {dadTitle.title}
           </Badge>
           <button onClick={() => navigate("/perfil")} className="flex flex-col items-center gap-0.5 group">
-            <Avatar className="h-10 w-10 ring-2 ring-primary/30 group-hover:ring-primary transition-all">
+            <Avatar className="h-10 w-10 ring-2 group-hover:ring-primary transition-all" style={{
+              boxShadow: "0 0 12px hsl(var(--arena-neon) / 0.2)",
+              borderColor: "hsl(var(--arena-neon) / 0.3)",
+            }}>
               <AvatarImage src={profile.avatar_url || undefined} alt={profile.display_name} />
-              <AvatarFallback className="bg-primary/10 text-primary font-display text-sm">
+              <AvatarFallback className="font-display text-sm" style={{
+                background: "hsl(var(--arena-neon) / 0.12)",
+                color: "hsl(var(--arena-neon))",
+              }}>
                 {profile.display_name?.charAt(0)?.toUpperCase() || "P"}
               </AvatarFallback>
             </Avatar>
-            <span className="text-[9px] text-muted-foreground group-hover:text-primary transition-colors">Ver perfil</span>
+            <span className="text-[9px] group-hover:text-primary transition-colors" style={{ color: "hsl(0 0% 50%)" }}>Ver perfil</span>
           </button>
         </div>
       </div>
