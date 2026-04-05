@@ -114,7 +114,7 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
                 }} />
                 <Avatar className={`relative h-14 w-14 ring-2 border-2 border-card shadow-xl`} style={{
                   boxShadow: pos === 1 ? "0 4px 24px hsl(var(--arena-gold) / 0.4), 0 0 40px hsl(var(--arena-neon) / 0.15)" : "0 4px 16px rgba(0,0,0,0.15)",
-                  ringColor: pos === 1 ? "hsl(var(--arena-gold))" : pos === 2 ? "hsl(var(--arena-silver))" : "hsl(var(--arena-bronze))",
+                  borderColor: pos === 1 ? "hsl(var(--arena-gold) / 0.5)" : pos === 2 ? "hsl(var(--arena-silver) / 0.5)" : "hsl(var(--arena-bronze) / 0.5)",
                 }}>
                   <AvatarImage src={dad.avatar_url || undefined} />
                   <AvatarFallback className="font-display font-bold text-lg" style={{
