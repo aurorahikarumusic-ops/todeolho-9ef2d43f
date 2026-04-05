@@ -981,14 +981,14 @@ export default function LandingPage() {
         }} />
         
         <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
-          <h2 style={{
+           <h2 style={{
             fontFamily: "'Baloo 2', cursive", fontWeight: 900,
             fontSize: "clamp(2rem, 5vw, 3rem)", color: "white", marginBottom: "0.5rem",
           }}>
-            O que as <span style={{ color: "#F4845F" }}>mães</span> dizem
+            O que <span style={{ color: "#F4845F" }}>mães</span>, <span style={{ color: "#52B788" }}>pais</span> e <span style={{ color: "#C084FC" }}>sogras</span> dizem
           </h2>
           <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "3.5rem", fontWeight: 600, fontSize: "1.05rem" }}>
-            (os pais estão com vergonha de falar, mas os pontos falam por eles)
+            (cada um com a sua versão da história, claro)
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.75rem" }}>
             {testimonials.map((t, i) => (
