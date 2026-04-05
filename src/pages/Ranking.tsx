@@ -53,7 +53,7 @@ const StarRating = ({ stars, isMom }: { stars: number; isMom?: boolean }) => (
   </div>
 );
 
-// ============ DAD PODIUM ============
+// ============ DAD PODIUM (Arena Style) ============
 function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any }) {
   const [animate, setAnimate] = useState(false);
   useEffect(() => {
@@ -68,38 +68,98 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
   const third = ranking[2];
 
   const podiumData = [
-    { dad: second, pos: 2, height: "h-24", delay: "0.5s", color: "from-muted-foreground/30 to-muted-foreground/10", medal: "🥈", ring: "ring-muted-foreground/40" },
-    { dad: first, pos: 1, height: "h-32", delay: "0.3s", color: "from-accent-foreground/30 to-accent/20", medal: "👑", ring: "ring-accent-foreground/60" },
-    { dad: third, pos: 3, height: "h-20", delay: "0.7s", color: "from-secondary/30 to-secondary/10", medal: "🥉", ring: "ring-secondary/40" },
+    { dad: second, pos: 2, height: "h-24", delay: "0.5s", medal: "🥈", glow: "var(--arena-silver)", gradient: "from-[hsl(220,14%,70%,0.3)] to-[hsl(220,14%,70%,0.05)]" },
+    { dad: first, pos: 1, height: "h-36", delay: "0.3s", medal: "👑", glow: "var(--arena-gold)", gradient: "from-[hsl(43,96%,56%,0.35)] to-[hsl(43,96%,56%,0.05)]" },
+    { dad: third, pos: 3, height: "h-20", delay: "0.7s", medal: "🥉", glow: "var(--arena-bronze)", gradient: "from-[hsl(25,70%,50%,0.3)] to-[hsl(25,70%,50%,0.05)]" },
   ];
 
   return (
-    <div className="relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent rounded-3xl" />
-      <div className="flex items-end justify-center gap-3 px-4 pt-6 pb-2">
-        {podiumData.map(({ dad, pos, height, delay, color, medal, ring }) => {
+    <div className="relative py-4">
+      {/* Arena glow backdrop */}
+      <div className="absolute inset-0 rounded-3xl" style={{
+        background: "radial-gradient(ellipse at 50% 80%, hsl(var(--arena-neon) / 0.15) 0%, transparent 60%), radial-gradient(ellipse at 50% 0%, hsl(var(--arena-gold) / 0.08) 0%, transparent 50%)",
+      }} />
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-[0.04]" style={{
+        backgroundImage: "linear-gradient(hsl(var(--arena-neon)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-neon)) 1px, transparent 1px)",
+        backgroundSize: "32px 32px",
+      }} />
+
+      <div className="relative flex items-end justify-center gap-4 px-4 pt-8 pb-2">
+        {podiumData.map(({ dad, pos, height, delay, medal, glow }) => {
           if (!dad) return <div key={pos} className="w-24" />;
           const isMe = myProfile?.id === dad.id;
           const title = getDadTitle(dad.points);
           return (
-            <div key={dad.id} className="flex flex-col items-center gap-2" style={{ animation: animate ? `podiumRise 0.6s ease-out ${delay} both` : "none" }}>
-              <span className="text-2xl" style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.2))" }}>{medal}</span>
-              <div className={`relative ${pos === 1 ? "scale-110" : ""}`}>
-                <div className={`absolute -inset-1 rounded-full bg-gradient-to-b ${color} blur-sm`} />
-                <Avatar className={`relative h-14 w-14 ${ring} ring-2 border-2 border-card shadow-lg`}>
-                  <AvatarImage src={dad.avatar_url || undefined} />
-                  <AvatarFallback className="bg-primary/10 font-display font-bold text-lg">{(dad.display_name || "P")[0]}</AvatarFallback>
-                </Avatar>
-                {isMe && (
-                  <div className="absolute -bottom-1 -right-1 bg-secondary text-secondary-foreground rounded-full w-5 h-5 flex items-center justify-center text-[8px] font-bold shadow-md">EU</div>
+            <div key={dad.id} className="flex flex-col items-center gap-2" style={{ animation: animate ? `arenaPodiumRise 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay} both` : "none" }}>
+              {/* Floating medal with intense glow */}
+              <div className="relative">
+                <span className="text-3xl" style={{
+                  filter: pos === 1 ? "drop-shadow(0 0 16px hsl(var(--arena-gold) / 0.8))" : `drop-shadow(0 2px 8px rgba(0,0,0,0.3))`,
+                }}>{medal}</span>
+                {pos === 1 && (
+                  <>
+                    <Sparkles className="absolute -top-2 -right-3 w-4 h-4 text-primary animate-pulse" style={{ filter: "drop-shadow(0 0 4px hsl(var(--arena-gold) / 0.6))" }} />
+                    <Flame className="absolute -top-3 -left-2 w-4 h-4 animate-pulse" style={{ color: "hsl(var(--arena-fire))", filter: "drop-shadow(0 0 4px hsl(var(--arena-fire) / 0.6))" }} />
+                  </>
                 )}
               </div>
+
+              {/* Avatar with neon ring */}
+              <div className={`relative ${pos === 1 ? "scale-115" : ""}`}>
+                <div className="absolute -inset-2 rounded-full blur-md" style={{
+                  background: pos === 1
+                    ? "conic-gradient(hsl(var(--arena-gold) / 0.5), hsl(var(--arena-neon) / 0.3), hsl(var(--arena-fire) / 0.4), hsl(var(--arena-gold) / 0.5))"
+                    : `radial-gradient(circle, hsl(${glow} / 0.25), transparent)`,
+                }} />
+                <Avatar className={`relative h-14 w-14 ring-2 border-2 border-card shadow-xl`} style={{
+                  boxShadow: pos === 1 ? "0 4px 24px hsl(var(--arena-gold) / 0.4), 0 0 40px hsl(var(--arena-neon) / 0.15)" : "0 4px 16px rgba(0,0,0,0.15)",
+                  ringColor: pos === 1 ? "hsl(var(--arena-gold))" : pos === 2 ? "hsl(var(--arena-silver))" : "hsl(var(--arena-bronze))",
+                }}>
+                  <AvatarImage src={dad.avatar_url || undefined} />
+                  <AvatarFallback className="font-display font-bold text-lg" style={{
+                    background: pos === 1 ? "linear-gradient(135deg, hsl(var(--arena-gold) / 0.2), hsl(var(--arena-neon) / 0.15))" : "hsl(var(--primary) / 0.1)",
+                  }}>{(dad.display_name || "P")[0]}</AvatarFallback>
+                </Avatar>
+                {isMe && (
+                  <div className="absolute -bottom-1 -right-1 rounded-full w-5 h-5 flex items-center justify-center text-[8px] font-bold shadow-lg" style={{
+                    background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--secondary)))",
+                    color: "white",
+                    boxShadow: "0 0 8px hsl(var(--arena-fire) / 0.5)",
+                  }}>EU</div>
+                )}
+              </div>
+
               <p className="font-display font-bold text-xs text-center truncate max-w-[80px]">{(dad.display_name || "Pai").split(" ")[0]}</p>
-              <Badge variant={pos === 1 ? "default" : "outline"} className={`text-[10px] font-display ${pos === 1 ? "bg-primary shadow-md" : ""}`}>{dad.points}pts</Badge>
-              <div className={`w-20 ${height} rounded-t-xl bg-gradient-to-b ${color} border border-border/50 relative overflow-hidden`} style={{ boxShadow: "inset 0 2px 10px rgba(255,255,255,0.1), 0 -4px 20px rgba(0,0,0,0.08)" }}>
-                <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-transparent" />
+              
+              <Badge className="text-[10px] font-display border-0 shadow-md" style={{
+                background: pos === 1
+                  ? "linear-gradient(135deg, hsl(var(--arena-gold)), hsl(25 80% 55%))"
+                  : pos === 2 ? "linear-gradient(135deg, hsl(var(--arena-silver)), hsl(220 10% 60%))"
+                  : "linear-gradient(135deg, hsl(var(--arena-bronze)), hsl(15 60% 45%))",
+                color: "white",
+                boxShadow: pos === 1 ? "0 2px 12px hsl(var(--arena-gold) / 0.4)" : "0 2px 8px rgba(0,0,0,0.15)",
+              }}>
+                {dad.points}pts
+              </Badge>
+
+              {/* Vibrant podium bar */}
+              <div className={`w-22 ${height} rounded-t-2xl relative overflow-hidden`} style={{
+                background: pos === 1
+                  ? "linear-gradient(180deg, hsl(var(--arena-gold) / 0.3), hsl(var(--arena-neon) / 0.1))"
+                  : pos === 2 ? "linear-gradient(180deg, hsl(var(--arena-silver) / 0.25), hsl(var(--arena-silver) / 0.05))"
+                  : "linear-gradient(180deg, hsl(var(--arena-bronze) / 0.25), hsl(var(--arena-bronze) / 0.05))",
+                border: pos === 1 ? "1px solid hsl(var(--arena-gold) / 0.3)" : "1px solid hsl(var(--border) / 0.4)",
+                boxShadow: pos === 1 ? "inset 0 2px 16px hsl(var(--arena-gold) / 0.15), 0 -4px 24px hsl(var(--arena-neon) / 0.1)" : "inset 0 2px 10px rgba(255,255,255,0.1), 0 -4px 20px rgba(0,0,0,0.06)",
+              }}>
+                <div className="absolute inset-0" style={{
+                  background: "linear-gradient(90deg, rgba(255,255,255,0.15) 0%, transparent 40%, rgba(255,255,255,0.08) 100%)",
+                }} />
                 <div className="absolute bottom-2 left-0 right-0 text-center">
-                  <span className="font-display font-bold text-lg text-foreground/60">{pos}°</span>
+                  <span className="font-display font-bold text-lg" style={{
+                    color: pos === 1 ? "hsl(var(--arena-gold))" : "hsl(var(--foreground) / 0.5)",
+                    textShadow: pos === 1 ? "0 0 10px hsl(var(--arena-gold) / 0.4)" : "none",
+                  }}>{pos}°</span>
                 </div>
                 {dad.streak_days > 0 && (
                   <div className="absolute top-2 left-0 right-0 text-center"><span className="text-[10px]">🔥{dad.streak_days}</span></div>
