@@ -493,7 +493,7 @@ export default function LandingPage() {
             maxWidth: "620px", margin: "0 auto 2.5rem", fontSize: "1.2rem", lineHeight: 1.75,
             color: "#243B2F", fontWeight: 600,
           }}>
-            O app que <span style={{ background: "#FFEAAE", padding: "0.1rem 0.5rem", borderRadius: "8px", fontWeight: 800 }}>gamifica a paternidade</span> — com ironia, ranking público e notificações que batem direto no ego. Para pais que <span style={{ textDecoration: "line-through", opacity: 0.5 }}>esquecem tudo</span> tentam melhorar.
+            O app que <span style={{ background: "#FFEAAE", padding: "0.1rem 0.5rem", borderRadius: "8px", fontWeight: 800 }}>gamifica a paternidade</span> — com ironia, ranking público e notificações que batem direto no ego. Para pais que <span style={{ textDecoration: "line-through", opacity: 0.5 }}>esquecem tudo</span> tentam melhorar. Para mães que já sabiam. E agora, para <span style={{ background: "#E8DAFF", padding: "0.1rem 0.5rem", borderRadius: "8px", fontWeight: 800, color: "#7B2FF2" }}>avós que adoram interferir</span>.
           </p>
 
           {/* CTA Buttons */}
