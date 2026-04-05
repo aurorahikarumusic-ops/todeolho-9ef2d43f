@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, Send, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ThemedLetterCard from "./ThemedLetterCard";
 import { Switch } from "@/components/ui/switch";
 import { Tone } from "./ModoRedencao";
 import { supabase } from "@/integrations/supabase/client";
