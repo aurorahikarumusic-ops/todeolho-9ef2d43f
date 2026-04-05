@@ -232,7 +232,7 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
       }
     } catch (err: any) {
       toast.error("Ops!", {
-        description: err.message || "Algo deu errado. Mas a culpa não é sua.",
+        description: translateAuthError(err.message),
       });
     } finally {
       setLoading(false);
