@@ -43,9 +43,19 @@ export default function LetterPreview({
     if (!user || !profile) return;
     setSending(true);
     try {
-      // Insert letter and check previous letters in parallel
-      const [letterResult, prevResult] = await Promise.all([
-        supabase.from("love_letters").insert({
+      // Check previous letters to determine if this is the first (free) one
+      const { data: prevLetters } = await supabase
+        .from("love_letters")
+        .select("id")
+        .eq("sender_id", user.id)
+        .limit(1);
+
+      const isFirstLetter = !prevLetters || prevLetters.length === 0;
+
+      // Insert the letter (always insert, mark as paid if free)
+      const { data: letterData, error: letterErr } = await supabase
+        .from("love_letters")
+        .insert({
           sender_id: user.id,
           recipient_id: recipId || null,
           family_id: profile.family_id,
@@ -55,31 +65,47 @@ export default function LetterPreview({
           sender_name: senderName,
           recipient_name: recipient,
           include_signature: includeSignature,
-        }).select("id").single(),
-        supabase.from("love_letters").select("id").eq("sender_id", user.id).limit(2),
-      ]);
+          paid: isFirstLetter, // First letter is free = already paid
+        })
+        .select("id")
+        .single();
 
-      if (letterResult.error) throw letterResult.error;
+      if (letterErr) throw letterErr;
 
-      const isFirst = !prevResult.data || prevResult.data.length <= 1;
-      const pointsToAdd = isFirst ? 50 : 20;
+      if (!isFirstLetter) {
+        // Need payment via Pix - redirect to Stripe Checkout
+        const { data: checkoutData, error: checkoutErr } = await supabase.functions.invoke(
+          "create-pix-checkout",
+          { body: { letterId: letterData.id } }
+        );
 
-      // Points update and badge award in parallel
-      const pointsOp = supabase.from("profiles").update({ points: profile.points + pointsToAdd }).eq("user_id", user.id);
-      if (isFirst) {
-        const badgeOp = supabase.from("achievements").insert({
-          user_id: user.id,
-          badge_key: "redimido",
-          badge_name: "Redimido",
-          badge_emoji: "💌",
-        });
-        await Promise.all([pointsOp, badgeOp]);
-      } else {
-        await pointsOp;
+        if (checkoutErr) throw checkoutErr;
+
+        if (checkoutData?.url) {
+          // Open Stripe Checkout in same tab
+          window.location.href = checkoutData.url;
+          return;
+        }
+        throw new Error("Não foi possível iniciar o pagamento");
       }
 
-      // Trigger confirmation immediately, invalidate in background
-      onSend(letterResult.data.id);
+      // First letter: free! Award points and badge
+      const pointsToAdd = 50;
+      const pointsOp = supabase
+        .from("profiles")
+        .update({ points: profile.points + pointsToAdd })
+        .eq("user_id", user.id);
+
+      const badgeOp = supabase.from("achievements").insert({
+        user_id: user.id,
+        badge_key: "redimido",
+        badge_name: "Redimido",
+        badge_emoji: "💌",
+      });
+
+      await Promise.all([pointsOp, badgeOp]);
+
+      onSend(letterData.id);
       qc.invalidateQueries({ queryKey: ["profile"] });
       qc.invalidateQueries({ queryKey: ["sent-letters"] });
       qc.invalidateQueries({ queryKey: ["received-letters"] });
@@ -89,6 +115,17 @@ export default function LetterPreview({
       setSending(false);
     }
   };
+
+  // Check if user already has sent letters (for UI hint)
+  const [hasSentBefore, setHasSentBefore] = useState<boolean | null>(null);
+  if (hasSentBefore === null && user) {
+    supabase
+      .from("love_letters")
+      .select("id")
+      .eq("sender_id", user.id)
+      .limit(1)
+      .then(({ data }) => setHasSentBefore(!!(data && data.length > 0)));
+  }
 
   return (
     <div className="fixed inset-0 z-50 bg-[hsl(35,80%,97%)] flex flex-col overflow-y-auto">
@@ -155,6 +192,22 @@ export default function LetterPreview({
             <Switch checked={includeSignature} onCheckedChange={onToggleSignature} />
           </div>
         </div>
+
+        {/* Price info */}
+        {hasSentBefore && (
+          <div className="mt-4 max-w-md mx-auto text-center">
+            <p className="text-xs text-muted-foreground">
+              💳 Esta carta custa <span className="font-bold text-[hsl(340,72%,57%)]">R$ 4,99</span> via Pix
+            </p>
+          </div>
+        )}
+        {hasSentBefore === false && (
+          <div className="mt-4 max-w-md mx-auto text-center">
+            <p className="text-xs text-muted-foreground">
+              🎁 Sua primeira carta é <span className="font-bold text-green-600">grátis!</span>
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Send button */}
@@ -166,7 +219,8 @@ export default function LetterPreview({
         >
           {sending ? "Enviando..." : (
             <>
-              <Send className="w-4 h-4 mr-2" /> Enviar carta 💌
+              <Send className="w-4 h-4 mr-2" />
+              {hasSentBefore ? "Pagar e enviar via Pix 💳" : "Enviar carta 💌"}
             </>
           )}
         </Button>
