@@ -30,6 +30,7 @@ import AvoDashboard from "./pages/AvoDashboard";
 import AvoRanking from "./pages/AvoRanking";
 import AvoPerfil from "./pages/AvoPerfil";
 import GrandmaSuggestionsFloat from "./components/grandma/GrandmaSuggestionsFloat";
+import MuralPalpites from "./pages/MuralPalpites";
 
 const queryClient = new QueryClient();
 
@@ -89,6 +90,7 @@ function AppRoutes() {
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/tarefas" element={<Tarefas />} />
         <Route path="/ranking" element={isAvo ? <AvoRanking /> : <Ranking />} />
+        <Route path="/palpites" element={<MuralPalpites />} />
         <Route path="/mural" element={isMom ? <MuralPerolas /> : <BancoReusPage />} />
         <Route path="/avaliacao" element={<MomAvaliacao />} />
         <Route path="/perfil" element={isAvo ? <AvoPerfil /> : <Perfil />} />

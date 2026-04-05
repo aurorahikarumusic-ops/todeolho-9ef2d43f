@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, CalendarDays, CheckSquare, Trophy, User, FileText, Gem, Gavel } from "lucide-react";
+import { Home, CalendarDays, CheckSquare, Trophy, User, FileText, Gem, Gavel, Megaphone } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
 
 function triggerHaptic() {
@@ -19,6 +19,7 @@ export default function BottomNav() {
   const NAV_ITEMS = isAvo
     ? [
         { path: "/app", icon: Home, label: "Home" },
+        { path: "/palpites", icon: Megaphone, label: "Mural", neon: true },
         { path: "/ranking", icon: Trophy, label: "Ranking" },
         { path: "/perfil", icon: User, label: "Perfil" },
       ]
