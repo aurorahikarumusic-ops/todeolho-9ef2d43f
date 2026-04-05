@@ -31,11 +31,11 @@ function translateAuthError(msg: string): string {
   return msg;
 }
 
-function DadLoginForm() {
+function DadLoginForm({ initialInviteCode }: { initialInviteCode?: string }) {
   const { signUp, signIn } = useAuth();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(!!initialInviteCode);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: initialInviteCode || "" });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
