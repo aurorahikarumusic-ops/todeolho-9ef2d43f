@@ -336,11 +336,12 @@ export default function Tarefas() {
 
               <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
                 {task.due_date && (
-                  <span className={`text-[10px] flex items-center gap-1 px-2 py-0.5 rounded-full ${
+                <span className={`text-[10px] flex items-center gap-1 px-2 py-0.5 rounded-full ${
                     isOverdue
                       ? "bg-red-500/10 text-red-500 font-bold"
-                      : "bg-muted/50 text-muted-foreground"
-                  }`}>
+                      : isMom ? "bg-muted/50 text-muted-foreground" : ""
+                  }`}
+                  style={!isMom && !isOverdue ? { background: "hsl(0 0% 20%)", color: "hsl(0 0% 60%)" } : undefined}>
                     <Clock className="w-2.5 h-2.5" />
                     {format(new Date(task.due_date), "dd/MM · HH:mm")}
                     {isOverdue && " ⚠️"}
@@ -385,15 +386,15 @@ export default function Tarefas() {
               {task.rescued_by_mom && (
                 <span className="text-xs font-display font-black text-red-500">-30pts</span>
               )}
-              <ChevronRight className={`w-3.5 h-3.5 text-muted-foreground/30 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} />
+              <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} style={!isMom ? { color: "hsl(0 0% 30%)" } : { color: "hsl(var(--muted-foreground) / 0.3)" }} />
             </div>
           </div>
 
           {/* Expanded details */}
           {isExpanded && (
-            <div className="mt-3 pt-3 border-t border-muted/20 space-y-3 animate-fade-in">
+            <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.2)" : "1px solid hsl(0 0% 22%)" }}>
               {task.description && (
-                <p className="text-xs font-body text-muted-foreground">📝 {task.description}</p>
+                <p className="text-xs font-body" style={!isMom ? { color: "hsl(0 0% 55%)" } : { color: "hsl(var(--muted-foreground))" }}>📝 {task.description}</p>
               )}
 
               <div className="flex items-center gap-2">
@@ -404,7 +405,7 @@ export default function Tarefas() {
                     <>{isMom ? "Você criou" : "Mãe mandou"}</>
                   )}
                 </Badge>
-                <span className="text-[9px] text-muted-foreground/50">
+                <span className="text-[9px]" style={!isMom ? { color: "hsl(0 0% 40%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
                   {format(new Date(task.created_at), "dd/MM")}
                 </span>
               </div>

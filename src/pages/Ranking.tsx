@@ -606,7 +606,7 @@ export default function Ranking() {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="font-display font-bold text-sm truncate">{(dad.display_name || "Pai").split(" ")[0]}</p>
+                  <p className="font-display font-bold text-sm truncate" style={!isMom && index <= 2 ? { color: "hsl(0 0% 90%)" } : undefined}>{(dad.display_name || "Pai").split(" ")[0]}</p>
                   {isMe && (
                     <Badge className="text-[9px] px-1.5 py-0 border-0" style={{
                       background: isMom ? "hsl(var(--mom-accent) / 0.15)" : "hsl(var(--secondary) / 0.8)",
@@ -617,17 +617,17 @@ export default function Ranking() {
                   )}
                   <span className="text-xs">{title.emoji}</span>
                 </div>
-                <p className="text-[10px] text-muted-foreground font-body italic truncate">
+                <p className="text-[10px] font-body italic truncate" style={!isMom && index <= 2 ? { color: "hsl(0 0% 55%)" } : { color: "hsl(var(--muted-foreground))" }}>
                   {isMom ? getMomPositionDescription(index, list.length) : getPositionDescription(index, list.length)}
                 </p>
               </div>
 
               <div className="text-right shrink-0">
                 <p className="font-display font-bold text-base" style={{
-                  color: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--primary))",
+                  color: isMom ? "hsl(var(--mom-accent))" : index <= 2 ? "hsl(var(--arena-gold))" : "hsl(var(--primary))",
                 }}>{dad.points}</p>
                 <div className="flex items-center gap-1 justify-end">
-                  <span className="text-[10px] text-muted-foreground">pts</span>
+                  <span className="text-[10px]" style={!isMom && index <= 2 ? { color: "hsl(0 0% 50%)" } : { color: "hsl(var(--muted-foreground))" }}>pts</span>
                   {dad.streak_days > 0 && (
                     <span className="text-[10px] flex items-center gap-0.5" style={{
                       color: isMom ? "hsl(var(--mom-accent) / 0.7)" : "hsl(var(--secondary))",
@@ -641,26 +641,26 @@ export default function Ranking() {
 
             {isExpanded && (
               <div className="mt-3 pt-3 space-y-2" style={{
-                borderTop: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--border) / 0.5)"}`,
+                borderTop: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : index <= 2 ? "hsl(0 0% 25%)" : "hsl(var(--border) / 0.5)"}`,
                 animation: "fadeSlideDown 0.3s ease-out",
               }}>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground font-body">Título:</span>
+                  <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(0 0% 50%)" } : { color: "hsl(var(--muted-foreground))" }}>Título:</span>
                   <Badge variant="outline" className="text-[10px]" style={{
-                    borderColor: isMom ? "hsl(var(--mom-border))" : undefined,
-                    color: isMom ? "hsl(var(--mom-text))" : undefined,
+                    borderColor: isMom ? "hsl(var(--mom-border))" : index <= 2 ? "hsl(0 0% 30%)" : undefined,
+                    color: isMom ? "hsl(var(--mom-text))" : index <= 2 ? "hsl(0 0% 80%)" : undefined,
                   }}>{title.emoji} {title.title}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground font-body">Sequência:</span>
-                  <span className="text-xs font-display font-bold">{dad.streak_days} dias 🔥</span>
+                  <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(0 0% 50%)" } : { color: "hsl(var(--muted-foreground))" }}>Sequência:</span>
+                  <span className="text-xs font-display font-bold" style={!isMom && index <= 2 ? { color: "hsl(0 0% 85%)" } : undefined}>{dad.streak_days} dias 🔥</span>
                 </div>
                 {rating && (
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground font-body">Nota da mãe:</span>
+                    <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(0 0% 50%)" } : { color: "hsl(var(--muted-foreground))" }}>Nota da mãe:</span>
                     <div className="flex items-center gap-1.5">
                       <StarRating stars={rating.stars} isMom={isMom} />
-                      {rating.comment && <span className="text-[9px] italic text-muted-foreground">"{rating.comment}"</span>}
+                      {rating.comment && <span className="text-[9px] italic" style={!isMom && index <= 2 ? { color: "hsl(0 0% 55%)" } : { color: "hsl(var(--muted-foreground))" }}>"{rating.comment}"</span>}
                     </div>
                   </div>
                 )}
