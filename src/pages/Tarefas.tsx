@@ -887,9 +887,9 @@ export default function Tarefas() {
               className="w-full font-display font-bold h-12 rounded-xl text-sm"
               style={{
                 background: isMom
-                  ? "linear-gradient(135deg, #e91e63, #c2185b)"
+                  ? "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(var(--mom-accent-hover)))"
                   : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
-                boxShadow: isMom ? "0 4px 16px rgba(233,30,99,0.3)" : "0 4px 16px hsl(var(--primary) / 0.25)",
+                boxShadow: isMom ? "0 4px 16px hsl(var(--mom-accent) / 0.3)" : "0 4px 16px hsl(var(--primary) / 0.25)",
               }}
               onClick={() => addTaskMutation.mutate()}
               disabled={!newTask.title || addTaskMutation.isPending}
