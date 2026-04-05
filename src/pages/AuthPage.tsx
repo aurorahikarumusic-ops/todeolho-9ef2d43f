@@ -21,6 +21,20 @@ function DadLoginForm() {
     try {
       if (isSignUp) {
         await signUp(form.email, form.password, form.name, "pai");
+        // Auto-join family if invite code provided
+        if (form.inviteCode.trim()) {
+          const { data } = await supabase.rpc("join_family_by_code", {
+            invite_code: form.inviteCode.trim(),
+          });
+          const result = data as any;
+          if (result?.success) {
+            toast.success("Conta criada e família conectada! 🎉", {
+              description: `Conectado com ${result.host_name}. A mãe já está de olho. 👁️`,
+              duration: 5000,
+            });
+            return;
+          }
+        }
         toast.success("Conta criada! 🎉", {
           description: "Bem-vindo ao clube dos pais que tentam. A barra é baixa, relaxa.",
         });
