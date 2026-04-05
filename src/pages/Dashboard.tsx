@@ -109,9 +109,12 @@ export default function Dashboard() {
   const gaugeBase = Math.min(100, (profile.points * 1.5) + (profile.streak_days * 8) + (tasksCompleted * 15));
   const gaugePercentage = Math.min(100, Math.max(5, gaugeBase)); // minimum 5% to feel progress
 
-  // Week activity — mark streak days ending today as active
-  const streakCapped = Math.min(7, profile.streak_days + 1); // +1 because user is here now
-  const weekActivity = Array.from({ length: 7 }, (_, i) => i >= 7 - streakCapped);
+  // Week activity — realistic: today is the current day, streak fills backwards from today
+  const todayIdx = (now.getDay() + 6) % 7; // Mon=0, Tue=1, ..., Sun=6
+  const weekActivity = Array.from({ length: 7 }, (_, i) => {
+    const daysAgo = todayIdx - i;
+    return daysAgo >= 0 && daysAgo < profile.streak_days + (hasCompletedToday ? 1 : 0);
+  });
 
   const dadTitle = getDadTitle(profile.points);
 
