@@ -107,18 +107,37 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
 
         <form onSubmit={handleSubmit} className="space-y-3">
           {isSignUp && (
-            <div>
-              <label className="text-sm font-body font-semibold text-foreground mb-1 block">
-                Como os netos te chamam? 👵
-              </label>
-              <Input
-                placeholder="Ex: Vó Lourdes, Dona Maria, Vovó do Bolo"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required={isSignUp}
-                className="font-body border-avo-border focus-visible:ring-avo"
-              />
-            </div>
+            <>
+              <div>
+                <label className="text-sm font-body font-semibold text-foreground mb-1 block">
+                  Como os netos te chamam? 👵
+                </label>
+                <Input
+                  placeholder="Ex: Vó Lourdes, Dona Maria, Vovó do Bolo"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required={isSignUp}
+                  className="font-body border-avo-border focus-visible:ring-avo"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-body font-semibold text-foreground mb-1 block">
+                  <Link className="w-3.5 h-3.5 inline mr-1" />
+                  Código de convite <span className="text-muted-foreground font-normal">(opcional)</span>
+                </label>
+                <Input
+                  placeholder="Ex: A1B2C3D4"
+                  value={form.inviteCode}
+                  onChange={(e) => setForm({ ...form, inviteCode: e.target.value.toUpperCase() })}
+                  maxLength={8}
+                  className="font-body border-avo-border focus-visible:ring-avo text-center tracking-[0.15em]"
+                />
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  Tem o código da família? Cola aqui pra já se conectar.
+                </p>
+              </div>
+            </>
           )}
 
           <div>
