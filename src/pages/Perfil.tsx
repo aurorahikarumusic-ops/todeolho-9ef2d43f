@@ -70,7 +70,9 @@ export default function Perfil() {
   const [editMode, setEditMode] = useState(false);
   const [editName, setEditName] = useState("");
   const [showChildSheet, setShowChildSheet] = useState(false);
-  const [newChild, setNewChild] = useState({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" });
+  const [showRedencao, setShowRedencao] = useState(false);
+  const { data: sentLetters = [] } = useSentLetters();
+  const newChild = (() => { const [s, set] = useState({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" }); return { val: s, set }; })();
   const [selectedBadge, setSelectedBadge] = useState<{ emoji: string; name: string; desc: string } | null>(null);
 
   const monthStart = startOfMonth(new Date()).toISOString();
