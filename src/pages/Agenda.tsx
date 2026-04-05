@@ -248,7 +248,9 @@ export default function Agenda() {
 
       {/* Next 3 days timeline */}
       <div className="space-y-1">
-        <p className="text-xs font-display font-bold text-muted-foreground uppercase tracking-wider px-1">
+        <p className="text-xs font-display font-bold uppercase tracking-wider px-1"
+          style={!isMom ? { color: "hsl(0 0% 55%)" } : undefined}
+          className={isMom ? "text-xs font-display font-bold text-muted-foreground uppercase tracking-wider px-1" : "text-xs font-display font-bold uppercase tracking-wider px-1"}>
           Próximos dias
         </p>
         <div className="flex gap-2">
