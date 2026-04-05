@@ -606,7 +606,7 @@ export default function Ranking() {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="font-display font-bold text-sm truncate" style={!isMom && index <= 2 ? { color: "hsl(0 0% 90%)" } : undefined}>{(dad.display_name || "Pai").split(" ")[0]}</p>
+                  <p className="font-display font-bold text-sm truncate" style={!isMom && index <= 2 ? { color: "hsl(220 15% 92%)" } : undefined}>{(dad.display_name || "Pai").split(" ")[0]}</p>
                   {isMe && (
                     <Badge className="text-[9px] px-1.5 py-0 border-0" style={{
                       background: isMom ? "hsl(var(--mom-accent) / 0.15)" : "hsl(var(--secondary) / 0.8)",
@@ -653,7 +653,7 @@ export default function Ranking() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(220 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Sequência:</span>
-                  <span className="text-xs font-display font-bold" style={!isMom && index <= 2 ? { color: "hsl(0 0% 85%)" } : undefined}>{dad.streak_days} dias 🔥</span>
+                  <span className="text-xs font-display font-bold" style={!isMom && index <= 2 ? { color: "hsl(220 15% 88%)" } : undefined}>{dad.streak_days} dias 🔥</span>
                 </div>
                 {rating && (
                   <div className="flex items-center justify-between">

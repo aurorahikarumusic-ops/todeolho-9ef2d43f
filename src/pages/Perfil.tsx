@@ -719,7 +719,7 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}
       <section>
         <h2 className={`font-display text-base font-bold mb-3 flex items-center gap-2 ${!isMom ? "" : ""}`}
-          style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+          style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>
           <User className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Conexão Familiar
         </h2>
         {!partner ? (
@@ -746,7 +746,7 @@ export default function Perfil() {
                 <span className="text-lg">👩</span>
               </div>
               <div className="flex-1">
-                <p className="font-display font-bold text-sm" style={{ color: "hsl(0 0% 88%)" }}>{partner.display_name}</p>
+                <p className="font-display font-bold text-sm" style={{ color: "hsl(220 15% 90%)" }}>{partner.display_name}</p>
                 <p className="text-[10px] font-body" style={{ color: "hsl(var(--arena-neon) / 0.6)" }}>A mãe — conectado ✓</p>
               </div>
             </div>
@@ -760,7 +760,7 @@ export default function Perfil() {
       <section>
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-display text-base font-bold flex items-center gap-2"
-            style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+            style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>
             <Baby className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Filhos
           </h2>
           {isMom ? (
@@ -813,7 +813,7 @@ export default function Perfil() {
                   <div className="flex items-center gap-3 mb-1.5">
                     <div className="w-9 h-9 rounded-full flex items-center justify-center text-base" style={{ background: "hsl(var(--arena-gold) / 0.12)" }}>👶</div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-display font-bold text-sm" style={{ color: "hsl(0 0% 88%)" }}>{child.name}</p>
+                      <p className="font-display font-bold text-sm" style={{ color: "hsl(220 15% 90%)" }}>{child.name}</p>
                       {child.birth_date && <p className="text-[10px]" style={{ color: "hsl(220 15% 70%)" }}>{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
                     </div>
                     <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{pct}%</span>
@@ -842,7 +842,7 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 8: Settings & Legal ═══════════════════ */}
       <section className="space-y-2">
         <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3"
-          style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+          style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>
           <Shield className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Configurações
         </h2>
 
@@ -1026,7 +1026,7 @@ function BadgeCard({ emoji, name, desc, earned, type, onClick, isDad }: {
     return (
       <button onClick={onClick} className={`flex-shrink-0 w-28 rounded-xl p-3 text-center transition-all ${earned ? "hover:scale-105" : "opacity-40"}`} style={styleMap[type]}>
         <span className={`text-3xl block mb-1.5 ${earned ? "" : "grayscale"}`} style={earned ? { filter: "drop-shadow(0 0 6px rgba(255,255,255,0.2))" } : undefined}>{emoji}</span>
-        <p className="font-display text-[11px] font-bold leading-tight" style={{ color: earned ? "hsl(0 0% 85%)" : "hsl(220 15% 65%)" }}>{name}</p>
+        <p className="font-display text-[11px] font-bold leading-tight" style={{ color: earned ? "hsl(220 15% 88%)" : "hsl(220 15% 65%)" }}>{name}</p>
       </button>
     );
   }

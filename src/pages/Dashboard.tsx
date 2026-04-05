@@ -179,7 +179,7 @@ export default function Dashboard() {
         }}>
           <CardContent className="p-4 text-center">
             <Users className="w-8 h-8 mx-auto mb-2" style={{ color: "hsl(var(--arena-gold))" }} />
-            <p className="font-display font-bold text-sm mb-1" style={{ color: "hsl(0 0% 85%)" }}>
+            <p className="font-display font-bold text-sm mb-1" style={{ color: "hsl(220 15% 88%)" }}>
               Conecte-se com a mãe
             </p>
             <p className="font-body text-xs mb-3" style={{ color: "hsl(220 15% 70%)" }}>

@@ -354,7 +354,7 @@ export default function Agenda() {
       {selectedDate && (
         <div className="flex items-center justify-between px-1">
           <h2 className="font-display text-base font-bold"
-            style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+            style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>
             {isToday(selectedDate) ? "📍 Hoje" : isTomorrow(selectedDate) ? "⏰ Amanhã" : format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
           </h2>
           <Badge variant="secondary" className="text-[10px] font-display"
@@ -375,7 +375,7 @@ export default function Agenda() {
           }}
         >
           <p className="text-5xl mb-3">📅</p>
-          <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(0 0% 85%)" } : undefined}>Nada agendado</p>
+          <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(220 15% 88%)" } : undefined}>Nada agendado</p>
           <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(220 15% 70%)" } : undefined}>
             {isMom ? "Adicione o primeiro compromisso da família." : "Mês livre? Vai confirmar com a mãe."}
           </p>
@@ -448,7 +448,7 @@ export default function Agenda() {
                           {format(eventDate, "HH")}
                         </div>
                         <div>
-                          <h3 className="font-display font-bold text-sm leading-tight" style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>{event.title}</h3>
+                          <h3 className="font-display font-bold text-sm leading-tight" style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>{event.title}</h3>
                           <div className="flex items-center gap-1.5 mt-0.5">
                             <Clock className="w-3 h-3" style={!isMom ? { color: "hsl(220 15% 70%)" } : undefined} />
                             <span className={`text-[10px] font-body ${isMom ? "text-muted-foreground" : ""}`}
