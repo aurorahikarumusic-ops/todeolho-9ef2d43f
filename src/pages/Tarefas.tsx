@@ -689,11 +689,11 @@ export default function Tarefas() {
         style={{
           background: isMom
             ? "linear-gradient(135deg, #e91e63, #c2185b)"
-            : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+            : "linear-gradient(135deg, hsl(var(--arena-neon)), hsl(var(--arena-gold)))",
           color: "white",
           boxShadow: isMom
             ? "0 6px 20px rgba(233,30,99,0.4)"
-            : "0 6px 20px hsl(var(--primary) / 0.35)",
+            : "0 6px 20px hsl(var(--arena-neon) / 0.4), 0 0 30px hsl(var(--arena-gold) / 0.15)",
         }}
       >
         <Plus className="w-5 h-5" />
