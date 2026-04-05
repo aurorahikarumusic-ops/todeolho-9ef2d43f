@@ -79,19 +79,28 @@ export default function LetterWriter({ tone, content, onChange, onPreview, onBac
       </div>
 
       {/* Bottom bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background/90 backdrop-blur-sm border-t border-border px-4 py-3 flex items-center justify-between">
-        <div className="flex gap-3">
-          <span className={`text-xs font-body ${charCount >= 50 ? "text-muted-foreground" : "text-secondary"}`}>
-            {charCount}/800 caracteres
-          </span>
-          <span className="text-xs font-body text-muted-foreground">{wordCount} palavras</span>
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border px-4 py-3 space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex gap-3">
+            <span className={`text-xs font-body ${charCount >= 50 ? "text-muted-foreground" : "text-secondary"}`}>
+              {charCount}/800 caracteres
+            </span>
+            <span className="text-xs font-body text-muted-foreground">{wordCount} palavras</span>
+          </div>
+          {charCount >= 150 && charCount < 300 && (
+            <span className="text-xs font-body text-[hsl(153,42%,30%)]">✓ Tá ficando bonita</span>
+          )}
+          {charCount < 50 && charCount > 0 && (
+            <span className="text-[10px] font-body text-secondary">mínimo 50 caracteres</span>
+          )}
         </div>
-        {charCount >= 150 && charCount < 300 && (
-          <span className="text-xs font-body text-[hsl(153,42%,30%)]">✓ Tá ficando bonita essa carta</span>
-        )}
-        {charCount < 50 && charCount > 0 && (
-          <span className="text-[10px] font-body text-secondary">mínimo 50 caracteres</span>
-        )}
+        <Button
+          onClick={onPreview}
+          disabled={!canPreview}
+          className="w-full rounded-full bg-[hsl(340,72%,57%)] hover:bg-[hsl(340,72%,50%)] text-white font-display font-bold h-12 text-base disabled:opacity-40"
+        >
+          {canPreview ? "✉️ Pré-visualizar e enviar carta" : `✉️ Escreva mais ${50 - charCount} caracteres`}
+        </Button>
       </div>
     </div>
   );
