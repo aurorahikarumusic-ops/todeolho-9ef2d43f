@@ -167,20 +167,44 @@ export default function Agenda() {
         style={{
           background: isMom
             ? "linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1)"
-            : "linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(var(--primary) / 0.05))",
+            : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%), hsl(var(--arena-dark)))",
           perspective: "800px",
         }}
       >
-        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
-          style={{ background: isMom ? "#e91e63" : "hsl(var(--primary))" }} />
+        {isMom ? (
+          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
+            style={{ background: "#e91e63" }} />
+        ) : (
+          <>
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-30"
+              style={{ background: "hsl(var(--arena-electric))" }} />
+            <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-3xl opacity-20"
+              style={{ background: "hsl(var(--arena-neon))" }} />
+            <div className="absolute inset-0 opacity-[0.04]" style={{
+              backgroundImage: "linear-gradient(hsl(var(--arena-electric)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-electric)) 1px, transparent 1px)",
+              backgroundSize: "28px 28px",
+            }} />
+            <div className="absolute top-0 left-6 right-6 h-px" style={{
+              background: "linear-gradient(90deg, transparent, hsl(var(--arena-electric) / 0.5), transparent)",
+            }} />
+          </>
+        )}
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
-            <CalendarDays className={`w-6 h-6 ${isMom ? "text-pink-600" : "text-primary"}`} />
-            <h1 className="font-display text-xl font-bold">
-              {isMom ? "Agenda da Família" : "Compromissos"}
+            {isMom ? (
+              <CalendarDays className="w-6 h-6 text-pink-600" />
+            ) : (
+              <CalendarDays className="w-6 h-6" style={{ color: "hsl(var(--arena-electric))", filter: "drop-shadow(0 0 6px hsl(var(--arena-electric) / 0.5))" }} />
+            )}
+            <h1 className="font-display text-xl font-bold" style={!isMom ? {
+              background: "linear-gradient(135deg, hsl(var(--arena-electric)), hsl(var(--arena-gold)), hsl(var(--arena-neon)))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            } : undefined}>
+              {isMom ? "Agenda da Família" : "📅 Compromissos"}
             </h1>
           </div>
-          <p className="text-xs text-muted-foreground font-body italic mb-4">
+          <p className={`text-xs font-body italic mb-4 ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(var(--arena-glow) / 0.7)" } : undefined}>
             {isMom
               ? "Organize tudo. Ele não tem desculpa."
               : todayEvents.length > 0
@@ -191,20 +215,32 @@ export default function Agenda() {
 
           {/* Quick stats */}
           <div className="flex gap-2">
-            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
-              <p className="font-display text-2xl font-black">{todayEvents.length}</p>
-              <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wider">Hoje</p>
+            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{
+                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
+                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
+                border: isMom ? undefined : "1px solid hsl(var(--arena-electric) / 0.15)",
+              }}>
+              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-electric))", textShadow: "0 0 8px hsl(var(--arena-electric) / 0.4)" } : undefined}>{todayEvents.length}</p>
+              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(0 0% 60%)" } : undefined}>Hoje</p>
             </div>
-            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
-              <p className="font-display text-2xl font-black">{upcomingEvents.length}</p>
-              <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wider">Próximos</p>
+            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{
+                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
+                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
+                border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.15)",
+              }}>
+              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-gold))", textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)" } : undefined}>{upcomingEvents.length}</p>
+              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(0 0% 60%)" } : undefined}>Próximos</p>
             </div>
-            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
-              <p className="font-display text-2xl font-black">{events.length}</p>
-              <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wider">Este mês</p>
+            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{
+                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
+                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
+                border: isMom ? undefined : "1px solid hsl(var(--arena-neon) / 0.15)",
+              }}>
+              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-neon))", textShadow: "0 0 8px hsl(var(--arena-neon) / 0.3)" } : undefined}>{events.length}</p>
+              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(0 0% 60%)" } : undefined}>Este mês</p>
             </div>
           </div>
         </div>
@@ -223,20 +259,35 @@ export default function Agenda() {
                 key={i}
                 onClick={() => setSelectedDate(day)}
                 className={`flex-1 rounded-2xl p-3 transition-all duration-300 text-center ${
-                  isSelected
-                    ? "bg-primary text-primary-foreground shadow-lg scale-[1.02]"
-                    : "bg-card hover:bg-muted/50"
+                  isMom
+                    ? isSelected ? "bg-primary text-primary-foreground shadow-lg scale-[1.02]" : "bg-card hover:bg-muted/50"
+                    : isSelected ? "scale-[1.02]" : "hover:scale-[1.01]"
                 }`}
-                style={{
+                style={!isMom ? {
+                  background: isSelected
+                    ? "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 18%))"
+                    : "hsl(var(--card))",
+                  boxShadow: isSelected
+                    ? "0 8px 24px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-electric) / 0.15), inset 0 1px 0 rgba(255,255,255,0.05)"
+                    : "0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
+                  border: isSelected ? "1px solid hsl(var(--arena-electric) / 0.3)" : "1px solid hsl(var(--border) / 0.5)",
+                } : {
                   boxShadow: isSelected
                     ? "0 8px 20px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2)"
                     : "0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
                 }}
               >
-                <p className={`text-[9px] font-body uppercase tracking-wider ${isSelected ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                <p className={`text-[9px] font-body uppercase tracking-wider`} style={!isMom ? {
+                  color: isSelected ? "hsl(var(--arena-electric) / 0.7)" : "hsl(var(--muted-foreground))",
+                } : {
+                  color: isSelected ? "hsl(var(--primary-foreground) / 0.7)" : "hsl(var(--muted-foreground))",
+                }}>
                   {isToday(day) ? "Hoje" : isTomorrow(day) ? "Amanhã" : format(day, "EEE", { locale: ptBR })}
                 </p>
-                <p className={`font-display text-lg font-black ${isSelected ? "" : ""}`}>
+                <p className="font-display text-lg font-black" style={!isMom && isSelected ? {
+                  color: "hsl(var(--arena-gold))",
+                  textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)",
+                } : undefined}>
                   {format(day, "dd")}
                 </p>
                 {dayEvts.length > 0 ? (
@@ -245,12 +296,14 @@ export default function Agenda() {
                       <div
                         key={j}
                         className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: getCategoryInfo(e.event_type).color }}
+                        style={{ background: getCategoryInfo(e.event_type).color, boxShadow: !isMom && isSelected ? `0 0 4px ${getCategoryInfo(e.event_type).color}` : undefined }}
                       />
                     ))}
                   </div>
                 ) : (
-                  <p className={`text-[8px] mt-1 ${isSelected ? "text-primary-foreground/50" : "text-muted-foreground/40"}`}>—</p>
+                  <p className="text-[8px] mt-1" style={{
+                    color: !isMom && isSelected ? "hsl(0 0% 50%)" : isSelected ? "hsl(var(--primary-foreground) / 0.5)" : "hsl(var(--muted-foreground) / 0.4)",
+                  }}>—</p>
                 )}
               </button>
             );
@@ -498,11 +551,11 @@ export default function Agenda() {
         style={{
           background: isMom
             ? "linear-gradient(135deg, #e91e63, #c2185b)"
-            : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+            : "linear-gradient(135deg, hsl(var(--arena-electric)), hsl(var(--arena-neon)))",
           color: "white",
           boxShadow: isMom
             ? "0 6px 20px rgba(233,30,99,0.4)"
-            : "0 6px 20px hsl(var(--primary) / 0.35)",
+            : "0 6px 20px hsl(var(--arena-electric) / 0.4), 0 0 30px hsl(var(--arena-neon) / 0.15)",
         }}
       >
         <Plus className="w-5 h-5" />
@@ -604,10 +657,10 @@ export default function Agenda() {
               style={{
                 background: isMom
                   ? "linear-gradient(135deg, #e91e63, #c2185b)"
-                  : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+                  : "linear-gradient(135deg, hsl(var(--arena-electric)), hsl(var(--arena-neon)))",
                 boxShadow: isMom
                   ? "0 4px 16px rgba(233,30,99,0.3)"
-                  : "0 4px 16px hsl(var(--primary) / 0.25)",
+                  : "0 4px 16px hsl(var(--arena-electric) / 0.3)",
               }}
               onClick={() => addEventMutation.mutate()}
               disabled={!newEvent.title || !newEvent.event_date || addEventMutation.isPending}
