@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,11 +32,11 @@ function translateAuthError(msg: string): string {
   return msg;
 }
 
-function DadLoginForm() {
+function DadLoginForm({ initialInviteCode }: { initialInviteCode?: string }) {
   const { signUp, signIn } = useAuth();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(!!initialInviteCode);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: initialInviteCode || "" });
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -390,6 +391,8 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
 type AuthView = "dad" | "mom" | "grandma";
 
 export default function AuthPage() {
+  const [searchParams] = useSearchParams();
+  const inviteCode = useMemo(() => searchParams.get("convite")?.toUpperCase() || "", [searchParams]);
   const [view, setView] = useState<AuthView>("dad");
   const [isFlipped, setIsFlipped] = useState(false);
   const [pendingView, setPendingView] = useState<AuthView | null>(null);
@@ -453,7 +456,7 @@ export default function AuthPage() {
               zIndex: isFlipped ? 0 : 1,
             }}
           >
-            <DadLoginForm />
+            <DadLoginForm initialInviteCode={inviteCode} />
           </div>
 
           {/* Back face - Mom or Grandma */}
