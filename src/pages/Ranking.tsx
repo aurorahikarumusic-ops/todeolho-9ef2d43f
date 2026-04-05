@@ -1016,10 +1016,10 @@ export default function Ranking() {
       {/* Share */}
       {!isMom && myPos >= 0 && ranking.length > 1 && (
         <Button
-          className="w-full font-display gap-2"
+          className="w-full font-display gap-2 text-white border-0"
           style={{
-            background: "linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary)))",
-            boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
+            background: "linear-gradient(135deg, hsl(var(--arena-neon)), hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
+            boxShadow: "0 4px 20px hsl(var(--arena-neon) / 0.3), 0 0 40px hsl(var(--arena-gold) / 0.1)",
           }}
           onClick={handleShare}
         >
