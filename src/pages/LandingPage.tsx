@@ -617,7 +617,9 @@ export default function LandingPage() {
                 "🏆 Ranking semanal de pais (público e sem piedade)",
                 "✅ Tarefas com prazo, foto como prova e aprovação da mãe",
                 "🔥 Streak de presença com mensagens irônicas",
+                "👵 Modo Avó — palpites, ranking e interferência garantida",
                 "📊 DNA do Pai — card mensal compartilhável",
+                "🗣️ Mural de palpites da sogra (público e sem filtro)",
                 "👁️ Notificações que não deixam esquecer. Nunca.",
               ].map((item, i) => (
                 <div key={i} style={{
