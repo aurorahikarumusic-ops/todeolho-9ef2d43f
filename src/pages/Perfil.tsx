@@ -73,6 +73,7 @@ export default function Perfil() {
   const [showChildSheet, setShowChildSheet] = useState(false);
   const [showRedencao, setShowRedencao] = useState(false);
   const { data: sentLetters = [] } = useSentLetters();
+  const deleteLetter = useDeleteLetter();
   const [newChild, setNewChild] = useState({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" });
   const [selectedBadge, setSelectedBadge] = useState<{ emoji: string; name: string; desc: string } | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
