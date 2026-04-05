@@ -455,8 +455,11 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
 
   // Phase 3: Confirmation
   return (
-    <div className="fixed inset-0 z-50 bg-background flex flex-col items-center justify-center px-6"
-      style={{ animation: "fadeIn 0.8s ease" }}>
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center px-6"
+      style={{ 
+        background: "linear-gradient(165deg, hsl(340,30%,12%) 0%, hsl(300,20%,8%) 50%, hsl(260,25%,10%) 100%)",
+        animation: "fadeIn 0.8s ease",
+      }}>
       
       {/* Confetti hearts */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -466,7 +469,7 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
             className="absolute text-xl"
             style={{
               left: `${5 + Math.random() * 90}%`,
-              color: ["hsl(340,72%,57%)", "hsl(15,90%,63%)", "hsl(153,42%,30%)"][i % 3],
+              color: ["hsl(340,72%,57%)", "hsl(270,60%,55%)", "hsl(153,42%,45%)"][i % 3],
               animation: `heartFall ${3 + Math.random() * 2}s ease-in forwards`,
               animationDelay: `${Math.random() * 1.5}s`,
               top: "-20px",
@@ -477,31 +480,45 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
         ))}
       </div>
 
+      {/* Ambient glow */}
+      <div className="absolute w-[400px] h-[400px] rounded-full opacity-[0.08]" style={{
+        background: "radial-gradient(circle, hsl(340,72%,57%), transparent 70%)",
+      }} />
+
       {/* Angel delivered icon */}
-      <div className="text-6xl mb-4" style={{ animation: "bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
+      <div className="relative text-6xl mb-4" style={{ animation: "bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)" }}>
         😇✉️
       </div>
 
-      <h1 className="font-display text-2xl font-bold text-[hsl(153,42%,30%)] mb-2">
+      <h1 className="font-display text-2xl font-bold text-white/95 mb-2">
         Carta enviada! 💌
       </h1>
 
-      <p className="font-body text-sm italic text-muted-foreground text-center mb-1">
+      <p className="text-sm italic text-white/40 text-center mb-1">
         {getRandomItem(SEND_PHRASES)}
       </p>
 
-      <p className="text-[10px] text-muted-foreground text-center mb-8">
+      <p className="text-[10px] text-white/25 text-center mb-8">
         Ela vai receber agora no app. Você escreveu com suas palavras. Isso é coragem.
       </p>
 
-      {/* Points */}
-      <div className="bg-[hsl(153,42%,30%)] text-white rounded-full px-4 py-2 text-sm font-display font-bold mb-8 animate-bounce">
+      {/* Points badge */}
+      <div className="rounded-full px-5 py-2.5 text-sm font-display font-bold mb-8 animate-bounce" style={{
+        background: "linear-gradient(135deg, hsl(153,42%,35%), hsl(153,50%,28%))",
+        boxShadow: "0 6px 24px hsla(153,42%,30%,0.3)",
+        color: "white",
+      }}>
         +20 pontos ⭐
       </div>
 
       <Button
         onClick={onClose}
-        className="w-full max-w-xs rounded-full bg-[hsl(153,42%,30%)] hover:bg-[hsl(153,42%,25%)] text-white font-display font-bold h-12"
+        className="w-full max-w-xs rounded-2xl h-14 font-display font-bold border-0"
+        style={{
+          background: "linear-gradient(135deg, hsl(340,72%,57%), hsl(340,65%,48%))",
+          boxShadow: "0 8px 32px hsla(340,72%,57%,0.3)",
+          color: "white",
+        }}
       >
         Voltar ao início
       </Button>
