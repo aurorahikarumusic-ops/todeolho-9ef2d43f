@@ -473,9 +473,32 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 5b: Palpites History (Mom & Dad) ═══════════════════ */}
       {(isMom || profile.role === "pai") && <PalpitesHistorySection />}
 
-      {/* ═══════════════════ SECTION 5c: Cartas Recebidas (Mom) ═══════════════════ */}
+      {/* ═══════════════════ SECTION 5c: Cartas — Enviar & Recebidas (Mom) ═══════════════════ */}
       {isMom && (
-        <section>
+        <section className="space-y-3">
+          <Card className="overflow-hidden border-[1.5px] border-[hsl(340,60%,88%)] bg-[hsl(340,60%,97%)]">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-[hsl(340,72%,57%)] flex items-center justify-center text-xl shadow-md shrink-0">
+                  💌
+                </div>
+                <div className="flex-1">
+                  <p className="font-display font-bold text-sm text-[hsl(340,40%,25%)]">
+                    Enviar carta pro pai
+                  </p>
+                  <p className="font-body text-[11px] text-[hsl(340,50%,55%)] italic leading-snug">
+                    Ele vai receber uma carta animada. Surpreenda (ou ameace com carinho).
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={() => setShowRedencao(true)}
+                className="w-full mt-3 rounded-full bg-[hsl(340,72%,57%)] hover:bg-[hsl(340,72%,50%)] text-white font-display font-bold text-sm h-10"
+              >
+                ✉️ Escrever carta
+              </Button>
+            </CardContent>
+          </Card>
           <CartasRecebidas />
         </section>
       )}
