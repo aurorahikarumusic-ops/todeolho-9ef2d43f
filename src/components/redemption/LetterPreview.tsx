@@ -193,7 +193,7 @@ export default function LetterPreview({
               }}>
                 <Heart className="w-3 h-3 text-[hsl(340,60%,60%)] fill-[hsl(340,60%,60%)]" />
                 <span className="text-xs text-white/45">
-                  Esta carta custa <span className="font-bold text-[hsl(340,60%,65%)]">R$ 4,99</span>
+                  Esta carta custa <span className="font-bold text-[hsl(340,60%,65%)]">R$ 2,99</span>
                 </span>
               </div>
             ) : (
