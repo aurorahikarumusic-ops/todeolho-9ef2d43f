@@ -462,11 +462,15 @@ export default function Tarefas() {
   };
 
   const renderEmptyState = (emoji: string, title: string, text: string) => (
-    <div className="rounded-3xl border-2 border-dashed border-muted p-10 text-center"
-      style={{ boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)" }}>
+    <div className="rounded-3xl border-2 border-dashed p-10 text-center"
+      style={{
+        borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.15)",
+        background: isMom ? undefined : "hsl(var(--arena-dark) / 0.3)",
+        boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
+      }}>
       <p className="text-5xl mb-3">{emoji}</p>
-      <p className="font-display text-lg font-bold mb-1">{title}</p>
-      <p className="text-sm text-muted-foreground font-body italic whitespace-pre-line">{text}</p>
+      <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(0 0% 85%)" } : undefined}>{title}</p>
+      <p className="text-sm font-body italic whitespace-pre-line" style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>{text}</p>
     </div>
   );
 
