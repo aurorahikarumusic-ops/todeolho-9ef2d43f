@@ -72,13 +72,6 @@ export default function InvitePartner() {
 
         <div className="flex gap-2 mb-2">
           <Button
-            variant="outline"
-            className="flex-1 border-mom text-mom hover:bg-mom/10"
-            onClick={handleCopy}
-          >
-            <Copy className="w-4 h-4 mr-1" /> Copiar
-          </Button>
-          <Button
             className="flex-1 bg-mom hover:bg-mom/90"
             onClick={handleShare}
           >
