@@ -31,7 +31,7 @@ import JoinFamily from "@/components/family/JoinFamily";
 import PalpitesHistorySection from "@/components/profile/PalpitesHistorySection";
 import CartasRecebidas from "@/components/redemption/CartasRecebidas";
 import ModoRedencao from "@/components/redemption/ModoRedencao";
-import { useSentLetters } from "@/hooks/useRedemption";
+import { useSentLetters, useDeleteLetter } from "@/hooks/useRedemption";
 import { sendLocalNotification, getNotificationPermission, requestPushSubscription } from "@/lib/pushNotifications";
 
 const DAD_ACHIEVEMENTS = {
