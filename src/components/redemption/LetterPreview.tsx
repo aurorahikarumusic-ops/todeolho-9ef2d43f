@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowLeft, Send } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, Send, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Tone } from "./ModoRedencao";
@@ -33,17 +33,28 @@ export default function LetterPreview({
   const qc = useQueryClient();
   const [sending, setSending] = useState(false);
   const [includeDate, setIncludeDate] = useState(true);
+  const [hasSentBefore, setHasSentBefore] = useState<boolean | null>(null);
 
   const senderName = profile?.display_name || "Pai";
   const recipient = recipientName || partner?.display_name || "Amor";
   const recipId = recipientId || partner?.user_id;
   const today = format(new Date(), "d 'de' MMMM 'de' yyyy", { locale: ptBR });
 
+  // Check sent letters once
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("love_letters")
+      .select("id")
+      .eq("sender_id", user.id)
+      .limit(1)
+      .then(({ data }) => setHasSentBefore(!!(data && data.length > 0)));
+  }, [user]);
+
   const handleSend = async () => {
     if (!user || !profile) return;
     setSending(true);
     try {
-      // Check previous letters to determine if this is the first (free) one
       const { data: prevLetters } = await supabase
         .from("love_letters")
         .select("id")
@@ -52,7 +63,6 @@ export default function LetterPreview({
 
       const isFirstLetter = !prevLetters || prevLetters.length === 0;
 
-      // Insert the letter (always insert, mark as paid if free)
       const { data: letterData, error: letterErr } = await supabase
         .from("love_letters")
         .insert({
@@ -65,7 +75,7 @@ export default function LetterPreview({
           sender_name: senderName,
           recipient_name: recipient,
           include_signature: includeSignature,
-          paid: isFirstLetter, // First letter is free = already paid
+          paid: isFirstLetter,
         })
         .select("id")
         .single();
@@ -73,27 +83,21 @@ export default function LetterPreview({
       if (letterErr) throw letterErr;
 
       if (!isFirstLetter) {
-        // Need payment via Pix - redirect to Stripe Checkout
         const { data: checkoutData, error: checkoutErr } = await supabase.functions.invoke(
           "create-pix-checkout",
           { body: { letterId: letterData.id } }
         );
-
         if (checkoutErr) throw checkoutErr;
-
         if (checkoutData?.url) {
-          // Open Stripe Checkout in same tab
           window.location.href = checkoutData.url;
           return;
         }
         throw new Error("Não foi possível iniciar o pagamento");
       }
 
-      // First letter: free! Award points and badge
-      const pointsToAdd = 50;
       const pointsOp = supabase
         .from("profiles")
-        .update({ points: profile.points + pointsToAdd })
+        .update({ points: profile.points + 50 })
         .eq("user_id", user.id);
 
       const badgeOp = supabase.from("achievements").insert({
@@ -116,108 +120,162 @@ export default function LetterPreview({
     }
   };
 
-  // Check if user already has sent letters (for UI hint)
-  const [hasSentBefore, setHasSentBefore] = useState<boolean | null>(null);
-  if (hasSentBefore === null && user) {
-    supabase
-      .from("love_letters")
-      .select("id")
-      .eq("sender_id", user.id)
-      .limit(1)
-      .then(({ data }) => setHasSentBefore(!!(data && data.length > 0)));
-  }
-
   return (
-    <div className="fixed inset-0 z-50 bg-[hsl(35,80%,97%)] flex flex-col overflow-y-auto">
-      {/* Header */}
-      <div className="flex items-center px-4 py-4 border-b border-border bg-background/80 backdrop-blur-sm">
-        <button onClick={onBack} className="p-1">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <h1 className="flex-1 text-center font-display text-base font-bold">Pré-visualização</h1>
-        <div className="w-7" />
+    <div className="fixed inset-0 z-50 flex flex-col overflow-hidden" style={{
+      background: "linear-gradient(165deg, hsl(340,30%,12%) 0%, hsl(300,20%,8%) 50%, hsl(260,25%,10%) 100%)",
+    }}>
+      {/* Ambient glows */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute w-[500px] h-[500px] rounded-full opacity-[0.06]" style={{
+          background: "radial-gradient(circle, hsl(340,72%,57%), transparent 70%)",
+          top: "-100px", left: "-100px",
+        }} />
+        <div className="absolute w-[300px] h-[300px] rounded-full opacity-[0.04]" style={{
+          background: "radial-gradient(circle, hsl(45,90%,65%), transparent 70%)",
+          bottom: "100px", right: "-80px",
+        }} />
       </div>
 
-      <div className="flex-1 px-4 py-6">
-        {/* Letter card */}
-        <div className="relative bg-[hsl(45,100%,99%)] rounded-lg p-7 mx-auto max-w-md shadow-[0_4px_20px_rgba(0,0,0,0.12)]"
-          style={{
-            backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(0,0,0,0.03) 27px, rgba(0,0,0,0.03) 28px)",
-          }}
-        >
-          {includeDate && (
-            <p className="font-body text-[11px] text-muted-foreground mb-4">
-              Hoje, dia {today}
-            </p>
-          )}
+      {/* Header */}
+      <div className="relative flex items-center px-5 py-4 border-b border-white/5">
+        <button onClick={onBack} className="p-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+          <ArrowLeft className="w-5 h-5 text-white/80" />
+        </button>
+        <h1 className="flex-1 text-center font-display text-base font-bold text-white/90">Pré-visualização</h1>
+        <div className="w-9" />
+      </div>
 
-          <p className="text-xl font-bold text-[hsl(20,30%,15%)] mb-3" style={{ fontFamily: "'Caveat', cursive" }}>
-            {recipient},
-          </p>
+      <div className="flex-1 overflow-y-auto px-5 py-6 pb-36">
+        {/* 3D Letter card */}
+        <div className="relative mx-auto max-w-md" style={{ perspective: "1200px" }}>
+          <div className="relative rounded-2xl overflow-hidden transition-transform duration-500"
+            style={{
+              transformStyle: "preserve-3d",
+              transform: "rotateX(2deg) rotateY(-1deg)",
+              background: "linear-gradient(145deg, hsl(45,60%,97%), hsl(40,50%,94%))",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5)",
+            }}
+          >
+            {/* Paper texture lines */}
+            <div className="absolute inset-0 opacity-30" style={{
+              backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,160,140,0.15) 27px, rgba(180,160,140,0.15) 28px)",
+            }} />
 
-          <div className="text-lg leading-[2] text-[hsl(20,30%,15%)] whitespace-pre-line" style={{ fontFamily: "'Caveat', cursive" }}>
-            {content}
+            {/* Red margin line */}
+            <div className="absolute left-12 top-0 bottom-0 w-px bg-red-300/20" />
+
+            <div className="relative p-7 pl-14">
+              {includeDate && (
+                <p className="text-[11px] text-[hsl(25,30%,55%)] mb-5 font-body">
+                  Hoje, dia {today}
+                </p>
+              )}
+
+              <p className="text-xl font-bold text-[hsl(20,30%,15%)] mb-3" style={{ fontFamily: "'Caveat', cursive" }}>
+                {recipient},
+              </p>
+
+              <div className="text-lg leading-[2] text-[hsl(20,30%,15%)] whitespace-pre-line" style={{ fontFamily: "'Caveat', cursive" }}>
+                {content}
+              </div>
+
+              <div className="mt-8">
+                <p className="text-lg italic text-[hsl(20,30%,20%)]" style={{ fontFamily: "'Caveat', cursive" }}>
+                  Com amor,
+                </p>
+                <p className="text-xl font-bold text-[hsl(20,30%,12%)]" style={{ fontFamily: "'Caveat', cursive" }}>
+                  {senderName}
+                </p>
+              </div>
+
+              {includeSignature && (
+                <p className="text-[10px] text-[hsl(340,50%,50%)] opacity-60 mt-4 font-body">
+                  enviado pelo Estou de Olho 👁️
+                </p>
+              )}
+            </div>
+
+            {/* Wax seal */}
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full flex items-center justify-center"
+              style={{
+                background: "radial-gradient(circle at 35% 35%, hsl(0,70%,50%), hsl(0,65%,30%))",
+                boxShadow: "0 4px 16px rgba(139,26,26,0.5), inset 0 1px 3px rgba(255,255,255,0.2)",
+              }}>
+              <span className="text-sm">👁️</span>
+            </div>
           </div>
 
-          <div className="mt-6">
-            <p className="text-lg italic text-[hsl(20,30%,15%)]" style={{ fontFamily: "'Caveat', cursive" }}>
-              Com amor,
-            </p>
-            <p className="text-xl font-bold text-[hsl(20,30%,12%)]" style={{ fontFamily: "'Caveat', cursive" }}>
-              {senderName}
-            </p>
-          </div>
-
-          {includeSignature && (
-            <p className="text-[10px] text-[hsl(340,72%,57%)] opacity-70 mt-3 font-body">
-              enviado pelo Estou de Olho 👁️
-            </p>
-          )}
-
-          {/* Wax seal */}
-          <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 w-[50px] h-[50px] rounded-full flex items-center justify-center shadow-[0_2px_8px_rgba(139,26,26,0.4)]"
-            style={{ background: "radial-gradient(circle at 35% 35%, hsl(0,75%,45%), hsl(0,70%,30%))" }}>
-            <span className="text-xs">👁️</span>
-          </div>
+          {/* Paper shadow */}
+          <div className="absolute -bottom-2 left-4 right-4 h-6 rounded-b-2xl" style={{
+            background: "rgba(0,0,0,0.15)",
+            filter: "blur(8px)",
+          }} />
         </div>
 
         {/* Toggles */}
-        <div className="mt-10 space-y-3 max-w-md mx-auto">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-body text-muted-foreground">Incluir data automaticamente</span>
+        <div className="mt-12 space-y-3 max-w-md mx-auto">
+          <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.06)",
+          }}>
+            <span className="text-xs text-white/50">Incluir data automaticamente</span>
             <Switch checked={includeDate} onCheckedChange={setIncludeDate} />
           </div>
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-body text-muted-foreground">Incluir assinatura 'Estou de Olho'</span>
+          <div className="flex items-center justify-between rounded-xl px-4 py-3" style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.06)",
+          }}>
+            <span className="text-xs text-white/50">Incluir assinatura 'Estou de Olho'</span>
             <Switch checked={includeSignature} onCheckedChange={onToggleSignature} />
           </div>
         </div>
 
         {/* Price info */}
-        {hasSentBefore && (
-          <div className="mt-4 max-w-md mx-auto text-center">
-            <p className="text-xs text-muted-foreground">
-              💳 Esta carta custa <span className="font-bold text-[hsl(340,72%,57%)]">R$ 4,99</span>
-            </p>
-          </div>
-        )}
-        {hasSentBefore === false && (
-          <div className="mt-4 max-w-md mx-auto text-center">
-            <p className="text-xs text-muted-foreground">
-              🎁 Sua primeira carta é <span className="font-bold text-green-600">grátis!</span>
-            </p>
+        {hasSentBefore !== null && (
+          <div className="mt-5 max-w-md mx-auto text-center">
+            {hasSentBefore ? (
+              <div className="inline-flex items-center gap-2 rounded-full px-4 py-2" style={{
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}>
+                <Sparkles className="w-3.5 h-3.5 text-[hsl(340,72%,57%)]" />
+                <span className="text-xs text-white/50">
+                  Esta carta custa <span className="font-bold text-[hsl(340,72%,65%)]">R$ 4,99</span>
+                </span>
+              </div>
+            ) : (
+              <div className="inline-flex items-center gap-2 rounded-full px-4 py-2" style={{
+                background: "rgba(100,220,100,0.06)",
+                border: "1px solid rgba(100,220,100,0.12)",
+              }}>
+                <span className="text-xs text-white/50">
+                  🎁 Sua primeira carta é <span className="font-bold text-emerald-400">grátis!</span>
+                </span>
+              </div>
+            )}
           </div>
         )}
       </div>
 
       {/* Send button */}
-      <div className="px-4 pb-6 pt-2">
+      <div className="fixed bottom-0 left-0 right-0 px-5 pb-6 pt-4" style={{
+        background: "linear-gradient(to top, hsl(340,30%,12%) 60%, transparent)",
+      }}>
         <Button
           onClick={handleSend}
           disabled={sending}
-          className="w-full rounded-full bg-[hsl(340,72%,57%)] hover:bg-[hsl(340,72%,50%)] text-white font-display font-bold h-12 text-base"
+          className="w-full rounded-2xl h-14 text-base font-display font-bold border-0 disabled:opacity-40 transition-all duration-300"
+          style={{
+            background: "linear-gradient(135deg, hsl(340,72%,57%), hsl(340,65%,48%))",
+            boxShadow: "0 8px 32px hsla(340,72%,57%,0.3), 0 2px 8px rgba(0,0,0,0.2)",
+          }}
         >
-          {sending ? "Enviando..." : (
+          {sending ? (
+            <span className="flex items-center gap-2">
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              Enviando...
+            </span>
+          ) : (
             <>
               <Send className="w-4 h-4 mr-2" />
               {hasSentBefore ? "Pagar e enviar 💳" : "Enviar carta 💌"}
