@@ -68,7 +68,7 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
   const third = ranking[2];
 
   const podiumData = [
-    { dad: second, pos: 2, height: "h-24", delay: "0.5s", medal: "🥈", glow: "var(--arena-silver)", gradient: "from-[hsl(220,14%,70%,0.3)] to-[hsl(220,14%,70%,0.05)]" },
+    { dad: second, pos: 2, height: "h-24", delay: "0.5s", medal: "🥈", glow: "var(--arena-silver)", gradient: "from-[hsl(30,14%,70%,0.3)] to-[hsl(30,14%,70%,0.05)]" },
     { dad: first, pos: 1, height: "h-36", delay: "0.3s", medal: "👑", glow: "var(--arena-gold)", gradient: "from-[hsl(43,96%,56%,0.35)] to-[hsl(43,96%,56%,0.05)]" },
     { dad: third, pos: 3, height: "h-20", delay: "0.7s", medal: "🥉", glow: "var(--arena-bronze)", gradient: "from-[hsl(25,70%,50%,0.3)] to-[hsl(25,70%,50%,0.05)]" },
   ];
@@ -135,7 +135,7 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
               <Badge className="text-[10px] font-display border-0 shadow-md" style={{
                 background: pos === 1
                   ? "linear-gradient(135deg, hsl(var(--arena-gold)), hsl(25 80% 55%))"
-                  : pos === 2 ? "linear-gradient(135deg, hsl(var(--arena-silver)), hsl(220 10% 60%))"
+                  : pos === 2 ? "linear-gradient(135deg, hsl(var(--arena-silver)), hsl(30 10% 60%))"
                   : "linear-gradient(135deg, hsl(var(--arena-bronze)), hsl(15 60% 45%))",
                 color: "white",
                 boxShadow: pos === 1 ? "0 2px 12px hsl(var(--arena-gold) / 0.4)" : "0 2px 8px rgba(0,0,0,0.15)",
@@ -606,7 +606,7 @@ export default function Ranking() {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="font-display font-bold text-sm truncate" style={!isMom && index <= 2 ? { color: "hsl(220 15% 92%)" } : undefined}>{(dad.display_name || "Pai").split(" ")[0]}</p>
+                  <p className="font-display font-bold text-sm truncate" style={!isMom && index <= 2 ? { color: "hsl(30 15% 92%)" } : undefined}>{(dad.display_name || "Pai").split(" ")[0]}</p>
                   {isMe && (
                     <Badge className="text-[9px] px-1.5 py-0 border-0" style={{
                       background: isMom ? "hsl(var(--mom-accent) / 0.15)" : "hsl(var(--secondary) / 0.8)",
@@ -719,7 +719,7 @@ export default function Ranking() {
             }} />
             <div className="relative">
               <div className="inline-flex items-center justify-center w-18 h-18 rounded-2xl mb-3 shadow-xl relative" style={{
-                background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 18%))",
+                background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 14%))",
                 boxShadow: "0 8px 32px rgba(0,0,0,0.2), 0 0 40px hsl(var(--arena-neon) / 0.15), inset 0 1px 0 rgba(255,255,255,0.1)",
                 border: "1px solid hsl(var(--arena-neon) / 0.3)",
               }}>

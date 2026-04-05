@@ -266,7 +266,7 @@ export default function Agenda() {
                 }`}
                 style={!isMom ? {
                   background: isSelected
-                    ? "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 18%))"
+                    ? "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 14%))"
                     : "hsl(var(--card))",
                   boxShadow: isSelected
                     ? "0 8px 24px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-electric) / 0.15), inset 0 1px 0 rgba(255,255,255,0.05)"
@@ -316,7 +316,7 @@ export default function Agenda() {
       <div
         className="rounded-3xl overflow-hidden"
         style={{
-          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.85), hsl(220 25% 18%))",
+          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.85), hsl(30 25% 14%))",
           boxShadow: isMom
             ? "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)"
             : "0 8px 30px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-gold) / 0.05), inset 0 1px 0 rgba(255,255,255,0.05)",
@@ -479,7 +479,7 @@ export default function Agenda() {
                       </div>
                     </div>
 
-                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 mt-2 ${isExpanded ? "rotate-90" : ""}`} style={!isMom ? { color: "hsl(220 15% 55%)" } : { color: "hsl(var(--muted-foreground) / 0.4)" }} />
+                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 mt-2 ${isExpanded ? "rotate-90" : ""}`} style={!isMom ? { color: "hsl(30 15% 55%)" } : { color: "hsl(var(--muted-foreground) / 0.4)" }} />
                   </div>
 
                   {/* Expanded content */}

@@ -573,7 +573,7 @@ export default function Tarefas() {
         <div
           className="rounded-2xl p-4 overflow-hidden relative"
           style={{
-            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 20% 14%))",
+            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 20% 10%))",
             boxShadow: "0 6px 24px rgba(0,0,0,0.2), 0 0 30px hsl(var(--arena-gold) / 0.1), inset 0 1px 0 rgba(255,255,255,0.05)",
             border: "1px solid hsl(var(--arena-gold) / 0.25)",
           }}

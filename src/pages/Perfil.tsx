@@ -1041,7 +1041,7 @@ function BadgeCard({ emoji, name, desc, earned, type, onClick, isDad }: {
     return (
       <button onClick={onClick} className={`flex-shrink-0 w-28 rounded-xl p-3 text-center transition-all ${earned ? "hover:scale-105" : "opacity-40"}`} style={styleMap[type]}>
         <span className={`text-3xl block mb-1.5 ${earned ? "" : "grayscale"}`} style={earned ? { filter: "drop-shadow(0 0 6px rgba(255,255,255,0.2))" } : undefined}>{emoji}</span>
-        <p className="font-display text-[11px] font-bold leading-tight" style={{ color: earned ? "hsl(30 15% 88%)" : "hsl(220 15% 65%)" }}>{name}</p>
+        <p className="font-display text-[11px] font-bold leading-tight" style={{ color: earned ? "hsl(30 15% 88%)" : "hsl(30 15% 65%)" }}>{name}</p>
       </button>
     );
   }
@@ -1128,7 +1128,7 @@ function DadBadgesCarousel({ earnedKeys, onSelect }: { earnedKeys: string[]; onS
         ))}
       </HorizontalScroll>
 
-      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5" style={{ color: "hsl(220 15% 65%)" }} />}>
+      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5" style={{ color: "hsl(30 15% 65%)" }} />}>
         {DAD_ACHIEVEMENTS.locked.map((a, i) => (
           <BadgeCard key={i} emoji="🔒" name={a.hint} desc="Continue jogando para desbloquear"
             earned={false} type="locked" isDad
