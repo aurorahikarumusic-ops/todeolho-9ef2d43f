@@ -36,16 +36,32 @@ export default function DailyQuote() {
   const today = format(new Date(), "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
 
   return (
-    <div className="bg-card rounded-2xl p-4 shadow-sm border-l-4 border-secondary relative">
-      <span className="inline-block bg-primary/10 text-primary text-[11px] font-body font-semibold px-2 py-0.5 rounded-full mb-2">
+    <div
+      className="rounded-2xl p-4 relative overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+        borderLeft: "4px solid hsl(var(--arena-fire))",
+        border: "1px solid hsl(var(--arena-fire) / 0.12)",
+        borderLeftWidth: "4px",
+        borderLeftColor: "hsl(var(--arena-fire))",
+        boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
+      }}
+    >
+      <span
+        className="inline-block text-[11px] font-body font-semibold px-2 py-0.5 rounded-full mb-2"
+        style={{
+          background: "hsl(var(--arena-fire) / 0.12)",
+          color: "hsl(var(--arena-fire))",
+        }}
+      >
         💬 Frase do dia
       </span>
-      <p className="font-body text-sm italic text-foreground leading-relaxed">
+      <p className="font-body text-sm italic leading-relaxed" style={{ color: "hsl(0 0% 80%)" }}>
         "{quote}"
       </p>
-      <div className="flex items-center justify-end gap-1 mt-2 text-muted-foreground">
-        <CalendarDays className="w-3 h-3" />
-        <span className="text-[10px] font-body">{today}</span>
+      <div className="flex items-center justify-end gap-1 mt-2">
+        <CalendarDays className="w-3 h-3" style={{ color: "hsl(0 0% 50%)" }} />
+        <span className="text-[10px] font-body" style={{ color: "hsl(0 0% 50%)" }}>{today}</span>
       </div>
     </div>
   );

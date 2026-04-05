@@ -266,10 +266,15 @@ export default function Tarefas() {
           isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
         } ${task.rescued_by_mom ? "opacity-70" : ""}`}
         style={{
-          background: "hsl(var(--card))",
+          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
           boxShadow: isExpanded
-            ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
-            : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`,
+            ? isMom
+              ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
+              : `0 12px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05), -4px 0 0 ${cat.color}`
+            : isMom
+              ? `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`
+              : `0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03), -4px 0 0 ${cat.color}`,
+          border: isMom ? undefined : "1px solid hsl(0 0% 20%)",
         }}
         onClick={() => setExpandedTask(isExpanded ? null : task.id)}
       >
@@ -324,7 +329,7 @@ export default function Tarefas() {
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through text-muted-foreground" : ""}`}>
+                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through" : ""}`} style={!isMom && !task.completed_at ? { color: "hsl(0 0% 88%)" } : !isMom ? { color: "hsl(0 0% 50%)" } : undefined}>
                   {cat.emoji} {task.title}
                 </h3>
               </div>
@@ -357,7 +362,7 @@ export default function Tarefas() {
                 )}
               </div>
 
-              <p className="text-[10px] font-body italic text-muted-foreground/70">
+              <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(0 0% 45%)" } : undefined}>
                 {getTaskIronicComment(task, isMom)}
               </p>
             </div>
@@ -457,11 +462,15 @@ export default function Tarefas() {
   };
 
   const renderEmptyState = (emoji: string, title: string, text: string) => (
-    <div className="rounded-3xl border-2 border-dashed border-muted p-10 text-center"
-      style={{ boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)" }}>
+    <div className="rounded-3xl border-2 border-dashed p-10 text-center"
+      style={{
+        borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.15)",
+        background: isMom ? undefined : "hsl(var(--arena-dark) / 0.3)",
+        boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
+      }}>
       <p className="text-5xl mb-3">{emoji}</p>
-      <p className="font-display text-lg font-bold mb-1">{title}</p>
-      <p className="text-sm text-muted-foreground font-body italic whitespace-pre-line">{text}</p>
+      <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(0 0% 85%)" } : undefined}>{title}</p>
+      <p className="text-sm font-body italic whitespace-pre-line" style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>{text}</p>
     </div>
   );
 

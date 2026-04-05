@@ -138,23 +138,32 @@ export default function Dashboard() {
       {/* App Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 md:hidden">
-          <Eye className="w-6 h-6 text-primary" />
+          <Eye className="w-6 h-6" style={{ color: "hsl(var(--arena-neon))", filter: "drop-shadow(0 0 4px hsl(var(--arena-neon) / 0.4))" }} />
           <h1 className="font-display text-2xl font-bold">
-            Estou de <span className="text-secondary">Olho</span>
+            Estou de <span style={{ color: "hsl(var(--arena-fire))" }}>Olho</span>
           </h1>
         </div>
         <div className="flex items-center gap-3">
-          <Badge variant="secondary" className="font-display text-xs">
+          <Badge className="font-display text-xs border-0 text-white" style={{
+            background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+            boxShadow: "0 2px 8px hsl(var(--arena-fire) / 0.3)",
+          }}>
             {dadTitle.emoji} {dadTitle.title}
           </Badge>
           <button onClick={() => navigate("/perfil")} className="flex flex-col items-center gap-0.5 group">
-            <Avatar className="h-10 w-10 ring-2 ring-primary/30 group-hover:ring-primary transition-all">
+            <Avatar className="h-10 w-10 ring-2 group-hover:ring-primary transition-all" style={{
+              boxShadow: "0 0 12px hsl(var(--arena-neon) / 0.2)",
+              borderColor: "hsl(var(--arena-neon) / 0.3)",
+            }}>
               <AvatarImage src={profile.avatar_url || undefined} alt={profile.display_name} />
-              <AvatarFallback className="bg-primary/10 text-primary font-display text-sm">
+              <AvatarFallback className="font-display text-sm" style={{
+                background: "hsl(var(--arena-neon) / 0.12)",
+                color: "hsl(var(--arena-neon))",
+              }}>
                 {profile.display_name?.charAt(0)?.toUpperCase() || "P"}
               </AvatarFallback>
             </Avatar>
-            <span className="text-[9px] text-muted-foreground group-hover:text-primary transition-colors">Ver perfil</span>
+            <span className="text-[9px] group-hover:text-primary transition-colors" style={{ color: "hsl(0 0% 50%)" }}>Ver perfil</span>
           </button>
         </div>
       </div>
@@ -164,13 +173,16 @@ export default function Dashboard() {
 
       {/* Connect with Mom Banner */}
       {!partnerLoading && !partner && (
-        <Card className="border-primary/30 border-dashed bg-dad-bg">
+        <Card className="border-dashed" style={{
+          borderColor: "hsl(var(--arena-gold) / 0.2)",
+          background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.8), hsl(220 25% 16%))",
+        }}>
           <CardContent className="p-4 text-center">
-            <Users className="w-8 h-8 text-primary mx-auto mb-2" />
-            <p className="font-display font-bold text-sm text-dad-text mb-1">
+            <Users className="w-8 h-8 mx-auto mb-2" style={{ color: "hsl(var(--arena-gold))" }} />
+            <p className="font-display font-bold text-sm mb-1" style={{ color: "hsl(0 0% 85%)" }}>
               Conecte-se com a mãe
             </p>
-            <p className="font-body text-xs text-muted-foreground mb-3">
+            <p className="font-body text-xs mb-3" style={{ color: "hsl(0 0% 50%)" }}>
               Peça o código de 6 dígitos pra ela. Sem ele, você tá jogando sozinho.
             </p>
             <JoinFamily />

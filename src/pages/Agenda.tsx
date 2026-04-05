@@ -248,7 +248,8 @@ export default function Agenda() {
 
       {/* Next 3 days timeline */}
       <div className="space-y-1">
-        <p className="text-xs font-display font-bold text-muted-foreground uppercase tracking-wider px-1">
+        <p className={`text-xs font-display font-bold uppercase tracking-wider px-1 ${isMom ? "text-muted-foreground" : ""}`}
+          style={!isMom ? { color: "hsl(0 0% 55%)" } : undefined}>
           Próximos dias
         </p>
         <div className="flex gap-2">
@@ -313,21 +314,26 @@ export default function Agenda() {
 
       {/* Calendar with 3D card */}
       <div
-        className="rounded-3xl overflow-hidden bg-card"
+        className="rounded-3xl overflow-hidden"
         style={{
-          boxShadow: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)",
+          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.85), hsl(220 25% 18%))",
+          boxShadow: isMom
+            ? "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)"
+            : "0 8px 30px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-gold) / 0.05), inset 0 1px 0 rgba(255,255,255,0.05)",
+          border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.1)",
         }}
       >
         <div className="px-4 pt-3 pb-1 flex items-center justify-between">
-          <p className="text-xs font-display font-bold text-muted-foreground uppercase tracking-wider">
+          <p className={`text-xs font-display font-bold uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`}
+            style={!isMom ? { color: "hsl(var(--arena-gold) / 0.7)" } : undefined}>
             📅 Calendário
           </p>
           <div className="flex gap-2 text-[9px] font-body">
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-secondary inline-block" /> Mãe ({momCount})
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(0 0% 55%)" } : undefined}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--secondary))" : "hsl(var(--arena-fire))" }} /> Mãe ({momCount})
             </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-primary inline-block" /> Pai ({dadCount})
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(0 0% 55%)" } : undefined}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--primary))" : "hsl(var(--arena-neon))" }} /> Pai ({dadCount})
             </span>
           </div>
         </div>
@@ -347,10 +353,12 @@ export default function Agenda() {
       {/* Selected date header */}
       {selectedDate && (
         <div className="flex items-center justify-between px-1">
-          <h2 className="font-display text-base font-bold">
+          <h2 className="font-display text-base font-bold"
+            style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
             {isToday(selectedDate) ? "📍 Hoje" : isTomorrow(selectedDate) ? "⏰ Amanhã" : format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
           </h2>
-          <Badge variant="secondary" className="text-[10px] font-display">
+          <Badge variant="secondary" className="text-[10px] font-display"
+            style={!isMom ? { background: "hsl(var(--arena-neon) / 0.12)", color: "hsl(var(--arena-neon))", border: "none" } : undefined}>
             {filteredEvents.length} evento{filteredEvents.length !== 1 ? "s" : ""}
           </Badge>
         </div>
@@ -359,19 +367,27 @@ export default function Agenda() {
       {/* Events list - 3D cards */}
       {events.length === 0 ? (
         <div
-          className="rounded-3xl border-2 border-dashed border-muted p-10 text-center"
-          style={{ boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)" }}
+          className="rounded-3xl border-2 border-dashed p-10 text-center"
+          style={{
+            borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.15)",
+            background: isMom ? undefined : "hsl(var(--arena-dark) / 0.3)",
+            boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
+          }}
         >
           <p className="text-5xl mb-3">📅</p>
-          <p className="font-display text-lg font-bold mb-1">Nada agendado</p>
-          <p className="text-sm text-muted-foreground font-body italic">
+          <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(0 0% 85%)" } : undefined}>Nada agendado</p>
+          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>
             {isMom ? "Adicione o primeiro compromisso da família." : "Mês livre? Vai confirmar com a mãe."}
           </p>
         </div>
       ) : filteredEvents.length === 0 ? (
-        <div className="rounded-3xl border-2 border-dashed border-muted p-8 text-center">
+        <div className="rounded-3xl border-2 border-dashed p-8 text-center"
+          style={{
+            borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.15)",
+            background: isMom ? undefined : "hsl(var(--arena-dark) / 0.3)",
+          }}>
           <p className="text-3xl mb-2">🤷</p>
-          <p className="text-sm text-muted-foreground font-body italic">
+          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>
             Nada nesse dia. Ou a mãe ainda não atualizou.
           </p>
         </div>
@@ -393,10 +409,15 @@ export default function Agenda() {
                   isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
                 } ${isPast ? "opacity-60" : ""}`}
                 style={{
-                  background: "hsl(var(--card))",
+                  background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
                   boxShadow: isExpanded
-                    ? `0 12px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${category.color}`
-                    : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${category.color}`,
+                    ? isMom
+                      ? `0 12px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${category.color}`
+                      : `0 12px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05), -4px 0 0 ${category.color}`
+                    : isMom
+                      ? `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${category.color}`
+                      : `0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03), -4px 0 0 ${category.color}`,
+                  border: isMom ? undefined : `1px solid hsl(0 0% 20%)`,
                 }}
               >
                 {/* Check-in banner */}
@@ -427,10 +448,11 @@ export default function Agenda() {
                           {format(eventDate, "HH")}
                         </div>
                         <div>
-                          <h3 className="font-display font-bold text-sm leading-tight">{event.title}</h3>
+                          <h3 className="font-display font-bold text-sm leading-tight" style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>{event.title}</h3>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <Clock className="w-3 h-3 text-muted-foreground" />
-                            <span className="text-[10px] text-muted-foreground font-body">
+                            <Clock className="w-3 h-3" style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined} />
+                            <span className={`text-[10px] font-body ${isMom ? "text-muted-foreground" : ""}`}
+                              style={!isMom ? { color: "hsl(0 0% 55%)" } : undefined}>
                               {format(eventDate, "HH:mm")} · {category.label}
                             </span>
                           </div>
