@@ -28,9 +28,7 @@ export default function InvitePartner() {
 
   const handleShare = async () => {
     await navigator.clipboard.writeText(message);
-    toast.success("Mensagem copiada! Abrindo WhatsApp... 📲");
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
+    toast.success("Mensagem copiada! Agora é só colar no WhatsApp 📲");
   };
 
   const handleRegenerate = async () => {
