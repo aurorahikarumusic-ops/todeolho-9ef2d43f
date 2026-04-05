@@ -46,7 +46,7 @@ const AVO_BADGES = [
 export default function AvoPerfil() {
   const { user, signOut } = useAuth();
   const { data: profile } = useProfile();
-  const { data: partner } = useFamilyPartner();
+  const { data: partner, allMembers } = useFamilyPartner();
   const updateProfile = useUpdateProfile();
   const navigate = useNavigate();
   const { data: suggestions = [] } = useGrandmaSuggestions();
@@ -260,13 +260,28 @@ export default function AvoPerfil() {
 
       {/* Family connection */}
       {profile.family_id ? (
-        partner && (
+        allMembers.length > 0 ? (
+          <Card className="border border-avo-border">
+            <CardContent className="p-4 space-y-2">
+              <p className="font-body text-sm text-avo-text font-semibold mb-1">👨‍👩‍👧 Família Conectada</p>
+              {allMembers.map((member: any) => {
+                const roleEmoji = member.role === "mae" ? "👩" : member.role === "avo" ? "👵" : "👨";
+                const roleLabel = member.role === "mae" ? "A mãe" : member.role === "avo" ? "A avó" : "O pai";
+                return (
+                  <div key={member.id} className="flex items-center gap-2">
+                    <span className="text-lg">{roleEmoji}</span>
+                    <p className="font-body text-xs text-muted-foreground">
+                      {roleLabel}: <strong>{member.display_name}</strong> ✓
+                    </p>
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
+        ) : (
           <Card className="border border-avo-border">
             <CardContent className="p-4">
-              <p className="font-body text-sm text-avo-text font-semibold mb-1">👨‍👩‍👧 Família Conectada</p>
-              <p className="font-body text-xs text-muted-foreground">
-                Conectada com: <strong>{partner.display_name}</strong>
-              </p>
+              <p className="font-body text-sm text-avo-text font-semibold">👨‍👩‍👧 Conectada à família ✓</p>
             </CardContent>
           </Card>
         )
