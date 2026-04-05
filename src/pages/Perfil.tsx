@@ -498,7 +498,7 @@ export default function Perfil() {
 
       {/* ═══════════════════ SECTION 2: Secondary Stats ═══════════════════ */}
       <section className="grid grid-cols-3 gap-2.5">
-        {stats.slice(3).map((s, i) => (
+        {(stats as any[]).slice(3).map((s: any, i: number) => isMom ? (
           <Card key={i} className="border shadow-sm bg-white">
             <CardContent className="p-3 text-center">
               <div className="flex justify-center mb-1">{s.icon}</div>
@@ -506,28 +506,58 @@ export default function Perfil() {
               <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
             </CardContent>
           </Card>
+        ) : (
+          <div key={i} className="rounded-xl p-3 text-center relative overflow-hidden" style={{
+            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+            border: `1px solid hsl(var(${s.color || "--arena-fire"}) / 0.15)`,
+            boxShadow: "0 4px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03)",
+          }}>
+            <div className="flex justify-center mb-1">{s.icon}</div>
+            <p className="font-display font-bold text-lg" style={{
+              color: `hsl(var(${s.color || "--arena-fire"}))`,
+              textShadow: `0 0 6px hsl(var(${s.color || "--arena-fire"}) / 0.25)`,
+            }}>{s.value}</p>
+            <p className="text-[10px] font-body" style={{ color: "hsl(0 0% 50%)" }}>{s.label}</p>
+          </div>
         ))}
       </section>
 
       {/* ═══════════════════ SECTION 3: Level Progress (Dad) ═══════════════════ */}
       {!isMom && (
         <section>
-          <Card className="overflow-hidden">
-            <CardContent className="p-4">
+          <div className="rounded-2xl overflow-hidden relative" style={{
+            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 15%))",
+            border: "1px solid hsl(var(--arena-gold) / 0.2)",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-gold) / 0.06)",
+          }}>
+            <div className="absolute top-0 left-4 right-4 h-px" style={{
+              background: "linear-gradient(90deg, transparent, hsl(var(--arena-gold) / 0.4), transparent)",
+            }} />
+            <div className="p-4 relative">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-display font-bold text-sm">{dadTitle.emoji} {dadTitle.title}</span>
-                <span className="text-xs text-muted-foreground font-body">{profile.points} pts</span>
+                <span className="font-display font-bold text-sm" style={{
+                  background: "linear-gradient(90deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>{dadTitle.emoji} {dadTitle.title}</span>
+                <span className="text-xs font-body" style={{ color: "hsl(var(--arena-gold) / 0.7)" }}>{profile.points} pts</span>
               </div>
-              <Progress value={Math.min(100, (profile.points % 200) / 2)} className="h-2 mb-2" />
-              <p className="text-[10px] text-muted-foreground font-body italic">
+              <div className="h-2.5 rounded-full overflow-hidden" style={{ background: "hsl(0 0% 18%)" }}>
+                <div className="h-full rounded-full transition-all duration-1000" style={{
+                  width: `${Math.min(100, (profile.points % 200) / 2)}%`,
+                  background: "linear-gradient(90deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)), hsl(var(--arena-neon)))",
+                  boxShadow: "0 0 10px hsl(var(--arena-fire) / 0.5)",
+                }} />
+              </div>
+              <p className="text-[10px] font-body italic mt-2" style={{ color: "hsl(0 0% 50%)" }}>
                 {profile.points < 200 ? "Próximo: 'Pai Tentando' — 201 pts"
                   : profile.points < 500 ? "Próximo: 'Pai Promissor' — 501 pts"
                   : profile.points < 900 ? "Próximo: 'Pai de Verdade' — 901 pts"
                   : profile.points < 1400 ? "Próximo: 'Pai Lendário' — 1401 pts"
                   : "Você é lendário. Isso não deveria existir."}
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
       )}
 
