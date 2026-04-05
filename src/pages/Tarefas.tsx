@@ -517,7 +517,7 @@ export default function Tarefas() {
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
-            {isMom ? <Shield className="w-6 h-6 text-pink-600" /> : <CheckSquare className="w-6 h-6" style={{ color: "hsl(var(--arena-neon))", filter: "drop-shadow(0 0 6px hsl(var(--arena-neon) / 0.5))" }} />}
+            {isMom ? <Shield className="w-6 h-6 text-mom" /> : <CheckSquare className="w-6 h-6" style={{ color: "hsl(var(--arena-neon))", filter: "drop-shadow(0 0 6px hsl(var(--arena-neon) / 0.5))" }} />}
             <h1 className="font-display text-xl font-bold" style={!isMom ? {
               background: "linear-gradient(135deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)), hsl(var(--arena-neon)))",
               WebkitBackgroundClip: "text",
