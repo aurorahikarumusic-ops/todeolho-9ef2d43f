@@ -72,7 +72,7 @@ export default function Perfil() {
   const [showChildSheet, setShowChildSheet] = useState(false);
   const [showRedencao, setShowRedencao] = useState(false);
   const { data: sentLetters = [] } = useSentLetters();
-  const newChild = (() => { const [s, set] = useState({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" }); return { val: s, set }; })();
+  const [newChild, setNewChild] = useState({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" });
   const [selectedBadge, setSelectedBadge] = useState<{ emoji: string; name: string; desc: string } | null>(null);
 
   const monthStart = startOfMonth(new Date()).toISOString();
