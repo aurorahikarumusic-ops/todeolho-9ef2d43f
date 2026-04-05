@@ -105,6 +105,15 @@ export default function Dashboard() {
 
   if (!profile) return null;
 
+  if (showRedencao) {
+    return (
+      <ModoRedencao
+        onClose={() => setShowRedencao(false)}
+        recipientName={partner?.display_name}
+        recipientId={partner?.user_id}
+      />
+    );
+  }
   const tasksTotal = weekTasks?.length || 0;
   const tasksCompleted = weekTasks?.filter((t) => t.completed_at).length || 0;
   const hasCompletedToday = weekTasks?.some(
