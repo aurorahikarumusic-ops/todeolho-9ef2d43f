@@ -714,63 +714,85 @@ export default function Perfil() {
           <CartasRecebidas />
         </section>
       )}
-      <Separator className="my-2" />
+      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--arena-fire) / 0.2), transparent)" }} />}
 
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}
       <section>
-        <h2 className="font-display text-base font-bold mb-3 flex items-center gap-2">
-          <User className="w-4 h-4" /> Conexão Familiar
+        <h2 className={`font-display text-base font-bold mb-3 flex items-center gap-2 ${!isMom ? "" : ""}`}
+          style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+          <User className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Conexão Familiar
         </h2>
         {!partner ? (
           isMom ? <InvitePartner /> : <JoinFamily />
         ) : (
-          <Card className={`border-0 shadow-sm ${isMom ? "bg-primary/5" : "bg-mom/5"}`}>
-            <CardContent className="p-3 flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isMom ? "bg-primary/15" : "bg-mom/15"}`}>
-                <span className="text-lg">{isMom ? "👨" : "👩"}</span>
+          isMom ? (
+            <Card className="border-0 shadow-sm bg-primary/5">
+              <CardContent className="p-3 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/15">
+                  <span className="text-lg">👨</span>
+                </div>
+                <div className="flex-1">
+                  <p className="font-display font-bold text-sm">{partner.display_name}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">O pai — conectado ✓</p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="rounded-xl p-3 flex items-center gap-3" style={{
+              background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+              border: "1px solid hsl(var(--arena-gold) / 0.15)",
+            }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "hsl(var(--arena-fire) / 0.15)" }}>
+                <span className="text-lg">👩</span>
               </div>
               <div className="flex-1">
-                <p className="font-display font-bold text-sm">{partner.display_name}</p>
-                <p className="text-[10px] text-muted-foreground font-body">
-                  {isMom ? "O pai" : "A mãe"} — conectado ✓
-                </p>
+                <p className="font-display font-bold text-sm" style={{ color: "hsl(0 0% 88%)" }}>{partner.display_name}</p>
+                <p className="text-[10px] font-body" style={{ color: "hsl(var(--arena-neon) / 0.6)" }}>A mãe — conectado ✓</p>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          )
         )}
       </section>
 
-      <Separator className="my-2" />
+      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--arena-fire) / 0.2), transparent)" }} />}
 
       {/* ═══════════════════ SECTION 7: Children ═══════════════════ */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-display text-base font-bold flex items-center gap-2">
-            <Baby className="w-4 h-4" /> Filhos
+          <h2 className="font-display text-base font-bold flex items-center gap-2"
+            style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+            <Baby className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Filhos
           </h2>
-          <Button size="sm" variant="outline" className={`h-7 text-xs ${isMom ? `${accentBorder} ${accent}` : ""}`} onClick={() => setShowChildSheet(true)}>
-            Adicionar
-          </Button>
+          {isMom ? (
+            <Button size="sm" variant="outline" className={`h-7 text-xs ${accentBorder} ${accent}`} onClick={() => setShowChildSheet(true)}>
+              Adicionar
+            </Button>
+          ) : (
+            <Button size="sm" className="h-7 text-xs border-0 text-white" style={{
+              background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+            }} onClick={() => setShowChildSheet(true)}>
+              Adicionar
+            </Button>
+          )}
         </div>
 
         {children.length === 0 ? (
-          <p className="text-xs text-muted-foreground font-body italic text-center py-4">
+          <p className={isMom ? "text-xs text-muted-foreground font-body italic text-center py-4" : "text-xs font-body italic text-center py-4"}
+            style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>
             {isMom ? "Nenhum filho cadastrado ainda." : "Nenhum filho cadastrado. Você tem filhos, né?"}
           </p>
         ) : (
           <div className="space-y-2">
             {children.map((child: any) => {
               const pct = getChildCompletion(child);
-              return (
+              return isMom ? (
                 <Card key={child.id} className="border-0 shadow-sm">
                   <CardContent className="p-3">
                     <div className="flex items-center gap-3 mb-1.5">
                       <div className="w-9 h-9 rounded-full bg-accent/20 flex items-center justify-center text-base">👶</div>
                       <div className="flex-1 min-w-0">
                         <p className="font-display font-bold text-sm">{child.name}</p>
-                        {child.birth_date && (
-                          <p className="text-[10px] text-muted-foreground">{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>
-                        )}
+                        {child.birth_date && <p className="text-[10px] text-muted-foreground">{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
                       </div>
                       <span className={`text-xs font-display font-bold ${accent}`}>{pct}%</span>
                     </div>
@@ -783,60 +805,122 @@ export default function Perfil() {
                     </div>
                   </CardContent>
                 </Card>
+              ) : (
+                <div key={child.id} className="rounded-xl p-3" style={{
+                  background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+                  border: "1px solid hsl(var(--arena-gold) / 0.12)",
+                }}>
+                  <div className="flex items-center gap-3 mb-1.5">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-base" style={{ background: "hsl(var(--arena-gold) / 0.12)" }}>👶</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-display font-bold text-sm" style={{ color: "hsl(0 0% 88%)" }}>{child.name}</p>
+                      {child.birth_date && <p className="text-[10px]" style={{ color: "hsl(0 0% 50%)" }}>{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
+                    </div>
+                    <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{pct}%</span>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "hsl(0 0% 18%)" }}>
+                    <div className="h-full rounded-full transition-all" style={{
+                      width: `${pct}%`,
+                      background: "linear-gradient(90deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+                    }} />
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-1.5">
+                    {child.school && <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: "hsl(var(--arena-neon) / 0.1)", color: "hsl(var(--arena-neon) / 0.8)", border: "1px solid hsl(var(--arena-neon) / 0.15)" }}>🏫 {child.school}</span>}
+                    {child.doctor_name && <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: "hsl(var(--arena-electric) / 0.1)", color: "hsl(var(--arena-electric) / 0.8)", border: "1px solid hsl(var(--arena-electric) / 0.15)" }}>🏥 {child.doctor_name}</span>}
+                    {!child.school && <span className="text-[10px] italic" style={{ color: "hsl(var(--arena-fire) / 0.6)" }}>Falta: escola</span>}
+                    {!child.doctor_name && <span className="text-[10px] italic" style={{ color: "hsl(var(--arena-fire) / 0.6)" }}>Falta: pediatra</span>}
+                  </div>
+                </div>
               );
             })}
           </div>
         )}
       </section>
 
-      <Separator className="my-2" />
+      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--arena-fire) / 0.2), transparent)" }} />}
 
       {/* ═══════════════════ SECTION 8: Settings & Legal ═══════════════════ */}
       <section className="space-y-2">
-        <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3">
-          <Shield className="w-4 h-4" /> Configurações
+        <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3"
+          style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+          <Shield className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Configurações
         </h2>
 
-        <div className="grid grid-cols-2 gap-2">
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-3 text-center">
-              <p className="text-[10px] text-muted-foreground font-body mb-1">Código família</p>
-              <p className="text-xs font-mono font-bold">{profile.family_code || "—"}</p>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-3 text-center">
-              <p className="text-[10px] text-muted-foreground font-body mb-1">Membro desde</p>
-              <p className="text-xs font-bold">{format(new Date(profile.created_at), "dd/MM/yy")}</p>
-            </CardContent>
-          </Card>
-        </div>
+        {isMom ? (
+          <div className="grid grid-cols-2 gap-2">
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-3 text-center">
+                <p className="text-[10px] text-muted-foreground font-body mb-1">Código família</p>
+                <p className="text-xs font-mono font-bold">{profile.family_code || "—"}</p>
+              </CardContent>
+            </Card>
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-3 text-center">
+                <p className="text-[10px] text-muted-foreground font-body mb-1">Membro desde</p>
+                <p className="text-xs font-bold">{format(new Date(profile.created_at), "dd/MM/yy")}</p>
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-xl p-3 text-center" style={{
+              background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+              border: "1px solid hsl(var(--arena-gold) / 0.12)",
+            }}>
+              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(0 0% 50%)" }}>Código família</p>
+              <p className="text-xs font-mono font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{profile.family_code || "—"}</p>
+            </div>
+            <div className="rounded-xl p-3 text-center" style={{
+              background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+              border: "1px solid hsl(var(--arena-gold) / 0.12)",
+            }}>
+              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(0 0% 50%)" }}>Membro desde</p>
+              <p className="text-xs font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{format(new Date(profile.created_at), "dd/MM/yy")}</p>
+            </div>
+          </div>
+        )}
 
         {/* Actions */}
         <div className="flex gap-2 pt-2">
-          <Button
-            variant="outline"
-            className={`flex-1 text-xs h-9 font-display ${isMom ? `${accentBorder} ${accent}` : ""}`}
-            onClick={async () => {
-              const perm = await getNotificationPermission();
-              if (perm !== "granted" && user) await requestPushSubscription(user.id);
-              const msgs = isMom
-                ? ["Teste de notificação. Tudo ok, chefe. 👑"]
-                : ["Você esqueceu algo. Não sabemos o quê. Mas você sabe."];
-              sendLocalNotification("Estou de Olho 👁️", msgs[0]);
-            }}
-          >
-            <Bell className="w-3.5 h-3.5" /> Testar notificação
-          </Button>
-
-          {!isMom && (
-            <Button variant="outline" className="flex-1 text-xs h-9 font-display" onClick={() => {
-              const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nEstou de Olho — porque alguém tem que lembrar`;
-              if (navigator.share) navigator.share({ text });
-              else { navigator.clipboard.writeText(text); toast("DNA copiado!"); }
-            }}>
-              <Share2 className="w-3.5 h-3.5" /> Compartilhar DNA
+          {isMom ? (
+            <Button
+              variant="outline"
+              className={`flex-1 text-xs h-9 font-display ${accentBorder} ${accent}`}
+              onClick={async () => {
+                const perm = await getNotificationPermission();
+                if (perm !== "granted" && user) await requestPushSubscription(user.id);
+                sendLocalNotification("Estou de Olho 👁️", "Teste de notificação. Tudo ok, chefe. 👑");
+              }}
+            >
+              <Bell className="w-3.5 h-3.5" /> Testar notificação
             </Button>
+          ) : (
+            <>
+              <Button
+                className="flex-1 text-xs h-9 font-display border-0 text-white"
+                style={{
+                  background: "hsl(var(--arena-dark) / 0.9)",
+                  border: "1px solid hsl(var(--arena-neon) / 0.2)",
+                  color: "hsl(var(--arena-neon))",
+                }}
+                onClick={async () => {
+                  const perm = await getNotificationPermission();
+                  if (perm !== "granted" && user) await requestPushSubscription(user.id);
+                  sendLocalNotification("Estou de Olho 👁️", "Você esqueceu algo. Não sabemos o quê. Mas você sabe.");
+                }}
+              >
+                <Bell className="w-3.5 h-3.5" /> Testar notificação
+              </Button>
+              <Button className="flex-1 text-xs h-9 font-display border-0 text-white" style={{
+                background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+              }} onClick={() => {
+                const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nEstou de Olho — porque alguém tem que lembrar`;
+                if (navigator.share) navigator.share({ text });
+                else { navigator.clipboard.writeText(text); toast("DNA copiado!"); }
+              }}>
+                <Share2 className="w-3.5 h-3.5" /> Compartilhar DNA
+              </Button>
+            </>
           )}
         </div>
 
@@ -849,7 +933,10 @@ export default function Perfil() {
             { path: "/suporte", label: "Suporte", icon: "💬" },
           ].map(link => (
             <button key={link.path} onClick={() => navigate(link.path)}
-              className="text-left text-xs text-muted-foreground font-body hover:text-foreground transition-colors py-2 px-3 rounded-lg hover:bg-muted/50 flex items-center gap-1.5">
+              className={isMom ? "text-left text-xs text-muted-foreground font-body hover:text-foreground transition-colors py-2 px-3 rounded-lg hover:bg-muted/50 flex items-center gap-1.5" : "text-left text-xs font-body transition-colors py-2 px-3 rounded-lg flex items-center gap-1.5"}
+              style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}
+              onMouseEnter={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--arena-gold))"); }}
+              onMouseLeave={e => { if (!isMom) (e.currentTarget.style.color = "hsl(0 0% 50%)"); }}>
               <span>{link.icon}</span> {link.label}
             </button>
           ))}
@@ -858,7 +945,8 @@ export default function Perfil() {
         {/* Logout */}
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="ghost" className="w-full text-destructive font-display text-sm mt-2">
+            <Button variant="ghost" className={`w-full font-display text-sm mt-2 ${isMom ? "text-destructive" : ""}`}
+              style={!isMom ? { color: "hsl(var(--arena-fire))" } : undefined}>
               <LogOut className="w-4 h-4 mr-2" /> Sair do app
             </Button>
           </AlertDialogTrigger>
