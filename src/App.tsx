@@ -30,6 +30,7 @@ import AvoDashboard from "./pages/AvoDashboard";
 import AvoRanking from "./pages/AvoRanking";
 import AvoPerfil from "./pages/AvoPerfil";
 import GrandmaSuggestionsFloat from "./components/grandma/GrandmaSuggestionsFloat";
+import MuralPalpites from "./pages/MuralPalpites";
 
 const queryClient = new QueryClient();
 
