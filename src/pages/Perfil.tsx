@@ -420,6 +420,9 @@ export default function Perfil() {
         </section>
       )}
 
+      {/* ═══════════════════ SECTION 5b: Palpites History (Mom & Dad) ═══════════════════ */}
+      {(isMom || profile.role === "pai") && <PalpitesHistorySection />}
+
       <Separator className="my-2" />
 
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}
