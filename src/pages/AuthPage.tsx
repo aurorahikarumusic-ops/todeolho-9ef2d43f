@@ -70,6 +70,23 @@ function DadLoginForm() {
                 className="font-body"
               />
             </div>
+
+            <div>
+              <label className="text-sm font-body font-semibold text-foreground mb-1 block">
+                <Link className="w-3.5 h-3.5 inline mr-1" />
+                Código de convite <span className="text-muted-foreground font-normal">(opcional)</span>
+              </label>
+              <Input
+                placeholder="Ex: A1B2C3D4"
+                value={form.inviteCode}
+                onChange={(e) => setForm({ ...form, inviteCode: e.target.value.toUpperCase() })}
+                maxLength={8}
+                className="font-body text-center tracking-[0.15em]"
+              />
+              <p className="text-[10px] text-muted-foreground mt-1">
+                Recebeu da mãe? Cola aqui pra já entrar na família.
+              </p>
+            </div>
           )}
 
           <div>
