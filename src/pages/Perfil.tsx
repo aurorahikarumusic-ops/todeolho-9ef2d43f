@@ -838,7 +838,7 @@ export default function Perfil() {
         )}
       </section>
 
-      <Separator className="my-2" />
+      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--arena-fire) / 0.2), transparent)" }} />}
 
       {/* ═══════════════════ SECTION 8: Settings & Legal ═══════════════════ */}
       <section className="space-y-2">
