@@ -63,9 +63,11 @@ export default {
         },
         mom: {
           DEFAULT: "hsl(var(--mom-accent))",
+          hover: "hsl(var(--mom-accent-hover))",
           bg: "hsl(var(--mom-bg))",
           border: "hsl(var(--mom-border))",
           text: "hsl(var(--mom-text))",
+          cta: "hsl(var(--mom-cta))",
         },
         dad: {
           DEFAULT: "hsl(var(--dad-accent))",
