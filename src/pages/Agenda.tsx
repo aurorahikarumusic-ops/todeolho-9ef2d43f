@@ -201,7 +201,7 @@ export default function Agenda() {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             } : undefined}>
-              {isMom ? "Agenda da Família" : "📅 Compromissos"}
+              {isMom ? "Agenda da Família" : "⚔️ Compromissos"}
             </h1>
           </div>
           <p className={`text-xs font-body italic mb-4 ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(var(--arena-glow) / 0.7)" } : undefined}>
