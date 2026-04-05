@@ -78,6 +78,15 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
     return () => timers.forEach(clearTimeout);
   }, []);
 
+  // Cycle phrases every 1.8s during animation
+  useEffect(() => {
+    if (phase >= 3) return;
+    const interval = setInterval(() => {
+      setPhraseIdx(prev => (prev + 1) % randomPhrases.length);
+    }, 1800);
+    return () => clearInterval(interval);
+  }, [phase, randomPhrases.length]);
+
   // Phase 0-2: Animation sequence
   if (phase < 3) {
     return (
