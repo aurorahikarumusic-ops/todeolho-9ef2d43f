@@ -922,24 +922,35 @@ export default function Perfil() {
 
 // ═══════════════════ Badge Carousel Components ═══════════════════
 
-function BadgeCard({ emoji, name, desc, earned, type, onClick }: {
-  emoji: string; name: string; desc: string; earned: boolean; type: "good" | "shame" | "locked"; onClick: () => void;
+function BadgeCard({ emoji, name, desc, earned, type, onClick, isDad }: {
+  emoji: string; name: string; desc: string; earned: boolean; type: "good" | "shame" | "locked"; onClick: () => void; isDad?: boolean;
 }) {
+  if (isDad) {
+    const styleMap = {
+      good: earned
+        ? { background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))", border: "1px solid hsl(var(--arena-neon) / 0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.2), 0 0 12px hsl(var(--arena-neon) / 0.08)" }
+        : { background: "hsl(var(--arena-dark) / 0.5)", border: "1px solid hsl(0 0% 25%)" },
+      shame: earned
+        ? { background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(var(--arena-fire) / 0.08))", border: "1px solid hsl(var(--arena-fire) / 0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.2), 0 0 12px hsl(var(--arena-fire) / 0.08)" }
+        : { background: "hsl(var(--arena-dark) / 0.5)", border: "1px solid hsl(0 0% 25%)" },
+      locked: { background: "hsl(var(--arena-dark) / 0.4)", border: "1px dashed hsl(0 0% 30%)" },
+    };
+    return (
+      <button onClick={onClick} className={`flex-shrink-0 w-28 rounded-xl p-3 text-center transition-all ${earned ? "hover:scale-105" : "opacity-40"}`} style={styleMap[type]}>
+        <span className={`text-3xl block mb-1.5 ${earned ? "" : "grayscale"}`} style={earned ? { filter: "drop-shadow(0 0 6px rgba(255,255,255,0.2))" } : undefined}>{emoji}</span>
+        <p className="font-display text-[11px] font-bold leading-tight" style={{ color: earned ? "hsl(0 0% 85%)" : "hsl(0 0% 45%)" }}>{name}</p>
+      </button>
+    );
+  }
+
   const bgMap = {
-    good: earned
-      ? "bg-dad-bg border-dad-border"
-      : "bg-muted/30 border-muted-foreground/10",
-    shame: earned
-      ? "bg-secondary/10 border-secondary/30"
-      : "bg-muted/30 border-muted-foreground/10",
+    good: earned ? "bg-dad-bg border-dad-border" : "bg-muted/30 border-muted-foreground/10",
+    shame: earned ? "bg-secondary/10 border-secondary/30" : "bg-muted/30 border-muted-foreground/10",
     locked: "bg-muted/20 border-dashed border-muted-foreground/20",
   };
 
   return (
-    <button
-      onClick={onClick}
-      className={`flex-shrink-0 w-28 rounded-xl border-2 p-3 text-center transition-all ${bgMap[type]} ${earned ? "shadow-sm hover:shadow-md hover:scale-105" : "opacity-50"}`}
-    >
+    <button onClick={onClick} className={`flex-shrink-0 w-28 rounded-xl border-2 p-3 text-center transition-all ${bgMap[type]} ${earned ? "shadow-sm hover:shadow-md hover:scale-105" : "opacity-50"}`}>
       <span className={`text-3xl block mb-1.5 ${earned ? "" : "grayscale"}`}>{emoji}</span>
       <p className={`font-display text-[11px] font-bold leading-tight ${earned ? "text-foreground" : "text-muted-foreground"}`}>{name}</p>
     </button>
