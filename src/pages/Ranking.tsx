@@ -289,7 +289,7 @@ function MyStatsBar({ profile, position, total }: { profile: any; position: numb
 
   return (
     <div className="rounded-2xl p-4 relative overflow-hidden" style={{
-      background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%))",
+      background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(30 25% 12%))",
       boxShadow: "0 8px 32px rgba(0,0,0,0.2), 0 0 30px hsl(var(--arena-neon) / 0.08), inset 0 1px 0 rgba(255,255,255,0.06)",
       border: "1px solid hsl(var(--arena-neon) / 0.2)",
     }}>
@@ -330,7 +330,7 @@ function MyStatsBar({ profile, position, total }: { profile: any; position: numb
             <Zap className="w-4 h-4" style={{ color: "hsl(var(--arena-fire))", filter: "drop-shadow(0 0 4px hsl(var(--arena-fire) / 0.5))" }} />
             <span className="font-display font-bold text-xl" style={{ color: "hsl(var(--arena-gold))", textShadow: "0 0 10px hsl(var(--arena-gold) / 0.3)" }}>{profile.points}</span>
           </div>
-          <p className="text-[10px]" style={{ color: "hsl(220 15% 78%)" }}>pontos</p>
+          <p className="text-[10px]" style={{ color: "hsl(30 15% 78%)" }}>pontos</p>
         </div>
       </div>
       {position > 0 && (
@@ -342,7 +342,7 @@ function MyStatsBar({ profile, position, total }: { profile: any; position: numb
             </span>
             <span className="font-display">{profile.streak_days > 0 ? `🔥 ${profile.streak_days} dias` : ""}</span>
           </div>
-          <div className="h-2 rounded-full overflow-hidden" style={{ background: "hsl(220 30% 22%)" }}>
+          <div className="h-2 rounded-full overflow-hidden" style={{ background: "hsl(30 30% 18%)" }}>
             <div className="h-full rounded-full transition-all duration-1000" style={{
               width: `${Math.min(95, Math.max(5, percentile))}%`,
               background: "linear-gradient(90deg, hsl(var(--arena-neon)), hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
@@ -617,7 +617,7 @@ export default function Ranking() {
                   )}
                   <span className="text-xs">{title.emoji}</span>
                 </div>
-                <p className="text-[10px] font-body italic truncate" style={!isMom && index <= 2 ? { color: "hsl(220 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>
+                <p className="text-[10px] font-body italic truncate" style={!isMom && index <= 2 ? { color: "hsl(30 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>
                   {isMom ? getMomPositionDescription(index, list.length) : getPositionDescription(index, list.length)}
                 </p>
               </div>
@@ -627,7 +627,7 @@ export default function Ranking() {
                   color: isMom ? "hsl(var(--mom-accent))" : index <= 2 ? "hsl(var(--arena-gold))" : "hsl(var(--primary))",
                 }}>{dad.points}</p>
                 <div className="flex items-center gap-1 justify-end">
-                  <span className="text-[10px]" style={!isMom && index <= 2 ? { color: "hsl(220 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>pts</span>
+                  <span className="text-[10px]" style={!isMom && index <= 2 ? { color: "hsl(30 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>pts</span>
                   {dad.streak_days > 0 && (
                     <span className="text-[10px] flex items-center gap-0.5" style={{
                       color: isMom ? "hsl(var(--mom-accent) / 0.7)" : "hsl(var(--secondary))",
@@ -645,22 +645,22 @@ export default function Ranking() {
                 animation: "fadeSlideDown 0.3s ease-out",
               }}>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(220 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Título:</span>
+                  <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(30 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Título:</span>
                   <Badge variant="outline" className="text-[10px]" style={{
-                    borderColor: isMom ? "hsl(var(--mom-border))" : index <= 2 ? "hsl(220 15% 50%)" : undefined,
+                    borderColor: isMom ? "hsl(var(--mom-border))" : index <= 2 ? "hsl(30 15% 50%)" : undefined,
                     color: isMom ? "hsl(var(--mom-text))" : index <= 2 ? "hsl(0 0% 80%)" : undefined,
                   }}>{title.emoji} {title.title}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(220 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Sequência:</span>
-                  <span className="text-xs font-display font-bold" style={!isMom && index <= 2 ? { color: "hsl(220 15% 88%)" } : undefined}>{dad.streak_days} dias 🔥</span>
+                  <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(30 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Sequência:</span>
+                  <span className="text-xs font-display font-bold" style={!isMom && index <= 2 ? { color: "hsl(30 15% 88%)" } : undefined}>{dad.streak_days} dias 🔥</span>
                 </div>
                 {rating && (
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(220 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Nota da mãe:</span>
+                    <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(30 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Nota da mãe:</span>
                     <div className="flex items-center gap-1.5">
                       <StarRating stars={rating.stars} isMom={isMom} />
-                      {rating.comment && <span className="text-[9px] italic" style={!isMom && index <= 2 ? { color: "hsl(220 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>"{rating.comment}"</span>}
+                      {rating.comment && <span className="text-[9px] italic" style={!isMom && index <= 2 ? { color: "hsl(30 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>"{rating.comment}"</span>}
                     </div>
                   </div>
                 )}
@@ -852,7 +852,7 @@ export default function Ranking() {
                     textShadow: isMom ? "none" : "0 0 8px hsl(var(--destructive) / 0.3)",
                   }}>{isMom ? "Caso Perdido" : "⚰️ Hall da Vergonha Eterna"}</p>
                   <p className="text-[10px] font-body italic relative" style={{
-                    color: isMom ? "hsl(var(--mom-text) / 0.5)" : "hsl(220 15% 78%)",
+                    color: isMom ? "hsl(var(--mom-text) / 0.5)" : "hsl(30 15% 78%)",
                   }}>
                     {ranking[ranking.length - 1]?.display_name?.split(" ")[0]} ocupa essa posição {isMom ? "preocupante" : "nobre"}.
                   </p>

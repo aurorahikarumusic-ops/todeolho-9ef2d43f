@@ -167,7 +167,7 @@ export default function Agenda() {
         style={{
           background: isMom
 ? "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))"
-            : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%), hsl(var(--arena-dark)))",
+            : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(30 25% 12%), hsl(var(--arena-dark)))",
           perspective: "800px",
         }}
       >
@@ -222,7 +222,7 @@ export default function Agenda() {
                 border: isMom ? undefined : "1px solid hsl(var(--arena-electric) / 0.15)",
               }}>
               <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-electric))", textShadow: "0 0 8px hsl(var(--arena-electric) / 0.4)" } : undefined}>{todayEvents.length}</p>
-              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(220 15% 78%)" } : undefined}>Hoje</p>
+              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(30 15% 78%)" } : undefined}>Hoje</p>
             </div>
             <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
               style={{
@@ -231,7 +231,7 @@ export default function Agenda() {
                 border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.15)",
               }}>
               <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-gold))", textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)" } : undefined}>{upcomingEvents.length}</p>
-              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(220 15% 78%)" } : undefined}>Próximos</p>
+              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(30 15% 78%)" } : undefined}>Próximos</p>
             </div>
             <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
               style={{
@@ -240,7 +240,7 @@ export default function Agenda() {
                 border: isMom ? undefined : "1px solid hsl(var(--arena-neon) / 0.15)",
               }}>
               <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-neon))", textShadow: "0 0 8px hsl(var(--arena-neon) / 0.3)" } : undefined}>{events.length}</p>
-              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(220 15% 78%)" } : undefined}>Este mês</p>
+              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(30 15% 78%)" } : undefined}>Este mês</p>
             </div>
           </div>
         </div>
@@ -249,7 +249,7 @@ export default function Agenda() {
       {/* Next 3 days timeline */}
       <div className="space-y-1">
         <p className={`text-xs font-display font-bold uppercase tracking-wider px-1 ${isMom ? "text-muted-foreground" : ""}`}
-          style={!isMom ? { color: "hsl(220 15% 75%)" } : undefined}>
+          style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
           Próximos dias
         </p>
         <div className="flex gap-2">
@@ -303,7 +303,7 @@ export default function Agenda() {
                   </div>
                 ) : (
                   <p className="text-[8px] mt-1" style={{
-                    color: !isMom && isSelected ? "hsl(220 15% 70%)" : isSelected ? "hsl(var(--primary-foreground) / 0.5)" : "hsl(var(--muted-foreground) / 0.4)",
+                    color: !isMom && isSelected ? "hsl(30 15% 70%)" : isSelected ? "hsl(var(--primary-foreground) / 0.5)" : "hsl(var(--muted-foreground) / 0.4)",
                   }}>—</p>
                 )}
               </button>
@@ -329,10 +329,10 @@ export default function Agenda() {
             📅 Calendário
           </p>
           <div className="flex gap-2 text-[9px] font-body">
-            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(220 15% 75%)" } : undefined}>
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
               <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--secondary))" : "hsl(var(--arena-fire))" }} /> Mãe ({momCount})
             </span>
-            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(220 15% 75%)" } : undefined}>
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
               <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--primary))" : "hsl(var(--arena-neon))" }} /> Pai ({dadCount})
             </span>
           </div>
@@ -354,7 +354,7 @@ export default function Agenda() {
       {selectedDate && (
         <div className="flex items-center justify-between px-1">
           <h2 className="font-display text-base font-bold"
-            style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>
+            style={!isMom ? { color: "hsl(30 15% 90%)" } : undefined}>
             {isToday(selectedDate) ? "📍 Hoje" : isTomorrow(selectedDate) ? "⏰ Amanhã" : format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
           </h2>
           <Badge variant="secondary" className="text-[10px] font-display"
@@ -370,26 +370,26 @@ export default function Agenda() {
           className="rounded-3xl border-2 border-dashed p-10 text-center"
           style={{
             borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.2)",
-            background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+            background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
             boxShadow: isMom ? "inset 0 2px 8px rgba(0,0,0,0.03)" : "0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)",
             border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.12)",
           }}
         >
           <p className="text-5xl mb-3">📅</p>
           <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(0 0% 100%)" } : undefined}>Nada agendado</p>
-          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(220 20% 85%)" } : undefined}>
+          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(30 20% 85%)" } : undefined}>
             {isMom ? "Adicione o primeiro compromisso da família." : "Mês livre? Vai confirmar com a mãe."}
           </p>
         </div>
       ) : filteredEvents.length === 0 ? (
         <div className="rounded-3xl p-8 text-center"
           style={{
-            background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+            background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
             boxShadow: isMom ? undefined : "0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)",
             border: isMom ? "2px dashed hsl(var(--muted))" : "1px solid hsl(var(--arena-gold) / 0.12)",
           }}>
           <p className="text-3xl mb-2">🤷</p>
-          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(220 20% 85%)" } : undefined}>
+          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(30 20% 85%)" } : undefined}>
             Nada nesse dia. Ou a mãe ainda não atualizou.
           </p>
         </div>
@@ -411,7 +411,7 @@ export default function Agenda() {
                   isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
                 } ${isPast ? "opacity-60" : ""}`}
                 style={{
-                  background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+                  background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
                   boxShadow: isExpanded
                     ? isMom
                       ? `0 12px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${category.color}`
@@ -419,7 +419,7 @@ export default function Agenda() {
                     : isMom
                       ? `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${category.color}`
                       : `0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03), -4px 0 0 ${category.color}`,
-                  border: isMom ? undefined : `1px solid hsl(220 30% 22%)`,
+                  border: isMom ? undefined : `1px solid hsl(30 30% 18%)`,
                 }}
               >
                 {/* Check-in banner */}
@@ -450,11 +450,11 @@ export default function Agenda() {
                           {format(eventDate, "HH")}
                         </div>
                         <div>
-                          <h3 className="font-display font-bold text-sm leading-tight" style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>{event.title}</h3>
+                          <h3 className="font-display font-bold text-sm leading-tight" style={!isMom ? { color: "hsl(30 15% 90%)" } : undefined}>{event.title}</h3>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <Clock className="w-3 h-3" style={!isMom ? { color: "hsl(220 15% 70%)" } : undefined} />
+                            <Clock className="w-3 h-3" style={!isMom ? { color: "hsl(30 15% 70%)" } : undefined} />
                             <span className={`text-[10px] font-body ${isMom ? "text-muted-foreground" : ""}`}
-                              style={!isMom ? { color: "hsl(220 15% 75%)" } : undefined}>
+                              style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
                               {format(eventDate, "HH:mm")} · {category.label}
                             </span>
                           </div>
@@ -473,7 +473,7 @@ export default function Agenda() {
                             "Mãe adicionou"
                           )}
                         </Badge>
-                        <span className="text-[9px] font-body" style={!isMom ? { color: "hsl(220 15% 60%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
+                        <span className="text-[9px] font-body" style={!isMom ? { color: "hsl(30 15% 60%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
                           {getTimeLabel(eventDate)}
                         </span>
                       </div>
@@ -484,14 +484,14 @@ export default function Agenda() {
 
                   {/* Expanded content */}
                   {isExpanded && (
-                    <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.3)" : "1px solid hsl(220 30% 22%)" }}>
+                    <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.3)" : "1px solid hsl(30 30% 18%)" }}>
                       {event.description && (
-                        <p className="text-xs font-body" style={!isMom ? { color: "hsl(220 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>
+                        <p className="text-xs font-body" style={!isMom ? { color: "hsl(30 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>
                           📝 {event.description}
                         </p>
                       )}
 
-                      <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(220 15% 65%)" } : { color: "hsl(var(--muted-foreground) / 0.7)" }}>
+                      <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(30 15% 65%)" } : { color: "hsl(var(--muted-foreground) / 0.7)" }}>
                         {isDadEvent
                           ? "Você mesmo adicionou. Parabéns pela iniciativa."
                           : isPast
