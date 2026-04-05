@@ -722,8 +722,17 @@ export default function Perfil() {
           style={!isMom ? { color: "hsl(220 15% 90%)" } : undefined}>
           <User className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Conexão Familiar
         </h2>
-        {!partner ? (
+        {!profile.family_id ? (
           isMom ? <InvitePartner /> : <JoinFamily />
+        ) : !partner ? (
+          <div className="rounded-xl p-3 text-center" style={{
+            background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+            border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.15)",
+          }}>
+            <p className="font-body text-xs" style={!isMom ? { color: "hsl(220 15% 70%)" } : undefined}>
+              Conectado à família ✓
+            </p>
+          </div>
         ) : (
           isMom ? (
             <Card className="border-0 shadow-sm bg-primary/5">
