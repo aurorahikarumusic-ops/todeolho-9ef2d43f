@@ -313,25 +313,36 @@ type AuthView = "dad" | "mom" | "grandma";
 
 export default function AuthPage() {
   const [view, setView] = useState<AuthView>("dad");
-  const [flipDirection, setFlipDirection] = useState<"forward" | "back">("forward");
-  const [isFlipping, setIsFlipping] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [pendingView, setPendingView] = useState<AuthView | null>(null);
+  const [displayedBack, setDisplayedBack] = useState<AuthView>("mom");
 
   const handleViewChange = (newView: AuthView) => {
-    if (isFlipping || newView === view) return;
-    setFlipDirection(newView === "dad" ? "back" : "forward");
-    setIsFlipping(true);
-    // At halfway point of the animation, swap the content
-    setTimeout(() => {
-      setView(newView);
-    }, 300);
-    // Animation complete
-    setTimeout(() => {
-      setIsFlipping(false);
-    }, 600);
+    if (newView === view && !isFlipped) return;
+    if (newView === "dad") {
+      // Flip back to front (dad)
+      setIsFlipped(false);
+      // After animation, reset view
+      setTimeout(() => {
+        setView("dad");
+        setPendingView(null);
+      }, 800);
+    } else {
+      // Set back content, then flip
+      setDisplayedBack(newView);
+      setPendingView(newView);
+      // Small delay to ensure content renders before flip
+      requestAnimationFrame(() => {
+        setIsFlipped(true);
+      });
+      setTimeout(() => {
+        setView(newView);
+      }, 800);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 overflow-hidden">
       {/* Logo */}
       <div className="mb-8 text-center animate-bounce-in">
         <div className="flex items-center justify-center gap-2 mb-2">
@@ -345,54 +356,77 @@ export default function AuthPage() {
         </p>
       </div>
 
-      {/* Flip container */}
+      {/* Flip card container */}
       <div className="w-full max-w-md" style={{ perspective: "1200px" }}>
         <div
-          className="relative w-full transition-transform duration-[600ms] ease-in-out"
+          className="relative w-full"
           style={{
             transformStyle: "preserve-3d",
-            transform: isFlipping
-              ? flipDirection === "forward"
-                ? "rotateY(180deg)"
-                : "rotateY(-180deg)"
-              : "rotateY(0deg)",
+            transition: "transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1)",
+            transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
           }}
         >
+          {/* Front face - Dad */}
           <div
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
+              position: "relative",
+              zIndex: isFlipped ? 0 : 1,
             }}
           >
-            {view === "dad" && <DadLoginForm />}
-            {view === "mom" && <MomLoginForm onBack={() => handleViewChange("dad")} />}
-            {view === "grandma" && <GrandmaLoginForm onBack={() => handleViewChange("dad")} />}
+            <DadLoginForm />
+          </div>
+
+          {/* Back face - Mom or Grandma */}
+          <div
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              zIndex: isFlipped ? 1 : 0,
+            }}
+          >
+            {displayedBack === "mom" ? (
+              <MomLoginForm onBack={() => handleViewChange("dad")} />
+            ) : (
+              <GrandmaLoginForm onBack={() => handleViewChange("dad")} />
+            )}
           </div>
         </div>
       </div>
 
       {/* Role buttons - only visible on dad side */}
-      {view === "dad" && !isFlipping && (
-        <div className="mt-6 w-full max-w-md space-y-3 animate-fade-in">
-          <Button
-            onClick={() => handleViewChange("mom")}
-            className="w-full h-14 font-display text-xl bg-mom hover:bg-mom/80 text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
-          >
-            <Crown className="w-6 h-6 mr-2" />
-            Sou a Chefe 👑
-          </Button>
-          <Button
-            onClick={() => handleViewChange("grandma")}
-            className="w-full h-12 font-display text-lg bg-avo hover:bg-avo/80 text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
-            style={{
-              boxShadow: "0 6px 20px -4px hsl(270 60% 55% / 0.3)",
-            }}
-          >
-            <span className="text-xl mr-2">👵</span>
-            Sou a Avó (e tenho palpite)
-          </Button>
-        </div>
-      )}
+      <div
+        className="mt-6 w-full max-w-md space-y-3 transition-all duration-500"
+        style={{
+          opacity: !isFlipped && view === "dad" ? 1 : 0,
+          transform: !isFlipped && view === "dad" ? "translateY(0)" : "translateY(20px)",
+          pointerEvents: !isFlipped && view === "dad" ? "auto" : "none",
+        }}
+      >
+        <Button
+          onClick={() => handleViewChange("mom")}
+          className="w-full h-14 font-display text-xl bg-mom hover:bg-mom/80 text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+        >
+          <Crown className="w-6 h-6 mr-2" />
+          Sou a Chefe 👑
+        </Button>
+        <Button
+          onClick={() => handleViewChange("grandma")}
+          className="w-full h-12 font-display text-lg bg-avo hover:bg-avo/80 text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+          style={{
+            boxShadow: "0 6px 20px -4px hsl(270 60% 55% / 0.3)",
+          }}
+        >
+          <span className="text-xl mr-2">👵</span>
+          Sou a Avó (e tenho palpite)
+        </Button>
+      </div>
 
       <p className="mt-6 text-xs text-muted-foreground text-center font-body max-w-xs">
         Ao criar uma conta, você concorda com nossos{" "}
