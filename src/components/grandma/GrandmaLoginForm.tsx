@@ -233,14 +233,6 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
           </button>
         </div>
 
-        {isSignUp && (
-          <div className="mt-4 bg-avo/5 border border-avo-border rounded-xl p-3">
-            <p className="text-[11px] font-body text-avo-text text-center">
-              🧶 <strong>Depois de criar sua conta</strong>, peça o <strong>código de convite</strong> para a mãe da família. 
-              É assim que você se conecta e começa a dar seus palpites!
-            </p>
-          </div>
-        )}
       </CardContent>
     </Card>
   );
