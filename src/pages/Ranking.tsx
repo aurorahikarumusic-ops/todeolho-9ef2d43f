@@ -1104,6 +1104,11 @@ export default function Ranking() {
           from { opacity: 0; transform: translateY(40px) scale(0.9); }
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
+        @keyframes arenaPodiumRise {
+          0% { opacity: 0; transform: translateY(50px) scale(0.8) rotateY(15deg); }
+          60% { opacity: 1; transform: translateY(-8px) scale(1.05) rotateY(-3deg); }
+          100% { opacity: 1; transform: translateY(0) scale(1) rotateY(0deg); }
+        }
         @keyframes momPodiumRise {
           from { opacity: 0; transform: translateY(30px) scale(0.85) rotateX(10deg); }
           to { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
