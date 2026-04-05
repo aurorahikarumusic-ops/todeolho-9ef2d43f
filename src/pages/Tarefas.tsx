@@ -699,11 +699,11 @@ export default function Tarefas() {
         className="fixed bottom-20 right-4 z-40 rounded-2xl flex items-center gap-2 transition-all active:scale-95 px-5 h-12"
         style={{
           background: isMom
-            ? "linear-gradient(135deg, #e91e63, #c2185b)"
+            ? "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(var(--mom-accent-hover)))"
             : "linear-gradient(135deg, hsl(var(--arena-neon)), hsl(var(--arena-gold)))",
           color: "white",
           boxShadow: isMom
-            ? "0 6px 20px rgba(233,30,99,0.4)"
+            ? "0 6px 20px hsl(var(--mom-accent) / 0.4)"
             : "0 6px 20px hsl(var(--arena-neon) / 0.4), 0 0 30px hsl(var(--arena-gold) / 0.15)",
         }}
       >
