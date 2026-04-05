@@ -189,3 +189,26 @@ export function useSentLetters() {
     enabled: !!user,
   });
 }
+
+export function useDeleteLetter() {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (letterId: string) => {
+      const { error } = await supabase
+        .from("love_letters")
+        .delete()
+        .eq("id", letterId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["sent-letters"] });
+      qc.invalidateQueries({ queryKey: ["received-letters"] });
+      toast.success("Carta excluída com sucesso");
+    },
+    onError: () => {
+      toast.error("Erro ao excluir carta");
+    },
+  });
+}
