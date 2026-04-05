@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/hooks/useAuth";
 import { useFamilyPartner } from "@/hooks/useFamily";
@@ -19,6 +20,9 @@ import ShareWeekCard from "@/components/home/ShareWeekCard";
 import PushPermissionBanner from "@/components/home/PushPermissionBanner";
 import JoinFamily from "@/components/family/JoinFamily";
 import GrandmaPalpitesCard from "@/components/home/GrandmaPalpitesCard";
+import RedemptionCard from "@/components/redemption/RedemptionCard";
+import ModoRedencao from "@/components/redemption/ModoRedencao";
+import { useRedemptionCheck } from "@/hooks/useRedemption";
 import { startOfWeek, endOfWeek } from "date-fns";
 
 export default function Dashboard() {
