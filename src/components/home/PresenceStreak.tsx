@@ -163,7 +163,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
       className="relative rounded-3xl overflow-hidden cursor-pointer select-none"
       style={{
         perspective: "800px",
-        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%))",
+        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(30 25% 12%))",
         boxShadow: `0 8px 32px -8px ${glowColor}, 0 4px 16px rgba(0,0,0,0.2)`, border: "1px solid hsl(var(--arena-gold) / 0.1)",
       }}
       onClick={handleCheckIn}
@@ -282,7 +282,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                         ? isToday
                           ? `linear-gradient(180deg, ${gradientFrom}, ${gradientTo})`
                           : "linear-gradient(180deg, hsl(var(--arena-neon)), hsl(var(--arena-neon) / 0.6))"
-                        : "linear-gradient(180deg, hsl(220 30% 22%), hsl(220 30% 18%))",
+                        : "linear-gradient(180deg, hsl(30 30% 18%), hsl(30 30% 14%))",
                       boxShadow: blockActive
                         ? isToday
                           ? `0 4px 16px ${glowColor}, inset 0 1px 0 rgba(255,255,255,0.3)`
