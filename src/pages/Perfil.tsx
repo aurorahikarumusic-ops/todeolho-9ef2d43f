@@ -114,7 +114,17 @@ export default function Perfil() {
       
       verifyPayment();
     } else if (payment === "cancelled") {
-      toast.info("Pagamento cancelado. Sua carta foi salva como rascunho.");
+      const cancelledLetterId = searchParams.get("letter_id");
+      if (cancelledLetterId) {
+        supabase
+          .from("love_letters")
+          .delete()
+          .eq("id", cancelledLetterId)
+          .then(() => {
+            queryClient.invalidateQueries({ queryKey: ["sent-letters"] });
+          });
+      }
+      toast.info("Pagamento cancelado. A carta não paga foi removida.");
       setSearchParams({}, { replace: true });
     }
   }, [searchParams]);
