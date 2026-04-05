@@ -29,6 +29,8 @@ export default function Dashboard() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
   const { data: partner, isLoading: partnerLoading } = useFamilyPartner();
+  const { data: redemptionTrigger } = useRedemptionCheck();
+  const [showRedencao, setShowRedencao] = useState(false);
   const navigate = useNavigate();
 
   const now = new Date();
