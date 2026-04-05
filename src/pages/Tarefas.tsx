@@ -392,9 +392,9 @@ export default function Tarefas() {
 
           {/* Expanded details */}
           {isExpanded && (
-            <div className="mt-3 pt-3 border-t border-muted/20 space-y-3 animate-fade-in">
+            <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.2)" : "1px solid hsl(0 0% 22%)" }}>
               {task.description && (
-                <p className="text-xs font-body text-muted-foreground">📝 {task.description}</p>
+                <p className="text-xs font-body" style={!isMom ? { color: "hsl(0 0% 55%)" } : { color: "hsl(var(--muted-foreground))" }}>📝 {task.description}</p>
               )}
 
               <div className="flex items-center gap-2">
@@ -405,7 +405,7 @@ export default function Tarefas() {
                     <>{isMom ? "Você criou" : "Mãe mandou"}</>
                   )}
                 </Badge>
-                <span className="text-[9px] text-muted-foreground/50">
+                <span className="text-[9px]" style={!isMom ? { color: "hsl(0 0% 40%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
                   {format(new Date(task.created_at), "dd/MM")}
                 </span>
               </div>

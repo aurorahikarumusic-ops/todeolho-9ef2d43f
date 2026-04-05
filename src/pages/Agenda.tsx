@@ -471,25 +471,25 @@ export default function Agenda() {
                             "Mãe adicionou"
                           )}
                         </Badge>
-                        <span className="text-[9px] text-muted-foreground/50 font-body">
+                        <span className="text-[9px] font-body" style={!isMom ? { color: "hsl(0 0% 40%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
                           {getTimeLabel(eventDate)}
                         </span>
                       </div>
                     </div>
 
-                    <ChevronRight className={`w-4 h-4 text-muted-foreground/40 transition-transform duration-300 mt-2 ${isExpanded ? "rotate-90" : ""}`} />
+                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 mt-2 ${isExpanded ? "rotate-90" : ""}`} style={!isMom ? { color: "hsl(0 0% 35%)" } : { color: "hsl(var(--muted-foreground) / 0.4)" }} />
                   </div>
 
                   {/* Expanded content */}
                   {isExpanded && (
-                    <div className="mt-3 pt-3 border-t border-muted/30 space-y-3 animate-fade-in">
+                    <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.3)" : "1px solid hsl(0 0% 22%)" }}>
                       {event.description && (
-                        <p className="text-xs font-body text-muted-foreground">
+                        <p className="text-xs font-body" style={!isMom ? { color: "hsl(0 0% 55%)" } : { color: "hsl(var(--muted-foreground))" }}>
                           📝 {event.description}
                         </p>
                       )}
 
-                      <p className="text-[10px] font-body italic text-muted-foreground/70">
+                      <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(0 0% 45%)" } : { color: "hsl(var(--muted-foreground) / 0.7)" }}>
                         {isDadEvent
                           ? "Você mesmo adicionou. Parabéns pela iniciativa."
                           : isPast
