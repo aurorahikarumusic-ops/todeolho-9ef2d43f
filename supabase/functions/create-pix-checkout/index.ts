@@ -33,7 +33,6 @@ serve(async (req) => {
       apiVersion: "2025-08-27.basil",
     });
 
-    // Check existing Stripe customer
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
     let customerId: string | undefined;
     if (customers.data.length > 0) {
@@ -58,7 +57,7 @@ serve(async (req) => {
         user_id: user.id,
       },
       success_url: `${origin}/perfil?payment=success&letter_id=${letterId}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/perfil?payment=cancelled`,
+      cancel_url: `${origin}/perfil?payment=cancelled&letter_id=${letterId}`,
     });
 
     return new Response(JSON.stringify({ url: session.url }), {

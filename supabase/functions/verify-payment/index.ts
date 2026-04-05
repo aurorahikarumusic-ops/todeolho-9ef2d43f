@@ -19,7 +19,6 @@ serve(async (req) => {
   );
 
   try {
-    // Authenticate user
     const anonClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_ANON_KEY") ?? "",
@@ -38,7 +37,6 @@ serve(async (req) => {
       apiVersion: "2025-08-27.basil",
     });
 
-    // Retrieve the checkout session
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (session.payment_status !== "paid") {
@@ -55,7 +53,7 @@ serve(async (req) => {
       throw new Error("Invalid session metadata");
     }
 
-    // Mark letter as paid using service role
+    // Mark letter as paid
     const { error: updateErr } = await supabaseClient
       .from("love_letters")
       .update({
@@ -66,6 +64,15 @@ serve(async (req) => {
       .eq("sender_id", user.id);
 
     if (updateErr) throw updateErr;
+
+    // Cleanup: delete all unpaid letters older than 1 hour for this user
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    await supabaseClient
+      .from("love_letters")
+      .delete()
+      .eq("sender_id", user.id)
+      .eq("paid", false)
+      .lt("created_at", oneHourAgo);
 
     // Award points and badge
     const { data: profile } = await supabaseClient
@@ -81,7 +88,6 @@ serve(async (req) => {
         .eq("user_id", user.id);
     }
 
-    // Try to award badge (ignore duplicate)
     await supabaseClient.from("achievements").insert({
       user_id: user.id,
       badge_key: "redimido",
