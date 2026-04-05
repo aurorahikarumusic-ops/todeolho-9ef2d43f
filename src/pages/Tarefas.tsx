@@ -481,28 +481,52 @@ export default function Tarefas() {
         style={{
           background: isMom
             ? "linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1)"
-            : "linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(var(--primary) / 0.05))",
+            : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%), hsl(var(--arena-dark)))",
           perspective: "800px",
         }}
       >
-        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
-          style={{ background: isMom ? "#e91e63" : "hsl(var(--primary))" }} />
+        {isMom ? (
+          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
+            style={{ background: "#e91e63" }} />
+        ) : (
+          <>
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-40"
+              style={{ background: "hsl(var(--arena-neon))" }} />
+            <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-3xl opacity-20"
+              style={{ background: "hsl(var(--arena-fire))" }} />
+            <div className="absolute inset-0 opacity-[0.04]" style={{
+              backgroundImage: "linear-gradient(hsl(var(--arena-neon)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-neon)) 1px, transparent 1px)",
+              backgroundSize: "28px 28px",
+            }} />
+            <div className="absolute top-0 left-6 right-6 h-px" style={{
+              background: "linear-gradient(90deg, transparent, hsl(var(--arena-neon) / 0.5), transparent)",
+            }} />
+          </>
+        )}
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
-            {isMom ? <Shield className="w-6 h-6 text-pink-600" /> : <CheckSquare className="w-6 h-6 text-primary" />}
-            <h1 className="font-display text-xl font-bold">
-              {isMom ? "Painel de Controle" : "Missões do Pai"}
+            {isMom ? <Shield className="w-6 h-6 text-pink-600" /> : <CheckSquare className="w-6 h-6" style={{ color: "hsl(var(--arena-neon))", filter: "drop-shadow(0 0 6px hsl(var(--arena-neon) / 0.5))" }} />}
+            <h1 className="font-display text-xl font-bold" style={!isMom ? {
+              background: "linear-gradient(135deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)), hsl(var(--arena-neon)))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            } : undefined}>
+              {isMom ? "Painel de Controle" : "⚔️ Missões do Pai"}
             </h1>
           </div>
-          <p className="text-xs text-muted-foreground font-body italic mb-4">{subtitle}</p>
+          <p className={`text-xs font-body italic mb-4 ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(var(--arena-glow) / 0.7)" } : undefined}>{subtitle}</p>
 
           {/* Quick stats */}
           <div className="flex gap-2">
-            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
-              <p className="font-display text-2xl font-black">{pending.length}</p>
-              <p className="text-[8px] text-muted-foreground font-body uppercase tracking-wider">Pendentes</p>
+            <div className={`flex-1 backdrop-blur-sm rounded-2xl p-3 text-center`}
+              style={{
+                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
+                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
+                border: isMom ? undefined : "1px solid hsl(var(--arena-neon) / 0.15)",
+              }}>
+              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-neon))", textShadow: "0 0 8px hsl(var(--arena-neon) / 0.4)" } : undefined}>{pending.length}</p>
+              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(0 0% 60%)" } : undefined}>Pendentes</p>
             </div>
             {isMom && (
               <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
@@ -511,15 +535,23 @@ export default function Tarefas() {
                 <p className="text-[8px] text-muted-foreground font-body uppercase tracking-wider">Aprovação</p>
               </div>
             )}
-            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
-              <p className="font-display text-2xl font-black" style={{ color: "hsl(var(--primary))" }}>{completed.length}</p>
-              <p className="text-[8px] text-muted-foreground font-body uppercase tracking-wider">Feitas</p>
+            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{
+                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
+                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
+                border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.15)",
+              }}>
+              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-gold))", textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)" } : { color: "hsl(var(--primary))" }}>{completed.length}</p>
+              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(0 0% 60%)" } : undefined}>Feitas</p>
             </div>
-            <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
-              <p className="font-display text-2xl font-black text-red-500">{isMom ? rescued.length : overdue.length}</p>
-              <p className="text-[8px] text-muted-foreground font-body uppercase tracking-wider">{isMom ? "Resgates" : "Atrasadas"}</p>
+            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
+              style={{
+                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
+                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
+                border: isMom ? undefined : "1px solid hsl(var(--arena-fire) / 0.15)",
+              }}>
+              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-fire))", textShadow: "0 0 8px hsl(var(--arena-fire) / 0.3)" } : { color: "#ef4444" }}>{isMom ? rescued.length : overdue.length}</p>
+              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(0 0% 60%)" } : undefined}>{isMom ? "Resgates" : "Atrasadas"}</p>
             </div>
           </div>
         </div>
