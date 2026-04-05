@@ -13,7 +13,7 @@ function DadLoginForm() {
   const { signUp, signIn } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: "" });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
