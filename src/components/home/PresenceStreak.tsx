@@ -146,7 +146,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
     ? "#ef4444" : displayStreak >= 7
     ? "#f97316" : displayStreak >= 3
     ? "#eab308" : displayStreak >= 1
-    ? "hsl(var(--primary))" : "#94a3b8";
+    ? "hsl(var(--arena-neon))" : "#94a3b8";
 
   const gradientTo = displayStreak >= 14
     ? "#dc2626" : displayStreak >= 7
@@ -199,9 +199,9 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
             {statusLabel}
           </div>
           {checkedToday && (
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/20 border border-green-500/30">
-              <span className="text-green-500 text-[10px]">✓</span>
-              <span className="text-[9px] font-display font-bold text-green-400">PRESENTE HOJE</span>
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[hsl(var(--arena-neon)/0.15)] border border-[hsl(var(--arena-neon)/0.3)]">
+              <span className="text-[hsl(var(--arena-neon))] text-[10px]">✓</span>
+              <span className="text-[9px] font-display font-bold text-[hsl(var(--arena-neon))]">PRESENTE HOJE</span>
             </div>
           )}
         </div>
@@ -281,12 +281,12 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                       background: blockActive
                         ? isToday
                           ? `linear-gradient(180deg, ${gradientFrom}, ${gradientTo})`
-                          : "linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary) / 0.7))"
+                          : "linear-gradient(180deg, hsl(var(--arena-neon)), hsl(var(--arena-neon) / 0.6))"
                         : "linear-gradient(180deg, hsl(220 30% 22%), hsl(220 30% 18%))",
                       boxShadow: blockActive
                         ? isToday
                           ? `0 4px 16px ${glowColor}, inset 0 1px 0 rgba(255,255,255,0.3)`
-                          : "0 3px 8px hsl(var(--primary) / 0.25), inset 0 1px 0 rgba(255,255,255,0.15)"
+                          : "0 3px 8px hsl(var(--arena-neon) / 0.25), inset 0 1px 0 rgba(255,255,255,0.15)"
                         : "0 1px 3px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.08)",
                     }}
                   />
@@ -313,7 +313,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                 <span
                   className={`text-[9px] font-display font-semibold tracking-wide ${
                     isToday
-                      ? checkedToday ? "text-green-500 font-black" : "text-orange-400 font-black"
+                      ? checkedToday ? "text-[hsl(var(--arena-neon))] font-black" : "text-orange-400 font-black"
                       : blockActive ? "text-white/60" : "text-white/30"
                   }`}
                 >
@@ -382,7 +382,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                 : "Marcar presença agora"}
             </div>
           ) : (
-            <p className="text-[10px] text-green-400/70 font-body italic">
+            <p className="text-[10px] text-[hsl(var(--arena-neon))]/70 font-body italic">
               ✓ Presença confirmada. Agora vai fazer algo útil ou só veio olhar?
             </p>
           )}
