@@ -842,50 +842,86 @@ export default function Perfil() {
 
       {/* ═══════════════════ SECTION 8: Settings & Legal ═══════════════════ */}
       <section className="space-y-2">
-        <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3">
-          <Shield className="w-4 h-4" /> Configurações
+        <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3"
+          style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+          <Shield className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Configurações
         </h2>
 
-        <div className="grid grid-cols-2 gap-2">
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-3 text-center">
-              <p className="text-[10px] text-muted-foreground font-body mb-1">Código família</p>
-              <p className="text-xs font-mono font-bold">{profile.family_code || "—"}</p>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-3 text-center">
-              <p className="text-[10px] text-muted-foreground font-body mb-1">Membro desde</p>
-              <p className="text-xs font-bold">{format(new Date(profile.created_at), "dd/MM/yy")}</p>
-            </CardContent>
-          </Card>
-        </div>
+        {isMom ? (
+          <div className="grid grid-cols-2 gap-2">
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-3 text-center">
+                <p className="text-[10px] text-muted-foreground font-body mb-1">Código família</p>
+                <p className="text-xs font-mono font-bold">{profile.family_code || "—"}</p>
+              </CardContent>
+            </Card>
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-3 text-center">
+                <p className="text-[10px] text-muted-foreground font-body mb-1">Membro desde</p>
+                <p className="text-xs font-bold">{format(new Date(profile.created_at), "dd/MM/yy")}</p>
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-xl p-3 text-center" style={{
+              background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+              border: "1px solid hsl(var(--arena-gold) / 0.12)",
+            }}>
+              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(0 0% 50%)" }}>Código família</p>
+              <p className="text-xs font-mono font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{profile.family_code || "—"}</p>
+            </div>
+            <div className="rounded-xl p-3 text-center" style={{
+              background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+              border: "1px solid hsl(var(--arena-gold) / 0.12)",
+            }}>
+              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(0 0% 50%)" }}>Membro desde</p>
+              <p className="text-xs font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{format(new Date(profile.created_at), "dd/MM/yy")}</p>
+            </div>
+          </div>
+        )}
 
         {/* Actions */}
         <div className="flex gap-2 pt-2">
-          <Button
-            variant="outline"
-            className={`flex-1 text-xs h-9 font-display ${isMom ? `${accentBorder} ${accent}` : ""}`}
-            onClick={async () => {
-              const perm = await getNotificationPermission();
-              if (perm !== "granted" && user) await requestPushSubscription(user.id);
-              const msgs = isMom
-                ? ["Teste de notificação. Tudo ok, chefe. 👑"]
-                : ["Você esqueceu algo. Não sabemos o quê. Mas você sabe."];
-              sendLocalNotification("Estou de Olho 👁️", msgs[0]);
-            }}
-          >
-            <Bell className="w-3.5 h-3.5" /> Testar notificação
-          </Button>
-
-          {!isMom && (
-            <Button variant="outline" className="flex-1 text-xs h-9 font-display" onClick={() => {
-              const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nEstou de Olho — porque alguém tem que lembrar`;
-              if (navigator.share) navigator.share({ text });
-              else { navigator.clipboard.writeText(text); toast("DNA copiado!"); }
-            }}>
-              <Share2 className="w-3.5 h-3.5" /> Compartilhar DNA
+          {isMom ? (
+            <Button
+              variant="outline"
+              className={`flex-1 text-xs h-9 font-display ${accentBorder} ${accent}`}
+              onClick={async () => {
+                const perm = await getNotificationPermission();
+                if (perm !== "granted" && user) await requestPushSubscription(user.id);
+                sendLocalNotification("Estou de Olho 👁️", "Teste de notificação. Tudo ok, chefe. 👑");
+              }}
+            >
+              <Bell className="w-3.5 h-3.5" /> Testar notificação
             </Button>
+          ) : (
+            <>
+              <Button
+                className="flex-1 text-xs h-9 font-display border-0 text-white"
+                style={{
+                  background: "hsl(var(--arena-dark) / 0.9)",
+                  border: "1px solid hsl(var(--arena-neon) / 0.2)",
+                  color: "hsl(var(--arena-neon))",
+                }}
+                onClick={async () => {
+                  const perm = await getNotificationPermission();
+                  if (perm !== "granted" && user) await requestPushSubscription(user.id);
+                  sendLocalNotification("Estou de Olho 👁️", "Você esqueceu algo. Não sabemos o quê. Mas você sabe.");
+                }}
+              >
+                <Bell className="w-3.5 h-3.5" /> Testar notificação
+              </Button>
+              <Button className="flex-1 text-xs h-9 font-display border-0 text-white" style={{
+                background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+              }} onClick={() => {
+                const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nEstou de Olho — porque alguém tem que lembrar`;
+                if (navigator.share) navigator.share({ text });
+                else { navigator.clipboard.writeText(text); toast("DNA copiado!"); }
+              }}>
+                <Share2 className="w-3.5 h-3.5" /> Compartilhar DNA
+              </Button>
+            </>
           )}
         </div>
 
@@ -898,7 +934,10 @@ export default function Perfil() {
             { path: "/suporte", label: "Suporte", icon: "💬" },
           ].map(link => (
             <button key={link.path} onClick={() => navigate(link.path)}
-              className="text-left text-xs text-muted-foreground font-body hover:text-foreground transition-colors py-2 px-3 rounded-lg hover:bg-muted/50 flex items-center gap-1.5">
+              className={isMom ? "text-left text-xs text-muted-foreground font-body hover:text-foreground transition-colors py-2 px-3 rounded-lg hover:bg-muted/50 flex items-center gap-1.5" : "text-left text-xs font-body transition-colors py-2 px-3 rounded-lg flex items-center gap-1.5"}
+              style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}
+              onMouseEnter={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--arena-gold))"); }}
+              onMouseLeave={e => { if (!isMom) (e.currentTarget.style.color = "hsl(0 0% 50%)"); }}>
               <span>{link.icon}</span> {link.label}
             </button>
           ))}
@@ -907,7 +946,8 @@ export default function Perfil() {
         {/* Logout */}
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="ghost" className="w-full text-destructive font-display text-sm mt-2">
+            <Button variant="ghost" className={`w-full font-display text-sm mt-2 ${isMom ? "text-destructive" : ""}`}
+              style={!isMom ? { color: "hsl(var(--arena-fire))" } : undefined}>
               <LogOut className="w-4 h-4 mr-2" /> Sair do app
             </Button>
           </AlertDialogTrigger>
