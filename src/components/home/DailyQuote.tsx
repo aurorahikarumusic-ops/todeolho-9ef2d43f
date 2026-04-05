@@ -39,7 +39,7 @@ export default function DailyQuote() {
     <div
       className="rounded-2xl p-4 relative overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
         borderLeft: "4px solid hsl(var(--arena-fire))",
         border: "1px solid hsl(var(--arena-fire) / 0.12)",
         borderLeftWidth: "4px",
@@ -60,8 +60,8 @@ export default function DailyQuote() {
         "{quote}"
       </p>
       <div className="flex items-center justify-end gap-1 mt-2">
-        <CalendarDays className="w-3 h-3" style={{ color: "hsl(220 15% 70%)" }} />
-        <span className="text-[10px] font-body" style={{ color: "hsl(220 15% 70%)" }}>{today}</span>
+        <CalendarDays className="w-3 h-3" style={{ color: "hsl(30 15% 70%)" }} />
+        <span className="text-[10px] font-body" style={{ color: "hsl(30 15% 70%)" }}>{today}</span>
       </div>
     </div>
   );

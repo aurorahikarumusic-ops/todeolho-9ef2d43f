@@ -139,7 +139,7 @@ export default function MomDashboard() {
       <MomLetterNotification />
 
       {/* Partner banner */}
-      {!partnerLoading && !partner && (
+      {!partnerLoading && !profile.family_id && (
         <div className="space-y-2">
           <Card className="border-mom-border border-dashed bg-mom-bg/50">
             <CardContent className="p-4 text-center">

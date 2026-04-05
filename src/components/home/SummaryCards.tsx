@@ -95,14 +95,14 @@ function ArenaCard({
     <div
       className="rounded-xl p-3.5 relative overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
         border: `1px solid hsl(var(${accentVar}) / 0.12)`,
         boxShadow: "0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03)",
       }}
     >
       <div className="flex items-center gap-1.5 mb-1.5">
         {icon}
-        <span className="text-[11px] font-body" style={{ color: "hsl(220 15% 75%)" }}>{label}</span>
+        <span className="text-[11px] font-body" style={{ color: "hsl(30 15% 75%)" }}>{label}</span>
       </div>
       <p
         className="font-display text-xl font-bold truncate"
@@ -120,14 +120,14 @@ function ArenaCard({
               key={s}
               className="w-3 h-3"
               style={{
-                color: s <= stars ? "hsl(var(--arena-gold))" : "hsl(220 15% 50%)",
+                color: s <= stars ? "hsl(var(--arena-gold))" : "hsl(30 15% 50%)",
                 fill: s <= stars ? "hsl(var(--arena-gold))" : "none",
               }}
             />
           ))}
         </div>
       )}
-      <p className="text-[10px] font-body italic mt-1" style={{ color: "hsl(220 15% 70%)" }}>
+      <p className="text-[10px] font-body italic mt-1" style={{ color: "hsl(30 15% 70%)" }}>
         {comment}
       </p>
     </div>
