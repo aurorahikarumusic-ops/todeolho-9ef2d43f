@@ -173,13 +173,16 @@ export default function Dashboard() {
 
       {/* Connect with Mom Banner */}
       {!partnerLoading && !partner && (
-        <Card className="border-primary/30 border-dashed bg-dad-bg">
+        <Card className="border-dashed" style={{
+          borderColor: "hsl(var(--arena-gold) / 0.2)",
+          background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.8), hsl(220 25% 16%))",
+        }}>
           <CardContent className="p-4 text-center">
-            <Users className="w-8 h-8 text-primary mx-auto mb-2" />
-            <p className="font-display font-bold text-sm text-dad-text mb-1">
+            <Users className="w-8 h-8 mx-auto mb-2" style={{ color: "hsl(var(--arena-gold))" }} />
+            <p className="font-display font-bold text-sm mb-1" style={{ color: "hsl(0 0% 85%)" }}>
               Conecte-se com a mãe
             </p>
-            <p className="font-body text-xs text-muted-foreground mb-3">
+            <p className="font-body text-xs mb-3" style={{ color: "hsl(0 0% 50%)" }}>
               Peça o código de 6 dígitos pra ela. Sem ele, você tá jogando sozinho.
             </p>
             <JoinFamily />
