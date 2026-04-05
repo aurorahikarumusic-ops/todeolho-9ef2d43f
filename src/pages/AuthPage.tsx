@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Eye, UserPlus, LogIn, Crown, ArrowLeft, Link } from "lucide-react";
+import { Eye, EyeOff, UserPlus, LogIn, Crown, ArrowLeft, Link } from "lucide-react";
 import GrandmaLoginForm from "@/components/grandma/GrandmaLoginForm";
 
 function translateAuthError(msg: string): string {
@@ -36,6 +36,7 @@ function DadLoginForm() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,15 +132,25 @@ function DadLoginForm() {
             <label className="text-sm font-body font-semibold text-foreground mb-1 block">
               Senha {isSignUp && "(forte, tipo a mãe quando tá brava)"}
             </label>
-            <Input
-              type="password"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-              minLength={6}
-              className="font-body"
-            />
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
+                minLength={6}
+                className="font-body pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
           <Button
@@ -214,6 +225,7 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -287,15 +299,25 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
             <label className="text-sm font-body font-semibold text-foreground mb-1 block">
               Senha {isSignUp && "(forte como você)"}
             </label>
-            <Input
-              type="password"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-              minLength={6}
-              className="font-body border-[hsl(340,72%,80%)] focus-visible:ring-[hsl(340,72%,57%)]"
-            />
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
+                minLength={6}
+                className="font-body border-[hsl(340,72%,80%)] focus-visible:ring-[hsl(340,72%,57%)] pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
           <Button

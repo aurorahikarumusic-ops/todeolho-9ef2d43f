@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
-import { ArrowLeft, LogIn, UserPlus, Link } from "lucide-react";
+import { ArrowLeft, LogIn, UserPlus, Link, Eye, EyeOff } from "lucide-react";
 
 function translateAuthError(msg: string): string {
   if (!msg) return "Algo deu errado. Tenta de novo, vovó.";
@@ -47,6 +47,7 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const randomPhrase = GRANDMA_PHRASES[Math.floor(Math.random() * GRANDMA_PHRASES.length)];
   const randomTip = GRANDMA_SIGNUP_TIPS[Math.floor(Math.random() * GRANDMA_SIGNUP_TIPS.length)];
@@ -174,15 +175,25 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
             <label className="text-sm font-body font-semibold text-foreground mb-1 block">
               Senha {isSignUp && "(não é 123456, vovó!)"}
             </label>
-            <Input
-              type="password"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-              minLength={6}
-              className="font-body border-avo-border focus-visible:ring-avo"
-            />
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
+                minLength={6}
+                className="font-body border-avo-border focus-visible:ring-avo pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
           <Button
