@@ -32,7 +32,16 @@ import AvoPerfil from "./pages/AvoPerfil";
 import GrandmaSuggestionsFloat from "./components/grandma/GrandmaSuggestionsFloat";
 import MuralPalpites from "./pages/MuralPalpites";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 2, // 2 min — avoid redundant refetches
+      gcTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 
 function AppRoutes() {
