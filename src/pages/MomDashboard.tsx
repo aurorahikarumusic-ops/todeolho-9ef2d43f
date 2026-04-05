@@ -203,6 +203,9 @@ export default function MomDashboard() {
         </Card>
       )}
 
+      {/* Grandma Palpites */}
+      <GrandmaPalpitesCard />
+
       {/* Monthly Challenge */}
       <MonthlyChallenge />
 

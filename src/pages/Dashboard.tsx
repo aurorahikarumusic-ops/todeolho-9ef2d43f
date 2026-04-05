@@ -186,7 +186,10 @@ export default function Dashboard() {
         momRating={null}
       />
 
-      {/* 6. Share Week Card */}
+      {/* 6. Grandma Palpites */}
+      <GrandmaPalpitesCard />
+
+      {/* 7. Share Week Card */}
       <ShareWeekCard
         displayName={profile.display_name}
         tasksCompleted={tasksCompleted}
