@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { useReceivedLetters } from "@/hooks/useRedemption";
+import { useReceivedLetters, useDeleteLetter } from "@/hooks/useRedemption";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { Trash2 } from "lucide-react";
 import AnimatedLetter from "./AnimatedLetter";
 
 const TONE_LABELS: Record<string, { label: string; emoji: string }> = {
@@ -15,6 +20,7 @@ const TONE_LABELS: Record<string, { label: string; emoji: string }> = {
 
 export default function CartasRecebidas() {
   const { data: letters = [] } = useReceivedLetters();
+  const deleteLetter = useDeleteLetter();
   const [viewing, setViewing] = useState<string | null>(null);
 
   const viewingLetter = letters.find(l => l.id === viewing);
@@ -84,6 +90,33 @@ export default function CartasRecebidas() {
                   {letter.saved_by_recipient && " • ❤️ guardada"}
                 </p>
               </div>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    onClick={(e) => e.stopPropagation()}
+                    className="p-2 rounded-full hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors shrink-0"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Excluir carta?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Esta ação não pode ser desfeita. A carta será removida permanentemente.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => deleteLetter.mutate(letter.id)}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      Excluir
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </CardContent>
           </Card>
         );

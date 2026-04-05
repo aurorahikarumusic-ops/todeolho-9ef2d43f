@@ -22,7 +22,7 @@ import { format, differenceInHours, startOfMonth, endOfMonth, startOfWeek, forma
 import { ptBR } from "date-fns/locale";
 import {
   User, Edit2, Trophy, Flame, Star, LifeBuoy, CheckSquare, CalendarDays,
-  LogOut, Share2, ChevronRight, Baby, Shield, Clock, Bell, Crown, Gem, Gavel, Lock, ChevronLeft
+  LogOut, Share2, ChevronRight, Baby, Shield, Clock, Bell, Crown, Gem, Gavel, Lock, ChevronLeft, Trash2
 } from "lucide-react";
 import { getDadTitle } from "@/lib/constants";
 import { MOM_BADGES } from "@/lib/mom-constants";
@@ -31,7 +31,7 @@ import JoinFamily from "@/components/family/JoinFamily";
 import PalpitesHistorySection from "@/components/profile/PalpitesHistorySection";
 import CartasRecebidas from "@/components/redemption/CartasRecebidas";
 import ModoRedencao from "@/components/redemption/ModoRedencao";
-import { useSentLetters } from "@/hooks/useRedemption";
+import { useSentLetters, useDeleteLetter } from "@/hooks/useRedemption";
 import { sendLocalNotification, getNotificationPermission, requestPushSubscription } from "@/lib/pushNotifications";
 
 const DAD_ACHIEVEMENTS = {
@@ -73,6 +73,7 @@ export default function Perfil() {
   const [showChildSheet, setShowChildSheet] = useState(false);
   const [showRedencao, setShowRedencao] = useState(false);
   const { data: sentLetters = [] } = useSentLetters();
+  const deleteLetter = useDeleteLetter();
   const [newChild, setNewChild] = useState({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" });
   const [selectedBadge, setSelectedBadge] = useState<{ emoji: string; name: string; desc: string } | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -464,6 +465,44 @@ export default function Perfil() {
               >
                 ✉️ Escrever carta
               </Button>
+              {sentLetters.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Cartas enviadas</p>
+                  {sentLetters.map(letter => (
+                    <div key={letter.id} className="flex items-center gap-2 rounded-lg px-3 py-2 bg-white/60 border border-[hsl(340,60%,90%)]">
+                      <span className="text-sm">✉️</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium truncate">{letter.recipient_name || "Amor"}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{letter.content.slice(0, 40)}...</p>
+                      </div>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <button className="p-1.5 rounded-full hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors shrink-0">
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Excluir carta enviada?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Esta ação não pode ser desfeita.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => deleteLetter.mutate(letter.id)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Excluir
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </section>

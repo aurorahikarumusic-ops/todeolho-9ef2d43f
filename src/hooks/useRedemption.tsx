@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
+import { toast } from "sonner";
 import { useProfile } from "./useProfile";
 import { useFamilyPartner } from "./useFamily";
 import { startOfWeek, startOfMonth, endOfMonth, differenceInDays } from "date-fns";
@@ -186,5 +187,28 @@ export function useSentLetters() {
       return data || [];
     },
     enabled: !!user,
+  });
+}
+
+export function useDeleteLetter() {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (letterId: string) => {
+      const { error } = await supabase
+        .from("love_letters")
+        .delete()
+        .eq("id", letterId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["sent-letters"] });
+      qc.invalidateQueries({ queryKey: ["received-letters"] });
+      toast.success("Carta excluída com sucesso");
+    },
+    onError: () => {
+      toast.error("Erro ao excluir carta");
+    },
   });
 }
