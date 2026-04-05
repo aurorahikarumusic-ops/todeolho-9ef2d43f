@@ -186,6 +186,11 @@ export default function Dashboard() {
         hasCompletedToday={hasCompletedToday}
       />
 
+      {/* Modo Redenção Card */}
+      {redemptionTrigger && (
+        <RedemptionCard trigger={redemptionTrigger} onStartLetter={() => setShowRedencao(true)} />
+      )}
+
       {/* 2. Dad Gauge */}
       <DadGauge percentage={gaugePercentage} />
 
