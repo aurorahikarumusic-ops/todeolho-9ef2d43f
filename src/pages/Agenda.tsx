@@ -314,21 +314,26 @@ export default function Agenda() {
 
       {/* Calendar with 3D card */}
       <div
-        className="rounded-3xl overflow-hidden bg-card"
+        className="rounded-3xl overflow-hidden"
         style={{
-          boxShadow: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)",
+          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.85), hsl(220 25% 18%))",
+          boxShadow: isMom
+            ? "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)"
+            : "0 8px 30px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-gold) / 0.05), inset 0 1px 0 rgba(255,255,255,0.05)",
+          border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.1)",
         }}
       >
         <div className="px-4 pt-3 pb-1 flex items-center justify-between">
-          <p className="text-xs font-display font-bold text-muted-foreground uppercase tracking-wider">
+          <p className={`text-xs font-display font-bold uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`}
+            style={!isMom ? { color: "hsl(var(--arena-gold) / 0.7)" } : undefined}>
             📅 Calendário
           </p>
           <div className="flex gap-2 text-[9px] font-body">
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-secondary inline-block" /> Mãe ({momCount})
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(0 0% 55%)" } : undefined}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--secondary))" : "hsl(var(--arena-fire))" }} /> Mãe ({momCount})
             </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-primary inline-block" /> Pai ({dadCount})
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(0 0% 55%)" } : undefined}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--primary))" : "hsl(var(--arena-neon))" }} /> Pai ({dadCount})
             </span>
           </div>
         </div>
