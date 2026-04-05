@@ -759,32 +759,41 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 7: Children ═══════════════════ */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-display text-base font-bold flex items-center gap-2">
-            <Baby className="w-4 h-4" /> Filhos
+          <h2 className="font-display text-base font-bold flex items-center gap-2"
+            style={!isMom ? { color: "hsl(0 0% 88%)" } : undefined}>
+            <Baby className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Filhos
           </h2>
-          <Button size="sm" variant="outline" className={`h-7 text-xs ${isMom ? `${accentBorder} ${accent}` : ""}`} onClick={() => setShowChildSheet(true)}>
-            Adicionar
-          </Button>
+          {isMom ? (
+            <Button size="sm" variant="outline" className={`h-7 text-xs ${accentBorder} ${accent}`} onClick={() => setShowChildSheet(true)}>
+              Adicionar
+            </Button>
+          ) : (
+            <Button size="sm" className="h-7 text-xs border-0 text-white" style={{
+              background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+            }} onClick={() => setShowChildSheet(true)}>
+              Adicionar
+            </Button>
+          )}
         </div>
 
         {children.length === 0 ? (
-          <p className="text-xs text-muted-foreground font-body italic text-center py-4">
+          <p className="text-xs font-body italic text-center py-4"
+            style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}
+            className={isMom ? "text-xs text-muted-foreground font-body italic text-center py-4" : "text-xs font-body italic text-center py-4"}>
             {isMom ? "Nenhum filho cadastrado ainda." : "Nenhum filho cadastrado. Você tem filhos, né?"}
           </p>
         ) : (
           <div className="space-y-2">
             {children.map((child: any) => {
               const pct = getChildCompletion(child);
-              return (
+              return isMom ? (
                 <Card key={child.id} className="border-0 shadow-sm">
                   <CardContent className="p-3">
                     <div className="flex items-center gap-3 mb-1.5">
                       <div className="w-9 h-9 rounded-full bg-accent/20 flex items-center justify-center text-base">👶</div>
                       <div className="flex-1 min-w-0">
                         <p className="font-display font-bold text-sm">{child.name}</p>
-                        {child.birth_date && (
-                          <p className="text-[10px] text-muted-foreground">{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>
-                        )}
+                        {child.birth_date && <p className="text-[10px] text-muted-foreground">{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
                       </div>
                       <span className={`text-xs font-display font-bold ${accent}`}>{pct}%</span>
                     </div>
@@ -797,6 +806,32 @@ export default function Perfil() {
                     </div>
                   </CardContent>
                 </Card>
+              ) : (
+                <div key={child.id} className="rounded-xl p-3" style={{
+                  background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+                  border: "1px solid hsl(var(--arena-gold) / 0.12)",
+                }}>
+                  <div className="flex items-center gap-3 mb-1.5">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-base" style={{ background: "hsl(var(--arena-gold) / 0.12)" }}>👶</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-display font-bold text-sm" style={{ color: "hsl(0 0% 88%)" }}>{child.name}</p>
+                      {child.birth_date && <p className="text-[10px]" style={{ color: "hsl(0 0% 50%)" }}>{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
+                    </div>
+                    <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{pct}%</span>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "hsl(0 0% 18%)" }}>
+                    <div className="h-full rounded-full transition-all" style={{
+                      width: `${pct}%`,
+                      background: "linear-gradient(90deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+                    }} />
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-1.5">
+                    {child.school && <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: "hsl(var(--arena-neon) / 0.1)", color: "hsl(var(--arena-neon) / 0.8)", border: "1px solid hsl(var(--arena-neon) / 0.15)" }}>🏫 {child.school}</span>}
+                    {child.doctor_name && <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: "hsl(var(--arena-electric) / 0.1)", color: "hsl(var(--arena-electric) / 0.8)", border: "1px solid hsl(var(--arena-electric) / 0.15)" }}>🏥 {child.doctor_name}</span>}
+                    {!child.school && <span className="text-[10px] italic" style={{ color: "hsl(var(--arena-fire) / 0.6)" }}>Falta: escola</span>}
+                    {!child.doctor_name && <span className="text-[10px] italic" style={{ color: "hsl(var(--arena-fire) / 0.6)" }}>Falta: pediatra</span>}
+                  </div>
+                </div>
               );
             })}
           </div>
