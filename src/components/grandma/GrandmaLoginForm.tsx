@@ -175,15 +175,25 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
             <label className="text-sm font-body font-semibold text-foreground mb-1 block">
               Senha {isSignUp && "(não é 123456, vovó!)"}
             </label>
-            <Input
-              type="password"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-              minLength={6}
-              className="font-body border-avo-border focus-visible:ring-avo"
-            />
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
+                minLength={6}
+                className="font-body border-avo-border focus-visible:ring-avo pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
           <Button
