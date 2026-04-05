@@ -336,11 +336,12 @@ export default function Tarefas() {
 
               <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
                 {task.due_date && (
-                  <span className={`text-[10px] flex items-center gap-1 px-2 py-0.5 rounded-full ${
+                <span className={`text-[10px] flex items-center gap-1 px-2 py-0.5 rounded-full ${
                     isOverdue
                       ? "bg-red-500/10 text-red-500 font-bold"
-                      : "bg-muted/50 text-muted-foreground"
-                  }`}>
+                      : isMom ? "bg-muted/50 text-muted-foreground" : ""
+                  }`}
+                  style={!isMom && !isOverdue ? { background: "hsl(0 0% 20%)", color: "hsl(0 0% 60%)" } : undefined}>
                     <Clock className="w-2.5 h-2.5" />
                     {format(new Date(task.due_date), "dd/MM · HH:mm")}
                     {isOverdue && " ⚠️"}
