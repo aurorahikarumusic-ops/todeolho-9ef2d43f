@@ -47,6 +47,7 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const randomPhrase = GRANDMA_PHRASES[Math.floor(Math.random() * GRANDMA_PHRASES.length)];
   const randomTip = GRANDMA_SIGNUP_TIPS[Math.floor(Math.random() * GRANDMA_SIGNUP_TIPS.length)];
