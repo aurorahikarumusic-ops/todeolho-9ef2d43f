@@ -836,19 +836,23 @@ export default function Ranking() {
 
               {/* Bottom card */}
               {ranking.length > 3 && (
-                <div className="rounded-xl p-3 text-center" style={{
+                <div className="rounded-xl p-3 text-center relative overflow-hidden" style={{
                   background: isMom
                     ? "linear-gradient(135deg, hsl(var(--mom-accent) / 0.05), hsl(var(--card)))"
-                    : "linear-gradient(135deg, hsl(var(--destructive) / 0.05), hsl(var(--card)))",
-                  border: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.2)" : "hsl(var(--destructive) / 0.2)"}`,
-                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
+                    : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.8), hsl(var(--destructive) / 0.08))",
+                  border: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.2)" : "hsl(var(--destructive) / 0.3)"}`,
+                  boxShadow: isMom ? "0 4px 16px rgba(0,0,0,0.04)" : "0 4px 16px rgba(0,0,0,0.12), 0 0 20px hsl(var(--destructive) / 0.05)",
                 }}>
-                  <p className="text-2xl mb-1">{isMom ? "👀" : "💀"}</p>
-                  <p className="font-display font-bold text-xs" style={{
+                  {!isMom && <div className="absolute inset-0 opacity-[0.03]" style={{
+                    backgroundImage: "repeating-linear-gradient(45deg, hsl(var(--destructive)) 0, hsl(var(--destructive)) 1px, transparent 1px, transparent 8px)",
+                  }} />}
+                  <p className="text-2xl mb-1 relative">{isMom ? "👀" : "💀"}</p>
+                  <p className="font-display font-bold text-xs relative" style={{
                     color: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--destructive))",
-                  }}>{isMom ? "Caso Perdido" : "Hall da Vergonha"}</p>
-                  <p className="text-[10px] font-body italic" style={{
-                    color: isMom ? "hsl(var(--mom-text) / 0.5)" : "hsl(var(--muted-foreground))",
+                    textShadow: isMom ? "none" : "0 0 8px hsl(var(--destructive) / 0.3)",
+                  }}>{isMom ? "Caso Perdido" : "⚰️ Hall da Vergonha Eterna"}</p>
+                  <p className="text-[10px] font-body italic relative" style={{
+                    color: isMom ? "hsl(var(--mom-text) / 0.5)" : "hsl(0 0% 60%)",
                   }}>
                     {ranking[ranking.length - 1]?.display_name?.split(" ")[0]} ocupa essa posição {isMom ? "preocupante" : "nobre"}.
                   </p>
