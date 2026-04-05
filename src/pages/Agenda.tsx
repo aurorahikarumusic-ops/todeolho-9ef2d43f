@@ -657,10 +657,10 @@ export default function Agenda() {
               style={{
                 background: isMom
                   ? "linear-gradient(135deg, #e91e63, #c2185b)"
-                  : "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+                  : "linear-gradient(135deg, hsl(var(--arena-electric)), hsl(var(--arena-neon)))",
                 boxShadow: isMom
                   ? "0 4px 16px rgba(233,30,99,0.3)"
-                  : "0 4px 16px hsl(var(--primary) / 0.25)",
+                  : "0 4px 16px hsl(var(--arena-electric) / 0.3)",
               }}
               onClick={() => addEventMutation.mutate()}
               disabled={!newEvent.title || !newEvent.event_date || addEventMutation.isPending}
