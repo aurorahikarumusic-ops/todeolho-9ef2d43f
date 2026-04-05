@@ -266,10 +266,15 @@ export default function Tarefas() {
           isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
         } ${task.rescued_by_mom ? "opacity-70" : ""}`}
         style={{
-          background: "hsl(var(--card))",
+          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
           boxShadow: isExpanded
-            ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
-            : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`,
+            ? isMom
+              ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
+              : `0 12px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05), -4px 0 0 ${cat.color}`
+            : isMom
+              ? `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`
+              : `0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03), -4px 0 0 ${cat.color}`,
+          border: isMom ? undefined : "1px solid hsl(0 0% 20%)",
         }}
         onClick={() => setExpandedTask(isExpanded ? null : task.id)}
       >
