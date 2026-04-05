@@ -166,14 +166,14 @@ export default function Agenda() {
         className="relative rounded-3xl p-5 overflow-hidden"
         style={{
           background: isMom
-            ? "linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1)"
+? "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))"
             : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%), hsl(var(--arena-dark)))",
           perspective: "800px",
         }}
       >
         {isMom ? (
           <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
-            style={{ background: "#e91e63" }} />
+            style={{ background: "hsl(var(--mom-accent))" }} />
         ) : (
           <>
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-30"
@@ -192,7 +192,7 @@ export default function Agenda() {
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
             {isMom ? (
-              <CalendarDays className="w-6 h-6 text-pink-600" />
+              <CalendarDays className="w-6 h-6 text-mom" />
             ) : (
               <CalendarDays className="w-6 h-6" style={{ color: "hsl(var(--arena-electric))", filter: "drop-shadow(0 0 6px hsl(var(--arena-electric) / 0.5))" }} />
             )}
@@ -574,11 +574,11 @@ export default function Agenda() {
         className="fixed bottom-20 right-4 z-40 rounded-2xl shadow-xl flex items-center gap-2 transition-all active:scale-95 px-5 h-12"
         style={{
           background: isMom
-            ? "linear-gradient(135deg, #e91e63, #c2185b)"
+            ? "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(var(--mom-accent-hover)))"
             : "linear-gradient(135deg, hsl(var(--arena-electric)), hsl(var(--arena-neon)))",
           color: "white",
           boxShadow: isMom
-            ? "0 6px 20px rgba(233,30,99,0.4)"
+            ? "0 6px 20px hsl(var(--mom-accent) / 0.4)"
             : "0 6px 20px hsl(var(--arena-electric) / 0.4), 0 0 30px hsl(var(--arena-neon) / 0.15)",
         }}
       >
@@ -680,10 +680,10 @@ export default function Agenda() {
               className="w-full font-display font-bold h-12 rounded-xl text-sm"
               style={{
                 background: isMom
-                  ? "linear-gradient(135deg, #e91e63, #c2185b)"
+                  ? "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(var(--mom-accent-hover)))"
                   : "linear-gradient(135deg, hsl(var(--arena-electric)), hsl(var(--arena-neon)))",
                 boxShadow: isMom
-                  ? "0 4px 16px rgba(233,30,99,0.3)"
+                  ? "0 4px 16px hsl(var(--mom-accent) / 0.3)"
                   : "0 4px 16px hsl(var(--arena-electric) / 0.3)",
               }}
               onClick={() => addEventMutation.mutate()}
