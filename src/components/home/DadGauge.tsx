@@ -57,7 +57,7 @@ export default function DadGauge({ percentage }: DadGaugeProps) {
 
   useEffect(() => {
     if (suspensePhase < 0 || suspensePhase >= phrases.length) return;
-    const delay = suspensePhase === phrases.length - 1 ? 1200 : 700 + Math.random() * 400;
+    const delay = suspensePhase === phrases.length - 1 ? 2200 : 1600 + Math.random() * 600;
     const timer = setTimeout(() => {
       if (suspensePhase < phrases.length - 1) {
         setSuspensePhase((p) => p + 1);
