@@ -129,7 +129,32 @@
   }
 }
 
-/* Kiss celebration animations */
+/* Dad dark calendar — force light text on dark bg */
+.dad-calendar-dark {
+  color: hsl(220 15% 85%);
+}
+.dad-calendar-dark .rdp-head_cell,
+.dad-calendar-dark .rdp-caption_label {
+  color: hsl(220 15% 80%);
+}
+.dad-calendar-dark .rdp-day {
+  color: hsl(220 15% 85%);
+}
+.dad-calendar-dark .rdp-day:hover {
+  background: hsl(220 30% 25%);
+  color: hsl(220 15% 95%);
+}
+.dad-calendar-dark .rdp-day_outside {
+  color: hsl(220 15% 45%);
+}
+.dad-calendar-dark .rdp-nav_button {
+  color: hsl(220 15% 70%);
+}
+.dad-calendar-dark .rdp-nav_button:hover {
+  background: hsl(220 30% 25%);
+}
+
+
 @keyframes kiss-float {
   0% {
     transform: translateY(100vh) scale(0.5) rotate(0deg);
