@@ -426,7 +426,12 @@ export default function Perfil() {
         </section>
       )}
 
-
+      {/* ═══════════════════ Cartas Recebidas (Dad) ═══════════════════ */}
+      {!isMom && (
+        <section>
+          <CartasRecebidas />
+        </section>
+      )}
       <section>
         {isMom ? (
           <MomBadgesCarousel earnedKeys={earnedKeys} onSelect={setSelectedBadge} />
