@@ -197,7 +197,7 @@ export default function LetterPreview({
         {hasSentBefore && (
           <div className="mt-4 max-w-md mx-auto text-center">
             <p className="text-xs text-muted-foreground">
-              💳 Esta carta custa <span className="font-bold text-[hsl(340,72%,57%)]">R$ 4,99</span> via Pix
+              💳 Esta carta custa <span className="font-bold text-[hsl(340,72%,57%)]">R$ 4,99</span>
             </p>
           </div>
         )}
