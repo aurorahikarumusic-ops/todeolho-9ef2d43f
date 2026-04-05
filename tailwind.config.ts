@@ -71,9 +71,11 @@ export default {
         },
         dad: {
           DEFAULT: "hsl(var(--dad-accent))",
+          hover: "hsl(var(--dad-accent-hover))",
           bg: "hsl(var(--dad-bg))",
           border: "hsl(var(--dad-border))",
           text: "hsl(var(--dad-text))",
+          cta: "hsl(var(--dad-cta))",
         },
         avo: {
           DEFAULT: "hsl(var(--avo-accent))",
