@@ -552,10 +552,10 @@ export default function Ranking() {
       if (pos === 2) return { borderLeft: "4px solid hsl(var(--mom-accent) / 0.5)", background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.05), hsl(var(--card)))" };
       return {};
     }
-    if (pos === 0) return { borderLeft: "4px solid hsl(var(--accent-foreground))", background: "linear-gradient(135deg, hsl(var(--accent) / 0.15), hsl(var(--card)))" };
-    if (pos === 1) return { borderLeft: "4px solid hsl(var(--muted-foreground))", background: "linear-gradient(135deg, hsl(var(--muted) / 0.3), hsl(var(--card)))" };
-    if (pos === 2) return { borderLeft: "4px solid hsl(var(--secondary))", background: "linear-gradient(135deg, hsl(var(--secondary) / 0.1), hsl(var(--card)))" };
-    return {};
+    if (pos === 0) return { borderLeft: "4px solid hsl(var(--arena-gold))", background: "linear-gradient(135deg, hsl(var(--arena-gold) / 0.12), hsl(var(--arena-dark) / 0.6))", boxShadow: "0 0 20px hsl(var(--arena-gold) / 0.08)" };
+    if (pos === 1) return { borderLeft: "4px solid hsl(var(--arena-silver))", background: "linear-gradient(135deg, hsl(var(--arena-silver) / 0.1), hsl(var(--arena-dark) / 0.4))" };
+    if (pos === 2) return { borderLeft: "4px solid hsl(var(--arena-bronze))", background: "linear-gradient(135deg, hsl(var(--arena-bronze) / 0.1), hsl(var(--arena-dark) / 0.3))" };
+    return { background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.15), hsl(var(--card)))" };
   };
 
   const renderRankingList = (list: typeof ranking, startIdx = 3) => (
