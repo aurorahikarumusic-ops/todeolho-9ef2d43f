@@ -3,23 +3,38 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 import { useProfile } from "./useProfile";
 
-export function useGrandmaSuggestions() {
-  const { user } = useAuth();
-  const { data: profile } = useProfile();
-
+// All public suggestions (the mural)
+export function usePublicSuggestions() {
   return useQuery({
-    queryKey: ["grandma-suggestions", profile?.family_id],
+    queryKey: ["public-suggestions"],
     queryFn: async () => {
-      if (!profile?.family_id) return [];
       const { data, error } = await supabase
         .from("grandma_suggestions")
         .select("*")
-        .eq("family_id", profile.family_id)
+        .eq("status", "pendente")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data || [];
     },
-    enabled: !!profile?.family_id,
+  });
+}
+
+export function useGrandmaSuggestions() {
+  const { user } = useAuth();
+
+  return useQuery({
+    queryKey: ["grandma-suggestions", user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data, error } = await supabase
+        .from("grandma_suggestions")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!user,
   });
 }
 
@@ -33,7 +48,7 @@ export function usePendingSuggestions() {
       const { data, error } = await supabase
         .from("grandma_suggestions")
         .select("*")
-        .eq("family_id", profile.family_id)
+        .eq("adopted_family_id", profile.family_id)
         .eq("status", "pendente")
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -50,19 +65,48 @@ export function useCreateSuggestion() {
 
   return useMutation({
     mutationFn: async (suggestion: { title: string; description?: string; suggestion_type: string }) => {
-      if (!user || !profile?.family_id) throw new Error("Not authenticated");
+      if (!user) throw new Error("Not authenticated");
       const { error } = await supabase
         .from("grandma_suggestions")
         .insert({
           user_id: user.id,
-          family_id: profile.family_id,
+          family_id: profile?.family_id || null,
           ...suggestion,
         });
       if (error) throw error;
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["grandma-suggestions"] });
+      qc.invalidateQueries({ queryKey: ["public-suggestions"] });
+    },
+  });
+}
+
+// Mom adopts a public suggestion for her family
+export function useAdoptSuggestion() {
+  const { user } = useAuth();
+  const { data: profile } = useProfile();
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (suggestionId: string) => {
+      if (!user || !profile?.family_id) throw new Error("Not authenticated");
+      const { error } = await supabase
+        .from("grandma_suggestions")
+        .update({
+          adopted_by: user.id,
+          adopted_family_id: profile.family_id,
+          status: "aceito",
+          response_by: user.id,
+          response_comment: "Adotado do mural público 👵→👩",
+        })
+        .eq("id", suggestionId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["public-suggestions"] });
       qc.invalidateQueries({ queryKey: ["pending-suggestions"] });
+      qc.invalidateQueries({ queryKey: ["grandma-suggestions"] });
     },
   });
 }
@@ -87,6 +131,7 @@ export function useRespondSuggestion() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["grandma-suggestions"] });
       qc.invalidateQueries({ queryKey: ["pending-suggestions"] });
+      qc.invalidateQueries({ queryKey: ["public-suggestions"] });
     },
   });
 }
@@ -95,7 +140,6 @@ export function useGrandmaRanking() {
   return useQuery({
     queryKey: ["grandma-ranking"],
     queryFn: async () => {
-      // Get all grandma profiles
       const { data: avos, error: avosError } = await supabase
         .from("profiles")
         .select("user_id, display_name, avatar_url")
@@ -103,7 +147,6 @@ export function useGrandmaRanking() {
       if (avosError) throw avosError;
       if (!avos?.length) return [];
 
-      // Get suggestion counts per user
       const { data: suggestions, error: sugError } = await supabase
         .from("grandma_suggestions")
         .select("user_id, status");
