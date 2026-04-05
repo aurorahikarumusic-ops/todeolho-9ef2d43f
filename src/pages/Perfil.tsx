@@ -777,9 +777,8 @@ export default function Perfil() {
         </div>
 
         {children.length === 0 ? (
-          <p className="text-xs font-body italic text-center py-4"
-            style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}
-            className={isMom ? "text-xs text-muted-foreground font-body italic text-center py-4" : "text-xs font-body italic text-center py-4"}>
+          <p className={isMom ? "text-xs text-muted-foreground font-body italic text-center py-4" : "text-xs font-body italic text-center py-4"}
+            style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>
             {isMom ? "Nenhum filho cadastrado ainda." : "Nenhum filho cadastrado. Você tem filhos, né?"}
           </p>
         ) : (
