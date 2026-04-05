@@ -192,7 +192,7 @@ export default function Agenda() {
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
             {isMom ? (
-              <CalendarDays className="w-6 h-6 text-pink-600" />
+              <CalendarDays className="w-6 h-6 text-mom" />
             ) : (
               <CalendarDays className="w-6 h-6" style={{ color: "hsl(var(--arena-electric))", filter: "drop-shadow(0 0 6px hsl(var(--arena-electric) / 0.5))" }} />
             )}
