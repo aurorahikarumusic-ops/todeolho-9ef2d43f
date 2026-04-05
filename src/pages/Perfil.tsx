@@ -28,6 +28,7 @@ import { MOM_BADGES } from "@/lib/mom-constants";
 import InvitePartner from "@/components/family/InvitePartner";
 import JoinFamily from "@/components/family/JoinFamily";
 import PalpitesHistorySection from "@/components/profile/PalpitesHistorySection";
+import CartasRecebidas from "@/components/redemption/CartasRecebidas";
 import { sendLocalNotification, getNotificationPermission, requestPushSubscription } from "@/lib/pushNotifications";
 
 const DAD_ACHIEVEMENTS = {
