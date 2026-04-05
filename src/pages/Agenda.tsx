@@ -367,19 +367,27 @@ export default function Agenda() {
       {/* Events list - 3D cards */}
       {events.length === 0 ? (
         <div
-          className="rounded-3xl border-2 border-dashed border-muted p-10 text-center"
-          style={{ boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)" }}
+          className="rounded-3xl border-2 border-dashed p-10 text-center"
+          style={{
+            borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.15)",
+            background: isMom ? undefined : "hsl(var(--arena-dark) / 0.3)",
+            boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
+          }}
         >
           <p className="text-5xl mb-3">📅</p>
-          <p className="font-display text-lg font-bold mb-1">Nada agendado</p>
-          <p className="text-sm text-muted-foreground font-body italic">
+          <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(0 0% 85%)" } : undefined}>Nada agendado</p>
+          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>
             {isMom ? "Adicione o primeiro compromisso da família." : "Mês livre? Vai confirmar com a mãe."}
           </p>
         </div>
       ) : filteredEvents.length === 0 ? (
-        <div className="rounded-3xl border-2 border-dashed border-muted p-8 text-center">
+        <div className="rounded-3xl border-2 border-dashed p-8 text-center"
+          style={{
+            borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.15)",
+            background: isMom ? undefined : "hsl(var(--arena-dark) / 0.3)",
+          }}>
           <p className="text-3xl mb-2">🤷</p>
-          <p className="text-sm text-muted-foreground font-body italic">
+          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(0 0% 50%)" } : undefined}>
             Nada nesse dia. Ou a mãe ainda não atualizou.
           </p>
         </div>
