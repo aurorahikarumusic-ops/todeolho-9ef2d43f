@@ -66,7 +66,7 @@ export default function LetterPreview({
 
       // Points update and badge award in parallel
       const parallelOps: Promise<any>[] = [
-        supabase.from("profiles").update({ points: profile.points + pointsToAdd }).eq("user_id", user.id),
+        supabase.from("profiles").update({ points: profile.points + pointsToAdd }).eq("user_id", user.id).then(),
       ];
       if (isFirst) {
         parallelOps.push(
@@ -75,7 +75,7 @@ export default function LetterPreview({
             badge_key: "redimido",
             badge_name: "Redimido",
             badge_emoji: "💌",
-          })
+          }).then()
         );
       }
       await Promise.all(parallelOps);
