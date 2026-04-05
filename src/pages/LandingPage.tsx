@@ -14,11 +14,14 @@ const tickerItems = [
   "Pai que esquece lanche",
   "Mãe que organiza tudo",
   "Ranking dos pais",
-  "Consulta que só a mãe sabia",
+  "Sogra que deu palpite",
+  "Avó interferiu (de novo)",
+  "Palpite adotado pela mãe",
   "Reunião que o pai esqueceu",
   "Resgate número 7 da mãe",
-  "Pai presente de verdade",
+  "Avó mandou sugestão às 6h",
   "Nota 2 estrelas essa semana",
+  "Sogra no ranking de palpites",
   "Quem buscou na escola? A mãe.",
 ];
 
@@ -54,21 +57,41 @@ const featureCards = [
     bg: "#E8DAFF",
     border: "#7B2FF2",
     shadow: "#5B1FBF",
+    icon: "👵",
+    title: "Modo Avó (Sogra)",
+    desc: "A avó dá palpites. A mãe adota os melhores e manda pro pai. Com ranking de quem palpita mais.",
+    quote: "'Na minha época...' — Dona Maria, 3° lugar no ranking.",
+  },
+  {
+    bg: "#FFF0E6",
+    border: "#F4845F",
+    shadow: "#D4734F",
     icon: "⭐",
     title: "Avaliação da mãe",
     desc: "Toda sexta, a mãe dá de 1 a 5 estrelas. Nota pública, aparece no ranking.",
     quote: "Ana deu 2 estrelas pro João. Motivo: 'Poderia melhorar.'",
   },
+  {
+    bg: "#D6EAFF",
+    border: "#2B7ACA",
+    shadow: "#1A4B7B",
+    icon: "🔥",
+    title: "Check-in diário",
+    desc: "Streak de presença com mensagens irônicas. Abriu o app? Parabéns, é o mínimo. Não abriu? A mãe sabe.",
+    quote: "5 dias seguidos! Quem é você e o que fez com o pai?",
+  },
 ];
 
 const badges = [
   { emoji: "🔥", label: "7 dias seguidos", bg: "#D8F3DC", color: "#1B4332", border: "#2D6A4F" },
+  { emoji: "👵", label: "Sogra Approved", bg: "#E8DAFF", color: "#5B1FBF", border: "#7B2FF2" },
   { emoji: "😬", label: "Pai Google Maps", bg: "#FFF0E6", color: "#922B21", border: "#F4845F" },
   { emoji: "⭐", label: "Herói do Lanche", bg: "#FFEAAE", color: "#7B6B1A", border: "#D4A10A" },
   { emoji: "💤", label: "Modo Hibernação", bg: "#FFD6D6", color: "#922B21", border: "#C0392B" },
   { emoji: "👑", label: "Pai do Mês", bg: "#E8DAFF", color: "#5B1FBF", border: "#7B2FF2" },
   { emoji: "📊", label: "DNA do Pai", bg: "#D6EAFF", color: "#1A4B7B", border: "#2B7ACA" },
   { emoji: "🛟", label: "Resgatado 5x", bg: "#FFE8CC", color: "#8B5E00", border: "#D4A10A" },
+  { emoji: "🗣️", label: "Avó Palpiteira", bg: "#F3E8FF", color: "#6B21A8", border: "#9333EA" },
 ];
 
 const rankingRows = [
@@ -90,6 +113,14 @@ const testimonials = [
   },
   {
     stars: 5,
+    text: "Minha sogra descobriu o app. Agora manda palpite todo dia. Meu marido tá com medo das duas. Melhor coisa que aconteceu.",
+    name: "Fernanda M.",
+    role: "Mãe de 1 — Curitiba",
+    avatarBg: "#E8DAFF",
+    avatarEmoji: "👵",
+  },
+  {
+    stars: 5,
     text: "Meu marido ficou com raiva quando viu que tava em último. Aí começou a fazer as tarefas sozinho. O app disse por mim.",
     name: "Mariana R.",
     role: "Mãe de 3 — Fortaleza",
@@ -101,7 +132,7 @@ const testimonials = [
     text: "Sou o pai. Eu estava em 4°. O Carlos em 3°. Isso foi suficiente pra eu buscar as crianças 5 vezes seguidas.",
     name: "João L.",
     role: "Pai convertido — Manaus",
-    avatarBg: "#E8DAFF",
+    avatarBg: "#FFEAAE",
     avatarEmoji: "🏃‍♂️",
   },
 ];
@@ -462,7 +493,7 @@ export default function LandingPage() {
             maxWidth: "620px", margin: "0 auto 2.5rem", fontSize: "1.2rem", lineHeight: 1.75,
             color: "#243B2F", fontWeight: 600,
           }}>
-            O app que <span style={{ background: "#FFEAAE", padding: "0.1rem 0.5rem", borderRadius: "8px", fontWeight: 800 }}>gamifica a paternidade</span> — com ironia, ranking público e notificações que batem direto no ego. Para pais que <span style={{ textDecoration: "line-through", opacity: 0.5 }}>esquecem tudo</span> tentam melhorar.
+            O app que <span style={{ background: "#FFEAAE", padding: "0.1rem 0.5rem", borderRadius: "8px", fontWeight: 800 }}>gamifica a paternidade</span> — com ironia, ranking público e notificações que batem direto no ego. Para pais que <span style={{ textDecoration: "line-through", opacity: 0.5 }}>esquecem tudo</span> tentam melhorar. Para mães que já sabiam. E agora, para <span style={{ background: "#E8DAFF", padding: "0.1rem 0.5rem", borderRadius: "8px", fontWeight: 800, color: "#7B2FF2" }}>avós que adoram interferir</span>.
           </p>
 
           {/* CTA Buttons */}
@@ -586,7 +617,9 @@ export default function LandingPage() {
                 "🏆 Ranking semanal de pais (público e sem piedade)",
                 "✅ Tarefas com prazo, foto como prova e aprovação da mãe",
                 "🔥 Streak de presença com mensagens irônicas",
+                "👵 Modo Avó — palpites, ranking e interferência garantida",
                 "📊 DNA do Pai — card mensal compartilhável",
+                "🗣️ Mural de palpites da sogra (público e sem filtro)",
                 "👁️ Notificações que não deixam esquecer. Nunca.",
               ].map((item, i) => (
                 <div key={i} style={{
@@ -689,7 +722,137 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══════════════ STATS ═══════════════ */}
+      {/* ═══════════════ MODO AVÓ — HERO SECTION ═══════════════ */}
+      <section style={{
+        padding: "6rem 1.5rem", textAlign: "center",
+        background: "linear-gradient(135deg, #F3E8FF 0%, #E8DAFF 30%, #D8B4FE40 60%, #FFF0E6 100%)",
+        position: "relative", overflow: "hidden",
+      }}>
+        {/* Decorative grandma elements */}
+        <div style={{ position: "absolute", top: "10%", left: "5%", fontSize: "4rem", opacity: 0.08, transform: "rotate(-15deg)", pointerEvents: "none" }}>👵</div>
+        <div style={{ position: "absolute", bottom: "10%", right: "8%", fontSize: "5rem", opacity: 0.06, transform: "rotate(20deg)", pointerEvents: "none" }}>🗣️</div>
+        <div style={{ position: "absolute", top: "50%", left: "80%", fontSize: "3rem", opacity: 0.05, pointerEvents: "none" }}>💬</div>
+
+        <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
+          {/* Badge */}
+          <div style={{
+            display: "inline-block", background: "#7B2FF2", color: "white",
+            border: "3px solid #1B2B23", borderRadius: "50px", padding: "0.6rem 1.5rem",
+            fontSize: "1rem", fontWeight: 800, marginBottom: "1.5rem",
+            boxShadow: "4px 4px 0 #1B2B23", fontFamily: "'Baloo 2', cursive",
+          }}>
+            🆕 NOVIDADE — Modo Avó Ativado
+          </div>
+
+          <h2 style={{
+            fontFamily: "'Baloo 2', cursive", fontWeight: 900,
+            fontSize: "clamp(2rem, 6vw, 4rem)", color: "#1B2B23", lineHeight: 1.05,
+            marginBottom: "0.5rem",
+          }}>
+            Agora a <span style={{
+              color: "#7B2FF2", textShadow: "4px 4px 0 rgba(123,47,242,0.2)",
+            }}>sogra</span> também<br />
+            <span style={{ color: "#F4845F" }}>interfere</span>{" "}
+            <span style={{ display: "inline-block", animation: "eye-pulse 2s infinite" }}>👵</span>
+          </h2>
+
+          <p style={{
+            fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontStyle: "italic",
+            color: "#7B2FF2", fontSize: "clamp(1.1rem, 3vw, 1.6rem)", margin: "0.5rem 0 2rem",
+            background: "#F3E8FF", display: "inline-block", padding: "0.3rem 1.5rem",
+            border: "3px solid #7B2FF2", borderRadius: "12px", boxShadow: "4px 4px 0 #7B2FF2",
+          }}>
+            "ninguém pediu, mas mesmo assim vou dar meu palpite"
+          </p>
+
+          <p style={{
+            maxWidth: "620px", margin: "0 auto 3rem", fontSize: "1.15rem", lineHeight: 1.75,
+            color: "#243B2F", fontWeight: 600,
+          }}>
+            O <span style={{ background: "#E8DAFF", padding: "0.1rem 0.5rem", borderRadius: "8px", fontWeight: 800 }}>Modo Avó</span> é para aquela pessoa especial que{" "}
+            <span style={{ textDecoration: "line-through", opacity: 0.5 }}>não sabe ficar quieta</span>{" "}
+            ama ajudar na criação dos netos. Ela dá palpites, as mães adotam, e o pai... bom, o pai obedece.
+          </p>
+
+          {/* Grandma feature cards */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem", marginBottom: "3rem" }}>
+            {[
+              {
+                icon: "🗣️",
+                title: "Palpites Públicos",
+                desc: "A avó posta no mural público. Qualquer mãe pode adotar. O pai não tem voz.",
+                bg: "#F3E8FF",
+                border: "#9333EA",
+              },
+              {
+                icon: "🏆",
+                title: "Ranking das Avós",
+                desc: "Quem dá mais palpites? Quem tem mais aceitos? Competição entre sogras. Sim, isso existe agora.",
+                bg: "#FFF0E6",
+                border: "#F4845F",
+              },
+              {
+                icon: "✅",
+                title: "Mãe Adota, Pai Executa",
+                desc: "A mãe vê o palpite, acha válido, adota. Vira tarefa pro pai. A avó ganha pontos. Ciclo perfeito.",
+                bg: "#D8F3DC",
+                border: "#2D6A4F",
+              },
+            ].map((card, i) => (
+              <div key={i} className="neo-card" style={{
+                background: card.bg, padding: "2rem", textAlign: "left",
+                borderColor: card.border,
+              }}>
+                <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>{card.icon}</div>
+                <h3 style={{
+                  fontFamily: "'Baloo 2', cursive", fontWeight: 800,
+                  fontSize: "1.25rem", color: "#1B2B23", marginBottom: "0.5rem",
+                }}>{card.title}</h3>
+                <p style={{ fontSize: "0.95rem", color: "#243B2F", lineHeight: 1.7, margin: 0, fontWeight: 600 }}>
+                  {card.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Grandma quote */}
+          <div className="neo-card" style={{
+            background: "#FFF8F1", padding: "2rem", maxWidth: "700px", margin: "0 auto",
+            borderColor: "#7B2FF2", boxShadow: "8px 8px 0 #7B2FF2",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap", justifyContent: "center" }}>
+              <span style={{ fontSize: "3rem" }}>👵</span>
+              <div style={{ textAlign: "left", flex: 1, minWidth: "200px" }}>
+                <p style={{
+                  fontStyle: "italic", fontSize: "1.1rem", color: "#1B2B23", lineHeight: 1.7, margin: "0 0 0.5rem",
+                  fontWeight: 600,
+                }}>
+                  "Na minha época não precisava de app. Mas na minha época o pai também não esquecia o filho na escola."
+                </p>
+                <span style={{ fontSize: "0.9rem", color: "#7B2FF2", fontWeight: 800 }}>
+                  — Dona Maria, Avó Palpiteira Nível 3 🏅
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA for grandmas */}
+          <div style={{ marginTop: "2.5rem" }}>
+            <button
+              onClick={() => navigate("/auth")}
+              className="cta-btn"
+              style={{ background: "#7B2FF2", boxShadow: "6px 6px 0 #5B1FBF" }}
+            >
+              👵 Entrar como Avó
+            </button>
+            <p style={{ fontSize: "0.9rem", fontStyle: "italic", color: "#666", marginTop: "1rem", fontWeight: 600 }}>
+              Não precisa de convite. Avó tem passe livre. Sempre teve.
+            </p>
+          </div>
+        </div>
+      </section>
+
+
       <section style={{
         background: "#2D6A4F", color: "white", padding: "6rem 1.5rem", textAlign: "center",
         position: "relative", overflow: "hidden",
@@ -818,14 +981,14 @@ export default function LandingPage() {
         }} />
         
         <div ref={addRevealRef} className="reveal" style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
-          <h2 style={{
+           <h2 style={{
             fontFamily: "'Baloo 2', cursive", fontWeight: 900,
             fontSize: "clamp(2rem, 5vw, 3rem)", color: "white", marginBottom: "0.5rem",
           }}>
-            O que as <span style={{ color: "#F4845F" }}>mães</span> dizem
+            O que <span style={{ color: "#F4845F" }}>mães</span>, <span style={{ color: "#52B788" }}>pais</span> e <span style={{ color: "#C084FC" }}>sogras</span> dizem
           </h2>
           <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: "3.5rem", fontWeight: 600, fontSize: "1.05rem" }}>
-            (os pais estão com vergonha de falar, mas os pontos falam por eles)
+            (cada um com a sua versão da história, claro)
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.75rem" }}>
             {testimonials.map((t, i) => (
