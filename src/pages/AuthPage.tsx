@@ -9,6 +9,28 @@ import { toast } from "sonner";
 import { Eye, UserPlus, LogIn, Crown, ArrowLeft, Link } from "lucide-react";
 import GrandmaLoginForm from "@/components/grandma/GrandmaLoginForm";
 
+function translateAuthError(msg: string): string {
+  if (!msg) return "Algo deu errado. Tenta de novo.";
+  const lower = msg.toLowerCase();
+  if (lower.includes("password") && (lower.includes("breach") || lower.includes("pwned") || lower.includes("leak")))
+    return "Essa senha já vazou na internet. Escolhe outra mais segura, pai.";
+  if (lower.includes("password") && lower.includes("short"))
+    return "Senha muito curta. Mínimo 6 caracteres.";
+  if (lower.includes("password") && lower.includes("weak"))
+    return "Senha fraca demais. Capricha aí.";
+  if (lower.includes("already registered") || lower.includes("already been registered"))
+    return "Esse e-mail já tem conta. Tenta fazer login.";
+  if (lower.includes("invalid") && lower.includes("email"))
+    return "E-mail inválido. Confere aí.";
+  if (lower.includes("invalid") && (lower.includes("credentials") || lower.includes("login")))
+    return "E-mail ou senha errados. Tenta de novo.";
+  if (lower.includes("rate") || lower.includes("too many"))
+    return "Muitas tentativas. Espera um pouco.";
+  if (lower.includes("signup") && lower.includes("disabled"))
+    return "Cadastro desabilitado no momento.";
+  return msg;
+}
+
 function DadLoginForm() {
   const { signUp, signIn } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
@@ -46,7 +68,7 @@ function DadLoginForm() {
       }
     } catch (err: any) {
       toast.error("Ops!", {
-        description: err.message || "Algo deu errado. Como sempre.",
+        description: translateAuthError(err.message),
       });
     } finally {
       setLoading(false);
@@ -210,7 +232,7 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
       }
     } catch (err: any) {
       toast.error("Ops!", {
-        description: err.message || "Algo deu errado. Mas a culpa não é sua.",
+        description: translateAuthError(err.message),
       });
     } finally {
       setLoading(false);

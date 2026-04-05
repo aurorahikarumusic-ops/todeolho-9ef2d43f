@@ -8,6 +8,22 @@ import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { ArrowLeft, LogIn, UserPlus, Link } from "lucide-react";
 
+function translateAuthError(msg: string): string {
+  if (!msg) return "Algo deu errado. Tenta de novo, vovó.";
+  const lower = msg.toLowerCase();
+  if (lower.includes("password") && (lower.includes("breach") || lower.includes("pwned") || lower.includes("leak")))
+    return "Essa senha já vazou na internet. Escolhe outra, vovó!";
+  if (lower.includes("password") && lower.includes("short"))
+    return "Senha muito curta. Mínimo 6 caracteres.";
+  if (lower.includes("already registered") || lower.includes("already been registered"))
+    return "Esse e-mail já tem conta. Tenta fazer login.";
+  if (lower.includes("invalid") && lower.includes("email"))
+    return "E-mail inválido. Pede ajuda pra neta.";
+  if (lower.includes("invalid") && (lower.includes("credentials") || lower.includes("login")))
+    return "E-mail ou senha errados. Tenta de novo.";
+  return msg;
+}
+
 const GRANDMA_PHRASES = [
   "Na minha época a gente criava filho sem app...",
   "Eu criei 5 filhos e nenhum precisou de tutorial",
@@ -65,7 +81,7 @@ export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
       }
     } catch (err: any) {
       toast.error("Eita, deu ruim!", {
-        description: err.message || "Algo deu errado. Na época da vovó isso não acontecia.",
+        description: translateAuthError(err.message),
       });
     } finally {
       setLoading(false);
