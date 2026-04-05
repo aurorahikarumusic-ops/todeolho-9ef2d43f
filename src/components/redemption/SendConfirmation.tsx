@@ -90,7 +90,9 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
   // Phase 0-2: Animation sequence
   if (phase < 3) {
     return (
-      <div className="fixed inset-0 z-50 bg-[hsl(35,80%,97%)] flex items-center justify-center overflow-hidden">
+      <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden" style={{
+        background: "linear-gradient(165deg, hsl(340,30%,12%) 0%, hsl(300,20%,8%) 50%, hsl(260,25%,10%) 100%)",
+      }}>
         {/* Background particles */}
         <div className="absolute inset-0 pointer-events-none">
           {Array.from({ length: 8 }).map((_, i) => (
