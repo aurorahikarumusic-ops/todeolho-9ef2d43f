@@ -220,7 +220,7 @@ export default function LetterPreview({
           {sending ? "Enviando..." : (
             <>
               <Send className="w-4 h-4 mr-2" />
-              {hasSentBefore ? "Pagar e enviar via Pix 💳" : "Enviar carta 💌"}
+              {hasSentBefore ? "Pagar e enviar 💳" : "Enviar carta 💌"}
             </>
           )}
         </Button>
