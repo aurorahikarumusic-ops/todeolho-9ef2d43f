@@ -46,11 +46,13 @@
     --font-display: 'Baloo 2', cursive;
     --font-body: 'Nunito', sans-serif;
 
-    /* Mom panel tokens */
-    --mom-accent: 340 72% 57%;
-    --mom-bg: 340 100% 97%;
-    --mom-border: 340 50% 82%;
-    --mom-text: 340 50% 35%;
+    /* Mom panel tokens — Rosa Premium */
+    --mom-accent: 340 48% 40%;
+    --mom-accent-hover: 340 52% 29%;
+    --mom-bg: 340 65% 95%;
+    --mom-border: 340 40% 75%;
+    --mom-text: 340 55% 19%;
+    --mom-cta: 340 58% 58%;
 
     /* Dad panel tokens — Monochromatic Blue */
     --dad-accent: 215 80% 58%;
