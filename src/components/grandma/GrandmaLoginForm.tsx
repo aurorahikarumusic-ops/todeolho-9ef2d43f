@@ -42,11 +42,11 @@ const GRANDMA_SIGNUP_TIPS = [
   "Palpite é o superpoder de toda avó 💪",
 ];
 
-export default function GrandmaLoginForm({ onBack }: { onBack: () => void }) {
+export default function GrandmaLoginForm({ onBack, initialInviteCode }: { onBack: () => void; initialInviteCode?: string }) {
   const { signUp, signIn } = useAuth();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(!!initialInviteCode);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", inviteCode: initialInviteCode || "" });
   const [showPassword, setShowPassword] = useState(false);
 
   const randomPhrase = GRANDMA_PHRASES[Math.floor(Math.random() * GRANDMA_PHRASES.length)];

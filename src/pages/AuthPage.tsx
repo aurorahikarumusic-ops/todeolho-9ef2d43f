@@ -475,7 +475,7 @@ export default function AuthPage() {
             {displayedBack === "mom" ? (
               <MomLoginForm onBack={() => handleViewChange("dad")} />
             ) : (
-              <GrandmaLoginForm onBack={() => handleViewChange("dad")} />
+              <GrandmaLoginForm onBack={() => handleViewChange("dad")} initialInviteCode={inviteCode} />
             )}
           </div>
         </div>
