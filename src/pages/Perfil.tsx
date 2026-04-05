@@ -118,7 +118,7 @@ export default function Perfil() {
     }
   }, [searchParams]);
 
-
+  const monthStart = startOfMonth(new Date()).toISOString();
   const monthEnd = endOfMonth(new Date()).toISOString();
   const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }).toISOString().split("T")[0];
 
