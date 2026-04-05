@@ -65,20 +65,18 @@ export default function LetterPreview({
       const pointsToAdd = isFirst ? 50 : 20;
 
       // Points update and badge award in parallel
-      const parallelOps: Promise<any>[] = [
-        supabase.from("profiles").update({ points: profile.points + pointsToAdd }).eq("user_id", user.id).then(),
-      ];
+      const pointsOp = supabase.from("profiles").update({ points: profile.points + pointsToAdd }).eq("user_id", user.id);
       if (isFirst) {
-        parallelOps.push(
-          supabase.from("achievements").insert({
-            user_id: user.id,
-            badge_key: "redimido",
-            badge_name: "Redimido",
-            badge_emoji: "💌",
-          }).then()
-        );
+        const badgeOp = supabase.from("achievements").insert({
+          user_id: user.id,
+          badge_key: "redimido",
+          badge_name: "Redimido",
+          badge_emoji: "💌",
+        });
+        await Promise.all([pointsOp, badgeOp]);
+      } else {
+        await pointsOp;
       }
-      await Promise.all(parallelOps);
 
       // Trigger confirmation immediately, invalidate in background
       onSend(letterResult.data.id);
