@@ -17,126 +17,119 @@ export default function SummaryCards({
   rankingPosition,
   momRating,
 }: SummaryCardsProps) {
-  // Task card
   const taskPct = tasksTotal > 0 ? tasksCompleted / tasksTotal : 0;
-  const taskColor = taskPct >= 1 ? "text-primary" : taskPct >= 0.5 ? "text-primary" : "text-secondary";
+  const taskColor = "--arena-neon";
   const taskMsg =
-    taskPct >= 1
-      ? "Perfeito. Suspeito."
-      : taskPct >= 0.5
-      ? "Metade feita. Metade não."
-      : "Tá devendo.";
+    taskPct >= 1 ? "Perfeito. Suspeito." : taskPct >= 0.5 ? "Metade feita. Metade não." : "Tá devendo.";
 
-  // Event card
   const isToday = nextEvent && isSameDay(nextEvent.date, new Date());
   const isTomorrow = nextEvent && isSameDay(nextEvent.date, addDays(new Date(), 1));
-  const eventColor = isToday ? "text-secondary" : isTomorrow ? "text-accent-foreground" : "text-primary";
   const eventMsg = !nextEvent
     ? "Nada agendado. A mãe já atualizou a agenda?"
-    : isToday
-    ? "É hoje. Você sabia?"
-    : isTomorrow
-    ? "Amanhã. Não esquece."
+    : isToday ? "É hoje. Você sabia?"
+    : isTomorrow ? "Amanhã. Não esquece."
     : format(nextEvent.date, "dd MMM", { locale: ptBR });
 
-  // Ranking card
-  const rankColor =
-    rankingPosition && rankingPosition <= 3
-      ? "text-primary"
-      : rankingPosition && rankingPosition >= 10
-      ? "text-secondary"
-      : "text-muted-foreground";
   const rankMsg =
-    rankingPosition && rankingPosition <= 3
-      ? "No pódio. Aproveita."
-      : rankingPosition && rankingPosition >= 10
-      ? "Último. Mas é o último que aparece aqui."
-      : "Dá pra subir. Dá.";
+    rankingPosition && rankingPosition <= 3 ? "No pódio. Aproveita."
+    : rankingPosition && rankingPosition >= 10 ? "Último. Mas é o último que aparece aqui."
+    : "Dá pra subir. Dá.";
 
-  // Mom rating
   const ratingMsg =
-    momRating === null
-      ? "A mãe ainda não avaliou. Boa sorte."
-      : momRating >= 5
-      ? "Ela aprovou. Raro."
-      : momRating >= 3
-      ? "Mediano. Você sabe o que isso significa."
-      : "Ela foi gentil na avaliação.";
+    momRating === null ? "A mãe ainda não avaliou. Boa sorte."
+    : momRating >= 5 ? "Ela aprovou. Raro."
+    : momRating >= 3 ? "Mediano. Você sabe o que isso significa."
+    : "Ela foi gentil na avaliação.";
 
   return (
     <div className="grid grid-cols-2 gap-3">
-      <Card
-        icon={<CheckSquare className="w-4 h-4" />}
+      <ArenaCard
+        icon={<CheckSquare className="w-4 h-4" style={{ color: "hsl(var(--arena-neon))" }} />}
         label="Tarefas da semana"
         value={`${tasksCompleted}/${tasksTotal}`}
-        valueColor={taskColor}
+        accentVar={taskColor}
         comment={taskMsg}
-        commentColor={taskColor}
       />
-      <Card
-        icon={<CalendarDays className="w-4 h-4" />}
+      <ArenaCard
+        icon={<CalendarDays className="w-4 h-4" style={{ color: "hsl(var(--arena-electric))" }} />}
         label="Próximo evento"
         value={nextEvent?.title || "—"}
-        valueColor={eventColor}
+        accentVar="--arena-electric"
         comment={eventMsg}
-        commentColor={eventColor}
       />
-      <Card
-        icon={<Trophy className="w-4 h-4" />}
+      <ArenaCard
+        icon={<Trophy className="w-4 h-4" style={{ color: "hsl(var(--arena-gold))" }} />}
         label="Ranking"
         value={rankingPosition ? `#${rankingPosition}` : "—"}
-        valueColor={rankColor}
+        accentVar="--arena-gold"
         comment={rankMsg}
-        commentColor={rankColor}
       />
-      <Card
-        icon={<Star className="w-4 h-4" />}
+      <ArenaCard
+        icon={<Star className="w-4 h-4" style={{ color: "hsl(var(--arena-fire))" }} />}
         label="Nota da Mãe"
         value={momRating !== null ? `${momRating}★` : "Pendente"}
-        valueColor={momRating !== null && momRating >= 4 ? "text-primary" : "text-secondary"}
-        comment={momRating === null ? "Convide a mãe pra avaliar sua semana!" : ratingMsg}
-        commentColor={momRating === null ? "text-secondary" : "text-muted-foreground"}
+        accentVar="--arena-fire"
+        comment={momRating === null ? "Convide a mãe pra avaliar!" : ratingMsg}
         stars={momRating}
       />
     </div>
   );
 }
 
-function Card({
+function ArenaCard({
   icon,
   label,
   value,
-  valueColor,
+  accentVar,
   comment,
-  commentColor,
   stars,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
-  valueColor: string;
+  accentVar: string;
   comment: string;
-  commentColor: string;
   stars?: number | null;
 }) {
   return (
-    <div className="bg-card rounded-xl border border-border p-3.5 shadow-sm">
-      <div className="flex items-center gap-1.5 text-muted-foreground mb-1.5">
+    <div
+      className="rounded-xl p-3.5 relative overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+        border: `1px solid hsl(var(${accentVar}) / 0.12)`,
+        boxShadow: "0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03)",
+      }}
+    >
+      <div className="flex items-center gap-1.5 mb-1.5">
         {icon}
-        <span className="text-[11px] font-body">{label}</span>
+        <span className="text-[11px] font-body" style={{ color: "hsl(0 0% 55%)" }}>{label}</span>
       </div>
-      <p className={`font-display text-xl font-bold ${valueColor} truncate`}>{value}</p>
+      <p
+        className="font-display text-xl font-bold truncate"
+        style={{
+          color: `hsl(var(${accentVar}))`,
+          textShadow: `0 0 6px hsl(var(${accentVar}) / 0.2)`,
+        }}
+      >
+        {value}
+      </p>
       {stars !== undefined && stars !== null && (
         <div className="flex gap-0.5 my-0.5">
           {[1, 2, 3, 4, 5].map((s) => (
             <Star
               key={s}
-              className={`w-3 h-3 ${s <= stars ? "text-accent-foreground fill-accent" : "text-muted"}`}
+              className="w-3 h-3"
+              style={{
+                color: s <= stars ? "hsl(var(--arena-gold))" : "hsl(0 0% 30%)",
+                fill: s <= stars ? "hsl(var(--arena-gold))" : "none",
+              }}
             />
           ))}
         </div>
       )}
-      <p className={`text-[10px] font-body italic ${commentColor} mt-1`}>{comment}</p>
+      <p className="text-[10px] font-body italic mt-1" style={{ color: "hsl(0 0% 50%)" }}>
+        {comment}
+      </p>
     </div>
   );
 }

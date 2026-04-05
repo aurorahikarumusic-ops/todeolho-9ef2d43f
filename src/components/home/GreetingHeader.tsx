@@ -53,9 +53,25 @@ export default function GreetingHeader(props: GreetingHeaderProps) {
   const greeting = getGreeting(props);
 
   return (
-    <div className="relative bg-primary rounded-2xl p-5 overflow-hidden shadow-sm">
-      <span className="absolute top-3 right-4 text-3xl opacity-15 select-none">👁️</span>
-      <p className="font-display text-primary-foreground text-base leading-relaxed relative z-10">
+    <div
+      className="relative rounded-2xl p-5 overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(220 25% 16%), hsl(var(--arena-dark)))",
+        boxShadow: "0 8px 24px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-neon) / 0.06)",
+        border: "1px solid hsl(var(--arena-neon) / 0.12)",
+      }}
+    >
+      {/* Grid pattern */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: "linear-gradient(hsl(var(--arena-neon)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-neon)) 1px, transparent 1px)",
+        backgroundSize: "28px 28px",
+      }} />
+      {/* Top glow */}
+      <div className="absolute top-0 left-6 right-6 h-px" style={{
+        background: "linear-gradient(90deg, transparent, hsl(var(--arena-neon) / 0.4), transparent)",
+      }} />
+      <span className="absolute top-3 right-4 text-3xl opacity-10 select-none">👁️</span>
+      <p className="font-display text-base leading-relaxed relative z-10" style={{ color: "hsl(0 0% 85%)" }}>
         {greeting}
       </p>
     </div>
