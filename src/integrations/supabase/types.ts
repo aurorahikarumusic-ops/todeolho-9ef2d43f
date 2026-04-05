@@ -172,9 +172,11 @@ export type Database = {
       }
       grandma_suggestions: {
         Row: {
+          adopted_by: string | null
+          adopted_family_id: string | null
           created_at: string
           description: string | null
-          family_id: string
+          family_id: string | null
           id: string
           response_by: string | null
           response_comment: string | null
@@ -185,9 +187,11 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          adopted_by?: string | null
+          adopted_family_id?: string | null
           created_at?: string
           description?: string | null
-          family_id: string
+          family_id?: string | null
           id?: string
           response_by?: string | null
           response_comment?: string | null
@@ -198,9 +202,11 @@ export type Database = {
           user_id: string
         }
         Update: {
+          adopted_by?: string | null
+          adopted_family_id?: string | null
           created_at?: string
           description?: string | null
-          family_id?: string
+          family_id?: string | null
           id?: string
           response_by?: string | null
           response_comment?: string | null
