@@ -1036,7 +1036,7 @@ function BadgeCard({ emoji, name, desc, earned, type, onClick, isDad }: {
       shame: earned
         ? { background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(var(--arena-fire) / 0.08))", border: "1px solid hsl(var(--arena-fire) / 0.3)", boxShadow: "0 4px 12px rgba(0,0,0,0.2), 0 0 12px hsl(var(--arena-fire) / 0.08)" }
         : { background: "hsl(var(--arena-dark) / 0.5)", border: "1px solid hsl(0 0% 25%)" },
-      locked: { background: "hsl(var(--arena-dark) / 0.4)", border: "1px dashed hsl(220 15% 50%)" },
+      locked: { background: "hsl(var(--arena-dark) / 0.4)", border: "1px dashed hsl(30 15% 50%)" },
     };
     return (
       <button onClick={onClick} className={`flex-shrink-0 w-28 rounded-xl p-3 text-center transition-all ${earned ? "hover:scale-105" : "opacity-40"}`} style={styleMap[type]}>
