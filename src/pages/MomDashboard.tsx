@@ -14,6 +14,7 @@ import { getMomGreeting } from "@/lib/mom-constants";
 import InvitePartner from "@/components/family/InvitePartner";
 import MonthlyChallenge from "@/components/home/MonthlyChallenge";
 import MonthlyReport from "@/components/home/MonthlyReport";
+import GrandmaPalpitesCard from "@/components/home/GrandmaPalpitesCard";
 
 export default function MomDashboard() {
   const { user } = useAuth();
