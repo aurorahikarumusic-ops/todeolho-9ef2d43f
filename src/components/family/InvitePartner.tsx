@@ -17,8 +17,9 @@ export default function InvitePartner() {
   if (!profile?.family_code) return null;
 
   const code = profile.family_code.toUpperCase();
-  const appUrl = window.location.origin;
-  const message = `👁️ *Estou de Olho* — O app que prova que pai também cuida (ou não).\n\nBaixa aqui: ${appUrl}\nUsa o código: *${code}*\n\nA partir de agora, "eu não sabia" não é mais desculpa. Boa sorte. 😘`;
+  const appUrl = "https://estoudeolho.lovable.app";
+  const authLink = `${appUrl}/auth?convite=${code}`;
+  const message = `👁️ *Estou de Olho* — O app que prova que pai também cuida (ou não).\n\nCria sua conta aqui: ${authLink}\n\nO código *${code}* já vai estar preenchido. É só criar a conta e entrar na família.\n\nA partir de agora, "eu não sabia" não é mais desculpa. Boa sorte. 😘`;
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
