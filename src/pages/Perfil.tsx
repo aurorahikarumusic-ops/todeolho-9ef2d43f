@@ -331,85 +331,170 @@ export default function Perfil() {
     { icon: <Trophy className="w-4 h-4 text-mom" />, value: `${monthPct}%`, label: "completas" },
     { icon: <Crown className="w-4 h-4 text-mom" />, value: `${children.length}`, label: "filhos" },
   ] : [
-    { icon: <Flame className="w-4 h-4 text-secondary" />, value: `${profile.streak_days}`, label: "sequência" },
-    { icon: <Trophy className="w-4 h-4 text-primary" />, value: rankPos ? `#${rankPos}` : "—", label: "ranking" },
-    { icon: <Star className="w-4 h-4 text-accent-foreground" />, value: momRating ? `${momRating.stars}★` : "—", label: "nota mãe" },
-    { icon: <CheckSquare className="w-4 h-4 text-primary" />, value: `${monthPct}%`, label: "tarefas" },
-    { icon: <CalendarDays className="w-4 h-4 text-primary" />, value: `${monthEvents.length}`, label: "eventos" },
-    { icon: <LifeBuoy className="w-4 h-4 text-secondary" />, value: `${rescues}`, label: "resgates" },
+    { icon: <Flame className="w-4 h-4" style={{ color: "hsl(var(--arena-fire))" }} />, value: `${profile.streak_days}`, label: "sequência", color: "--arena-fire" },
+    { icon: <Trophy className="w-4 h-4" style={{ color: "hsl(var(--arena-gold))" }} />, value: rankPos ? `#${rankPos}` : "—", label: "ranking", color: "--arena-gold" },
+    { icon: <Star className="w-4 h-4" style={{ color: "hsl(var(--arena-electric))" }} />, value: momRating ? `${momRating.stars}★` : "—", label: "nota mãe", color: "--arena-electric" },
+    { icon: <CheckSquare className="w-4 h-4" style={{ color: "hsl(var(--arena-neon))" }} />, value: `${monthPct}%`, label: "tarefas", color: "--arena-neon" },
+    { icon: <CalendarDays className="w-4 h-4" style={{ color: "hsl(var(--arena-electric))" }} />, value: `${monthEvents.length}`, label: "eventos", color: "--arena-electric" },
+    { icon: <LifeBuoy className="w-4 h-4" style={{ color: "hsl(var(--arena-fire))" }} />, value: `${rescues}`, label: "resgates", color: "--arena-fire" },
   ];
 
   return (
     <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-6">
 
       {/* ═══════════════════ SECTION 1: Profile Header ═══════════════════ */}
-      <section className={`relative rounded-2xl overflow-hidden border-2 ${isMom ? "border-mom-border bg-mom-bg" : "border-dad-border bg-dad-bg"}`}>
-        {/* Subtle pattern */}
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
-        
-        {/* Top accent bar */}
-        <div className={`h-2 ${isMom ? "bg-mom" : "bg-primary"}`} />
-        
-        <div className="relative p-5">
-          <div className="flex items-center gap-4">
-            <label className="cursor-pointer relative group shrink-0">
-              <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
-              <div className={`w-20 h-20 rounded-full border-4 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform shadow-lg ${isMom ? "border-mom bg-mom/10" : "border-primary bg-primary/10"}`}>
-                {profile.avatar_url ? (
-                  <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+      {isMom ? (
+        <section className="relative rounded-2xl overflow-hidden border-2 border-mom-border bg-mom-bg">
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+          <div className="h-2 bg-mom" />
+          <div className="relative p-5">
+            <div className="flex items-center gap-4">
+              <label className="cursor-pointer relative group shrink-0">
+                <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+                <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform shadow-lg border-mom bg-mom/10">
+                  {profile.avatar_url ? (
+                    <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="font-display text-3xl font-bold text-mom-text">{(profile.display_name || "U")[0].toUpperCase()}</span>
+                  )}
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md border-2 border-white bg-mom">
+                  <Edit2 className="w-3.5 h-3.5 text-white" />
+                </div>
+              </label>
+              <div className="flex-1 min-w-0">
+                {editMode ? (
+                  <div className="flex gap-2">
+                    <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm bg-white" autoFocus />
+                    <Button size="sm" className="h-8 text-xs text-white bg-mom hover:bg-mom/90" onClick={handleSaveName}>Salvar</Button>
+                  </div>
                 ) : (
-                  <span className={`font-display text-3xl font-bold ${isMom ? "text-mom-text" : "text-dad-text"}`}>
-                    {(profile.display_name || "U")[0].toUpperCase()}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <h1 className="font-display text-xl font-bold text-foreground truncate">{profile.display_name}</h1>
+                    <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
+                      <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+                    </button>
+                  </div>
                 )}
-              </div>
-              <div className={`absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md border-2 border-white ${isMom ? "bg-mom" : "bg-primary"}`}>
-                <Edit2 className="w-3.5 h-3.5 text-white" />
-              </div>
-            </label>
-
-            <div className="flex-1 min-w-0">
-              {editMode ? (
-                <div className="flex gap-2">
-                  <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm bg-white" autoFocus />
-                  <Button size="sm" className={`h-8 text-xs text-white ${isMom ? "bg-mom hover:bg-mom/90" : "bg-primary hover:bg-primary/90"}`} onClick={handleSaveName}>Salvar</Button>
+                <div className="mt-1">
+                  <Badge className="text-[10px] text-white border-0 bg-mom">👑 CEO da Família</Badge>
                 </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <h1 className="font-display text-xl font-bold text-foreground truncate">{profile.display_name}</h1>
-                  <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
-                    <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
-                  </button>
-                </div>
-              )}
-              <div className="mt-1">
-                <Badge className={`text-[10px] text-white border-0 ${isMom ? "bg-mom" : "bg-primary"}`}>
-                  {isMom ? "👑 CEO da Família" : `${dadTitle.emoji} ${dadTitle.title}`}
-                </Badge>
+                <p className="text-[11px] text-muted-foreground font-body italic mt-1.5 leading-tight">
+                  {tasksCreatedByMe > 0 ? `${tasksCreatedByMe} tarefa(s) criadas esse mês` : "A família funciona porque você funciona."}
+                </p>
               </div>
-              <p className="text-[11px] text-muted-foreground font-body italic mt-1.5 leading-tight">
-                {isMom
-                  ? tasksCreatedByMe > 0
-                    ? `${tasksCreatedByMe} tarefa(s) criadas esse mês`
-                    : "A família funciona porque você funciona."
-                  : rescues > 0
-                    ? `A mãe te salvou ${rescues}x esse mês`
-                    : lastActiveHours > 24 ? `Última ação: ${lastActiveHours}h atrás` : "Ativo hoje. Bom começo."}
-              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-2.5 mt-4">
+              {stats.slice(0, 3).map((s, i) => (
+                <div key={i} className="bg-white rounded-xl p-2.5 text-center shadow-sm border border-border">
+                  <p className="font-display font-bold text-lg text-foreground">{s.value}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
+                </div>
+              ))}
             </div>
           </div>
+        </section>
+      ) : (
+        <section className="relative rounded-2xl overflow-hidden" style={{
+          background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.97), hsl(220 25% 14%), hsl(var(--arena-dark)))",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.3), 0 0 40px hsl(var(--arena-fire) / 0.08)",
+          border: "1px solid hsl(var(--arena-fire) / 0.2)",
+        }}>
+          {/* Arena grid pattern */}
+          <div className="absolute inset-0 opacity-[0.04]" style={{
+            backgroundImage: "linear-gradient(hsl(var(--arena-fire)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-fire)) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }} />
+          {/* Top fire line */}
+          <div className="absolute top-0 left-0 right-0 h-1" style={{
+            background: "linear-gradient(90deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
+            boxShadow: "0 0 12px hsl(var(--arena-fire) / 0.5)",
+          }} />
+          {/* Glow orbs */}
+          <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full blur-3xl opacity-25" style={{ background: "hsl(var(--arena-fire))" }} />
+          <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-3xl opacity-15" style={{ background: "hsl(var(--arena-gold))" }} />
 
-          {/* Stats row */}
-          <div className="grid grid-cols-3 gap-2.5 mt-4">
-            {stats.slice(0, 3).map((s, i) => (
-              <div key={i} className="bg-white rounded-xl p-2.5 text-center shadow-sm border border-border">
-                <p className="font-display font-bold text-lg text-foreground">{s.value}</p>
-                <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
+          <div className="relative p-5 pt-6">
+            <div className="flex items-center gap-4">
+              <label className="cursor-pointer relative group shrink-0">
+                <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+                <div className="relative">
+                  {/* Conic glow ring */}
+                  <div className="absolute -inset-2 rounded-full blur-md" style={{
+                    background: "conic-gradient(hsl(var(--arena-fire) / 0.5), hsl(var(--arena-gold) / 0.4), hsl(var(--arena-neon) / 0.3), hsl(var(--arena-fire) / 0.5))",
+                  }} />
+                  <div className="relative w-20 h-20 rounded-full border-3 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform" style={{
+                    borderColor: "hsl(var(--arena-fire) / 0.6)",
+                    boxShadow: "0 4px 24px hsl(var(--arena-fire) / 0.3), 0 0 40px hsl(var(--arena-gold) / 0.1)",
+                  }}>
+                    {profile.avatar_url ? (
+                      <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--arena-fire) / 0.2), hsl(var(--arena-dark)))" }}>
+                        <span className="font-display text-3xl font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{(profile.display_name || "U")[0].toUpperCase()}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-lg border-2" style={{
+                  background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+                  borderColor: "hsl(var(--arena-dark))",
+                  boxShadow: "0 0 10px hsl(var(--arena-fire) / 0.4)",
+                }}>
+                  <Edit2 className="w-3.5 h-3.5 text-white" />
+                </div>
+              </label>
+
+              <div className="flex-1 min-w-0">
+                {editMode ? (
+                  <div className="flex gap-2">
+                    <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm" style={{ background: "hsl(var(--arena-dark) / 0.8)", borderColor: "hsl(var(--arena-fire) / 0.3)", color: "white" }} autoFocus />
+                    <Button size="sm" className="h-8 text-xs text-white border-0" style={{ background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))" }} onClick={handleSaveName}>Salvar</Button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <h1 className="font-display text-xl font-bold truncate" style={{ color: "white" }}>{profile.display_name}</h1>
+                    <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
+                      <Edit2 className="w-4 h-4" style={{ color: "hsl(0 0% 60%)" }} />
+                    </button>
+                  </div>
+                )}
+                <div className="mt-1">
+                  <Badge className="text-[10px] border-0" style={{
+                    background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+                    color: "white",
+                    boxShadow: "0 2px 10px hsl(var(--arena-fire) / 0.3)",
+                  }}>
+                    {dadTitle.emoji} {dadTitle.title}
+                  </Badge>
+                </div>
+                <p className="text-[11px] font-body italic mt-1.5 leading-tight" style={{ color: "hsl(var(--arena-glow) / 0.6)" }}>
+                  {rescues > 0
+                    ? `A mãe te salvou ${rescues}x esse mês`
+                    : lastActiveHours > 24 ? `Última ação: ${lastActiveHours}h atrás` : "Ativo hoje. Bom começo."}
+                </p>
               </div>
-            ))}
+            </div>
+
+            {/* Arena stats row */}
+            <div className="grid grid-cols-3 gap-2.5 mt-4">
+              {(stats as any[]).slice(0, 3).map((s: any, i: number) => (
+                <div key={i} className="rounded-xl p-2.5 text-center relative overflow-hidden" style={{
+                  background: "rgba(255,255,255,0.05)",
+                  border: `1px solid hsl(var(${s.color || "--arena-fire"}) / 0.2)`,
+                  boxShadow: `0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)`,
+                }}>
+                  <p className="font-display font-bold text-lg" style={{
+                    color: `hsl(var(${s.color || "--arena-fire"}))`,
+                    textShadow: `0 0 8px hsl(var(${s.color || "--arena-fire"}) / 0.3)`,
+                  }}>{s.value}</p>
+                  <p className="text-[10px] font-body" style={{ color: "hsl(0 0% 55%)" }}>{s.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ═══════════════════ SECTION 2: Secondary Stats ═══════════════════ */}
       <section className="grid grid-cols-3 gap-2.5">
