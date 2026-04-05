@@ -485,7 +485,7 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
       </h1>
 
       <p className="font-body text-sm italic text-muted-foreground text-center mb-1">
-        O anjinho levou. Com cara de desconfiado, mas levou.
+        {getRandomItem(SEND_PHRASES)}
       </p>
 
       <p className="text-[10px] text-muted-foreground text-center mb-8">
