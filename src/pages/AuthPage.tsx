@@ -456,7 +456,7 @@ export default function AuthPage() {
               zIndex: isFlipped ? 0 : 1,
             }}
           >
-            <DadLoginForm />
+            <DadLoginForm initialInviteCode={inviteCode} />
           </div>
 
           {/* Back face - Mom or Grandma */}
