@@ -201,7 +201,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
           {checkedToday && (
             <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/20 border border-green-500/30">
               <span className="text-green-500 text-[10px]">✓</span>
-              <span className="text-[9px] font-display font-bold text-green-600">PRESENTE HOJE</span>
+              <span className="text-[9px] font-display font-bold text-green-400">PRESENTE HOJE</span>
             </div>
           )}
         </div>
@@ -313,7 +313,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                 <span
                   className={`text-[9px] font-display font-semibold tracking-wide ${
                     isToday
-                      ? checkedToday ? "text-green-500 font-black" : "text-orange-500 font-black"
+                      ? checkedToday ? "text-green-500 font-black" : "text-orange-400 font-black"
                       : blockActive ? "text-white/60" : "text-white/30"
                   }`}
                 >
@@ -382,7 +382,7 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                 : "Marcar presença agora"}
             </div>
           ) : (
-            <p className="text-[10px] text-green-500/60 font-body italic">
+            <p className="text-[10px] text-green-400/70 font-body italic">
               ✓ Presença confirmada. Agora vai fazer algo útil ou só veio olhar?
             </p>
           )}
