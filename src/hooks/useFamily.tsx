@@ -13,15 +13,17 @@ export function useFamilyPartner() {
         .from("profiles")
         .select("*")
         .eq("family_id", profile.family_id)
-        .neq("user_id", profile.user_id)
-        .maybeSingle();
-      return data;
+        .neq("user_id", profile.user_id);
+      return data && data.length > 0 ? data : null;
     },
     enabled: !!profile?.family_id,
   });
 
   return {
     ...query,
+    // Keep backward compat: `data` returns the first partner for single-partner usage
+    data: query.data ? query.data[0] : null,
+    allMembers: query.data || [],
     isLoading: profileLoading || query.isLoading,
   };
 }

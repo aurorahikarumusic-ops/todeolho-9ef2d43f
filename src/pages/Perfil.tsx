@@ -64,7 +64,7 @@ export default function Perfil() {
   const { user, signOut } = useAuth();
   const { data: profile } = useProfile();
   const isMom = useIsMom();
-  const { data: partner } = useFamilyPartner();
+  const { data: partner, allMembers } = useFamilyPartner();
   const updateProfile = useUpdateProfile();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -724,7 +724,7 @@ export default function Perfil() {
         </h2>
         {!profile.family_id ? (
           isMom ? <InvitePartner /> : <JoinFamily />
-        ) : !partner ? (
+        ) : allMembers.length === 0 ? (
           <div className="rounded-xl p-3 text-center" style={{
             background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
             border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.15)",
@@ -734,32 +734,38 @@ export default function Perfil() {
             </p>
           </div>
         ) : (
-          isMom ? (
-            <Card className="border-0 shadow-sm bg-primary/5">
-              <CardContent className="p-3 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/15">
-                  <span className="text-lg">👨</span>
+          <div className="space-y-2">
+            {allMembers.map((member: any) => {
+              const roleEmoji = member.role === "mae" ? "👩" : member.role === "avo" ? "👵" : "👨";
+              const roleLabel = member.role === "mae" ? "A mãe" : member.role === "avo" ? "A avó" : "O pai";
+              return isMom ? (
+                <Card key={member.id} className="border-0 shadow-sm bg-primary/5">
+                  <CardContent className="p-3 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/15">
+                      <span className="text-lg">{roleEmoji}</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-display font-bold text-sm">{member.display_name}</p>
+                      <p className="text-[10px] text-muted-foreground font-body">{roleLabel} — conectado ✓</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div key={member.id} className="rounded-xl p-3 flex items-center gap-3" style={{
+                  background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
+                  border: "1px solid hsl(var(--arena-gold) / 0.15)",
+                }}>
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "hsl(var(--arena-fire) / 0.15)" }}>
+                    <span className="text-lg">{roleEmoji}</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-display font-bold text-sm" style={{ color: "hsl(220 15% 90%)" }}>{member.display_name}</p>
+                    <p className="text-[10px] font-body" style={{ color: "hsl(var(--arena-neon) / 0.6)" }}>{roleLabel} — conectado ✓</p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="font-display font-bold text-sm">{partner.display_name}</p>
-                  <p className="text-[10px] text-muted-foreground font-body">O pai — conectado ✓</p>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="rounded-xl p-3 flex items-center gap-3" style={{
-              background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(220 25% 16%))",
-              border: "1px solid hsl(var(--arena-gold) / 0.15)",
-            }}>
-              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "hsl(var(--arena-fire) / 0.15)" }}>
-                <span className="text-lg">👩</span>
-              </div>
-              <div className="flex-1">
-                <p className="font-display font-bold text-sm" style={{ color: "hsl(220 15% 90%)" }}>{partner.display_name}</p>
-                <p className="text-[10px] font-body" style={{ color: "hsl(var(--arena-neon) / 0.6)" }}>A mãe — conectado ✓</p>
-              </div>
-            </div>
-          )
+              );
+            })}
+          </div>
         )}
       </section>
 
