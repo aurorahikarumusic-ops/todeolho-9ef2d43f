@@ -1,8 +1,69 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
+import { getRandomItem } from "@/lib/constants";
+
+const SEND_PHRASES = [
+  "Não seja mão de vaca e mande flores pra ela 💐",
+  "Essa carta salva? Depende. Você esqueceu o aniversário dela? 🎂",
+  "O anjinho tá lendo sua carta... e rindo. 😏",
+  "Será que ela vai chorar ou revirar os olhos? Aposta? 🎰",
+  "Última vez que você foi romântico foi em 2016. Parabéns pelo esforço. 👏",
+  "Ela merece mais que uma carta. Mas é um começo. 🤷",
+  "O anjinho disse que o texto tá fraco. Mas vai levar mesmo assim. 📬",
+  "Dica: depois da carta, lava a louça. Combo imbatível. 🍽️",
+  "Essa carta vale mais que mil desculpas no WhatsApp. 📱",
+  "Se ela não chorar, pelo menos vai rir de você. Win-win. 😂",
+  "O cupido tá de folga. Mandamos o anjinho desconfiado mesmo. 💘",
+  "Lembrete: carta bonita não substitui presença. Mas ajuda. 🫶",
+  "Estatística: 87% das mães choram com cartas. Os outros 13% já desistiram. 📊",
+  "O anjinho perguntou se você também vai cozinhar hoje. 🍳",
+  "Sua sogra mandou dizer que ela sabia que você ia precisar disso. 👵",
+  "Modo redenção ativado. Nível de desespero: alto. 🚨",
+  "Ela lembra de tudo que você esqueceu. Essa carta é só o começo. 🧠",
+  "O anjinho checou seu histórico. Ele tá desconfiado com razão. 🕵️",
+  "Dica de ouro: leia a carta em voz alta pra ela. Pontos extras. 🎤",
+  "Se a carta não funcionar, tente chocolate. Nunca falha. 🍫",
+  "O anjinho disse que sua letra é feia. Ainda bem que é digital. ⌨️",
+  "Alerta: demonstração de afeto detectada. Isso é raro vindo de você. ⚠️",
+  "Sua esposa merece um Oscar por aguentar você. Essa carta é o mínimo. 🏆",
+  "O anjinho voou, mas deixou um recado: 'compra flores também'. 🌹",
+  "Você sabia que 'desculpa' tem 8 letras? Sua carta tem mais. Progresso. 📈",
+  "Ela vai mostrar essa carta pras amigas. Prepare-se. 👀",
+  "O anjinho tá com cara de quem não acredita em você. Prove que ele tá errado. 😤",
+  "Carta enviada. Agora reza. 🙏",
+  "Dica: surpreenda ela com café amanhã de manhã. Reforço tático. ☕",
+  "O anjinho disse que sua pontuação de pai precisa de ajuda. Concordamos. 📉",
+  "Isso é coragem ou desespero? Tanto faz, mandou bem. 💪",
+  "A carta tá indo... junto com suas desculpas atrasadas de 3 meses. 📅",
+  "Se ela responder com emoji de coração, você tá salvo. Por enquanto. ❤️",
+  "O anjinho fez uma oração por você. Sinal de que precisa mesmo. 😇",
+  "Lembrete amigável: depois da carta, desligue a TV e converse. 📺",
+  "Sua mãe ficaria orgulhosa. Sua sogra, desconfiada. Como sempre. 🤨",
+  "O anjinho verificou: sua última demonstração de carinho foi há 47 dias. 📆",
+  "Carta a caminho. Desculpa a caminho. Flores... compra logo. 🏃",
+  "Ela já sabe que você fez besteira. A carta só confirma. 🎯",
+  "O anjinho deu uma nota 6/10 pra sua carta. Mas entregou mesmo assim. 📝",
+  "Modo pai romântico: ativado pela primeira vez este ano. 🫡",
+  "Dica: não estrague tudo perguntando 'e aí, gostou?' cinco minutos depois. ⏰",
+  "O anjinho tá levando sua carta e seu orgulho junto. Leve. 🪶",
+  "Se ela ignorar a carta, mande outra. Persistência é tudo. 🔁",
+  "Parabéns! Você fez algo romântico. Print tirado como prova. 📸",
+  "O anjinho apostou com os amigos que ela vai chorar. Veremos. 🎲",
+  "Sua carta tem mais sentimento que seu último Dia dos Namorados inteiro. 💝",
+  "Lembrete: amar é verbo. Carta é substantivo. Faça os dois. 📖",
+  "O anjinho levou a carta... e um pouco da sua masculinidade frágil. Tá tudo bem. 🦋",
+  "Ela merece o mundo. Você mandou uma carta. É um começo honesto. 🌍",
+] as const;
 
 export default function SendConfirmation({ onClose }: { onClose: () => void }) {
   const [phase, setPhase] = useState(0);
+  const [phraseIdx, setPhraseIdx] = useState(0);
+
+  // Pick 6 random phrases for the animation sequence
+  const randomPhrases = useMemo(() => {
+    const shuffled = [...SEND_PHRASES].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 6);
+  }, []);
   // 0: letter folding into envelope
   // 1: angel appears and grabs
   // 2: angel flies away
