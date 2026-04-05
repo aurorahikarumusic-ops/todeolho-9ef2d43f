@@ -28,6 +28,7 @@ import { MOM_BADGES } from "@/lib/mom-constants";
 import InvitePartner from "@/components/family/InvitePartner";
 import JoinFamily from "@/components/family/JoinFamily";
 import PalpitesHistorySection from "@/components/profile/PalpitesHistorySection";
+import CartasRecebidas from "@/components/redemption/CartasRecebidas";
 import { sendLocalNotification, getNotificationPermission, requestPushSubscription } from "@/lib/pushNotifications";
 
 const DAD_ACHIEVEMENTS = {
@@ -424,6 +425,12 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 5b: Palpites History (Mom & Dad) ═══════════════════ */}
       {(isMom || profile.role === "pai") && <PalpitesHistorySection />}
 
+      {/* ═══════════════════ SECTION 5c: Cartas Recebidas (Mom) ═══════════════════ */}
+      {isMom && (
+        <section>
+          <CartasRecebidas />
+        </section>
+      )}
       <Separator className="my-2" />
 
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}

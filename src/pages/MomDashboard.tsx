@@ -15,6 +15,7 @@ import InvitePartner from "@/components/family/InvitePartner";
 import MonthlyChallenge from "@/components/home/MonthlyChallenge";
 import MonthlyReport from "@/components/home/MonthlyReport";
 import GrandmaPalpitesCard from "@/components/home/GrandmaPalpitesCard";
+import MomLetterNotification from "@/components/redemption/MomLetterNotification";
 
 export default function MomDashboard() {
   const { user } = useAuth();
@@ -133,6 +134,9 @@ export default function MomDashboard() {
           </p>
         </CardContent>
       </Card>
+
+      {/* Love Letter Notification */}
+      <MomLetterNotification />
 
       {/* Partner banner */}
       {!partnerLoading && !partner && (
