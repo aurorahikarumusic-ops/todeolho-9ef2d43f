@@ -309,8 +309,26 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
   );
 }
 
+type AuthView = "dad" | "mom" | "grandma";
+
 export default function AuthPage() {
-  const [view, setView] = useState<"dad" | "mom" | "grandma">("dad");
+  const [view, setView] = useState<AuthView>("dad");
+  const [flipDirection, setFlipDirection] = useState<"forward" | "back">("forward");
+  const [isFlipping, setIsFlipping] = useState(false);
+
+  const handleViewChange = (newView: AuthView) => {
+    if (isFlipping || newView === view) return;
+    setFlipDirection(newView === "dad" ? "back" : "forward");
+    setIsFlipping(true);
+    // At halfway point of the animation, swap the content
+    setTimeout(() => {
+      setView(newView);
+    }, 300);
+    // Animation complete
+    setTimeout(() => {
+      setIsFlipping(false);
+    }, 600);
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
@@ -329,23 +347,42 @@ export default function AuthPage() {
 
       {/* Flip container */}
       <div className="w-full max-w-md" style={{ perspective: "1200px" }}>
-        {view === "dad" && <DadLoginForm />}
-        {view === "mom" && <MomLoginForm onBack={() => setView("dad")} />}
-        {view === "grandma" && <GrandmaLoginForm onBack={() => setView("dad")} />}
+        <div
+          className="relative w-full transition-transform duration-[600ms] ease-in-out"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: isFlipping
+              ? flipDirection === "forward"
+                ? "rotateY(180deg)"
+                : "rotateY(-180deg)"
+              : "rotateY(0deg)",
+          }}
+        >
+          <div
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+            }}
+          >
+            {view === "dad" && <DadLoginForm />}
+            {view === "mom" && <MomLoginForm onBack={() => handleViewChange("dad")} />}
+            {view === "grandma" && <GrandmaLoginForm onBack={() => handleViewChange("dad")} />}
+          </div>
+        </div>
       </div>
 
       {/* Role buttons - only visible on dad side */}
-      {view === "dad" && (
-        <div className="mt-6 w-full max-w-md space-y-3">
+      {view === "dad" && !isFlipping && (
+        <div className="mt-6 w-full max-w-md space-y-3 animate-fade-in">
           <Button
-            onClick={() => setView("mom")}
+            onClick={() => handleViewChange("mom")}
             className="w-full h-14 font-display text-xl bg-mom hover:bg-mom/80 text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
           >
             <Crown className="w-6 h-6 mr-2" />
             Sou a Chefe 👑
           </Button>
           <Button
-            onClick={() => setView("grandma")}
+            onClick={() => handleViewChange("grandma")}
             className="w-full h-12 font-display text-lg bg-avo hover:bg-avo/80 text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
             style={{
               boxShadow: "0 6px 20px -4px hsl(270 60% 55% / 0.3)",
