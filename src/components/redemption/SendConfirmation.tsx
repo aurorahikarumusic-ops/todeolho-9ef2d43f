@@ -378,18 +378,16 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Status text */}
-        <div className="absolute bottom-12 left-0 right-0 text-center">
-          <p className="font-display text-base font-bold text-[hsl(340,40%,25%)]" 
+        <div className="absolute bottom-12 left-0 right-0 text-center px-6">
+          <p className="font-display text-sm font-bold text-[hsl(340,40%,25%)] min-h-[3rem] flex items-center justify-center" 
             style={{ animation: "fadeIn 0.5s ease" }}
-            key={phase}>
+            key={phraseIdx}>
+            {randomPhrases[phraseIdx]}
+          </p>
+          <p className="font-body text-[10px] italic text-muted-foreground mt-1">
             {phase === 0 && "Dobrando a carta com carinho... 📃"}
             {phase === 1 && "Um anjinho apareceu... 🤨"}
-            {phase === 2 && "Ele pegou a carta e saiu voando! 😏✈️"}
-          </p>
-          <p className="font-body text-xs italic text-muted-foreground mt-1">
-            {phase === 0 && "Cada palavra conta."}
-            {phase === 1 && "Ele parece desconfiado..."}
-            {phase === 2 && "Será que entrega? Veremos..."}
+            {phase === 2 && "Ele pegou e saiu voando! 😏✈️"}
           </p>
         </div>
 
