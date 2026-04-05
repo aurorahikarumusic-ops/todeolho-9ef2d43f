@@ -43,48 +43,46 @@ export default function LetterPreview({
     if (!user || !profile) return;
     setSending(true);
     try {
-      const { data, error } = await supabase.from("love_letters").insert({
-        sender_id: user.id,
-        recipient_id: recipId || null,
-        family_id: profile.family_id,
-        tone,
-        content,
-        date_label: includeDate ? today : null,
-        sender_name: senderName,
-        recipient_name: recipient,
-        include_signature: includeSignature,
-      }).select("id").single();
+      // Insert letter and check previous letters in parallel
+      const [letterResult, prevResult] = await Promise.all([
+        supabase.from("love_letters").insert({
+          sender_id: user.id,
+          recipient_id: recipId || null,
+          family_id: profile.family_id,
+          tone,
+          content,
+          date_label: includeDate ? today : null,
+          sender_name: senderName,
+          recipient_name: recipient,
+          include_signature: includeSignature,
+        }).select("id").single(),
+        supabase.from("love_letters").select("id").eq("sender_id", user.id).limit(2),
+      ]);
 
-      if (error) throw error;
+      if (letterResult.error) throw letterResult.error;
 
-      // Award points (+50 first letter, +20 subsequent)
-      const { data: prevLetters } = await supabase
-        .from("love_letters")
-        .select("id")
-        .eq("sender_id", user.id)
-        .limit(2);
-      const isFirst = !prevLetters || prevLetters.length <= 1;
+      const isFirst = !prevResult.data || prevResult.data.length <= 1;
       const pointsToAdd = isFirst ? 50 : 20;
 
-      await supabase.from("profiles").update({
-        points: profile.points + pointsToAdd,
-      }).eq("user_id", user.id);
-
-      // Award badge if first letter
+      // Points update and badge award in parallel
+      const pointsOp = supabase.from("profiles").update({ points: profile.points + pointsToAdd }).eq("user_id", user.id);
       if (isFirst) {
-        await supabase.from("achievements").insert({
+        const badgeOp = supabase.from("achievements").insert({
           user_id: user.id,
           badge_key: "redimido",
           badge_name: "Redimido",
           badge_emoji: "💌",
         });
+        await Promise.all([pointsOp, badgeOp]);
+      } else {
+        await pointsOp;
       }
 
+      // Trigger confirmation immediately, invalidate in background
+      onSend(letterResult.data.id);
       qc.invalidateQueries({ queryKey: ["profile"] });
       qc.invalidateQueries({ queryKey: ["sent-letters"] });
       qc.invalidateQueries({ queryKey: ["received-letters"] });
-
-      onSend(data.id);
     } catch (err: any) {
       toast.error("Erro ao enviar carta: " + (err.message || "tente novamente"));
     } finally {
