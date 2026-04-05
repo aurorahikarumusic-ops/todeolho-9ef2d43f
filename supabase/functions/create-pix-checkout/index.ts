@@ -57,7 +57,7 @@ serve(async (req) => {
         letter_id: letterId,
         user_id: user.id,
       },
-      success_url: `${origin}/perfil?payment=success&letter_id=${letterId}`,
+      success_url: `${origin}/perfil?payment=success&letter_id=${letterId}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/perfil?payment=cancelled`,
     });
 
