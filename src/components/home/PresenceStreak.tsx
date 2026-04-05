@@ -257,10 +257,10 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
 
         {/* 3D Week blocks */}
         <div className="flex items-end justify-between gap-2 mb-5 px-0.5">
-          {weekActivity.map((active, i) => {
-            const isToday = i === new Date().getDay() - 1 || (new Date().getDay() === 0 && i === 6);
-            const isTodayIdx = i === weekActivity.length - 1;
-            const blockActive = active || (isTodayIdx && checkedToday);
+        {weekActivity.map((active, i) => {
+            const todayIdx = (new Date().getDay() + 6) % 7; // Mon=0 ... Sun=6
+            const isToday = i === todayIdx;
+            const blockActive = active || (isToday && checkedToday);
             const height = blockActive ? 44 + (i * 3) : 24;
 
             return (
