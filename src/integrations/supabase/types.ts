@@ -218,6 +218,66 @@ export type Database = {
         }
         Relationships: []
       }
+      love_letters: {
+        Row: {
+          content: string
+          created_at: string
+          date_label: string | null
+          family_id: string | null
+          id: string
+          include_signature: boolean
+          opened_at: string | null
+          paid: boolean
+          recipient_id: string | null
+          recipient_name: string | null
+          saved_by_recipient: boolean
+          sender_id: string
+          sender_name: string | null
+          sent_at: string
+          stripe_payment_id: string | null
+          tone: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          date_label?: string | null
+          family_id?: string | null
+          id?: string
+          include_signature?: boolean
+          opened_at?: string | null
+          paid?: boolean
+          recipient_id?: string | null
+          recipient_name?: string | null
+          saved_by_recipient?: boolean
+          sender_id: string
+          sender_name?: string | null
+          sent_at?: string
+          stripe_payment_id?: string | null
+          tone?: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          date_label?: string | null
+          family_id?: string | null
+          id?: string
+          include_signature?: boolean
+          opened_at?: string | null
+          paid?: boolean
+          recipient_id?: string | null
+          recipient_name?: string | null
+          saved_by_recipient?: boolean
+          sender_id?: string
+          sender_name?: string | null
+          sent_at?: string
+          stripe_payment_id?: string | null
+          tone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       mom_ratings: {
         Row: {
           comment: string | null
@@ -476,6 +536,44 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      redemption_events: {
+        Row: {
+          created_at: string
+          dismissed_at: string | null
+          id: string
+          letter_id: string | null
+          shown_at: string
+          trigger_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dismissed_at?: string | null
+          id?: string
+          letter_id?: string | null
+          shown_at?: string
+          trigger_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dismissed_at?: string | null
+          id?: string
+          letter_id?: string | null
+          shown_at?: string
+          trigger_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "redemption_events_letter_id_fkey"
+            columns: ["letter_id"]
+            isOneToOne: false
+            referencedRelation: "love_letters"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tasks: {
         Row: {
