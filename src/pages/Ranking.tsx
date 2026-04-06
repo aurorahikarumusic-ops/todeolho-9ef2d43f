@@ -586,7 +586,7 @@ export default function Ranking() {
 
               <div className="text-right shrink-0">
                 <p className="font-display font-bold text-base" style={{
-                  color: isMom ? "hsl(var(--mom-accent))" : index <= 2 ? "hsl(var(--arena-gold))" : "hsl(var(--primary))",
+                  color: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--dad-accent))",
                 }}>{dad.points}</p>
                 <div className="flex items-center gap-1 justify-end">
                   <span className="text-[10px]" style={!isMom && index <= 2 ? { color: "hsl(30 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>pts</span>
