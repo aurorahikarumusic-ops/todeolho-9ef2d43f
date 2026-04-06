@@ -579,7 +579,7 @@ export default function Ranking() {
                   )}
                   <span className="text-xs">{title.emoji}</span>
                 </div>
-                <p className="text-[10px] font-body italic truncate" style={!isMom && index <= 2 ? { color: "hsl(30 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>
+                <p className="text-[10px] font-body italic truncate" style={{ color: isMom ? "hsl(var(--muted-foreground))" : "hsl(var(--dad-accent-hover))" }}>
                   {isMom ? getMomPositionDescription(index, list.length) : getPositionDescription(index, list.length)}
                 </p>
               </div>
