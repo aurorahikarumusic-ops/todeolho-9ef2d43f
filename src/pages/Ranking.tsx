@@ -257,72 +257,57 @@ function MomPodiumSection({ ranking }: { ranking: any[] }) {
   );
 }
 
-// Dad stats bar (Arena style)
+// Dad stats bar (Neo-Brutalist style)
 function MyStatsBar({ profile, position, total }: { profile: any; position: number; total: number }) {
   if (!profile || position < 0) return null;
   const percentile = total > 1 ? Math.round(((total - position) / total) * 100) : 100;
   const title = getDadTitle(profile.points);
 
   return (
-    <div className="rounded-2xl p-4 relative overflow-hidden" style={{
-      background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(30 25% 12%))",
-      boxShadow: "0 8px 32px rgba(0,0,0,0.2), 0 0 30px hsl(var(--arena-neon) / 0.08), inset 0 1px 0 rgba(255,255,255,0.06)",
-      border: "1px solid hsl(var(--arena-neon) / 0.2)",
-    }}>
-      <div className="absolute inset-0 opacity-[0.04]" style={{
-        backgroundImage: "linear-gradient(hsl(var(--arena-neon)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-neon)) 1px, transparent 1px)",
-        backgroundSize: "24px 24px"
-      }} />
-      <div className="absolute top-0 left-4 right-4 h-px" style={{
-        background: "linear-gradient(90deg, transparent, hsl(var(--arena-neon) / 0.5), transparent)",
-      }} />
+    <div className="dad-neo-card p-4 relative overflow-hidden">
       <div className="relative flex items-center gap-4">
         <div className="relative">
-          <div className="absolute -inset-1.5 rounded-full blur-md" style={{
-            background: "conic-gradient(hsl(var(--arena-gold) / 0.3), hsl(var(--arena-neon) / 0.2), hsl(var(--arena-fire) / 0.3), hsl(var(--arena-gold) / 0.3))",
-          }} />
-          <Avatar className="relative h-12 w-12 ring-2" style={{
-            borderColor: "hsl(var(--arena-neon) / 0.4)",
-            boxShadow: "0 0 16px hsl(var(--arena-neon) / 0.2)",
+          <Avatar className="relative h-12 w-12" style={{
+            border: "3px solid hsl(var(--dad-text))",
+            boxShadow: "4px 4px 0 hsl(var(--dad-text))",
           }}>
             <AvatarImage src={profile.avatar_url || undefined} />
             <AvatarFallback className="font-display font-bold" style={{
-              background: "hsl(var(--arena-neon) / 0.15)", color: "hsl(var(--arena-neon))",
+              background: "hsl(var(--dad-bg))", color: "hsl(var(--dad-text))",
             }}>{(profile.display_name || "P")[0]}</AvatarFallback>
           </Avatar>
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
-            <span className="font-display font-bold text-lg" style={{ color: "hsl(var(--arena-gold))", textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)" }}>#{position + 1}</span>
-            <span className="text-sm font-body" style={{ color: "hsl(0 0% 70%)" }}>de {total}</span>
-            {position <= 2 && <Crown className="w-4 h-4" style={{ color: "hsl(var(--arena-gold))", filter: "drop-shadow(0 0 4px hsl(var(--arena-gold) / 0.5))" }} />}
+            <span className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>#{position + 1}</span>
+            <span className="text-sm font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>de {total}</span>
+            {position <= 2 && <Crown className="w-4 h-4" style={{ color: "hsl(var(--dad-accent))" }} />}
           </div>
-          <p className="text-xs font-body italic truncate" style={{ color: "hsl(var(--arena-glow) / 0.7)" }}>
+          <p className="text-xs font-body italic truncate" style={{ color: "hsl(var(--dad-accent-hover))" }}>
             {title.emoji} {title.title} • Top {percentile}% dos pais
           </p>
         </div>
         <div className="text-right">
           <div className="flex items-center gap-1">
-            <Zap className="w-4 h-4" style={{ color: "hsl(var(--arena-fire))", filter: "drop-shadow(0 0 4px hsl(var(--arena-fire) / 0.5))" }} />
-            <span className="font-display font-bold text-xl" style={{ color: "hsl(var(--arena-gold))", textShadow: "0 0 10px hsl(var(--arena-gold) / 0.3)" }}>{profile.points}</span>
+            <Zap className="w-4 h-4" style={{ color: "hsl(var(--dad-accent))" }} />
+            <span className="font-display font-bold text-xl" style={{ color: "hsl(var(--dad-text))" }}>{profile.points}</span>
           </div>
-          <p className="text-[10px]" style={{ color: "hsl(30 15% 78%)" }}>pontos</p>
+          <p className="text-[10px]" style={{ color: "hsl(var(--dad-accent-hover))" }}>pontos</p>
         </div>
       </div>
       {position > 0 && (
         <div className="relative mt-3">
-          <div className="flex items-center justify-between text-[10px] mb-1" style={{ color: "hsl(var(--arena-glow) / 0.6)" }}>
+          <div className="flex items-center justify-between text-[10px] mb-1" style={{ color: "hsl(var(--dad-accent-hover))" }}>
             <span className="flex items-center gap-1">
               <ChevronUp className="w-3 h-3" />
               Pra subir: +{Math.max(1, ranking_diff(profile, position))}pts
             </span>
             <span className="font-display">{profile.streak_days > 0 ? `🔥 ${profile.streak_days} dias` : ""}</span>
           </div>
-          <div className="h-2 rounded-full overflow-hidden" style={{ background: "hsl(30 30% 18%)" }}>
+          <div className="h-3 rounded-full overflow-hidden" style={{ background: "hsl(var(--dad-bg))", border: "2px solid hsl(var(--dad-text))" }}>
             <div className="h-full rounded-full transition-all duration-1000" style={{
               width: `${Math.min(95, Math.max(5, percentile))}%`,
-              background: "linear-gradient(90deg, hsl(var(--arena-neon)), hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
-              boxShadow: "0 0 8px hsl(var(--arena-neon) / 0.4)",
+              background: "hsl(var(--dad-accent))",
             }} />
           </div>
         </div>
