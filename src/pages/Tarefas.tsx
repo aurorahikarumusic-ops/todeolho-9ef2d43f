@@ -329,7 +329,7 @@ export default function Tarefas() {
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through" : ""}`} style={!isMom && !task.completed_at ? { color: "hsl(30 15% 90%)" } : !isMom ? { color: "hsl(30 15% 70%)" } : undefined}>
+                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through" : ""}`} style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
                   {cat.emoji} {task.title}
                 </h3>
               </div>
