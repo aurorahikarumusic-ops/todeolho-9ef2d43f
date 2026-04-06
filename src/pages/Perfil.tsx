@@ -395,51 +395,27 @@ export default function Perfil() {
           </div>
         </section>
       ) : (
-        <section className="relative rounded-2xl overflow-hidden" style={{
-          background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.97), hsl(30 25% 10%), hsl(var(--arena-dark)))",
-          boxShadow: "0 12px 40px rgba(0,0,0,0.3), 0 0 40px hsl(var(--arena-fire) / 0.08)",
-          border: "1px solid hsl(var(--arena-fire) / 0.2)",
-        }}>
-          {/* Arena grid pattern */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage: "linear-gradient(hsl(var(--arena-fire)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-fire)) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }} />
-          {/* Top fire line */}
-          <div className="absolute top-0 left-0 right-0 h-1" style={{
-            background: "linear-gradient(90deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
-            boxShadow: "0 0 12px hsl(var(--arena-fire) / 0.5)",
-          }} />
-          {/* Glow orbs */}
-          <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full blur-3xl opacity-25" style={{ background: "hsl(var(--arena-fire))" }} />
-          <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-3xl opacity-15" style={{ background: "hsl(var(--arena-gold))" }} />
-
+        <section className="dad-neo-card relative overflow-hidden">
+          <div className="h-2" style={{ background: "hsl(var(--dad-accent))" }} />
           <div className="relative p-5 pt-6">
             <div className="flex items-center gap-4">
               <label className="cursor-pointer relative group shrink-0">
                 <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
-                <div className="relative">
-                  {/* Conic glow ring */}
-                  <div className="absolute -inset-2 rounded-full blur-md" style={{
-                    background: "conic-gradient(hsl(var(--arena-fire) / 0.5), hsl(var(--arena-gold) / 0.4), hsl(var(--arena-neon) / 0.3), hsl(var(--arena-fire) / 0.5))",
-                  }} />
-                  <div className="relative w-20 h-20 rounded-full border-3 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform" style={{
-                    borderColor: "hsl(var(--arena-fire) / 0.6)",
-                    boxShadow: "0 4px 24px hsl(var(--arena-fire) / 0.3), 0 0 40px hsl(var(--arena-gold) / 0.1)",
-                  }}>
-                    {profile.avatar_url ? (
-                      <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, hsl(var(--arena-fire) / 0.2), hsl(var(--arena-dark)))" }}>
-                        <span className="font-display text-3xl font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{(profile.display_name || "U")[0].toUpperCase()}</span>
-                      </div>
-                    )}
-                  </div>
+                <div className="relative w-20 h-20 rounded-full flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform" style={{
+                  border: "4px solid hsl(var(--dad-text))",
+                  boxShadow: "4px 4px 0 hsl(var(--dad-text))",
+                  background: "hsl(var(--dad-bg))",
+                }}>
+                  {profile.avatar_url ? (
+                    <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="font-display text-3xl font-bold" style={{ color: "hsl(var(--dad-text))" }}>{(profile.display_name || "U")[0].toUpperCase()}</span>
+                  )}
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-lg border-2" style={{
-                  background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
-                  borderColor: "hsl(var(--arena-dark))",
-                  boxShadow: "0 0 10px hsl(var(--arena-fire) / 0.4)",
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-lg" style={{
+                  background: "hsl(var(--dad-accent))",
+                  border: "2px solid hsl(var(--dad-text))",
+                  boxShadow: "2px 2px 0 hsl(var(--dad-text))",
                 }}>
                   <Edit2 className="w-3.5 h-3.5 text-white" />
                 </div>
@@ -448,27 +424,26 @@ export default function Perfil() {
               <div className="flex-1 min-w-0">
                 {editMode ? (
                   <div className="flex gap-2">
-                    <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm" style={{ background: "hsl(var(--arena-dark) / 0.8)", borderColor: "hsl(var(--arena-fire) / 0.3)", color: "white" }} autoFocus />
-                    <Button size="sm" className="h-8 text-xs text-white border-0" style={{ background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))" }} onClick={handleSaveName}>Salvar</Button>
+                    <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm" autoFocus />
+                    <Button size="sm" className="h-8 text-xs text-white border-0" style={{ background: "hsl(var(--dad-accent))" }} onClick={handleSaveName}>Salvar</Button>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <h1 className="font-display text-xl font-bold truncate" style={{ color: "white" }}>{profile.display_name}</h1>
+                    <h1 className="font-display text-xl font-bold truncate" style={{ color: "hsl(var(--dad-text))" }}>{profile.display_name}</h1>
                     <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
-                      <Edit2 className="w-4 h-4" style={{ color: "hsl(30 15% 78%)" }} />
+                      <Edit2 className="w-4 h-4" style={{ color: "hsl(var(--dad-accent-hover))" }} />
                     </button>
                   </div>
                 )}
                 <div className="mt-1">
-                  <Badge className="text-[10px] border-0" style={{
-                    background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
+                  <span className="dad-neo-badge text-[10px]" style={{
+                    background: "hsl(var(--dad-cta))",
                     color: "white",
-                    boxShadow: "0 2px 10px hsl(var(--arena-fire) / 0.3)",
                   }}>
                     {dadTitle.emoji} {dadTitle.title}
-                  </Badge>
+                  </span>
                 </div>
-                <p className="text-[11px] font-body italic mt-1.5 leading-tight" style={{ color: "hsl(var(--arena-glow) / 0.6)" }}>
+                <p className="text-[11px] font-body italic mt-1.5 leading-tight" style={{ color: "hsl(var(--dad-accent-hover))" }}>
                   {rescues > 0
                     ? `A mãe te salvou ${rescues}x esse mês`
                     : lastActiveHours > 24 ? `Última ação: ${lastActiveHours}h atrás` : "Ativo hoje. Bom começo."}
@@ -476,19 +451,12 @@ export default function Perfil() {
               </div>
             </div>
 
-            {/* Arena stats row */}
+            {/* Neo-Brutalist stats row */}
             <div className="grid grid-cols-3 gap-2.5 mt-4">
               {(stats as any[]).slice(0, 3).map((s: any, i: number) => (
-                <div key={i} className="rounded-xl p-2.5 text-center relative overflow-hidden" style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: `1px solid hsl(var(${s.color || "--arena-fire"}) / 0.2)`,
-                  boxShadow: `0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)`,
-                }}>
-                  <p className="font-display font-bold text-lg" style={{
-                    color: `hsl(var(${s.color || "--arena-fire"}))`,
-                    textShadow: `0 0 8px hsl(var(${s.color || "--arena-fire"}) / 0.3)`,
-                  }}>{s.value}</p>
-                  <p className="text-[10px] font-body" style={{ color: "hsl(30 15% 75%)" }}>{s.label}</p>
+                <div key={i} className="dad-neo-card-sm p-2.5 text-center">
+                  <p className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>{s.value}</p>
+                  <p className="text-[10px] font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{s.label}</p>
                 </div>
               ))}
             </div>
