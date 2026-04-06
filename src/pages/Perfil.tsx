@@ -475,17 +475,10 @@ export default function Perfil() {
             </CardContent>
           </Card>
         ) : (
-          <div key={i} className="rounded-xl p-3 text-center relative overflow-hidden" style={{
-            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
-            border: `1px solid hsl(var(${s.color || "--arena-fire"}) / 0.15)`,
-            boxShadow: "0 4px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03)",
-          }}>
+          <div key={i} className="dad-neo-card-sm p-3 text-center">
             <div className="flex justify-center mb-1">{s.icon}</div>
-            <p className="font-display font-bold text-lg" style={{
-              color: `hsl(var(${s.color || "--arena-fire"}))`,
-              textShadow: `0 0 6px hsl(var(${s.color || "--arena-fire"}) / 0.25)`,
-            }}>{s.value}</p>
-            <p className="text-[10px] font-body" style={{ color: "hsl(30 15% 70%)" }}>{s.label}</p>
+            <p className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>{s.value}</p>
+            <p className="text-[10px] font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{s.label}</p>
           </div>
         ))}
       </section>
