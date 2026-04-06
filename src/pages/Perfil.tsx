@@ -663,7 +663,7 @@ export default function Perfil() {
           <CartasRecebidas />
         </section>
       )}
-      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--arena-fire) / 0.2), transparent)" }} />}
+      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "hsl(var(--dad-border))" }} />}
 
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}
       <section>
