@@ -36,32 +36,28 @@ export default function DailyQuote() {
   const today = format(new Date(), "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
 
   return (
-    <div
-      className="rounded-2xl p-4 relative overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
-        borderLeft: "4px solid hsl(var(--arena-fire))",
-        border: "1px solid hsl(var(--arena-fire) / 0.12)",
-        borderLeftWidth: "4px",
-        borderLeftColor: "hsl(var(--arena-fire))",
-        boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
-      }}
+    <div className="dad-neo-card-sm relative p-4 overflow-hidden"
+      style={{ background: "#FFF0E6", borderLeftWidth: "6px", borderLeftColor: "hsl(var(--dad-accent))" }}
     >
       <span
-        className="inline-block text-[11px] font-body font-semibold px-2 py-0.5 rounded-full mb-2"
+        className="dad-neo-badge mb-2"
         style={{
-          background: "hsl(var(--arena-fire) / 0.12)",
-          color: "hsl(var(--arena-fire))",
+          background: "hsl(var(--dad-cta))",
+          color: "white",
+          borderWidth: "2px",
+          padding: "0.2rem 0.6rem",
+          fontSize: "0.7rem",
+          boxShadow: "3px 3px 0 hsl(var(--dad-text))",
         }}
       >
         💬 Frase do dia
       </span>
-      <p className="font-body text-sm italic leading-relaxed" style={{ color: "hsl(0 0% 80%)" }}>
+      <p className="font-body text-sm italic leading-relaxed" style={{ color: "hsl(var(--dad-text))" }}>
         "{quote}"
       </p>
       <div className="flex items-center justify-end gap-1 mt-2">
-        <CalendarDays className="w-3 h-3" style={{ color: "hsl(30 15% 70%)" }} />
-        <span className="text-[10px] font-body" style={{ color: "hsl(30 15% 70%)" }}>{today}</span>
+        <CalendarDays className="w-3 h-3" style={{ color: "hsl(var(--dad-accent-hover))" }} />
+        <span className="text-[10px] font-body font-bold" style={{ color: "hsl(var(--dad-accent-hover))" }}>{today}</span>
       </div>
     </div>
   );

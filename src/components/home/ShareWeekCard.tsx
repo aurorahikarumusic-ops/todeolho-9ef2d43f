@@ -1,5 +1,4 @@
 import { Share2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 interface ShareWeekCardProps {
@@ -31,13 +30,13 @@ export default function ShareWeekCard({ displayName, tasksCompleted, streak, ran
 
   return (
     <div className="mt-2 mb-4 px-0">
-      <Button
+      <button
         onClick={handleShare}
-        className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-display text-sm h-11 rounded-xl shadow-lg"
+        className="dad-neo-btn w-full flex items-center justify-center gap-2"
       >
         <Share2 className="w-4 h-4" />
         📤 Compartilhar minha semana
-      </Button>
+      </button>
     </div>
   );
 }
