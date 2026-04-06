@@ -262,19 +262,19 @@ export default function Tarefas() {
     return (
       <div
         key={task.id}
-        className={`rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${
+        className={`overflow-hidden transition-all duration-300 cursor-pointer ${
           isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
-        } ${task.rescued_by_mom ? "opacity-70" : ""}`}
-        style={{
-          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
+        } ${task.rescued_by_mom ? "opacity-70" : ""} ${
+          isMom ? "rounded-2xl" : "dad-neo-card-sm"
+        }`}
+        style={isMom ? {
+          background: "hsl(var(--card))",
           boxShadow: isExpanded
-            ? isMom
-              ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
-              : `0 12px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05), -4px 0 0 ${cat.color}`
-            : isMom
-              ? `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`
-              : `0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03), -4px 0 0 ${cat.color}`,
-          border: isMom ? undefined : "1px solid hsl(30 30% 18%)",
+            ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
+            : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`,
+        } : {
+          borderLeftWidth: "6px",
+          borderLeftColor: cat.color,
         }}
         onClick={() => setExpandedTask(isExpanded ? null : task.id)}
       >
@@ -329,7 +329,7 @@ export default function Tarefas() {
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through" : ""}`} style={!isMom && !task.completed_at ? { color: "hsl(30 15% 90%)" } : !isMom ? { color: "hsl(30 15% 70%)" } : undefined}>
+                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through" : ""}`} style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
                   {cat.emoji} {task.title}
                 </h3>
               </div>
@@ -341,7 +341,7 @@ export default function Tarefas() {
                       ? "bg-red-500/10 text-red-500 font-bold"
                       : isMom ? "bg-muted/50 text-muted-foreground" : ""
                   }`}
-                  style={!isMom && !isOverdue ? { background: "hsl(30 30% 18%)", color: "hsl(30 15% 78%)" } : undefined}>
+                  style={!isMom && !isOverdue ? { background: "hsl(var(--dad-bg))", color: "hsl(var(--dad-accent-hover))", border: "2px solid hsl(var(--dad-border))" } : undefined}>
                     <Clock className="w-2.5 h-2.5" />
                     {format(new Date(task.due_date), "dd/MM · HH:mm")}
                     {isOverdue && " ⚠️"}
@@ -363,7 +363,7 @@ export default function Tarefas() {
                 )}
               </div>
 
-              <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(30 15% 65%)" } : undefined}>
+              <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>
                 {getTaskIronicComment(task, isMom)}
               </p>
             </div>
@@ -463,16 +463,17 @@ export default function Tarefas() {
   };
 
   const renderEmptyState = (emoji: string, title: string, text: string) => (
-    <div className="rounded-3xl p-10 text-center"
-      style={{
-        borderColor: isMom ? "hsl(var(--muted))" : "hsl(var(--arena-gold) / 0.2)",
-        background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
-        boxShadow: isMom ? "inset 0 2px 8px rgba(0,0,0,0.03)" : "0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04)",
-        border: isMom ? "2px dashed hsl(var(--muted))" : "1px solid hsl(var(--arena-gold) / 0.12)",
+    <div className={`p-10 text-center ${isMom ? "rounded-3xl" : "dad-neo-card"}`}
+      style={isMom ? {
+        border: "2px dashed hsl(var(--muted))",
+        boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
+      } : {
+        background: "#FFF0E6",
+        borderStyle: "dashed",
       }}>
       <p className="text-5xl mb-3">{emoji}</p>
-      <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(0 0% 100%)" } : undefined}>{title}</p>
-      <p className="text-sm font-body italic whitespace-pre-line" style={!isMom ? { color: "hsl(30 20% 85%)" } : undefined}>{text}</p>
+      <p className="font-display text-lg font-black mb-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>{title}</p>
+      <p className="text-sm font-body italic whitespace-pre-line" style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>{text}</p>
     </div>
   );
 
@@ -485,148 +486,87 @@ export default function Tarefas() {
   if (isMom && awaitingApproval.length > 0) subtitle = `${awaitingApproval.length} aguardando sua aprovação. Hora de julgar.`;
 
   return (
-    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
+    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4"
+      style={!isMom ? { background: "#FFF8F1", minHeight: "100vh" } : undefined}>
       {/* Hero Header */}
       <div
-        className="relative rounded-3xl p-5 overflow-hidden"
-        style={{
-          background: isMom
-            ? "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))"
-            : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(30 25% 12%), hsl(var(--arena-dark)))",
-          perspective: "800px",
+        className={`relative overflow-hidden ${isMom ? "rounded-3xl p-5" : "dad-neo-card p-5"}`}
+        style={isMom ? {
+          background: "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))",
+        } : {
+          background: "#FFEAAE",
         }}
       >
-        {isMom ? (
+        {isMom && (
           <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
             style={{ background: "hsl(var(--mom-accent))" }} />
-        ) : (
-          <>
-            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-40"
-              style={{ background: "hsl(var(--arena-neon))" }} />
-            <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-3xl opacity-20"
-              style={{ background: "hsl(var(--arena-fire))" }} />
-            <div className="absolute inset-0 opacity-[0.04]" style={{
-              backgroundImage: "linear-gradient(hsl(var(--arena-neon)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-neon)) 1px, transparent 1px)",
-              backgroundSize: "28px 28px",
-            }} />
-            <div className="absolute top-0 left-6 right-6 h-px" style={{
-              background: "linear-gradient(90deg, transparent, hsl(var(--arena-neon) / 0.5), transparent)",
-            }} />
-          </>
         )}
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
-            {isMom ? <Shield className="w-6 h-6 text-mom" /> : <CheckSquare className="w-6 h-6" style={{ color: "hsl(var(--arena-neon))", filter: "drop-shadow(0 0 6px hsl(var(--arena-neon) / 0.5))" }} />}
-            <h1 className="font-display text-xl font-bold" style={!isMom ? {
-              background: "linear-gradient(135deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)), hsl(var(--arena-neon)))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            } : undefined}>
+            {isMom ? <Shield className="w-6 h-6 text-mom" /> : <CheckSquare className="w-6 h-6" style={{ color: "hsl(var(--dad-accent))" }} />}
+            <h1 className="font-display text-xl font-black" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
               {isMom ? "Painel de Controle" : "⚔️ Missões do Pai"}
             </h1>
           </div>
-          <p className={`text-xs font-body italic mb-4 ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(var(--arena-glow) / 0.7)" } : undefined}>{subtitle}</p>
+          <p className={`text-xs font-body italic mb-4 ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>{subtitle}</p>
 
-          {/* Quick stats */}
+          {/* Quick stats — Neo-Brutalista for Dad */}
           <div className="flex gap-2">
-            <div className={`flex-1 backdrop-blur-sm rounded-2xl p-3 text-center`}
-              style={{
-                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
-                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
-                border: isMom ? undefined : "1px solid hsl(var(--arena-neon) / 0.15)",
-              }}>
-              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-neon))", textShadow: "0 0 8px hsl(var(--arena-neon) / 0.4)" } : undefined}>{pending.length}</p>
-              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(30 15% 78%)" } : undefined}>Pendentes</p>
-            </div>
-            {isMom && (
-              <div className="flex-1 bg-white/40 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-3 text-center"
-                style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" }}>
-                <p className="font-display text-2xl font-black text-amber-500">{awaitingApproval.length}</p>
-                <p className="text-[8px] text-muted-foreground font-body uppercase tracking-wider">Aprovação</p>
+            {[
+              { value: pending.length, label: "Pendentes", bg: "#D8F3DC", border: "#2D6A4F", shadow: "#1B4332" },
+              ...(isMom ? [{ value: awaitingApproval.length, label: "Aprovação", bg: "#FFEAAE", border: "#D4A10A", shadow: "#B8890A" }] : []),
+              { value: completed.length, label: "Feitas", bg: "#D6EAFF", border: "#2B7ACA", shadow: "#1A4B7B" },
+              { value: isMom ? rescued.length : overdue.length, label: isMom ? "Resgates" : "Atrasadas", bg: "#FFD6D6", border: "#C0392B", shadow: "#922B21" },
+            ].map((stat, i) => (
+              <div key={i} className="flex-1 rounded-2xl p-3 text-center transition-all duration-300 hover:translate-y-[-2px]"
+                style={!isMom ? {
+                  background: stat.bg,
+                  border: `3px solid ${stat.border}`,
+                  boxShadow: `4px 4px 0 ${stat.shadow}`,
+                } : {
+                  background: "rgba(255,255,255,0.4)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)",
+                }}>
+                <p className="font-display text-2xl font-black" style={!isMom ? { color: stat.shadow } : undefined}>{stat.value}</p>
+                <p className="text-[8px] font-display font-bold uppercase tracking-wider" style={!isMom ? { color: stat.border } : { color: "hsl(var(--muted-foreground))" }}>{stat.label}</p>
               </div>
-            )}
-            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{
-                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
-                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
-                border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.15)",
-              }}>
-              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-gold))", textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)" } : { color: "hsl(var(--primary))" }}>{completed.length}</p>
-              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(30 15% 78%)" } : undefined}>Feitas</p>
-            </div>
-            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{
-                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
-                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
-                border: isMom ? undefined : "1px solid hsl(var(--arena-fire) / 0.15)",
-              }}>
-              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-fire))", textShadow: "0 0 8px hsl(var(--arena-fire) / 0.3)" } : { color: "#ef4444" }}>{isMom ? rescued.length : overdue.length}</p>
-              <p className={`text-[8px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(30 15% 78%)" } : undefined}>{isMom ? "Resgates" : "Atrasadas"}</p>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Daily Mission - Dad only */}
       {!isMom && todayMission && !todayMission.completed_at && (
-        <div
-          className="rounded-2xl p-4 overflow-hidden relative"
-          style={{
-            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 20% 10%))",
-            boxShadow: "0 6px 24px rgba(0,0,0,0.2), 0 0 30px hsl(var(--arena-gold) / 0.1), inset 0 1px 0 rgba(255,255,255,0.05)",
-            border: "1px solid hsl(var(--arena-gold) / 0.25)",
-          }}
-        >
-          <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full blur-2xl opacity-30"
-            style={{ background: "hsl(var(--arena-gold))" }} />
-          <div className="absolute bottom-0 left-0 w-16 h-16 rounded-full blur-xl opacity-20"
-            style={{ background: "hsl(var(--arena-fire))" }} />
-          <div className="absolute top-0 left-4 right-4 h-px" style={{
-            background: "linear-gradient(90deg, transparent, hsl(var(--arena-gold) / 0.5), transparent)",
-          }} />
+        <div className="dad-neo-card p-4 overflow-hidden relative" style={{ background: "#FFEAAE" }}>
           <div className="relative z-10 flex items-start gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
               style={{
-                background: "linear-gradient(135deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
-                boxShadow: "0 4px 12px hsl(var(--arena-gold) / 0.4), 0 0 16px hsl(var(--arena-gold) / 0.2)",
+                background: "hsl(var(--dad-accent))",
+                border: "3px solid hsl(var(--dad-text))",
+                boxShadow: "3px 3px 0 hsl(var(--dad-text))",
               }}>
               <Star className="w-5 h-5 text-white" />
             </div>
             <div className="flex-1">
-              <p className="font-display text-xs font-bold uppercase tracking-wider mb-1" style={{
-                background: "linear-gradient(90deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
+              <p className="font-display text-xs font-black uppercase tracking-wider mb-1" style={{ color: "hsl(var(--dad-text))" }}>
                 ⭐ Missão Surpresa do Dia
               </p>
-              <p className="font-body text-sm mb-3" style={{ color: "hsl(30 15% 88%)" }}>{todayMission.mission_text}</p>
-              <Button
-                size="sm"
-                className="text-xs font-display font-bold rounded-xl border-0 text-white"
-                style={{
-                  background: "linear-gradient(135deg, hsl(var(--arena-neon)), hsl(var(--arena-gold)))",
-                  boxShadow: "0 4px 16px hsl(var(--arena-neon) / 0.3)",
-                }}
+              <p className="font-body text-sm mb-3" style={{ color: "hsl(var(--dad-accent-hover))" }}>{todayMission.mission_text}</p>
+              <button className="dad-neo-btn text-xs" style={{ padding: "0.5rem 1rem", fontSize: "0.8rem" }}
                 onClick={() => completeMissionMutation.mutate()}
                 disabled={completeMissionMutation.isPending}
               >
                 {completeMissionMutation.isPending ? "..." : "✅ Missão cumprida! (+40pts)"}
-              </Button>
+              </button>
             </div>
           </div>
         </div>
       )}
 
       {!isMom && todayMission?.completed_at && (
-        <div className="rounded-2xl p-3 text-center relative overflow-hidden"
-          style={{
-            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
-            border: "1px solid hsl(var(--arena-neon) / 0.25)",
-            boxShadow: "0 4px 16px rgba(0,0,0,0.2), 0 0 12px hsl(var(--arena-neon) / 0.1)",
-          }}>
-          <p className="text-xs font-body italic" style={{ color: "hsl(0 0% 100%)" }}>
+        <div className="dad-neo-card-sm p-3 text-center" style={{ background: "#D8F3DC" }}>
+          <p className="text-xs font-body italic font-bold" style={{ color: "#1B4332" }}>
             ✅ Missão do dia cumprida! Sem a mãe pedir. Isso sim é evolução.
           </p>
         </div>

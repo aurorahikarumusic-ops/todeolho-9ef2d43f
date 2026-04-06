@@ -104,7 +104,6 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
     if (!user) return;
 
     try {
-      // Calculate new streak
       const now = new Date();
       const lastActive = lastActiveAt ? new Date(lastActiveAt) : null;
       let newStreak = 1;
@@ -141,124 +140,72 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
     }
   }, [user, checkedToday, lastActiveAt, streakDays, queryClient, fireEmoji]);
 
-  // Color theme based on streak
-  const gradientFrom = displayStreak >= 14
-    ? "#ef4444" : displayStreak >= 7
-    ? "#f97316" : displayStreak >= 3
-    ? "#eab308" : displayStreak >= 1
-    ? "hsl(var(--arena-neon))" : "#94a3b8";
-
-  const gradientTo = displayStreak >= 14
-    ? "#dc2626" : displayStreak >= 7
-    ? "#ea580c" : displayStreak >= 3
-    ? "#f97316" : displayStreak >= 1
-    ? "hsl(var(--primary))" : "#64748b";
-
-  const glowColor = displayStreak >= 7
-    ? "rgba(249,115,22,0.4)" : displayStreak >= 3
-    ? "rgba(234,179,8,0.3)" : "rgba(148,163,184,0.2)";
+  // Colors for streak level
+  const streakColor = displayStreak >= 14
+    ? { bg: "#FFD6D6", border: "#C0392B", shadow: "#922B21" }
+    : displayStreak >= 7
+    ? { bg: "#FFEAAE", border: "#D4A10A", shadow: "#B8890A" }
+    : displayStreak >= 3
+    ? { bg: "#D8F3DC", border: "#2D6A4F", shadow: "#1B4332" }
+    : { bg: "#F0EDE8", border: "#6B7280", shadow: "#4B5563" };
 
   return (
     <div
-      className="relative rounded-3xl overflow-hidden cursor-pointer select-none"
+      className="relative rounded-3xl overflow-hidden cursor-pointer select-none transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px]"
       style={{
-        perspective: "800px",
-        background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(30 25% 12%))",
-        boxShadow: `0 8px 32px -8px ${glowColor}, 0 4px 16px rgba(0,0,0,0.2)`, border: "1px solid hsl(var(--arena-gold) / 0.1)",
+        background: streakColor.bg,
+        border: `4px solid ${streakColor.border}`,
+        boxShadow: `8px 8px 0 ${streakColor.shadow}`,
       }}
       onClick={handleCheckIn}
     >
-      {/* Animated background glow */}
-      <div
-        className="absolute -top-12 -right-12 w-48 h-48 rounded-full blur-3xl transition-all duration-1000"
-        style={{
-          background: `radial-gradient(circle, ${glowColor}, transparent)`,
-          transform: animating ? "scale(1.5)" : "scale(1)",
-          opacity: animating ? 0.8 : 0.5,
-        }}
-      />
-      
-      {/* Secondary glow bottom-left */}
-      {displayStreak >= 7 && (
-        <div
-          className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full blur-3xl"
-          style={{ background: `radial-gradient(circle, ${glowColor}, transparent)`, opacity: 0.3 }}
-        />
-      )}
-
       <div className="relative z-10 p-5">
         {/* Status Badge */}
         <div className="flex items-center justify-between mb-4">
-          <div
-            className="px-3 py-1 rounded-full text-[10px] font-display font-black uppercase tracking-wider text-white"
-            style={{
-              background: `linear-gradient(135deg, ${gradientFrom}, ${gradientTo})`,
-              boxShadow: `0 2px 12px ${glowColor}`,
-            }}
-          >
+          <span className="dad-neo-badge" style={{
+            background: streakColor.border,
+            color: "white",
+            borderColor: streakColor.shadow,
+          }}>
             {statusLabel}
-          </div>
+          </span>
           {checkedToday && (
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-[hsl(var(--arena-neon)/0.15)] border border-[hsl(var(--arena-neon)/0.3)]">
-              <span className="text-[hsl(var(--arena-neon))] text-[10px]">✓</span>
-              <span className="text-[9px] font-display font-bold text-[hsl(var(--arena-neon))]">PRESENTE HOJE</span>
-            </div>
+            <span className="dad-neo-badge" style={{
+              background: "#D8F3DC",
+              color: "#1B4332",
+              borderColor: "#2D6A4F",
+              fontSize: "0.65rem",
+              padding: "0.2rem 0.6rem",
+            }}>
+              ✓ PRESENTE HOJE
+            </span>
           )}
         </div>
 
-        {/* Main counter + fire */}
+        {/* Main counter */}
         <div className="flex items-center gap-4 mb-5">
-          <div
-            className={`relative transition-all duration-500 ${animating ? "scale-150" : "scale-100"}`}
-            style={{
-              transform: animating
-                ? "translateZ(40px) scale(1.5) rotate(-12deg)"
-                : "translateZ(15px)",
-              filter: displayStreak >= 3
-                ? `drop-shadow(0 0 ${8 + displayStreak}px ${glowColor})`
-                : "none",
-              transformStyle: "preserve-3d",
-            }}
-          >
-            <span className={`${displayStreak >= 14 ? "text-5xl" : displayStreak >= 7 ? "text-4xl" : "text-3xl"} inline-block`}>
-              {fireEmoji}
-            </span>
-            {displayStreak >= 14 && (
-              <span className="absolute -top-2 -right-3 text-base animate-bounce">⚡</span>
-            )}
-            {displayStreak >= 30 && (
-              <span className="absolute -bottom-1 -left-2 text-sm animate-pulse">👑</span>
-            )}
-          </div>
-
+          <span className={`${displayStreak >= 14 ? "text-5xl" : displayStreak >= 7 ? "text-4xl" : "text-3xl"} inline-block ${animating ? "animate-bounce" : ""}`}>
+            {fireEmoji}
+          </span>
           <div>
             <div className="flex items-baseline gap-2">
-              <span
-                className="font-display text-5xl font-black tabular-nums"
-                style={{
-                  background: `linear-gradient(135deg, ${gradientFrom}, ${gradientTo})`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  filter: animating ? `drop-shadow(0 0 8px ${glowColor})` : "none",
-                  transition: "filter 0.5s",
-                }}
-              >
+              <span className="font-display text-5xl font-black" style={{ color: streakColor.shadow }}>
                 {displayStreak}
               </span>
-              <span className="font-display text-base font-bold text-white/70">
+              <span className="font-display text-base font-bold" style={{ color: streakColor.border }}>
                 dia{displayStreak !== 1 ? "s" : ""}
               </span>
             </div>
-            <span className="font-body text-[10px] text-white/50 uppercase tracking-[0.2em]">
+            <span className="font-body text-[10px] uppercase tracking-[0.2em] font-bold" style={{ color: streakColor.border }}>
               de sequência
             </span>
           </div>
         </div>
 
-        {/* 3D Week blocks */}
+        {/* Week blocks — Neo style */}
         <div className="flex items-end justify-between gap-2 mb-5 px-0.5">
-        {weekActivity.map((active, i) => {
-            const todayIdx = (new Date().getDay() + 6) % 7; // Mon=0 ... Sun=6
+          {weekActivity.map((active, i) => {
+            const todayIdx = (new Date().getDay() + 6) % 7;
             const isToday = i === todayIdx;
             const blockActive = active || (isToday && checkedToday);
             const height = blockActive ? 44 + (i * 3) : 24;
@@ -270,53 +217,24 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                   style={{
                     height: `${height}px`,
                     transitionDelay: `${i * 60}ms`,
+                    background: blockActive
+                      ? isToday ? streakColor.border : "#2D6A4F"
+                      : "#E5E7EB",
+                    border: `2px solid ${blockActive ? streakColor.shadow : "#D1D5DB"}`,
+                    boxShadow: blockActive ? `3px 3px 0 ${streakColor.shadow}` : "2px 2px 0 #D1D5DB",
                     transform: isToday && animating ? "translateY(-6px) scale(1.08)" : "translateY(0)",
-                    transformStyle: "preserve-3d",
                   }}
                 >
-                  {/* Block face */}
-                  <div
-                    className="absolute inset-0 rounded-xl transition-all duration-500"
-                    style={{
-                      background: blockActive
-                        ? isToday
-                          ? `linear-gradient(180deg, ${gradientFrom}, ${gradientTo})`
-                          : "linear-gradient(180deg, hsl(var(--arena-neon)), hsl(var(--arena-neon) / 0.6))"
-                        : "linear-gradient(180deg, hsl(30 30% 18%), hsl(30 30% 14%))",
-                      boxShadow: blockActive
-                        ? isToday
-                          ? `0 4px 16px ${glowColor}, inset 0 1px 0 rgba(255,255,255,0.3)`
-                          : "0 3px 8px hsl(var(--arena-neon) / 0.25), inset 0 1px 0 rgba(255,255,255,0.15)"
-                        : "0 1px 3px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.08)",
-                    }}
-                  />
-                  {/* Top shine */}
-                  <div
-                    className="absolute top-0 left-0 right-0 h-2.5 rounded-t-xl"
-                    style={{
-                      background: blockActive
-                        ? "rgba(255,255,255,0.25)"
-                        : "rgba(255,255,255,0.06)",
-                    }}
-                  />
-                  {/* Icon */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     {blockActive ? (
-                      <span className="text-white font-bold text-xs drop-shadow-sm">
-                        {isToday ? fireEmoji : "✓"}
-                      </span>
+                      <span className="text-white font-bold text-xs">{isToday ? fireEmoji : "✓"}</span>
                     ) : (
-                      <span className="text-white/20 text-xs">·</span>
+                      <span className="text-gray-400 text-xs">·</span>
                     )}
                   </div>
                 </div>
-                <span
-                  className={`text-[9px] font-display font-semibold tracking-wide ${
-                    isToday
-                      ? checkedToday ? "text-[hsl(var(--arena-neon))] font-black" : "text-orange-400 font-black"
-                      : blockActive ? "text-white/60" : "text-white/30"
-                  }`}
-                >
+                <span className={`text-[9px] font-display font-black tracking-wide`}
+                  style={{ color: isToday ? streakColor.border : blockActive ? streakColor.shadow : "#9CA3AF" }}>
                   {days[i]}
                 </span>
               </div>
@@ -324,19 +242,22 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
           })}
         </div>
 
-        {/* Progress to next milestone */}
+        {/* Progress bar */}
         <div className="mb-3">
           <div className="flex justify-between items-center mb-1.5">
-            <span className="text-[9px] font-display text-white/40 uppercase tracking-widest">
+            <span className="text-[9px] font-display font-bold uppercase tracking-widest" style={{ color: streakColor.border }}>
               Próximo marco
             </span>
-            <span className="text-[9px] font-display font-bold" style={{ color: gradientFrom }}>
+            <span className="text-[9px] font-display font-black" style={{ color: streakColor.shadow }}>
               {displayStreak >= 30 ? "🏆 MAX" : displayStreak >= 14 ? "30 dias" : displayStreak >= 7 ? "14 dias" : displayStreak >= 3 ? "7 dias" : "3 dias"}
             </span>
           </div>
-          <div className="h-2 bg-white/10 rounded-full overflow-hidden relative">
+          <div className="h-3 rounded-full overflow-hidden relative" style={{
+            background: "white",
+            border: `2px solid ${streakColor.border}`,
+          }}>
             <div
-              className="h-full rounded-full transition-all duration-1000 ease-out relative"
+              className="h-full rounded-full transition-all duration-1000 ease-out"
               style={{
                 width: `${Math.min(100, (() => {
                   if (displayStreak >= 30) return 100;
@@ -345,22 +266,19 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
                   if (displayStreak >= 3) return ((displayStreak - 3) / 4) * 100;
                   return (displayStreak / 3) * 100;
                 })())}%`,
-                background: `linear-gradient(90deg, ${gradientFrom}, ${gradientTo})`,
-                boxShadow: `0 0 12px ${glowColor}`,
+                background: streakColor.border,
               }}
             />
           </div>
         </div>
 
         {/* Sarcastic message */}
-        <div
-          className="rounded-xl p-3 mt-2"
-          style={{
-            background: `linear-gradient(135deg, ${gradientFrom}10, ${gradientTo}08)`,
-            border: `1px solid ${gradientFrom}20`,
-          }}
-        >
-          <p className="font-body text-xs italic text-white/80 leading-relaxed">
+        <div className="rounded-xl p-3 mt-2" style={{
+          background: "rgba(255,255,255,0.6)",
+          border: `2px solid ${streakColor.border}`,
+          boxShadow: `3px 3px 0 ${streakColor.shadow}`,
+        }}>
+          <p className="font-body text-xs italic leading-relaxed" style={{ color: streakColor.shadow }}>
             "{msg}"
           </p>
         </div>
@@ -368,21 +286,16 @@ export default function PresenceStreak({ streakDays, weekActivity, lastActiveAt 
         {/* CTA */}
         <div className="mt-3 text-center">
           {!checkedToday ? (
-            <div
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-display text-xs font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95"
-              style={{
-                background: `linear-gradient(135deg, ${gradientFrom}, ${gradientTo})`,
-                boxShadow: `0 4px 20px ${glowColor}`,
-                animation: "pulse 2s ease-in-out infinite",
-              }}
-            >
+            <span className="dad-neo-btn inline-flex" style={{
+              background: streakColor.border,
+              borderColor: streakColor.shadow,
+              boxShadow: `6px 6px 0 ${streakColor.shadow}`,
+            }}>
               <span className="text-base">{displayStreak === 0 ? "💀" : "👆"}</span>
-              {displayStreak === 0
-                ? "Ressuscite sua sequência"
-                : "Marcar presença agora"}
-            </div>
+              {displayStreak === 0 ? "Ressuscite sua sequência" : "Marcar presença agora"}
+            </span>
           ) : (
-            <p className="text-[10px] text-[hsl(var(--arena-neon))]/70 font-body italic">
+            <p className="text-[10px] font-body italic font-bold" style={{ color: streakColor.border }}>
               ✓ Presença confirmada. Agora vai fazer algo útil ou só veio olhar?
             </p>
           )}

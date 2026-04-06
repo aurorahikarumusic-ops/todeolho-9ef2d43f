@@ -160,51 +160,33 @@ export default function Agenda() {
   });
 
   return (
-    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
+    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4"
+      style={!isMom ? { background: "#FFF8F1", minHeight: "100vh" } : undefined}>
       {/* Hero Header */}
       <div
-        className="relative rounded-3xl p-5 overflow-hidden"
-        style={{
-          background: isMom
-? "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))"
-            : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(30 25% 12%), hsl(var(--arena-dark)))",
-          perspective: "800px",
+        className={`relative overflow-hidden ${isMom ? "rounded-3xl p-5" : "dad-neo-card p-5"}`}
+        style={isMom ? {
+          background: "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))",
+        } : {
+          background: "#FFEAAE",
         }}
       >
-        {isMom ? (
+        {isMom && (
           <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
             style={{ background: "hsl(var(--mom-accent))" }} />
-        ) : (
-          <>
-            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-30"
-              style={{ background: "hsl(var(--arena-electric))" }} />
-            <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full blur-3xl opacity-20"
-              style={{ background: "hsl(var(--arena-neon))" }} />
-            <div className="absolute inset-0 opacity-[0.04]" style={{
-              backgroundImage: "linear-gradient(hsl(var(--arena-electric)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-electric)) 1px, transparent 1px)",
-              backgroundSize: "28px 28px",
-            }} />
-            <div className="absolute top-0 left-6 right-6 h-px" style={{
-              background: "linear-gradient(90deg, transparent, hsl(var(--arena-electric) / 0.5), transparent)",
-            }} />
-          </>
         )}
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
             {isMom ? (
               <CalendarDays className="w-6 h-6 text-mom" />
             ) : (
-              <CalendarDays className="w-6 h-6" style={{ color: "hsl(var(--arena-electric))", filter: "drop-shadow(0 0 6px hsl(var(--arena-electric) / 0.5))" }} />
+              <CalendarDays className="w-6 h-6" style={{ color: "hsl(var(--dad-accent))" }} />
             )}
-            <h1 className="font-display text-xl font-bold" style={!isMom ? {
-              background: "linear-gradient(135deg, hsl(var(--arena-electric)), hsl(var(--arena-gold)), hsl(var(--arena-neon)))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            } : undefined}>
+            <h1 className="font-display text-xl font-black" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
               {isMom ? "Agenda da Família" : "⚔️ Compromissos"}
             </h1>
           </div>
-          <p className={`text-xs font-body italic mb-4 ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(var(--arena-glow) / 0.7)" } : undefined}>
+          <p className={`text-xs font-body italic mb-4 ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>
             {isMom
               ? "Organize tudo. Ele não tem desculpa."
               : todayEvents.length > 0
@@ -213,43 +195,34 @@ export default function Agenda() {
             }
           </p>
 
-          {/* Quick stats */}
+          {/* Quick stats — Neo cards */}
           <div className="flex gap-2">
-            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{
-                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
-                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
-                border: isMom ? undefined : "1px solid hsl(var(--arena-electric) / 0.15)",
-              }}>
-              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-electric))", textShadow: "0 0 8px hsl(var(--arena-electric) / 0.4)" } : undefined}>{todayEvents.length}</p>
-              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(30 15% 78%)" } : undefined}>Hoje</p>
-            </div>
-            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{
-                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
-                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
-                border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.15)",
-              }}>
-              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-gold))", textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)" } : undefined}>{upcomingEvents.length}</p>
-              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(30 15% 78%)" } : undefined}>Próximos</p>
-            </div>
-            <div className="flex-1 backdrop-blur-sm rounded-2xl p-3 text-center"
-              style={{
-                background: isMom ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.06)",
-                boxShadow: isMom ? "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)" : "0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)",
-                border: isMom ? undefined : "1px solid hsl(var(--arena-neon) / 0.15)",
-              }}>
-              <p className="font-display text-2xl font-black" style={!isMom ? { color: "hsl(var(--arena-neon))", textShadow: "0 0 8px hsl(var(--arena-neon) / 0.3)" } : undefined}>{events.length}</p>
-              <p className={`text-[9px] font-body uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(30 15% 78%)" } : undefined}>Este mês</p>
-            </div>
+            {[
+              { value: todayEvents.length, label: "Hoje", bg: "#D8F3DC", border: "#2D6A4F", shadow: "#1B4332" },
+              { value: upcomingEvents.length, label: "Próximos", bg: "#D6EAFF", border: "#2B7ACA", shadow: "#1A4B7B" },
+              { value: events.length, label: "Este mês", bg: "#FFEAAE", border: "#D4A10A", shadow: "#B8890A" },
+            ].map((stat, i) => (
+              <div key={i} className="flex-1 rounded-2xl p-3 text-center transition-all duration-300 hover:translate-y-[-2px]"
+                style={!isMom ? {
+                  background: stat.bg,
+                  border: `3px solid ${stat.border}`,
+                  boxShadow: `4px 4px 0 ${stat.shadow}`,
+                } : {
+                  background: "rgba(255,255,255,0.4)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)",
+                }}>
+                <p className="font-display text-2xl font-black" style={!isMom ? { color: stat.shadow } : undefined}>{stat.value}</p>
+                <p className="text-[9px] font-display font-bold uppercase tracking-wider" style={!isMom ? { color: stat.border } : { color: "hsl(var(--muted-foreground))" }}>{stat.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Next 3 days timeline */}
       <div className="space-y-1">
-        <p className={`text-xs font-display font-bold uppercase tracking-wider px-1 ${isMom ? "text-muted-foreground" : ""}`}
-          style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
+        <p className={`text-xs font-display font-black uppercase tracking-wider px-1 ${isMom ? "text-muted-foreground" : ""}`}
+          style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>
           Próximos dias
         </p>
         <div className="flex gap-2">
@@ -259,52 +232,43 @@ export default function Agenda() {
               <button
                 key={i}
                 onClick={() => setSelectedDate(day)}
-                className={`flex-1 rounded-2xl p-3 transition-all duration-300 text-center ${
+                className={`flex-1 p-3 transition-all duration-300 text-center ${
                   isMom
-                    ? isSelected ? "bg-primary text-primary-foreground shadow-lg scale-[1.02]" : "bg-card hover:bg-muted/50"
-                    : isSelected ? "scale-[1.02]" : "hover:scale-[1.01]"
+                    ? `rounded-2xl ${isSelected ? "bg-primary text-primary-foreground shadow-lg scale-[1.02]" : "bg-card hover:bg-muted/50"}`
+                    : isSelected ? "dad-neo-card-sm scale-[1.02]" : "rounded-2xl hover:scale-[1.01]"
                 }`}
-                style={!isMom ? {
-                  background: isSelected
-                    ? "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 14%))"
-                    : "hsl(var(--card))",
-                  boxShadow: isSelected
-                    ? "0 8px 24px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-electric) / 0.15), inset 0 1px 0 rgba(255,255,255,0.05)"
-                    : "0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
-                  border: isSelected ? "1px solid hsl(var(--arena-electric) / 0.3)" : "1px solid hsl(var(--border) / 0.5)",
+                style={!isMom ? (isSelected ? {
+                  background: "#FFEAAE",
                 } : {
+                  background: "hsl(var(--dad-bg))",
+                  border: "2px solid hsl(var(--dad-border) / 0.3)",
+                  borderRadius: "20px",
+                }) : {
                   boxShadow: isSelected
                     ? "0 8px 20px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2)"
                     : "0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
                 }}
               >
-                <p className={`text-[9px] font-body uppercase tracking-wider`} style={!isMom ? {
-                  color: isSelected ? "hsl(var(--arena-electric) / 0.7)" : "hsl(var(--muted-foreground))",
-                } : {
-                  color: isSelected ? "hsl(var(--primary-foreground) / 0.7)" : "hsl(var(--muted-foreground))",
-                }}>
+                <p className="text-[9px] font-display font-bold uppercase tracking-wider"
+                  style={!isMom ? { color: isSelected ? "hsl(var(--dad-accent-hover))" : "hsl(var(--muted-foreground))" } : {
+                    color: isSelected ? "hsl(var(--primary-foreground) / 0.7)" : "hsl(var(--muted-foreground))",
+                  }}>
                   {isToday(day) ? "Hoje" : isTomorrow(day) ? "Amanhã" : format(day, "EEE", { locale: ptBR })}
                 </p>
-                <p className="font-display text-lg font-black" style={!isMom && isSelected ? {
-                  color: "hsl(var(--arena-gold))",
-                  textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)",
-                } : undefined}>
+                <p className="font-display text-lg font-black" style={!isMom && isSelected ? { color: "hsl(var(--dad-text))" } : undefined}>
                   {format(day, "dd")}
                 </p>
                 {dayEvts.length > 0 ? (
                   <div className="flex justify-center gap-0.5 mt-1">
                     {dayEvts.slice(0, 3).map((e, j) => (
-                      <div
-                        key={j}
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: getCategoryInfo(e.event_type).color, boxShadow: !isMom && isSelected ? `0 0 4px ${getCategoryInfo(e.event_type).color}` : undefined }}
-                      />
+                      <div key={j} className="w-2 h-2 rounded-full" style={{
+                        background: getCategoryInfo(e.event_type).color,
+                        border: !isMom ? "1px solid hsl(var(--dad-text))" : undefined,
+                      }} />
                     ))}
                   </div>
                 ) : (
-                  <p className="text-[8px] mt-1" style={{
-                    color: !isMom && isSelected ? "hsl(30 15% 70%)" : isSelected ? "hsl(var(--primary-foreground) / 0.5)" : "hsl(var(--muted-foreground) / 0.4)",
-                  }}>—</p>
+                  <p className="text-[8px] mt-1" style={{ color: "hsl(var(--muted-foreground) / 0.4)" }}>—</p>
                 )}
               </button>
             );
@@ -312,28 +276,27 @@ export default function Agenda() {
         </div>
       </div>
 
-      {/* Calendar with 3D card */}
+      {/* Calendar — Neo card for Dad */}
       <div
-        className="rounded-3xl overflow-hidden"
-        style={{
-          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.85), hsl(30 25% 14%))",
-          boxShadow: isMom
-            ? "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)"
-            : "0 8px 30px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-gold) / 0.05), inset 0 1px 0 rgba(255,255,255,0.05)",
-          border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.1)",
+        className={!isMom ? "dad-neo-card overflow-hidden" : "rounded-3xl overflow-hidden"}
+        style={isMom ? {
+          background: "hsl(var(--card))",
+          boxShadow: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)",
+        } : {
+          background: "hsl(var(--dad-bg))",
         }}
       >
         <div className="px-4 pt-3 pb-1 flex items-center justify-between">
-          <p className={`text-xs font-display font-bold uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`}
-            style={!isMom ? { color: "hsl(var(--arena-gold) / 0.7)" } : undefined}>
+          <p className="text-xs font-display font-black uppercase tracking-wider"
+            style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : { color: "hsl(var(--muted-foreground))" }}>
             📅 Calendário
           </p>
-          <div className="flex gap-2 text-[9px] font-body">
-            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
-              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--secondary))" : "hsl(var(--arena-fire))" }} /> Mãe ({momCount})
+          <div className="flex gap-2 text-[9px] font-display font-bold">
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--secondary))" : "hsl(var(--dad-accent))", border: !isMom ? "1px solid hsl(var(--dad-text))" : undefined }} /> Mãe ({momCount})
             </span>
-            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
-              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--primary))" : "hsl(var(--arena-neon))" }} /> Pai ({dadCount})
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--primary))" : "#2D6A4F", border: !isMom ? "1px solid hsl(var(--dad-text))" : undefined }} /> Pai ({dadCount})
             </span>
           </div>
         </div>
@@ -342,7 +305,7 @@ export default function Agenda() {
           selected={selectedDate}
           onSelect={setSelectedDate}
           locale={ptBR}
-          className={`pointer-events-auto px-2 pb-2 ${!isMom ? "dad-calendar-dark" : ""}`}
+          className={`pointer-events-auto px-2 pb-2`}
           modifiers={{ hasEvent: eventDates }}
           modifiersClassNames={{
             hasEvent: "relative after:absolute after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:rounded-full after:bg-secondary",
