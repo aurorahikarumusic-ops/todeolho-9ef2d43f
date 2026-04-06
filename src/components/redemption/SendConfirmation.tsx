@@ -511,8 +511,8 @@ export default function SendConfirmation({ onClose }: { onClose: () => void }) {
       </div>
 
       <Button
-        onClick={onClose}
-        className="w-full max-w-xs rounded-2xl h-14 font-display font-bold border-0"
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
+        className="relative z-10 w-full max-w-xs rounded-2xl h-14 font-display font-bold border-0 cursor-pointer"
         style={{
           background: "linear-gradient(135deg, hsl(340,72%,57%), hsl(340,65%,48%))",
           boxShadow: "0 8px 32px hsla(340,72%,57%,0.3)",
