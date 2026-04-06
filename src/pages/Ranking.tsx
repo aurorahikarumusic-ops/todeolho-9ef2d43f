@@ -538,11 +538,11 @@ export default function Ranking() {
             } ${isLast && list.length > 3 ? "" : ""}`}
             style={{
               ...getPositionStyle(index),
-              borderColor: isMe && isMom ? "hsl(var(--mom-accent) / 0.3)" : isLast && list.length > 3 ? "hsl(var(--destructive) / 0.3)" : "hsl(var(--border) / 0.6)",
+              borderColor: isMe && isMom ? "hsl(var(--mom-accent) / 0.3)" : isLast && list.length > 3 ? "hsl(var(--destructive) / 0.3)" : undefined,
               boxShadow: isExpanded
-                ? isMom ? "0 8px 24px hsl(var(--mom-accent) / 0.1), 0 2px 8px rgba(0,0,0,0.06)" : "0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06)"
-                : "0 2px 8px rgba(0,0,0,0.04)",
-              transform: isExpanded ? "scale(1.02)" : "scale(1)",
+                ? isMom ? "0 8px 24px hsl(var(--mom-accent) / 0.1), 0 2px 8px rgba(0,0,0,0.06)" : "8px 8px 0 hsl(var(--dad-text))"
+                : undefined,
+              transform: isExpanded ? "translate(-2px, -2px)" : "scale(1)",
             }}
           >
             <div className="flex items-center gap-3">
