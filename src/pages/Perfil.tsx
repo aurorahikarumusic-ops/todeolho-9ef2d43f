@@ -790,13 +790,13 @@ export default function Perfil() {
         )}
       </section>
 
-      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--arena-fire) / 0.2), transparent)" }} />}
+      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "hsl(var(--dad-border))" }} />}
 
       {/* ═══════════════════ SECTION 8: Settings & Legal ═══════════════════ */}
       <section className="space-y-2">
         <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3"
-          style={!isMom ? { color: "hsl(30 15% 90%)" } : undefined}>
-          <Shield className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Configurações
+          style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
+          <Shield className="w-4 h-4" style={!isMom ? { color: "hsl(var(--dad-accent))" } : undefined} /> Configurações
         </h2>
 
         {isMom ? (
@@ -816,19 +816,13 @@ export default function Perfil() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-2">
-            <div className="rounded-xl p-3 text-center" style={{
-              background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
-              border: "1px solid hsl(var(--arena-gold) / 0.12)",
-            }}>
-              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(30 15% 70%)" }}>Código família</p>
-              <p className="text-xs font-mono font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{profile.family_code || "—"}</p>
+            <div className="dad-neo-card-sm p-3 text-center">
+              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(var(--dad-accent-hover))" }}>Código família</p>
+              <p className="text-xs font-mono font-bold" style={{ color: "hsl(var(--dad-text))" }}>{profile.family_code || "—"}</p>
             </div>
-            <div className="rounded-xl p-3 text-center" style={{
-              background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
-              border: "1px solid hsl(var(--arena-gold) / 0.12)",
-            }}>
-              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(30 15% 70%)" }}>Membro desde</p>
-              <p className="text-xs font-bold" style={{ color: "hsl(var(--arena-gold))" }}>{format(new Date(profile.created_at), "dd/MM/yy")}</p>
+            <div className="dad-neo-card-sm p-3 text-center">
+              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(var(--dad-accent-hover))" }}>Membro desde</p>
+              <p className="text-xs font-bold" style={{ color: "hsl(var(--dad-text))" }}>{format(new Date(profile.created_at), "dd/MM/yy")}</p>
             </div>
           </div>
         )}
@@ -849,13 +843,8 @@ export default function Perfil() {
             </Button>
           ) : (
             <>
-              <Button
-                className="flex-1 text-xs h-9 font-display border-0 text-white"
-                style={{
-                  background: "hsl(var(--arena-dark) / 0.9)",
-                  border: "1px solid hsl(var(--arena-neon) / 0.2)",
-                  color: "hsl(var(--arena-neon))",
-                }}
+              <button
+                className="dad-neo-btn flex-1 text-xs h-9 justify-center"
                 onClick={async () => {
                   const perm = await getNotificationPermission();
                   if (perm !== "granted" && user) await requestPushSubscription(user.id);
@@ -863,16 +852,14 @@ export default function Perfil() {
                 }}
               >
                 <Bell className="w-3.5 h-3.5" /> Testar notificação
-              </Button>
-              <Button className="flex-1 text-xs h-9 font-display border-0 text-white" style={{
-                background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
-              }} onClick={() => {
+              </button>
+              <button className="dad-neo-btn flex-1 text-xs h-9 justify-center" onClick={() => {
                 const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nEstou de Olho — porque alguém tem que lembrar`;
                 if (navigator.share) navigator.share({ text });
                 else { navigator.clipboard.writeText(text); toast("DNA copiado!"); }
               }}>
                 <Share2 className="w-3.5 h-3.5" /> Compartilhar DNA
-              </Button>
+              </button>
             </>
           )}
         </div>
@@ -886,10 +873,10 @@ export default function Perfil() {
             { path: "/suporte", label: "Suporte", icon: "💬" },
           ].map(link => (
             <button key={link.path} onClick={() => navigate(link.path)}
-              className={isMom ? "text-left text-xs text-muted-foreground font-body hover:text-foreground transition-colors py-2 px-3 rounded-lg hover:bg-muted/50 flex items-center gap-1.5" : "text-left text-xs font-body transition-colors py-2 px-3 rounded-lg flex items-center gap-1.5"}
-              style={!isMom ? { color: "hsl(30 15% 70%)" } : undefined}
-              onMouseEnter={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--arena-gold))"); }}
-              onMouseLeave={e => { if (!isMom) (e.currentTarget.style.color = "hsl(30 15% 70%)"); }}>
+              className="text-left text-xs font-body transition-colors py-2 px-3 rounded-lg flex items-center gap-1.5"
+              style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : { color: "hsl(var(--muted-foreground))" }}
+              onMouseEnter={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--dad-accent))"); }}
+              onMouseLeave={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--dad-accent-hover))"); }}>
               <span>{link.icon}</span> {link.label}
             </button>
           ))}
