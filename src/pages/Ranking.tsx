@@ -675,31 +675,17 @@ export default function Ranking() {
           </>
         ) : (
           <>
-            {/* Arena backdrop glow */}
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full blur-3xl" style={{
-              background: "radial-gradient(circle, hsl(var(--arena-neon) / 0.12), hsl(var(--arena-gold) / 0.06), transparent)",
-            }} />
+            {/* Neo-Brutalist Dad header */}
             <div className="relative">
-              <div className="inline-flex items-center justify-center w-18 h-18 rounded-2xl mb-3 shadow-xl relative" style={{
-                background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 14%))",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.2), 0 0 40px hsl(var(--arena-neon) / 0.15), inset 0 1px 0 rgba(255,255,255,0.1)",
-                border: "1px solid hsl(var(--arena-neon) / 0.3)",
+              <div className="dad-neo-card inline-flex items-center justify-center w-18 h-18 rounded-2xl mb-3 p-4" style={{
+                background: "hsl(var(--dad-cta))",
               }}>
-                <Trophy className="w-9 h-9" style={{
-                  color: "hsl(var(--arena-gold))",
-                  filter: "drop-shadow(0 0 8px hsl(var(--arena-gold) / 0.5))",
-                }} />
-                <div className="absolute -top-1 -right-1">
-                  <Flame className="w-4 h-4 animate-pulse" style={{ color: "hsl(var(--arena-fire))", filter: "drop-shadow(0 0 4px hsl(var(--arena-fire) / 0.6))" }} />
-                </div>
+                <Trophy className="w-9 h-9 text-white" />
               </div>
-              <h1 className="font-display text-2xl font-bold mb-1" style={{
-                background: "linear-gradient(135deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)), hsl(var(--arena-neon)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.1))",
-              }}>⚔️ O Mural da Vergonha</h1>
-              <p className="text-sm font-body italic" style={{ color: "hsl(var(--arena-neon) / 0.8)" }}>
+              <h1 className="font-display text-2xl font-bold mb-1" style={{ color: "hsl(var(--dad-text))" }}>
+                ⚔️ O Mural da Vergonha
+              </h1>
+              <p className="text-sm font-body italic" style={{ color: "hsl(var(--dad-accent-hover))" }}>
                 {myPos >= 0
                   ? myPos <= 2
                     ? "🔥 Você tá no pódio. Não estraga agora."
