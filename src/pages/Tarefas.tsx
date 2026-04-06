@@ -262,19 +262,19 @@ export default function Tarefas() {
     return (
       <div
         key={task.id}
-        className={`rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${
+        className={`overflow-hidden transition-all duration-300 cursor-pointer ${
           isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
-        } ${task.rescued_by_mom ? "opacity-70" : ""}`}
-        style={{
-          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
+        } ${task.rescued_by_mom ? "opacity-70" : ""} ${
+          isMom ? "rounded-2xl" : "dad-neo-card-sm"
+        }`}
+        style={isMom ? {
+          background: "hsl(var(--card))",
           boxShadow: isExpanded
-            ? isMom
-              ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
-              : `0 12px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05), -4px 0 0 ${cat.color}`
-            : isMom
-              ? `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`
-              : `0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03), -4px 0 0 ${cat.color}`,
-          border: isMom ? undefined : "1px solid hsl(30 30% 18%)",
+            ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
+            : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`,
+        } : {
+          borderLeftWidth: "6px",
+          borderLeftColor: cat.color,
         }}
         onClick={() => setExpandedTask(isExpanded ? null : task.id)}
       >
