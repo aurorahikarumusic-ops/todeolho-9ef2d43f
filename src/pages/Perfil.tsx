@@ -674,11 +674,8 @@ export default function Perfil() {
         {!profile.family_id ? (
           isMom ? <InvitePartner /> : <JoinFamily />
         ) : allMembers.length === 0 ? (
-          <div className="rounded-xl p-3 text-center" style={{
-            background: isMom ? undefined : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
-            border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.15)",
-          }}>
-            <p className="font-body text-xs" style={!isMom ? { color: "hsl(30 15% 70%)" } : undefined}>
+          <div className="dad-neo-card-sm p-3 text-center">
+            <p className="font-body text-xs" style={{ color: "hsl(var(--dad-accent-hover))" }}>
               Conectado à família ✓
             </p>
           </div>
