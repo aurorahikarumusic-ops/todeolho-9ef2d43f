@@ -276,28 +276,27 @@ export default function Agenda() {
         </div>
       </div>
 
-      {/* Calendar with 3D card */}
+      {/* Calendar — Neo card for Dad */}
       <div
-        className="rounded-3xl overflow-hidden"
-        style={{
-          background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.85), hsl(30 25% 14%))",
-          boxShadow: isMom
-            ? "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)"
-            : "0 8px 30px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-gold) / 0.05), inset 0 1px 0 rgba(255,255,255,0.05)",
-          border: isMom ? undefined : "1px solid hsl(var(--arena-gold) / 0.1)",
+        className={!isMom ? "dad-neo-card overflow-hidden" : "rounded-3xl overflow-hidden"}
+        style={isMom ? {
+          background: "hsl(var(--card))",
+          boxShadow: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)",
+        } : {
+          background: "hsl(var(--dad-bg))",
         }}
       >
         <div className="px-4 pt-3 pb-1 flex items-center justify-between">
-          <p className={`text-xs font-display font-bold uppercase tracking-wider ${isMom ? "text-muted-foreground" : ""}`}
-            style={!isMom ? { color: "hsl(var(--arena-gold) / 0.7)" } : undefined}>
+          <p className="text-xs font-display font-black uppercase tracking-wider"
+            style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : { color: "hsl(var(--muted-foreground))" }}>
             📅 Calendário
           </p>
-          <div className="flex gap-2 text-[9px] font-body">
-            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
-              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--secondary))" : "hsl(var(--arena-fire))" }} /> Mãe ({momCount})
+          <div className="flex gap-2 text-[9px] font-display font-bold">
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--secondary))" : "hsl(var(--dad-accent))", border: !isMom ? "1px solid hsl(var(--dad-text))" : undefined }} /> Mãe ({momCount})
             </span>
-            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
-              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--primary))" : "hsl(var(--arena-neon))" }} /> Pai ({dadCount})
+            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--primary))" : "#2D6A4F", border: !isMom ? "1px solid hsl(var(--dad-text))" : undefined }} /> Pai ({dadCount})
             </span>
           </div>
         </div>
@@ -306,7 +305,7 @@ export default function Agenda() {
           selected={selectedDate}
           onSelect={setSelectedDate}
           locale={ptBR}
-          className={`pointer-events-auto px-2 pb-2 ${!isMom ? "dad-calendar-dark" : ""}`}
+          className={`pointer-events-auto px-2 pb-2`}
           modifiers={{ hasEvent: eventDates }}
           modifiersClassNames={{
             hasEvent: "relative after:absolute after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:rounded-full after:bg-secondary",
