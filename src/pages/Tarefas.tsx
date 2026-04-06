@@ -565,13 +565,8 @@ export default function Tarefas() {
       )}
 
       {!isMom && todayMission?.completed_at && (
-        <div className="rounded-2xl p-3 text-center relative overflow-hidden"
-          style={{
-            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
-            border: "1px solid hsl(var(--arena-neon) / 0.25)",
-            boxShadow: "0 4px 16px rgba(0,0,0,0.2), 0 0 12px hsl(var(--arena-neon) / 0.1)",
-          }}>
-          <p className="text-xs font-body italic" style={{ color: "hsl(0 0% 100%)" }}>
+        <div className="dad-neo-card-sm p-3 text-center" style={{ background: "#D8F3DC" }}>
+          <p className="text-xs font-body italic font-bold" style={{ color: "#1B4332" }}>
             ✅ Missão do dia cumprida! Sem a mãe pedir. Isso sim é evolução.
           </p>
         </div>
