@@ -3,7 +3,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Gavel, Send, Trash2, AlertTriangle, Scale, ShieldAlert, Eye } from "lucide-react";
 import { toast } from "sonner";
@@ -25,10 +24,10 @@ function getRandomItem<T>(arr: T[]): T {
 }
 
 function getSeverityLabel(len: number): { text: string; color: string; icon: string } {
-  if (len < 30) return { text: "Contravenção leve", color: "from-green-400 to-emerald-500", icon: "😏" };
-  if (len < 80) return { text: "Delito moderado", color: "from-amber-400 to-orange-500", icon: "😬" };
-  if (len < 150) return { text: "Crime grave", color: "from-orange-500 to-red-500", icon: "🚨" };
-  return { text: "Sentença máxima", color: "from-red-500 to-rose-700", icon: "💀" };
+  if (len < 30) return { text: "Contravenção leve", color: "bg-green-400", icon: "😏" };
+  if (len < 80) return { text: "Delito moderado", color: "bg-amber-400", icon: "😬" };
+  if (len < 150) return { text: "Crime grave", color: "bg-orange-500", icon: "🚨" };
+  return { text: "Sentença máxima", color: "bg-red-500", icon: "💀" };
 }
 
 export default function BancoReus() {
@@ -92,39 +91,22 @@ export default function BancoReus() {
   const placeholder = getRandomItem(SARCASTIC_PLACEHOLDERS);
 
   return (
-    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-0 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">
+    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-0 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto" style={{ background: "hsl(var(--dad-bg))" }}>
 
-      {/* ═══════ 3D Hero Header ═══════ */}
-      <div
-        className="relative -mx-4 md:-mx-8 px-6 pt-8 pb-6 mb-6 overflow-hidden"
-        style={{
-          background: "linear-gradient(145deg, hsl(35 90% 55%) 0%, hsl(25 85% 45%) 50%, hsl(15 80% 35%) 100%)",
-        }}
-      >
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 opacity-[0.08]" style={{
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 20px, white 20px, white 21px)`,
-        }} />
+      {/* ═══════ Neo-Brutalist Hero Header ═══════ */}
+      <div className="dad-neo-card -mx-4 md:-mx-8 px-6 pt-8 pb-6 mb-6 relative overflow-hidden" style={{ borderRadius: 0, borderLeft: 0, borderRight: 0, borderTop: 0 }}>
         <div className="absolute top-4 right-4 text-7xl opacity-10 rotate-12 select-none">⚖️</div>
         <div className="absolute bottom-2 left-4 text-5xl opacity-10 -rotate-12 select-none">🔨</div>
 
         <div className="relative">
-          {/* Gavel icon with 3D effect */}
-          <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 mx-auto"
-            style={{
-              background: "linear-gradient(145deg, hsl(40 90% 65%), hsl(30 85% 50%))",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.15)",
-              transform: "perspective(400px) rotateX(5deg)",
-            }}
-          >
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 mx-auto border-3 border-[hsl(var(--dad-text))]" style={{ background: "hsl(var(--dad-accent))", boxShadow: "4px 4px 0 hsl(var(--dad-text))" }}>
             <Gavel className="w-8 h-8 text-white drop-shadow-md" />
           </div>
 
-          <h1 className="font-display text-2xl font-bold text-white text-center drop-shadow-lg">
+          <h1 className="font-display text-2xl font-bold text-center" style={{ color: "hsl(var(--dad-text))" }}>
             Banco dos Réus
           </h1>
-          <p className="font-body text-sm text-white/80 text-center mt-1">
+          <p className="font-body text-sm text-center mt-1" style={{ color: "hsl(var(--dad-text) / 0.7)" }}>
             Confesse antes que ela descubra ⚖️
           </p>
 
@@ -137,15 +119,15 @@ export default function BancoReus() {
             ].map((s, i) => (
               <div
                 key={i}
-                className="flex-1 max-w-[110px] rounded-xl py-2.5 px-2 text-center"
+                className="flex-1 max-w-[110px] rounded-xl py-2.5 px-2 text-center border-2"
                 style={{
-                  background: "rgba(255,255,255,0.15)",
-                  backdropFilter: "blur(10px)",
-                  boxShadow: "inset 0 1px 2px rgba(255,255,255,0.2), 0 4px 12px rgba(0,0,0,0.15)",
+                  background: "white",
+                  borderColor: "hsl(var(--dad-text))",
+                  boxShadow: "3px 3px 0 hsl(var(--dad-text))",
                 }}
               >
-                <p className="font-display font-bold text-sm text-white">{s.value}</p>
-                <p className="text-[9px] text-white/70 font-body">{s.label}</p>
+                <p className="font-display font-bold text-sm" style={{ color: "hsl(var(--dad-text))" }}>{s.value}</p>
+                <p className="text-[9px] font-body" style={{ color: "hsl(var(--dad-text) / 0.6)" }}>{s.label}</p>
               </div>
             ))}
           </div>
@@ -157,42 +139,21 @@ export default function BancoReus() {
         {!showForm ? (
           <button
             onClick={() => setShowForm(true)}
-            className="w-full group relative overflow-hidden rounded-2xl p-[2px] transition-all hover:scale-[1.01]"
-            style={{
-              background: "linear-gradient(135deg, hsl(35 90% 55%), hsl(25 85% 45%), hsl(35 90% 55%))",
-              backgroundSize: "200% 200%",
-              animation: "shimmer 3s ease-in-out infinite",
-            }}
+            className="dad-neo-btn w-full flex items-center gap-4 text-left"
           >
-            <div className="rounded-[14px] bg-card px-5 py-4 flex items-center gap-4">
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                style={{
-                  background: "linear-gradient(145deg, hsl(35 90% 60%), hsl(25 85% 48%))",
-                  boxShadow: "0 4px 12px rgba(200, 130, 30, 0.3), inset 0 1px 2px rgba(255,255,255,0.2)",
-                }}
-              >
-                <Gavel className="w-5 h-5 text-white" />
-              </div>
-              <div className="text-left flex-1">
-                <p className="font-display font-bold text-sm">Confessar um erro</p>
-                <p className="font-body text-xs text-muted-foreground">É melhor pra você. Confia.</p>
-              </div>
-              <AlertTriangle className="w-5 h-5 text-amber-500 opacity-60 group-hover:opacity-100 transition-opacity" />
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border-2" style={{ background: "hsl(var(--dad-accent))", borderColor: "hsl(var(--dad-text))" }}>
+              <Gavel className="w-5 h-5 text-white" />
             </div>
+            <div className="flex-1">
+              <p className="font-display font-bold text-sm">Confessar um erro</p>
+              <p className="font-body text-xs opacity-70">É melhor pra você. Confia.</p>
+            </div>
+            <AlertTriangle className="w-5 h-5 opacity-60" />
           </button>
         ) : (
-          <div
-            className="rounded-2xl overflow-hidden"
-            style={{
-              boxShadow: "0 8px 32px rgba(200, 130, 30, 0.15), 0 2px 8px rgba(0,0,0,0.08)",
-            }}
-          >
+          <div className="dad-neo-card overflow-hidden">
             {/* Form header */}
-            <div
-              className="px-5 py-3 flex items-center gap-2"
-              style={{ background: "linear-gradient(135deg, hsl(35 90% 55%), hsl(25 85% 45%))" }}
-            >
+            <div className="px-5 py-3 flex items-center gap-2 border-b-3" style={{ background: "hsl(var(--dad-accent))", borderColor: "hsl(var(--dad-text))" }}>
               <Gavel className="w-4 h-4 text-white" />
               <span className="font-display text-sm font-bold text-white">Nova Confissão</span>
               {content.length >= 5 && (
@@ -202,12 +163,13 @@ export default function BancoReus() {
               )}
             </div>
 
-            <div className="bg-card p-4 space-y-3">
+            <div className="p-4 space-y-3">
               <Textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder={`Ex: ${placeholder}`}
-                className="min-h-[90px] font-body text-sm border-amber-300/30 focus:border-amber-500 bg-muted/30 rounded-xl resize-none"
+                className="min-h-[90px] font-body text-sm border-2 rounded-xl resize-none"
+                style={{ borderColor: "hsl(var(--dad-text) / 0.3)", background: "white" }}
                 maxLength={300}
                 autoFocus
               />
@@ -219,9 +181,9 @@ export default function BancoReus() {
                     <span className="text-[10px] text-muted-foreground font-body">Gravidade:</span>
                     <span className="text-[10px] text-muted-foreground font-body">{content.length}/300</span>
                   </div>
-                  <div className="h-2 rounded-full bg-muted/50 overflow-hidden">
+                  <div className="h-3 rounded-full bg-muted/50 overflow-hidden border-2" style={{ borderColor: "hsl(var(--dad-text))" }}>
                     <div
-                      className={`h-full rounded-full bg-gradient-to-r ${severity.color} transition-all duration-500`}
+                      className={`h-full rounded-full ${severity.color} transition-all duration-500`}
                       style={{ width: `${Math.min(100, (content.length / 300) * 100)}%` }}
                     />
                   </div>
@@ -229,22 +191,17 @@ export default function BancoReus() {
               )}
 
               <div className="flex items-center justify-end gap-2 pt-1">
-                <Button variant="ghost" size="sm" className="font-display text-xs" onClick={() => { setShowForm(false); setContent(""); }}>
+                <button className="font-display text-xs px-3 py-1.5 rounded-lg hover:bg-muted/50 transition-colors" onClick={() => { setShowForm(false); setContent(""); }}>
                   Cancelar
-                </Button>
-                <Button
-                  size="sm"
+                </button>
+                <button
                   onClick={handleSubmit}
                   disabled={addConfession.isPending || content.trim().length < 5}
-                  className="gap-1.5 font-display text-xs text-white rounded-xl"
-                  style={{
-                    background: "linear-gradient(135deg, hsl(35 90% 55%), hsl(25 85% 45%))",
-                    boxShadow: "0 4px 12px rgba(200, 130, 30, 0.3)",
-                  }}
+                  className="dad-neo-btn text-xs gap-1.5 flex items-center disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Send className="w-3.5 h-3.5" />
                   {addConfession.isPending ? "Registrando..." : "Confessar"}
-                </Button>
+                </button>
               </div>
             </div>
           </div>
@@ -253,35 +210,23 @@ export default function BancoReus() {
         {/* ═══════ Confessions List ═══════ */}
         {isLoading ? (
           <div className="text-center py-12">
-            <div className="text-5xl" style={{ animation: "gavel-swing 1.5s ease-in-out infinite" }}>⚖️</div>
-            <p className="font-body text-sm text-muted-foreground mt-3">Carregando confissões...</p>
+            <div className="text-5xl animate-bounce">⚖️</div>
+            <p className="font-body text-sm mt-3" style={{ color: "hsl(var(--dad-text) / 0.6)" }}>Carregando confissões...</p>
           </div>
         ) : confessions.length === 0 ? (
-          <div
-            className="rounded-2xl p-8 text-center"
-            style={{
-              background: "linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted) / 0.3))",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.06), inset 0 1px 3px rgba(255,255,255,0.1)",
-            }}
-          >
-            <div
-              className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
-              style={{
-                background: "linear-gradient(145deg, hsl(35 90% 60% / 0.15), hsl(25 85% 48% / 0.05))",
-                boxShadow: "inset 0 2px 4px rgba(255,255,255,0.1), 0 4px 12px rgba(0,0,0,0.05)",
-              }}
-            >
-              <Gavel className="w-10 h-10 text-amber-400/60" />
+          <div className="dad-neo-card p-8 text-center border-dashed">
+            <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 border-2" style={{ background: "hsl(var(--dad-accent) / 0.15)", borderColor: "hsl(var(--dad-text) / 0.3)" }}>
+              <Gavel className="w-10 h-10" style={{ color: "hsl(var(--dad-accent))" }} />
             </div>
-            <p className="font-display font-bold text-lg">Ficha limpa</p>
-            <p className="font-body text-sm text-muted-foreground mt-1">
+            <p className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-text))" }}>Ficha limpa</p>
+            <p className="font-body text-sm mt-1" style={{ color: "hsl(var(--dad-text) / 0.6)" }}>
               Nenhuma confissão. Duvidoso... mas ok. 🤔
             </p>
           </div>
         ) : (
           <div className="space-y-3">
             <div className="flex items-center justify-between px-1">
-              <h2 className="font-display text-sm font-bold text-muted-foreground">
+              <h2 className="font-display text-sm font-bold" style={{ color: "hsl(var(--dad-text))" }}>
                 📋 Histórico Criminal ({totalConfessions})
               </h2>
             </div>
@@ -295,43 +240,28 @@ export default function BancoReus() {
                 <div
                   key={c.id}
                   onClick={() => setExpandedId(isExpanded ? null : c.id)}
-                  className="cursor-pointer group rounded-2xl overflow-hidden transition-all duration-300"
-                  style={{
-                    background: "hsl(var(--card))",
-                    boxShadow: isExpanded
-                      ? "0 12px 32px rgba(200, 130, 30, 0.12), 0 2px 8px rgba(0,0,0,0.06)"
-                      : "0 2px 8px rgba(0,0,0,0.04)",
-                    transform: isExpanded ? "scale(1.01)" : "scale(1)",
-                    borderLeft: `4px solid`,
-                    borderImage: `linear-gradient(to bottom, ${
-                      confSeverity.color.includes("green") ? "hsl(142, 71%, 45%)" :
-                      confSeverity.color.includes("red") ? "hsl(0, 84%, 60%)" :
-                      "hsl(35, 90%, 55%)"
-                    }, transparent) 1`,
-                  }}
+                  className="cursor-pointer group dad-neo-card overflow-hidden transition-all duration-300"
+                  style={isExpanded ? { transform: "translate(-2px, -2px)", boxShadow: "10px 10px 0 hsl(var(--dad-text))" } : undefined}
                 >
                   <div className="p-4">
                     <div className="flex items-start gap-3">
-                      {/* 3D emoji badge */}
+                      {/* Emoji badge */}
                       <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-xl"
-                        style={{
-                          background: "linear-gradient(145deg, hsl(35 90% 60% / 0.15), hsl(25 85% 48% / 0.05))",
-                          boxShadow: "inset 0 1px 2px rgba(255,255,255,0.15), 0 2px 6px rgba(0,0,0,0.05)",
-                        }}
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-xl border-2"
+                        style={{ background: "hsl(var(--dad-accent) / 0.15)", borderColor: "hsl(var(--dad-text))" }}
                       >
                         {emoji}
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <p className={`font-body text-sm leading-relaxed ${isExpanded ? "" : "line-clamp-2"}`}>
+                        <p className={`font-body text-sm leading-relaxed ${isExpanded ? "" : "line-clamp-2"}`} style={{ color: "hsl(var(--dad-text))" }}>
                           {c.content}
                         </p>
                         <div className="flex items-center gap-2 mt-2">
-                          <span className="text-[10px] text-muted-foreground font-body">
+                          <span className="text-[10px] font-body" style={{ color: "hsl(var(--dad-text) / 0.5)" }}>
                             {formatDistanceToNow(new Date(c.created_at), { addSuffix: true, locale: ptBR })}
                           </span>
-                          <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-display font-bold bg-gradient-to-r ${confSeverity.color} text-white`}>
+                          <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-display font-bold ${confSeverity.color} text-white border border-[hsl(var(--dad-text))]`}>
                             {confSeverity.icon} {confSeverity.text}
                           </span>
                         </div>
@@ -339,7 +269,8 @@ export default function BancoReus() {
 
                       <button
                         onClick={(e) => { e.stopPropagation(); deleteConfession.mutate(c.id); }}
-                        className="text-muted-foreground hover:text-destructive transition-all p-1.5 shrink-0 rounded-lg hover:bg-destructive/10 opacity-0 group-hover:opacity-100"
+                        className="p-1.5 shrink-0 rounded-lg hover:bg-red-100 opacity-0 group-hover:opacity-100 transition-all border-2 border-transparent hover:border-red-400"
+                        style={{ color: "hsl(var(--dad-text) / 0.4)" }}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -347,8 +278,8 @@ export default function BancoReus() {
 
                     {/* Expanded content */}
                     {isExpanded && (
-                      <div className="mt-3 pt-3 border-t border-muted/30 animate-fade-in">
-                        <p className="text-[11px] text-muted-foreground font-body italic text-center">
+                      <div className="mt-3 pt-3 border-t-2 animate-fade-in" style={{ borderColor: "hsl(var(--dad-text) / 0.15)" }}>
+                        <p className="text-[11px] font-body italic text-center" style={{ color: "hsl(var(--dad-text) / 0.5)" }}>
                           {c.content.length > 100
                             ? "Confissão longa. A culpa é real. A mãe sabe."
                             : c.content.length > 50
@@ -364,19 +295,6 @@ export default function BancoReus() {
           </div>
         )}
       </div>
-
-      {/* Custom animations */}
-      <style>{`
-        @keyframes shimmer {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        @keyframes gavel-swing {
-          0%, 100% { transform: rotate(0deg); }
-          25% { transform: rotate(-15deg); }
-          75% { transform: rotate(15deg); }
-        }
-      `}</style>
     </div>
   );
 }
