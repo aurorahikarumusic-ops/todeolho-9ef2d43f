@@ -549,10 +549,11 @@ export default function Ranking() {
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-display font-bold text-sm shrink-0`} style={{
                 background: isLast && list.length > 3
                   ? "hsl(var(--destructive) / 0.1)"
-                  : isMom ? "hsl(var(--mom-bg))" : "hsl(var(--muted))",
+                  : isMom ? "hsl(var(--mom-bg))" : "hsl(var(--dad-bg))",
                 color: isLast && list.length > 3
                   ? "hsl(var(--destructive))"
-                  : isMom ? "hsl(var(--mom-text))" : "hsl(var(--muted-foreground))",
+                  : isMom ? "hsl(var(--mom-text))" : "hsl(var(--dad-text))",
+                border: !isMom ? "2px solid hsl(var(--dad-text))" : undefined,
               }}>
                 {index + 1}
               </div>
