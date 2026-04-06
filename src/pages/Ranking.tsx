@@ -589,7 +589,7 @@ export default function Ranking() {
                   color: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--dad-accent))",
                 }}>{dad.points}</p>
                 <div className="flex items-center gap-1 justify-end">
-                  <span className="text-[10px]" style={!isMom && index <= 2 ? { color: "hsl(30 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>pts</span>
+                  <span className="text-[10px]" style={{ color: "hsl(var(--muted-foreground))" }}>pts</span>
                   {dad.streak_days > 0 && (
                     <span className="text-[10px] flex items-center gap-0.5" style={{
                       color: isMom ? "hsl(var(--mom-accent) / 0.7)" : "hsl(var(--secondary))",
