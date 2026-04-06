@@ -53,7 +53,7 @@ const StarRating = ({ stars, isMom }: { stars: number; isMom?: boolean }) => (
   </div>
 );
 
-// ============ DAD PODIUM (Arena Style) ============
+// ============ DAD PODIUM (Neo-Brutalist Style) ============
 function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any }) {
   const [animate, setAnimate] = useState(false);
   useEffect(() => {
@@ -68,21 +68,19 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
   const third = ranking[2];
 
   const podiumData = [
-    { dad: second, pos: 2, height: "h-24", delay: "0.5s", medal: "🥈", glow: "var(--arena-silver)", gradient: "from-[hsl(30,14%,70%,0.3)] to-[hsl(30,14%,70%,0.05)]" },
-    { dad: first, pos: 1, height: "h-36", delay: "0.3s", medal: "👑", glow: "var(--arena-gold)", gradient: "from-[hsl(43,96%,56%,0.35)] to-[hsl(43,96%,56%,0.05)]" },
-    { dad: third, pos: 3, height: "h-20", delay: "0.7s", medal: "🥉", glow: "var(--arena-bronze)", gradient: "from-[hsl(25,70%,50%,0.3)] to-[hsl(25,70%,50%,0.05)]" },
+    { dad: second, pos: 2, height: "h-24", delay: "0.5s", medal: "🥈" },
+    { dad: first, pos: 1, height: "h-36", delay: "0.3s", medal: "👑" },
+    { dad: third, pos: 3, height: "h-20", delay: "0.7s", medal: "🥉" },
   ];
 
   return (
     <div className="relative py-4">
-      {/* Arena glow backdrop */}
+      {/* Neo-brutalist backdrop */}
       <div className="absolute inset-0 rounded-3xl" style={{
-        background: "radial-gradient(ellipse at 50% 80%, hsl(var(--arena-neon) / 0.15) 0%, transparent 60%), radial-gradient(ellipse at 50% 0%, hsl(var(--arena-gold) / 0.08) 0%, transparent 50%)",
-      }} />
-      {/* Subtle grid pattern */}
-      <div className="absolute inset-0 opacity-[0.04]" style={{
-        backgroundImage: "linear-gradient(hsl(var(--arena-neon)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--arena-neon)) 1px, transparent 1px)",
-        backgroundSize: "32px 32px",
+        background: "hsl(var(--dad-bg))",
+        border: "3px solid hsl(var(--dad-text))",
+        borderRadius: "24px",
+        boxShadow: "6px 6px 0 hsl(var(--dad-text))",
       }} />
 
       <div className="relative flex items-end justify-center gap-4 px-4 pt-8 pb-2">
