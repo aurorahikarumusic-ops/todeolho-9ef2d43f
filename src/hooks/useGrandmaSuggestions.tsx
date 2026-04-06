@@ -11,7 +11,7 @@ export function usePublicSuggestions() {
       const { data, error } = await supabase
         .from("grandma_suggestions")
         .select("*")
-        .eq("status", "pendente")
+        .in("status", ["pendente", "aceito"])
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data || [];
