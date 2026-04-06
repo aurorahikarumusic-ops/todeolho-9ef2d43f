@@ -718,25 +718,23 @@ export default function Perfil() {
       <section>
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-display text-base font-bold flex items-center gap-2"
-            style={!isMom ? { color: "hsl(30 15% 90%)" } : undefined}>
-            <Baby className="w-4 h-4" style={!isMom ? { color: "hsl(var(--arena-gold))" } : undefined} /> Filhos
+            style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
+            <Baby className="w-4 h-4" style={!isMom ? { color: "hsl(var(--dad-accent))" } : undefined} /> Filhos
           </h2>
           {isMom ? (
             <Button size="sm" variant="outline" className={`h-7 text-xs ${accentBorder} ${accent}`} onClick={() => setShowChildSheet(true)}>
               Adicionar
             </Button>
           ) : (
-            <Button size="sm" className="h-7 text-xs border-0 text-white" style={{
-              background: "linear-gradient(135deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)))",
-            }} onClick={() => setShowChildSheet(true)}>
+            <button className="dad-neo-badge text-[10px] cursor-pointer" style={{ background: "hsl(var(--dad-cta))", color: "white" }} onClick={() => setShowChildSheet(true)}>
               Adicionar
-            </Button>
+            </button>
           )}
         </div>
 
         {children.length === 0 ? (
           <p className={isMom ? "text-xs text-muted-foreground font-body italic text-center py-4" : "text-xs font-body italic text-center py-4"}
-            style={!isMom ? { color: "hsl(30 15% 70%)" } : undefined}>
+            style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>
             {isMom ? "Nenhum filho cadastrado ainda." : "Nenhum filho cadastrado. Você tem filhos, né?"}
           </p>
         ) : (
