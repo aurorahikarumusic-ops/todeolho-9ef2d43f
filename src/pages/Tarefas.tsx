@@ -363,7 +363,7 @@ export default function Tarefas() {
                 )}
               </div>
 
-              <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(30 15% 65%)" } : undefined}>
+              <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>
                 {getTaskIronicComment(task, isMom)}
               </p>
             </div>
