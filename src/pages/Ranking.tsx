@@ -513,10 +513,10 @@ export default function Ranking() {
       if (pos === 2) return { borderLeft: "4px solid hsl(var(--mom-accent) / 0.5)", background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.05), hsl(var(--card)))" };
       return {};
     }
-    if (pos === 0) return { borderLeft: "4px solid hsl(var(--arena-gold))", background: "linear-gradient(135deg, hsl(var(--arena-gold) / 0.12), hsl(var(--arena-dark) / 0.6))", boxShadow: "0 0 20px hsl(var(--arena-gold) / 0.08)" };
-    if (pos === 1) return { borderLeft: "4px solid hsl(var(--arena-silver))", background: "linear-gradient(135deg, hsl(var(--arena-silver) / 0.1), hsl(var(--arena-dark) / 0.4))" };
-    if (pos === 2) return { borderLeft: "4px solid hsl(var(--arena-bronze))", background: "linear-gradient(135deg, hsl(var(--arena-bronze) / 0.1), hsl(var(--arena-dark) / 0.3))" };
-    return { background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.15), hsl(var(--card)))" };
+    if (pos === 0) return { border: "3px solid hsl(var(--dad-text))", background: "hsl(var(--dad-bg))", boxShadow: "6px 6px 0 hsl(var(--dad-text))" };
+    if (pos === 1) return { border: "3px solid hsl(var(--dad-text))", background: "hsl(var(--dad-bg))", boxShadow: "4px 4px 0 hsl(var(--dad-text))" };
+    if (pos === 2) return { border: "2px solid hsl(var(--dad-text))", background: "hsl(var(--dad-bg))", boxShadow: "3px 3px 0 hsl(var(--dad-text))" };
+    return { border: "2px solid hsl(var(--dad-border))", background: "#FFF8F1" };
   };
 
   const renderRankingList = (list: typeof ranking, startIdx = 3) => (
