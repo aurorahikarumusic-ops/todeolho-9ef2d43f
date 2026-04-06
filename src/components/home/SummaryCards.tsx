@@ -48,8 +48,8 @@ export default function SummaryCards({
     : "Ela foi gentil.";
 
   const cards = [
-    { icon: <CheckSquare className="w-5 h-5" />, label: "Tarefas", value: `${tasksCompleted}/${tasksTotal}`, comment: taskMsg, ...CARD_COLORS[0] },
-    { icon: <CalendarDays className="w-5 h-5" />, label: "Próximo evento", value: nextEvent?.title || "—", comment: eventMsg, ...CARD_COLORS[1] },
+    { icon: <CheckSquare className="w-5 h-5" />, label: "Tarefas", value: `${tasksCompleted}/${tasksTotal}`, comment: taskMsg, ...CARD_COLORS[0], stars: null as number | null },
+    { icon: <CalendarDays className="w-5 h-5" />, label: "Próximo evento", value: nextEvent?.title || "—", comment: eventMsg, ...CARD_COLORS[1], stars: null as number | null },
     { icon: <Trophy className="w-5 h-5" />, label: "Ranking", value: rankingPosition ? `#${rankingPosition}` : "—", comment: rankMsg, ...CARD_COLORS[2], stars: null as number | null },
     { icon: <Star className="w-5 h-5" />, label: "Nota da Mãe", value: momRating !== null ? `${momRating}★` : "Pendente", comment: ratingMsg, ...CARD_COLORS[3], stars: momRating },
   ];
