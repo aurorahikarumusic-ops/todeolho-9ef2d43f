@@ -568,23 +568,21 @@ export default function Agenda() {
         </div>
       )}
 
-      {/* FAB */}
-      <button
-        onClick={() => setShowAddSheet(true)}
-        className="fixed bottom-20 right-4 z-40 rounded-2xl shadow-xl flex items-center gap-2 transition-all active:scale-95 px-5 h-12"
-        style={{
-          background: isMom
-            ? "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(var(--mom-accent-hover)))"
-            : "linear-gradient(135deg, hsl(var(--arena-electric)), hsl(var(--arena-neon)))",
-          color: "white",
-          boxShadow: isMom
-            ? "0 6px 20px hsl(var(--mom-accent) / 0.4)"
-            : "0 6px 20px hsl(var(--arena-electric) / 0.4), 0 0 30px hsl(var(--arena-neon) / 0.15)",
-        }}
-      >
-        <Plus className="w-5 h-5" />
-        <span className="font-display text-sm font-bold">Novo evento</span>
-      </button>
+      {/* FAB - only for mom */}
+      {isMom && (
+        <button
+          onClick={() => setShowAddSheet(true)}
+          className="fixed bottom-20 right-4 z-40 rounded-2xl shadow-xl flex items-center gap-2 transition-all active:scale-95 px-5 h-12"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(var(--mom-accent-hover)))",
+            color: "white",
+            boxShadow: "0 6px 20px hsl(var(--mom-accent) / 0.4)",
+          }}
+        >
+          <Plus className="w-5 h-5" />
+          <span className="font-display text-sm font-bold">Novo evento</span>
+        </button>
+      )}
 
       {/* Add Event Sheet */}
       <Sheet open={showAddSheet} onOpenChange={setShowAddSheet}>
