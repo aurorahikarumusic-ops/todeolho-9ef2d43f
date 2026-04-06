@@ -561,8 +561,8 @@ export default function Ranking() {
               <Avatar className="h-10 w-10 shrink-0">
                 <AvatarImage src={dad.avatar_url || undefined} />
                 <AvatarFallback className="font-display text-sm" style={{
-                  background: isMom ? "hsl(var(--mom-bg))" : "hsl(var(--primary) / 0.1)",
-                  color: isMom ? "hsl(var(--mom-text))" : undefined,
+                  background: isMom ? "hsl(var(--mom-bg))" : "hsl(var(--dad-bg))",
+                  color: isMom ? "hsl(var(--mom-text))" : "hsl(var(--dad-text))",
                 }}>{(dad.display_name || "P")[0]}</AvatarFallback>
               </Avatar>
 
