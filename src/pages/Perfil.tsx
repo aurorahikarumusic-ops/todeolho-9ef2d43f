@@ -486,31 +486,19 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 3: Level Progress (Dad) ═══════════════════ */}
       {!isMom && (
         <section>
-          <div className="rounded-2xl overflow-hidden relative" style={{
-            background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.95), hsl(30 25% 11%))",
-            border: "1px solid hsl(var(--arena-gold) / 0.2)",
-            boxShadow: "0 8px 24px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-gold) / 0.06)",
-          }}>
-            <div className="absolute top-0 left-4 right-4 h-px" style={{
-              background: "linear-gradient(90deg, transparent, hsl(var(--arena-gold) / 0.4), transparent)",
-            }} />
+          <div className="dad-neo-card overflow-hidden relative">
             <div className="p-4 relative">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-display font-bold text-sm" style={{
-                  background: "linear-gradient(90deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}>{dadTitle.emoji} {dadTitle.title}</span>
-                <span className="text-xs font-body" style={{ color: "hsl(var(--arena-gold) / 0.7)" }}>{profile.points} pts</span>
+                <span className="font-display font-bold text-sm" style={{ color: "hsl(var(--dad-text))" }}>{dadTitle.emoji} {dadTitle.title}</span>
+                <span className="text-xs font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{profile.points} pts</span>
               </div>
-              <div className="h-2.5 rounded-full overflow-hidden" style={{ background: "hsl(0 0% 18%)" }}>
+              <div className="h-3 rounded-full overflow-hidden" style={{ background: "hsl(var(--dad-bg))", border: "2px solid hsl(var(--dad-text))" }}>
                 <div className="h-full rounded-full transition-all duration-1000" style={{
                   width: `${Math.min(100, (profile.points % 200) / 2)}%`,
-                  background: "linear-gradient(90deg, hsl(var(--arena-fire)), hsl(var(--arena-gold)), hsl(var(--arena-neon)))",
-                  boxShadow: "0 0 10px hsl(var(--arena-fire) / 0.5)",
+                  background: "hsl(var(--dad-accent))",
                 }} />
               </div>
-              <p className="text-[10px] font-body italic mt-2" style={{ color: "hsl(30 15% 70%)" }}>
+              <p className="text-[10px] font-body italic mt-2" style={{ color: "hsl(var(--dad-accent-hover))" }}>
                 {profile.points < 200 ? "Próximo: 'Pai Tentando' — 201 pts"
                   : profile.points < 500 ? "Próximo: 'Pai Promissor' — 501 pts"
                   : profile.points < 900 ? "Próximo: 'Pai de Verdade' — 901 pts"
