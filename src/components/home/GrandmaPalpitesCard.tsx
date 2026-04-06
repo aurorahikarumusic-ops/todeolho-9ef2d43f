@@ -51,57 +51,57 @@ export default function GrandmaPalpitesCard() {
   };
 
   return (
-    <Card className="border-avo-border bg-gradient-to-br from-avo-bg to-white overflow-hidden">
-      <CardContent className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-full bg-avo/20">
-              <Megaphone className="w-4 h-4 text-avo" />
+    <div className={isDad ? "dad-neo-card p-4" : ""}>
+      <Card className={isDad ? "border-0 shadow-none bg-transparent" : "border-avo-border bg-gradient-to-br from-avo-bg to-white overflow-hidden"}>
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <div className={`p-1.5 rounded-full ${isDad ? "bg-[hsl(var(--dad-accent))]/20" : "bg-avo/20"}`}>
+                <Megaphone className={`w-4 h-4 ${isDad ? "text-[hsl(var(--dad-accent))]" : "text-avo"}`} />
+              </div>
+              <h3 className="font-display font-bold text-sm" style={isDad ? { color: "hsl(var(--dad-text))" } : undefined}>
+                {isMom ? "👵 Palpites Fresquinhos" : "👵 A Sogra Mandou..."}
+              </h3>
             </div>
-            <h3 className="font-display font-bold text-sm">
-              {isMom ? "👵 Palpites Fresquinhos" : "👵 A Sogra Mandou..."}
-            </h3>
+            <Badge className={isDad ? "bg-[hsl(var(--dad-accent))]/20 text-[hsl(var(--dad-text))] text-[10px] border-2 border-[hsl(var(--dad-text))] font-display" : "bg-avo/20 text-avo-text text-[10px] border-0"}>
+              {displayItems.length} {isDad ? "pendente" : "novo"}{displayItems.length !== 1 ? "s" : ""}
+            </Badge>
           </div>
-          <Badge className="bg-avo/20 text-avo-text text-[10px] border-0">
-            {displayItems.length} {isDad ? "pendente" : "novo"}{displayItems.length !== 1 ? "s" : ""}
-          </Badge>
-        </div>
 
-        <div className="space-y-2">
-          {displayItems.map((s) => (
-            <div key={s.id} className="flex items-center gap-2 bg-white/80 rounded-lg p-2 border border-avo-border/50">
-              <span className="text-lg shrink-0">
-                {s.suggestion_type === "tarefa" ? "📋" : s.suggestion_type === "evento" ? "📅" : "💬"}
-              </span>
-              <div className="flex-1 min-w-0">
-                <p className="font-body text-xs font-semibold truncate">{s.title}</p>
-                {s.description && (
-                  <p className="font-body text-[10px] text-muted-foreground truncate">{s.description}</p>
+          <div className="space-y-2">
+            {displayItems.map((s) => (
+              <div key={s.id} className={`flex items-center gap-2 rounded-lg p-2 ${isDad ? "bg-white border-2 border-[hsl(var(--dad-text))]" : "bg-white/80 border border-avo-border/50"}`}>
+                <span className="text-lg shrink-0">
+                  {s.suggestion_type === "tarefa" ? "📋" : s.suggestion_type === "evento" ? "📅" : "💬"}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-body text-xs font-semibold truncate">{s.title}</p>
+                  {s.description && (
+                    <p className="font-body text-[10px] text-muted-foreground truncate">{s.description}</p>
+                  )}
+                </div>
+                {isMom && (
+                  <Button
+                    size="sm"
+                    className="h-7 text-[10px] bg-avo hover:bg-avo/90 text-white shrink-0"
+                    onClick={() => handleAdopt(s.id)}
+                    disabled={adoptMutation.isPending}
+                  >
+                    <Check className="w-3 h-3 mr-0.5" /> Adotar
+                  </Button>
                 )}
               </div>
-              {isMom && (
-                <Button
-                  size="sm"
-                  className="h-7 text-[10px] bg-avo hover:bg-avo/90 text-white shrink-0"
-                  onClick={() => handleAdopt(s.id)}
-                  disabled={adoptMutation.isPending}
-                >
-                  <Check className="w-3 h-3 mr-0.5" /> Adotar
-                </Button>
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-full mt-3 text-xs text-avo hover:text-avo hover:bg-avo/10 font-display"
-          onClick={() => navigate("/palpites")}
-        >
-          Ver todos os palpites <ChevronRight className="w-3 h-3 ml-1" />
-        </Button>
-      </CardContent>
-    </Card>
+          <button
+            className={isDad ? "dad-neo-btn w-full mt-3 text-xs flex items-center justify-center gap-1" : "w-full mt-3 text-xs text-avo hover:text-avo hover:bg-avo/10 font-display rounded-md px-3 py-2 transition-colors"}
+            onClick={() => navigate("/palpites")}
+          >
+            Ver todos os palpites <ChevronRight className="w-3 h-3 ml-1" />
+          </button>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
