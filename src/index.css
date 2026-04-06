@@ -133,6 +133,95 @@
   }
 }
 
+/* ═══ Dad Neo-Brutalista Design System ═══ */
+.dad-neo-card {
+  background: hsl(var(--dad-bg));
+  border: 4px solid hsl(var(--dad-text));
+  border-radius: 24px;
+  box-shadow: 8px 8px 0 hsl(var(--dad-text));
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+.dad-neo-card:hover {
+  transform: translate(-4px, -4px) rotate(-0.5deg);
+  box-shadow: 12px 12px 0 hsl(var(--dad-text));
+}
+
+.dad-neo-card-sm {
+  background: hsl(var(--dad-bg));
+  border: 3px solid hsl(var(--dad-text));
+  border-radius: 20px;
+  box-shadow: 6px 6px 0 hsl(var(--dad-text));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.dad-neo-card-sm:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 hsl(var(--dad-text));
+}
+
+.dad-neo-badge {
+  border: 3px solid hsl(var(--dad-text));
+  border-radius: 50px;
+  padding: 0.4rem 1rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  box-shadow: 4px 4px 0 hsl(var(--dad-text));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+}
+.dad-neo-badge:hover {
+  transform: rotate(-2deg) scale(1.05) translateY(-2px);
+  box-shadow: 6px 6px 0 hsl(var(--dad-text));
+}
+
+.dad-neo-btn {
+  background: hsl(var(--dad-accent));
+  color: white;
+  border: 4px solid hsl(var(--dad-text));
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: 6px 6px 0 hsl(var(--dad-text));
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.dad-neo-btn:hover {
+  background: hsl(var(--dad-cta));
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 hsl(var(--dad-text));
+}
+.dad-neo-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 hsl(var(--dad-text));
+}
+
+.dad-neo-accent-card {
+  background: hsl(var(--dad-cta));
+  border: 4px solid hsl(var(--dad-text));
+  border-radius: 24px;
+  box-shadow: 8px 8px 0 hsl(var(--dad-accent-hover));
+  color: white;
+}
+
+.dad-neo-page {
+  background: #FFF8F1;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .dad-neo-card { box-shadow: 6px 6px 0 hsl(var(--dad-text)); border-width: 3px; }
+  .dad-neo-card:hover { box-shadow: 8px 8px 0 hsl(var(--dad-text)); transform: translate(-3px, -3px); }
+  .dad-neo-card-sm { box-shadow: 4px 4px 0 hsl(var(--dad-text)); border-width: 2px; }
+  .dad-neo-btn { box-shadow: 4px 4px 0 hsl(var(--dad-text)); border-width: 3px; }
+}
+
 /* Dad dark calendar — force light text on dark bg */
 .dad-calendar-dark {
   color: hsl(220 15% 85%);
