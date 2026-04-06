@@ -603,26 +603,26 @@ export default function Ranking() {
 
             {isExpanded && (
               <div className="mt-3 pt-3 space-y-2" style={{
-                borderTop: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : index <= 2 ? "hsl(0 0% 25%)" : "hsl(var(--border) / 0.5)"}`,
+                borderTop: `2px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--dad-border))"}`,
                 animation: "fadeSlideDown 0.3s ease-out",
               }}>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(30 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Título:</span>
+                  <span className="text-xs font-body" style={{ color: "hsl(var(--muted-foreground))" }}>Título:</span>
                   <Badge variant="outline" className="text-[10px]" style={{
-                    borderColor: isMom ? "hsl(var(--mom-border))" : index <= 2 ? "hsl(30 15% 50%)" : undefined,
-                    color: isMom ? "hsl(var(--mom-text))" : index <= 2 ? "hsl(0 0% 80%)" : undefined,
+                    borderColor: isMom ? "hsl(var(--mom-border))" : "hsl(var(--dad-border))",
+                    color: isMom ? "hsl(var(--mom-text))" : "hsl(var(--dad-text))",
                   }}>{title.emoji} {title.title}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(30 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Sequência:</span>
-                  <span className="text-xs font-display font-bold" style={!isMom && index <= 2 ? { color: "hsl(30 15% 88%)" } : undefined}>{dad.streak_days} dias 🔥</span>
+                  <span className="text-xs font-body" style={{ color: "hsl(var(--muted-foreground))" }}>Sequência:</span>
+                  <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--dad-text))" }}>{dad.streak_days} dias 🔥</span>
                 </div>
                 {rating && (
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-body" style={!isMom && index <= 2 ? { color: "hsl(30 15% 70%)" } : { color: "hsl(var(--muted-foreground))" }}>Nota da mãe:</span>
+                    <span className="text-xs font-body" style={{ color: "hsl(var(--muted-foreground))" }}>Nota da mãe:</span>
                     <div className="flex items-center gap-1.5">
                       <StarRating stars={rating.stars} isMom={isMom} />
-                      {rating.comment && <span className="text-[9px] italic" style={!isMom && index <= 2 ? { color: "hsl(30 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>"{rating.comment}"</span>}
+                      {rating.comment && <span className="text-[9px] italic" style={{ color: "hsl(var(--muted-foreground))" }}>"{rating.comment}"</span>}
                     </div>
                   </div>
                 )}
