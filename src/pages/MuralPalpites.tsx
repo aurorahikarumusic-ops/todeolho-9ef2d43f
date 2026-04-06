@@ -145,7 +145,11 @@ export default function MuralPalpites() {
                       <span className="font-body text-xs">Uma avó sabia escreveu isso</span>
                     </div>
 
-                    {isMom && (
+                    {s.status === "aceito" ? (
+                      <Badge className="bg-green-100 text-green-700 text-[10px]">
+                        ✅ Adotado
+                      </Badge>
+                    ) : isMom ? (
                       <Button
                         size="sm"
                         onClick={() => handleAdopt(s.id)}
@@ -156,7 +160,7 @@ export default function MuralPalpites() {
                         <HandHeart className="w-3.5 h-3.5" />
                         Adotar pro pai 😏
                       </Button>
-                    )}
+                    ) : null}
                   </div>
                 </CardContent>
               </Card>
