@@ -1017,27 +1017,13 @@ function DadBadgesCarousel({ earnedKeys, onSelect }: { earnedKeys: string[]; onS
   const totalCount = DAD_ACHIEVEMENTS.earned.length + DAD_ACHIEVEMENTS.shame.length + DAD_ACHIEVEMENTS.locked.length;
 
   return (
-    <div className="space-y-4 rounded-2xl p-4 relative overflow-hidden" style={{
-      background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.92), hsl(30 25% 10%))",
-      border: "1px solid hsl(var(--arena-fire) / 0.15)",
-      boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-    }}>
-      <div className="absolute top-0 left-4 right-4 h-px" style={{
-        background: "linear-gradient(90deg, transparent, hsl(var(--arena-gold) / 0.3), transparent)",
-      }} />
+    <div className="dad-neo-card space-y-4 p-4 relative overflow-hidden">
       <div className="flex items-center justify-between relative">
-        <h2 className="font-display text-base font-bold" style={{
-          background: "linear-gradient(90deg, hsl(var(--arena-gold)), hsl(var(--arena-fire)))",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-        }}>⚔️ Arsenal de Selos</h2>
-        <Badge className="text-[10px] border-0" style={{
-          background: "rgba(255,255,255,0.08)",
-          color: "hsl(var(--arena-gold) / 0.8)",
-        }}>{earnedCount}/{totalCount}</Badge>
+        <h2 className="font-display text-base font-bold" style={{ color: "hsl(var(--dad-text))" }}>⚔️ Arsenal de Selos</h2>
+        <span className="dad-neo-badge text-[10px]" style={{ background: "hsl(var(--dad-cta))", color: "white" }}>{earnedCount}/{totalCount}</span>
       </div>
 
-      <HorizontalScroll title="Conquistados" icon={<Star className="w-3.5 h-3.5" style={{ color: "hsl(var(--arena-neon))" }} />}>
+      <HorizontalScroll title="Conquistados" icon={<Star className="w-3.5 h-3.5" style={{ color: "hsl(var(--dad-accent))" }} />}>
         {DAD_ACHIEVEMENTS.earned.map(a => (
           <BadgeCard key={a.key} emoji={a.emoji} name={a.name} desc={a.desc}
             earned={earnedKeys.includes(a.key)} type="good" isDad
@@ -1045,7 +1031,7 @@ function DadBadgesCarousel({ earnedKeys, onSelect }: { earnedKeys: string[]; onS
         ))}
       </HorizontalScroll>
 
-      <HorizontalScroll title="Registros Históricos" icon={<Gavel className="w-3.5 h-3.5" style={{ color: "hsl(var(--arena-fire))" }} />}>
+      <HorizontalScroll title="Registros Históricos" icon={<Gavel className="w-3.5 h-3.5" style={{ color: "hsl(var(--dad-accent-hover))" }} />}>
         {DAD_ACHIEVEMENTS.shame.map(a => (
           <BadgeCard key={a.key} emoji={a.emoji} name={a.name} desc={a.desc}
             earned={earnedKeys.includes(a.key)} type="shame" isDad
@@ -1053,7 +1039,7 @@ function DadBadgesCarousel({ earnedKeys, onSelect }: { earnedKeys: string[]; onS
         ))}
       </HorizontalScroll>
 
-      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5" style={{ color: "hsl(30 15% 65%)" }} />}>
+      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5" style={{ color: "hsl(var(--dad-accent-hover))" }} />}>
         {DAD_ACHIEVEMENTS.locked.map((a, i) => (
           <BadgeCard key={i} emoji="🔒" name={a.hint} desc="Continue jogando para desbloquear"
             earned={false} type="locked" isDad
