@@ -221,8 +221,8 @@ export default function Agenda() {
 
       {/* Next 3 days timeline */}
       <div className="space-y-1">
-        <p className={`text-xs font-display font-bold uppercase tracking-wider px-1 ${isMom ? "text-muted-foreground" : ""}`}
-          style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
+        <p className={`text-xs font-display font-black uppercase tracking-wider px-1 ${isMom ? "text-muted-foreground" : ""}`}
+          style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>
           Próximos dias
         </p>
         <div className="flex gap-2">
@@ -232,52 +232,43 @@ export default function Agenda() {
               <button
                 key={i}
                 onClick={() => setSelectedDate(day)}
-                className={`flex-1 rounded-2xl p-3 transition-all duration-300 text-center ${
+                className={`flex-1 p-3 transition-all duration-300 text-center ${
                   isMom
-                    ? isSelected ? "bg-primary text-primary-foreground shadow-lg scale-[1.02]" : "bg-card hover:bg-muted/50"
-                    : isSelected ? "scale-[1.02]" : "hover:scale-[1.01]"
+                    ? `rounded-2xl ${isSelected ? "bg-primary text-primary-foreground shadow-lg scale-[1.02]" : "bg-card hover:bg-muted/50"}`
+                    : isSelected ? "dad-neo-card-sm scale-[1.02]" : "rounded-2xl hover:scale-[1.01]"
                 }`}
-                style={!isMom ? {
-                  background: isSelected
-                    ? "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 14%))"
-                    : "hsl(var(--card))",
-                  boxShadow: isSelected
-                    ? "0 8px 24px rgba(0,0,0,0.2), 0 0 20px hsl(var(--arena-electric) / 0.15), inset 0 1px 0 rgba(255,255,255,0.05)"
-                    : "0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
-                  border: isSelected ? "1px solid hsl(var(--arena-electric) / 0.3)" : "1px solid hsl(var(--border) / 0.5)",
+                style={!isMom ? (isSelected ? {
+                  background: "#FFEAAE",
                 } : {
+                  background: "hsl(var(--dad-bg))",
+                  border: "2px solid hsl(var(--dad-border) / 0.3)",
+                  borderRadius: "20px",
+                }) : {
                   boxShadow: isSelected
                     ? "0 8px 20px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2)"
                     : "0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
                 }}
               >
-                <p className={`text-[9px] font-body uppercase tracking-wider`} style={!isMom ? {
-                  color: isSelected ? "hsl(var(--arena-electric) / 0.7)" : "hsl(var(--muted-foreground))",
-                } : {
-                  color: isSelected ? "hsl(var(--primary-foreground) / 0.7)" : "hsl(var(--muted-foreground))",
-                }}>
+                <p className="text-[9px] font-display font-bold uppercase tracking-wider"
+                  style={!isMom ? { color: isSelected ? "hsl(var(--dad-accent-hover))" : "hsl(var(--muted-foreground))" } : {
+                    color: isSelected ? "hsl(var(--primary-foreground) / 0.7)" : "hsl(var(--muted-foreground))",
+                  }}>
                   {isToday(day) ? "Hoje" : isTomorrow(day) ? "Amanhã" : format(day, "EEE", { locale: ptBR })}
                 </p>
-                <p className="font-display text-lg font-black" style={!isMom && isSelected ? {
-                  color: "hsl(var(--arena-gold))",
-                  textShadow: "0 0 8px hsl(var(--arena-gold) / 0.3)",
-                } : undefined}>
+                <p className="font-display text-lg font-black" style={!isMom && isSelected ? { color: "hsl(var(--dad-text))" } : undefined}>
                   {format(day, "dd")}
                 </p>
                 {dayEvts.length > 0 ? (
                   <div className="flex justify-center gap-0.5 mt-1">
                     {dayEvts.slice(0, 3).map((e, j) => (
-                      <div
-                        key={j}
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: getCategoryInfo(e.event_type).color, boxShadow: !isMom && isSelected ? `0 0 4px ${getCategoryInfo(e.event_type).color}` : undefined }}
-                      />
+                      <div key={j} className="w-2 h-2 rounded-full" style={{
+                        background: getCategoryInfo(e.event_type).color,
+                        border: !isMom ? "1px solid hsl(var(--dad-text))" : undefined,
+                      }} />
                     ))}
                   </div>
                 ) : (
-                  <p className="text-[8px] mt-1" style={{
-                    color: !isMom && isSelected ? "hsl(30 15% 70%)" : isSelected ? "hsl(var(--primary-foreground) / 0.5)" : "hsl(var(--muted-foreground) / 0.4)",
-                  }}>—</p>
+                  <p className="text-[8px] mt-1" style={{ color: "hsl(var(--muted-foreground) / 0.4)" }}>—</p>
                 )}
               </button>
             );
