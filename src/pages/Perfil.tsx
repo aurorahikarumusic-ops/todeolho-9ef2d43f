@@ -697,16 +697,13 @@ export default function Perfil() {
                   </CardContent>
                 </Card>
               ) : (
-                <div key={member.id} className="rounded-xl p-3 flex items-center gap-3" style={{
-                  background: "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
-                  border: "1px solid hsl(var(--arena-gold) / 0.15)",
-                }}>
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "hsl(var(--arena-fire) / 0.15)" }}>
+                <div key={member.id} className="dad-neo-card-sm p-3 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "hsl(var(--dad-cta) / 0.2)", border: "2px solid hsl(var(--dad-text))" }}>
                     <span className="text-lg">{roleEmoji}</span>
                   </div>
                   <div className="flex-1">
-                    <p className="font-display font-bold text-sm" style={{ color: "hsl(30 15% 90%)" }}>{member.display_name}</p>
-                    <p className="text-[10px] font-body" style={{ color: "hsl(var(--arena-neon) / 0.6)" }}>{roleLabel} — conectado ✓</p>
+                    <p className="font-display font-bold text-sm" style={{ color: "hsl(var(--dad-text))" }}>{member.display_name}</p>
+                    <p className="text-[10px] font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{roleLabel} — conectado ✓</p>
                   </div>
                 </div>
               );
