@@ -232,16 +232,6 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
 const MomPodiumSection = ({ ranking }: { ranking: any[] }) => (
   <PodiumSection ranking={ranking} myProfile={null} />
 );
-          const title = getDadTitle(dad.points);
-          return (
-            <div
-              key={dad.id}
-              className="flex flex-col items-center gap-2"
-              style={{ animation: animate ? `momPodiumRise 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay} both` : "none" }}
-            >
-              {/* Floating medal with glow */}
-              <div className="relative">
-                <span className="text-2xl" style={{
                   filter: pos === 1 ? "drop-shadow(0 0 12px hsl(var(--mom-accent) / 0.6))" : "drop-shadow(0 2px 6px rgba(0,0,0,0.15))",
                 }}>{medal}</span>
                 {pos === 1 && (
