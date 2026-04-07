@@ -99,6 +99,9 @@ export default function Support() {
           <p className="text-xs text-muted-foreground font-body">
             Estou de Olho 👁️ — porque alguém tem que lembrar
           </p>
+          <p className="text-xs text-muted-foreground font-body mt-1">
+            Responsável: Tonylton Silveira Motoki
+          </p>
         </div>
       </div>
     </div>

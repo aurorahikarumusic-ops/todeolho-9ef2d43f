@@ -153,6 +153,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="font-display font-bold text-lg mb-2">12. Fale com a gente</h2>
             <p>
+              <strong>Responsável:</strong> Tonylton Silveira Motoki<br />
               📧 <strong>estoudeolho.contato@gmail.com</strong><br />
               🌐 <strong>estoudeolho.lovable.app</strong>
             </p>

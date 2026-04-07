@@ -135,6 +135,7 @@ export default function TermsOfUse() {
           <section>
             <h2 className="font-display font-bold text-lg mb-2">13. Contato</h2>
             <p>
+              <strong>Responsável:</strong> Tonylton Silveira Motoki<br />
               📧 <strong>estoudeolho.contato@gmail.com</strong><br />
               🌐 <strong>estoudeolho.lovable.app</strong>
             </p>
