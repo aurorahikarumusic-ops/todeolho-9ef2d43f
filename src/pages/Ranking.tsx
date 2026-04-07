@@ -729,7 +729,8 @@ export default function Ranking() {
 
       {/* Stats Bar */}
       {isMom ? (
-        <MomObserverBar ranking={ranking} partnerProfile={ranking[0]} />
+        const actualPartner = familyPartner ? ranking.find((r: any) => r.user_id === familyPartner.user_id) || familyPartner : null;
+        return <MomObserverBar ranking={ranking} partnerProfile={actualPartner} />;
       ) : (
         myProfile && myPos >= 0 && <MyStatsBar profile={myProfile} position={myPos} total={ranking.length} />
       )}
