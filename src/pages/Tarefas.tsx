@@ -386,9 +386,9 @@ export default function Tarefas() {
 
           {/* Expanded details */}
           {isExpanded && (
-            <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.2)" : "1px solid hsl(30 30% 18%)" }}>
+            <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: "1px solid hsl(var(--muted) / 0.2)" }}>
               {task.description && (
-                <p className="text-xs font-body" style={!isMom ? { color: "hsl(30 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>📝 {task.description}</p>
+                <p className="text-xs font-body text-muted-foreground">📝 {task.description}</p>
               )}
 
               <div className="flex items-center gap-2">
