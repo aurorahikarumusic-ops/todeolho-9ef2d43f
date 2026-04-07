@@ -68,41 +68,45 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
   const third = ranking[2];
 
   const podiumData = [
-    { dad: second, pos: 2, height: "h-24", delay: "0.5s", medal: "🥈" },
-    { dad: first, pos: 1, height: "h-36", delay: "0.3s", medal: "👑" },
-    { dad: third, pos: 3, height: "h-20", delay: "0.7s", medal: "🥉" },
+    { dad: second, pos: 2, height: "h-20", delay: "0.5s", medal: "🥈" },
+    { dad: first, pos: 1, height: "h-28", delay: "0.2s", medal: "💎" },
+    { dad: third, pos: 3, height: "h-16", delay: "0.7s", medal: "🥉" },
   ];
 
   return (
     <div className="relative py-4">
-      {/* Neo-brutalist backdrop */}
       <div className="absolute inset-0 rounded-3xl" style={{
-        background: "hsl(var(--dad-bg))",
-        border: "3px solid hsl(var(--dad-text))",
-        borderRadius: "24px",
-        boxShadow: "6px 6px 0 hsl(var(--dad-text))",
+        background: "radial-gradient(ellipse at 50% 0%, hsl(var(--dad-accent) / 0.12) 0%, transparent 70%)",
       }} />
 
-      <div className="relative flex items-end justify-center gap-4 px-4 pt-8 pb-2">
+      <div className="relative flex items-end justify-center gap-4 px-4 pt-4 pb-2">
         {podiumData.map(({ dad, pos, height, delay, medal }) => {
           if (!dad) return <div key={pos} className="w-24" />;
           const isMe = myProfile?.id === dad.id;
           const title = getDadTitle(dad.points);
           return (
-            <div key={dad.id} className="flex flex-col items-center gap-2" style={{ animation: animate ? `arenaPodiumRise 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay} both` : "none" }}>
-              {/* Medal */}
+            <div
+              key={dad.id}
+              className="flex flex-col items-center gap-2"
+              style={{ animation: animate ? `momPodiumRise 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay} both` : "none" }}
+            >
               <div className="relative">
-                <span className="text-3xl">{medal}</span>
+                <span className="text-2xl" style={{
+                  filter: pos === 1 ? "drop-shadow(0 0 12px hsl(var(--dad-accent) / 0.6))" : "drop-shadow(0 2px 6px rgba(0,0,0,0.15))",
+                }}>{medal}</span>
                 {pos === 1 && (
-                  <Flame className="absolute -top-3 -left-2 w-4 h-4 animate-pulse" style={{ color: "hsl(var(--dad-accent))" }} />
+                  <Flame className="absolute -top-2 -right-3 w-4 h-4 animate-pulse" style={{ color: "hsl(var(--dad-accent))" }} />
                 )}
               </div>
 
-              {/* Avatar with bold border */}
               <div className={`relative ${pos === 1 ? "scale-110" : ""}`}>
-                <Avatar className="relative h-14 w-14 shadow-lg" style={{
-                  border: `3px solid hsl(var(--dad-text))`,
-                  boxShadow: "4px 4px 0 hsl(var(--dad-text))",
+                <div className="absolute -inset-1.5 rounded-full blur-md" style={{
+                  background: pos === 1
+                    ? "linear-gradient(135deg, hsl(var(--dad-accent) / 0.4), hsl(30 80% 70% / 0.3))"
+                    : "linear-gradient(135deg, hsl(var(--dad-accent) / 0.15), transparent)",
+                }} />
+                <Avatar className="relative h-14 w-14 ring-2 border-2 border-card shadow-lg" style={{
+                  boxShadow: pos === 1 ? "0 4px 20px hsl(var(--dad-accent) / 0.3)" : undefined,
                 }}>
                   <AvatarImage src={dad.avatar_url || undefined} />
                   <AvatarFallback className="font-display font-bold text-lg" style={{
@@ -113,29 +117,34 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
                   <div className="absolute -bottom-1 -right-1 rounded-full w-5 h-5 flex items-center justify-center text-[8px] font-bold" style={{
                     background: "hsl(var(--dad-accent))",
                     color: "white",
-                    border: "2px solid hsl(var(--dad-text))",
                   }}>EU</div>
                 )}
               </div>
 
-              <p className="font-display font-bold text-xs text-center truncate max-w-[80px]" style={{ color: "hsl(var(--dad-text))" }}>{(dad.display_name || "Pai").split(" ")[0]}</p>
+              <p className="font-display font-bold text-xs text-center truncate max-w-[80px]">{(dad.display_name || "Pai").split(" ")[0]}</p>
               
-              <span className="dad-neo-badge text-[10px]" style={{
-                background: pos === 1 ? "hsl(var(--dad-cta))" : pos === 2 ? "hsl(var(--dad-bg))" : "hsl(var(--dad-bg))",
+              <Badge className="text-[10px] font-display border-0" style={{
+                background: pos === 1
+                  ? "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))"
+                  : "hsl(var(--dad-bg))",
                 color: pos === 1 ? "white" : "hsl(var(--dad-text))",
+                boxShadow: pos === 1 ? "0 2px 10px hsl(var(--dad-accent) / 0.3)" : undefined,
               }}>
                 {dad.points}pts
-              </span>
+              </Badge>
 
-              {/* Neo podium bar */}
-              <div className={`w-22 ${height} rounded-t-2xl relative overflow-hidden`} style={{
-                background: pos === 1 ? "hsl(var(--dad-cta))" : pos === 2 ? "hsl(var(--dad-accent))" : "hsl(var(--dad-accent-hover))",
-                border: "3px solid hsl(var(--dad-text))",
-                borderBottom: "none",
-                boxShadow: "4px 0 0 hsl(var(--dad-text))",
+              <div className={`w-20 ${height} rounded-t-2xl relative overflow-hidden`} style={{
+                background: pos === 1
+                  ? "linear-gradient(180deg, hsl(var(--dad-accent) / 0.25), hsl(var(--dad-accent) / 0.08))"
+                  : "linear-gradient(180deg, hsl(var(--dad-border) / 0.3), hsl(var(--dad-bg) / 0.5))",
+                border: "1px solid hsl(var(--dad-border) / 0.4)",
+                boxShadow: "inset 0 2px 10px rgba(255,255,255,0.15), 0 -4px 20px rgba(0,0,0,0.05)",
               }}>
+                <div className="absolute inset-0" style={{
+                  background: "linear-gradient(90deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(255,255,255,0.06) 100%)",
+                }} />
                 <div className="absolute bottom-2 left-0 right-0 text-center">
-                  <span className="font-display font-bold text-lg" style={{ color: "white" }}>{pos}°</span>
+                  <span className="font-display font-bold text-base" style={{ color: "hsl(var(--dad-text) / 0.5)" }}>{pos}°</span>
                 </div>
                 {dad.streak_days > 0 && (
                   <div className="absolute top-2 left-0 right-0 text-center"><span className="text-[10px]">🔥{dad.streak_days}</span></div>
