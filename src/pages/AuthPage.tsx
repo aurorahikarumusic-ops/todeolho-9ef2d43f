@@ -187,6 +187,8 @@ function DadLoginForm({ initialInviteCode }: { initialInviteCode?: string }) {
             variant="outline"
             className="w-full font-body h-12 text-base"
             onClick={async () => {
+              const code = form.inviteCode?.trim();
+              if (code) localStorage.setItem("pending_invite_code", code);
               const result = await lovable.auth.signInWithOAuth("google", {
                 redirect_uri: window.location.origin,
               });
