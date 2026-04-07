@@ -812,13 +812,14 @@ export default function Ranking() {
 
               {/* Bottom card */}
               {ranking.length > 3 && (
-                <div className="dad-neo-card-sm p-3 text-center relative overflow-hidden" style={isMom ? {
+                <div className="rounded-2xl p-3 text-center relative overflow-hidden" style={isMom ? {
                   background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.05), hsl(var(--card)))",
                   border: "1px solid hsl(var(--mom-border) / 0.2)",
                   boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
                 } : {
-                  background: "hsl(var(--destructive) / 0.08)",
-                  borderColor: "hsl(var(--destructive) / 0.4)",
+                  background: "linear-gradient(135deg, hsl(var(--destructive) / 0.05), hsl(var(--card)))",
+                  border: "1px solid hsl(var(--destructive) / 0.2)",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
                 }}>
                   <p className="text-2xl mb-1 relative">{isMom ? "👀" : "💀"}</p>
                   <p className="font-display font-bold text-xs relative" style={{
