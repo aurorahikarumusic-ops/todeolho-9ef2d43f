@@ -680,7 +680,6 @@ export default function Perfil() {
         <h2 className="font-display text-base font-bold mb-3 flex items-center gap-2">
           <User className="w-4 h-4" /> Conexão Familiar
         </h2>
-        </h2>
         {!profile.family_id ? (
           isMom ? <InvitePartner /> : <JoinFamily />
         ) : allMembers.length === 0 ? (
