@@ -758,28 +758,25 @@ export default function Perfil() {
                   </CardContent>
                 </Card>
               ) : (
-                <div key={child.id} className="dad-neo-card-sm p-3">
-                  <div className="flex items-center gap-3 mb-1.5">
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-base" style={{ background: "hsl(var(--dad-cta) / 0.2)", border: "2px solid hsl(var(--dad-text))" }}>👶</div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-display font-bold text-sm" style={{ color: "hsl(var(--dad-text))" }}>{child.name}</p>
-                      {child.birth_date && <p className="text-[10px]" style={{ color: "hsl(var(--dad-accent-hover))" }}>{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
+                <Card key={child.id} className="border-0 shadow-sm">
+                  <CardContent className="p-3">
+                    <div className="flex items-center gap-3 mb-1.5">
+                      <div className="w-9 h-9 rounded-full bg-accent/20 flex items-center justify-center text-base">👶</div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-display font-bold text-sm">{child.name}</p>
+                        {child.birth_date && <p className="text-[10px] text-muted-foreground">{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
+                      </div>
+                      <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--dad-accent))" }}>{pct}%</span>
                     </div>
-                    <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--dad-accent))" }}>{pct}%</span>
-                  </div>
-                  <div className="h-2 rounded-full overflow-hidden" style={{ background: "hsl(var(--dad-bg))", border: "2px solid hsl(var(--dad-text))" }}>
-                    <div className="h-full rounded-full transition-all" style={{
-                      width: `${pct}%`,
-                      background: "hsl(var(--dad-accent))",
-                    }} />
-                  </div>
-                  <div className="flex flex-wrap gap-1 mt-1.5">
-                    {child.school && <span className="dad-neo-badge text-[9px] py-0.5" style={{ background: "hsl(var(--dad-bg))" }}>🏫 {child.school}</span>}
-                    {child.doctor_name && <span className="dad-neo-badge text-[9px] py-0.5" style={{ background: "hsl(var(--dad-bg))" }}>🏥 {child.doctor_name}</span>}
-                    {!child.school && <span className="text-[10px] italic" style={{ color: "hsl(var(--dad-accent-hover))" }}>Falta: escola</span>}
-                    {!child.doctor_name && <span className="text-[10px] italic" style={{ color: "hsl(var(--dad-accent-hover))" }}>Falta: pediatra</span>}
-                  </div>
-                </div>
+                    <Progress value={pct} className="h-1 mb-1.5" />
+                    <div className="flex flex-wrap gap-1">
+                      {child.school && <Badge variant="outline" className="text-[9px] h-5">🏫 {child.school}</Badge>}
+                      {child.doctor_name && <Badge variant="outline" className="text-[9px] h-5">🏥 {child.doctor_name}</Badge>}
+                      {!child.school && <span className="text-[9px] text-secondary italic">Falta: escola</span>}
+                      {!child.doctor_name && <span className="text-[9px] text-secondary italic">Falta: pediatra</span>}
+                    </div>
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
