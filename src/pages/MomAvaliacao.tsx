@@ -17,13 +17,14 @@ import { RATING_LABELS } from "@/lib/mom-constants";
 export default function MomAvaliacao() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
-  const { data: partner } = useFamilyPartner();
+  const { data: partner, allMembers } = useFamilyPartner();
   const queryClient = useQueryClient();
   const [stars, setStars] = useState(0);
   const [comment, setComment] = useState("");
 
   const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }).toISOString().split("T")[0];
-  const dadName = partner?.display_name || "o pai";
+  const dadPartner = allMembers.find(m => m.role === "pai") || partner;
+  const dadName = dadPartner?.display_name || "o pai";
 
   const { data: existingRating } = useQuery({
     queryKey: ["mom-rating-this-week", user?.id, weekStart],
