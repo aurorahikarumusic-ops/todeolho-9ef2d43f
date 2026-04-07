@@ -341,7 +341,7 @@ export default function Perfil() {
       {/* Children */}
       <ChildrenSection
         children={children} isMom={isMom}
-        onAddChild={() => setShowChildSheet(true)}
+        familyId={profile.family_id}
       />
 
       <Separator className="my-2" />
