@@ -31,7 +31,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         { path: "/ranking", icon: Trophy, label: "Ranking" },
       ];
 
-  const accentColor = isMom ? "text-mom" : "text-primary";
+  const accentColor = "text-primary";
 
   // Mobile: bottom nav only
   if (device === "mobile") {
