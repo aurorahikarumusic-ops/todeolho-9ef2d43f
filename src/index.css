@@ -46,38 +46,39 @@
     --font-display: 'Baloo 2', cursive;
     --font-body: 'Nunito', sans-serif;
 
-    /* Mom panel tokens — Rosa Premium */
-    --mom-accent: 340 48% 40%;
-    --mom-accent-hover: 340 52% 29%;
-    --mom-bg: 340 65% 95%;
-    --mom-border: 340 40% 75%;
-    --mom-text: 340 55% 19%;
-    --mom-cta: 340 58% 58%;
+    /* ═══ Unified role tokens — all mapped to global landing page palette ═══ */
+    /* Mom panel tokens */
+    --mom-accent: 153 42% 30%;
+    --mom-accent-hover: 153 42% 22%;
+    --mom-bg: 15 100% 98.4%;
+    --mom-border: 30 20% 88%;
+    --mom-text: 210 14% 11%;
+    --mom-cta: 15 87% 66%;
 
-    /* Dad panel tokens — Orange Premium */
-    --dad-accent: 30 83% 50%;
-    --dad-accent-hover: 30 87% 41%;
-    --dad-bg: 37 92% 93%;
-    --dad-border: 30 80% 34%;
-    --dad-text: 30 100% 12%;
-    --dad-cta: 35 90% 60%;
+    /* Dad panel tokens */
+    --dad-accent: 15 87% 66%;
+    --dad-accent-hover: 15 87% 55%;
+    --dad-bg: 15 100% 98.4%;
+    --dad-border: 30 20% 88%;
+    --dad-text: 210 14% 11%;
+    --dad-cta: 153 42% 30%;
 
-    /* Dad arena tokens — Orange Ramp Premium */
-    --arena-gold: 35 87% 55%;
-    --arena-silver: 35 25% 50%;
-    --arena-bronze: 30 55% 38%;
-    --arena-fire: 37 80% 41%;
-    --arena-neon: 35 87% 55%;
-    --arena-electric: 38 90% 65%;
-    --arena-dark: 30 45% 8%;
-    --arena-glow: 37 70% 50%;
+    /* Arena tokens */
+    --arena-gold: 43 100% 50%;
+    --arena-silver: 30 10% 60%;
+    --arena-bronze: 30 40% 45%;
+    --arena-fire: 15 87% 56%;
+    --arena-neon: 153 42% 40%;
+    --arena-electric: 43 100% 60%;
+    --arena-dark: 210 14% 11%;
+    --arena-glow: 153 42% 45%;
 
     /* Grandma panel tokens */
-    --avo-accent: 270 60% 55%;
-    --avo-bg: 270 80% 97%;
-    --avo-border: 270 40% 78%;
-    --avo-text: 270 50% 30%;
-    --avo-glow: 270 80% 70%;
+    --avo-accent: 153 42% 30%;
+    --avo-bg: 15 100% 98.4%;
+    --avo-border: 30 20% 88%;
+    --avo-text: 210 14% 11%;
+    --avo-glow: 43 100% 84%;
   }
 }
 
