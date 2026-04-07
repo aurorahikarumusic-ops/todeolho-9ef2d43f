@@ -712,7 +712,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      ranking_view: {
+        Row: {
+          avatar_url: string | null
+          display_name: string | null
+          id: string | null
+          points: number | null
+          role: string | null
+          streak_days: number | null
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          display_name?: string | null
+          id?: string | null
+          points?: number | null
+          role?: string | null
+          streak_days?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          display_name?: string | null
+          id?: string | null
+          points?: number | null
+          role?: string | null
+          streak_days?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_current_user_family_id: { Args: never; Returns: string }
