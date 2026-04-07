@@ -141,25 +141,25 @@ export default function Dashboard() {
     <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4 bg-background min-h-screen">
 
       {/* App Header — Neo-Brutalista */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 md:hidden">
-          <Eye className="w-7 h-7" style={{
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 md:hidden shrink-0">
+          <Eye className="w-7 h-7 shrink-0" style={{
             color: "hsl(var(--dad-accent))",
             animation: "eye-pulse 3s ease-in-out infinite",
           }} />
-          <h1 className="font-display text-2xl font-black">
+          <h1 className="font-display text-xl sm:text-2xl font-black whitespace-nowrap">
             Estou de <span style={{ color: "hsl(var(--dad-accent))" }}>Olho</span>
           </h1>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="dad-neo-badge" style={{
+        <div className="flex items-center gap-2 sm:gap-3 ml-auto shrink-0">
+          <span className="dad-neo-badge text-[10px] sm:text-xs px-2 sm:px-3 py-1 whitespace-nowrap" style={{
             background: "hsl(var(--dad-cta))",
             color: "white",
           }}>
             {dadTitle.emoji} {dadTitle.title}
           </span>
-          <button onClick={() => navigate("/perfil")} className="flex flex-col items-center gap-0.5 group">
-            <Avatar className="h-11 w-11 group-hover:scale-105 transition-transform"
+          <button onClick={() => navigate("/perfil")} className="flex flex-col items-center gap-0.5 group shrink-0">
+            <Avatar className="h-10 w-10 sm:h-11 sm:w-11 group-hover:scale-105 transition-transform"
               style={{
                 border: "3px solid hsl(var(--dad-text))",
                 boxShadow: "4px 4px 0 hsl(var(--dad-text))",
