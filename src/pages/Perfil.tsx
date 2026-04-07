@@ -479,11 +479,13 @@ export default function Perfil() {
             </CardContent>
           </Card>
         ) : (
-          <div key={i} className="dad-neo-card-sm p-3 text-center">
-            <div className="flex justify-center mb-1">{s.icon}</div>
-            <p className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>{s.value}</p>
-            <p className="text-[10px] font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{s.label}</p>
-          </div>
+          <Card key={i} className="border shadow-sm bg-white">
+            <CardContent className="p-3 text-center">
+              <div className="flex justify-center mb-1">{s.icon}</div>
+              <p className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>{s.value}</p>
+              <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
+            </CardContent>
+          </Card>
         ))}
       </section>
 
