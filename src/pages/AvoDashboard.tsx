@@ -6,7 +6,7 @@ import {
   useCreateSuggestion,
   useGrandmaRanking,
 } from "@/hooks/useGrandmaSuggestions";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { Send, Trophy, CheckCircle, XCircle, Clock, Lightbulb, MessageSquare } from "lucide-react";
 import JoinFamilyAvo from "@/components/grandma/JoinFamilyAvo";
