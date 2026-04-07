@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
-import { Trophy, Share2, Sparkles, MessageSquare, CheckCircle, XCircle } from "lucide-react";
+import { Trophy, Share2, Sparkles, MessageSquare, CheckCircle, XCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const GRANDMA_TITLES = [
   { min: 0, title: "Avó Novata", emoji: "🧶" },
