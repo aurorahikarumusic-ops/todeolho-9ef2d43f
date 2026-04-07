@@ -380,7 +380,7 @@ export default function Tarefas() {
               {task.rescued_by_mom && (
                 <span className="text-xs font-display font-black text-red-500">-30pts</span>
               )}
-              <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} style={!isMom ? { color: "hsl(30 15% 50%)" } : { color: "hsl(var(--muted-foreground) / 0.3)" }} />
+              <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} style={{ color: "hsl(var(--muted-foreground) / 0.3)" }} />
             </div>
           </div>
 
