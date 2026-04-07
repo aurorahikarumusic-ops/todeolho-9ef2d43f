@@ -3,19 +3,14 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
 import { useIsMom, useFamilyPartner } from "@/hooks/useFamily";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { format, differenceInHours, startOfMonth, endOfMonth, startOfWeek } from "date-fns";
+import { differenceInHours, startOfMonth, endOfMonth, startOfWeek } from "date-fns";
 import {
-  Flame, Star, LifeBuoy, CheckSquare, CalendarDays, Crown, Gem, ChevronRight, Baby
+  Flame, Star, LifeBuoy, CheckSquare, CalendarDays, Crown, Gem, ChevronRight, Trophy
 } from "lucide-react";
 import { getDadTitle } from "@/lib/constants";
 import ProfileHeader from "@/components/profile/ProfileHeader";
