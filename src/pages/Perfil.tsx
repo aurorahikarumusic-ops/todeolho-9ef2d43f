@@ -684,17 +684,15 @@ export default function Perfil() {
         {!profile.family_id ? (
           isMom ? <InvitePartner /> : <JoinFamily />
         ) : allMembers.length === 0 ? (
-          <div className="dad-neo-card-sm p-3 text-center">
-            <p className="font-body text-xs" style={{ color: "hsl(var(--dad-accent-hover))" }}>
-              Conectado à família ✓
-            </p>
+          <div className="rounded-xl p-3 text-center" style={{ background: "hsl(var(--muted) / 0.3)" }}>
+            <p className="font-body text-xs text-muted-foreground">Conectado à família ✓</p>
           </div>
         ) : (
           <div className="space-y-2">
             {allMembers.map((member: any) => {
               const roleEmoji = member.role === "mae" ? "👩" : member.role === "avo" ? "👵" : "👨";
               const roleLabel = member.role === "mae" ? "A mãe" : member.role === "avo" ? "A avó" : "O pai";
-              return isMom ? (
+              return (
                 <Card key={member.id} className="border-0 shadow-sm bg-primary/5">
                   <CardContent className="p-3 flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/15">
@@ -706,16 +704,6 @@ export default function Perfil() {
                     </div>
                   </CardContent>
                 </Card>
-              ) : (
-                <div key={member.id} className="dad-neo-card-sm p-3 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "hsl(var(--dad-cta) / 0.2)", border: "2px solid hsl(var(--dad-text))" }}>
-                    <span className="text-lg">{roleEmoji}</span>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-display font-bold text-sm" style={{ color: "hsl(var(--dad-text))" }}>{member.display_name}</p>
-                    <p className="text-[10px] font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{roleLabel} — conectado ✓</p>
-                  </div>
-                </div>
               );
             })}
           </div>
