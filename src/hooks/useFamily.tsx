@@ -19,11 +19,18 @@ export function useFamilyPartner() {
     enabled: !!profile?.family_id,
   });
 
+  // Smart partner: mom sees pai, pai sees mae, others get first member
+  const members = query.data || [];
+  const roleCounterpart: Record<string, string> = { mae: "pai", pai: "mae" };
+  const targetRole = profile?.role ? roleCounterpart[profile.role] : null;
+  const smartPartner = targetRole
+    ? members.find(m => m.role === targetRole) || members[0] || null
+    : members[0] || null;
+
   return {
     ...query,
-    // Keep backward compat: `data` returns the first partner for single-partner usage
-    data: query.data ? query.data[0] : null,
-    allMembers: query.data || [],
+    data: smartPartner,
+    allMembers: members,
     isLoading: profileLoading || query.isLoading,
   };
 }
