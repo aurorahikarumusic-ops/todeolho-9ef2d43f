@@ -17,13 +17,14 @@ import { RATING_LABELS } from "@/lib/mom-constants";
 export default function MomAvaliacao() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
-  const { data: partner } = useFamilyPartner();
+  const { data: partner, allMembers } = useFamilyPartner();
   const queryClient = useQueryClient();
   const [stars, setStars] = useState(0);
   const [comment, setComment] = useState("");
 
   const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }).toISOString().split("T")[0];
-  const dadName = partner?.display_name || "o pai";
+  const dadPartner = allMembers.find(m => m.role === "pai") || partner;
+  const dadName = dadPartner?.display_name || "o pai";
 
   const { data: existingRating } = useQuery({
     queryKey: ["mom-rating-this-week", user?.id, weekStart],
@@ -57,9 +58,9 @@ export default function MomAvaliacao() {
 
   const submitRating = useMutation({
     mutationFn: async () => {
-      if (!user || !partner) throw new Error("Falta parceiro");
+      if (!user || !dadPartner) throw new Error("Falta parceiro");
       const { error } = await supabase.from("mom_ratings").insert({
-        user_id: partner.user_id,
+        user_id: dadPartner.user_id,
         rated_by: user.id,
         stars,
         comment: comment.trim() || null,
@@ -112,7 +113,7 @@ export default function MomAvaliacao() {
             </p>
           </CardContent>
         </Card>
-      ) : partner ? (
+      ) : dadPartner ? (
         <Card className="border-mom-border">
           <CardContent className="p-6">
             <p className="font-display font-bold text-center mb-4">
