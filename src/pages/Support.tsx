@@ -26,13 +26,13 @@ export default function Support() {
         <div className="space-y-4">
           <Card className="hover:bg-muted/50 transition-colors">
             <CardContent className="p-4">
-              <a href="mailto:estoudeoho.contato@gmail.com" className="flex items-start gap-4">
+              <a href="mailto:estoudeolho.contato@gmail.com" className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <Mail className="w-5 h-5 text-primary" />
                 </div>
                 <div>
                   <h3 className="font-display font-bold text-sm">E-mail</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">estoudeoho.contato@gmail.com</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">estoudeolho.contato@gmail.com</p>
                   <p className="text-xs text-muted-foreground italic mt-1">
                     Respondemos em até 48h. Mais rápido que você responde a mãe.
                   </p>
@@ -67,7 +67,7 @@ export default function Support() {
                     <div>
                       <p className="text-xs font-bold">Como apago minha conta?</p>
                       <p className="text-xs text-muted-foreground">
-                        Perfil → Exclusão de Dados. Ou manda e-mail pra estoudeoho.contato@gmail.com.
+                        Perfil → Exclusão de Dados. Ou manda e-mail pra estoudeolho.contato@gmail.com.
                       </p>
                     </div>
                     <div>
