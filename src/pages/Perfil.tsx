@@ -880,8 +880,7 @@ export default function Perfil() {
         {/* Logout */}
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="ghost" className={`w-full font-display text-sm mt-2 ${isMom ? "text-destructive" : ""}`}
-              style={!isMom ? { color: "hsl(var(--arena-fire))" } : undefined}>
+            <Button variant="ghost" className="w-full font-display text-sm mt-2 text-destructive">
               <LogOut className="w-4 h-4 mr-2" /> Sair do app
             </Button>
           </AlertDialogTrigger>
