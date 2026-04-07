@@ -341,15 +341,10 @@ export default function Agenda() {
                   isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
                 } ${isPast ? "opacity-60" : ""}`}
                 style={{
-                  background: isMom ? "hsl(var(--card))" : "linear-gradient(135deg, hsl(var(--arena-dark) / 0.9), hsl(30 25% 12%))",
+                  background: "hsl(var(--card))",
                   boxShadow: isExpanded
-                    ? isMom
-                      ? `0 12px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${category.color}`
-                      : `0 12px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05), -4px 0 0 ${category.color}`
-                    : isMom
-                      ? `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${category.color}`
-                      : `0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.03), -4px 0 0 ${category.color}`,
-                  border: isMom ? undefined : `1px solid hsl(30 30% 18%)`,
+                    ? `0 12px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${category.color}`
+                    : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${category.color}`,
                 }}
               >
                 {/* Check-in banner */}
