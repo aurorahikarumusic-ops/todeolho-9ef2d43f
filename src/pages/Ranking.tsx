@@ -541,7 +541,7 @@ export default function Ranking() {
         const title = getDadTitle(dad.points);
         const isMe = myProfile?.id === dad.id;
         const isExpanded = expandedCard === dad.id;
-        const rating = getRatingForUser(dad.id);
+        const rating = getRatingForUser(dad.user_id);
         const isLast = index === list.length - 1;
 
         return (
