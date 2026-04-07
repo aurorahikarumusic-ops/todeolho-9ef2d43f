@@ -356,8 +356,6 @@ function MomLoginForm({ onBack }: { onBack: () => void }) {
             variant="outline"
             className="w-full font-body h-12 text-base border-[hsl(340,72%,80%)] hover:bg-[hsl(340,72%,93%)]"
             onClick={async () => {
-              const code = form.inviteCode?.trim();
-              if (code) localStorage.setItem("pending_invite_code", code);
               const result = await lovable.auth.signInWithOAuth("google", {
                 redirect_uri: window.location.origin,
               });
