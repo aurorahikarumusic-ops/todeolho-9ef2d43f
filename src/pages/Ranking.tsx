@@ -233,59 +233,6 @@ const MomPodiumSection = ({ ranking }: { ranking: any[] }) => (
   <PodiumSection ranking={ranking} myProfile={null} />
 );
 
-
-
-                  boxShadow: pos === 1 ? "0 4px 20px hsl(var(--mom-accent) / 0.3)" : undefined,
-                  borderColor: pos === 1 ? "hsl(var(--mom-accent) / 0.3)" : undefined,
-                }}>
-                  <AvatarImage src={dad.avatar_url || undefined} />
-                  <AvatarFallback className="font-display font-bold text-lg" style={{
-                    background: "hsl(var(--mom-bg))",
-                    color: "hsl(var(--mom-text))",
-                  }}>{(dad.display_name || "P")[0]}</AvatarFallback>
-                </Avatar>
-              </div>
-
-              <p className="font-display font-bold text-xs text-center truncate max-w-[80px]">
-                {(dad.display_name || "Pai").split(" ")[0]}
-              </p>
-
-              <Badge className="text-[10px] font-display border-0" style={{
-                background: pos === 1
-                  ? "linear-gradient(135deg, hsl(var(--mom-accent)), hsl(340 80% 65%))"
-                  : "hsl(var(--mom-bg))",
-                color: pos === 1 ? "white" : "hsl(var(--mom-text))",
-                boxShadow: pos === 1 ? "0 2px 10px hsl(var(--mom-accent) / 0.3)" : undefined,
-              }}>
-                {dad.points}pts
-              </Badge>
-
-              {/* Elegant podium bar */}
-              <div className={`w-20 ${height} rounded-t-2xl relative overflow-hidden`} style={{
-                background: pos === 1
-                  ? "linear-gradient(180deg, hsl(var(--mom-accent) / 0.25), hsl(var(--mom-accent) / 0.08))"
-                  : "linear-gradient(180deg, hsl(var(--mom-border) / 0.3), hsl(var(--mom-bg) / 0.5))",
-                border: `1px solid hsl(var(--mom-border) / 0.4)`,
-                boxShadow: "inset 0 2px 10px rgba(255,255,255,0.15), 0 -4px 20px rgba(0,0,0,0.05)",
-              }}>
-                <div className="absolute inset-0" style={{
-                  background: "linear-gradient(90deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(255,255,255,0.06) 100%)",
-                }} />
-                <div className="absolute bottom-2 left-0 right-0 text-center">
-                  <span className="font-display font-bold text-base" style={{ color: "hsl(var(--mom-text) / 0.5)" }}>{pos}°</span>
-                </div>
-                {dad.streak_days > 0 && (
-                  <div className="absolute top-2 left-0 right-0 text-center"><span className="text-[10px]">🔥{dad.streak_days}</span></div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 // Dad stats bar (Clean style)
 function MyStatsBar({ profile, position, total }: { profile: any; position: number; total: number }) {
   if (!profile || position < 0) return null;
