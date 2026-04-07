@@ -25,7 +25,7 @@ import { startOfWeek, endOfWeek } from "date-fns";
 export default function Dashboard() {
   const { user } = useAuth();
   const { data: profile } = useProfile();
-  const { data: partner, isLoading: partnerLoading } = useFamilyPartner();
+  const { data: partner, allMembers, isLoading: partnerLoading } = useFamilyPartner();
   const { data: redemptionTrigger } = useRedemptionCheck();
   const [showRedencao, setShowRedencao] = useState(false);
   const navigate = useNavigate();
@@ -89,12 +89,15 @@ export default function Dashboard() {
 
   if (!profile) return null;
 
+  // Pai sends to mom specifically
+  const letterRecipient = allMembers.find(m => m.role === "mae") || partner;
+
   if (showRedencao) {
     return (
       <ModoRedencao
         onClose={() => setShowRedencao(false)}
-        recipientName={partner?.display_name}
-        recipientId={partner?.user_id}
+        recipientName={letterRecipient?.display_name}
+        recipientId={letterRecipient?.user_id}
       />
     );
   }
