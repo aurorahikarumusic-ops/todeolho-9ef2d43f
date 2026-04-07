@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
-import { Trophy, Share2, Sparkles, MessageSquare, CheckCircle, XCircle } from "lucide-react";
+import { Trophy, Share2, Sparkles, MessageSquare, CheckCircle, XCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const GRANDMA_TITLES = [
   { min: 0, title: "Avó Novata", emoji: "🧶" },
@@ -33,6 +34,7 @@ export default function AvoRanking() {
   const { data: profile } = useProfile();
   const { data: ranking = [] } = useGrandmaRanking();
   const [animate, setAnimate] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setAnimate(true), 300);
@@ -70,146 +72,155 @@ export default function AvoRanking() {
 
   return (
     <div className="p-4 max-w-lg mx-auto space-y-6 pb-24">
-      {/* Header */}
-      <div className="text-center">
-        <h1 className="font-display text-2xl font-bold text-avo flex items-center justify-center gap-2">
-          <Trophy className="w-7 h-7" /> Ranking das Avós
-        </h1>
-        <p className="font-body text-sm text-muted-foreground italic mt-1">
-          {PODIUM_PHRASES[Math.floor(Math.random() * PODIUM_PHRASES.length)]}
-        </p>
-      </div>
-
-      {/* My position card */}
-      {myStats && (
-        <Card className="border-2 border-avo bg-gradient-to-r from-avo-bg to-white overflow-hidden">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-full bg-avo/20 flex items-center justify-center text-2xl border-2 border-avo">
-                {myTitle.emoji}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-display font-bold text-lg text-avo">#{myPos + 1}</span>
-                  <Badge className="bg-avo text-white text-[10px]">{myTitle.title}</Badge>
-                </div>
-                <div className="flex gap-3 mt-1 text-xs font-body text-muted-foreground">
-                  <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {myStats.total} palpites</span>
-                  <span className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-green-500" /> {myStats.accepted} aceitos</span>
-                  <span className="flex items-center gap-1"><XCircle className="w-3 h-3 text-red-400" /> {myStats.rejected} recusados</span>
-                </div>
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        {/* Header - clickable to toggle */}
+        <CollapsibleTrigger className="w-full">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-avo/10 border border-avo-border hover:bg-avo/20 transition-colors">
+            <div className="flex items-center gap-2">
+              <Trophy className="w-6 h-6 text-avo" />
+              <div className="text-left">
+                <h1 className="font-display text-lg font-bold text-avo">Ranking das Avós Palpiteiras</h1>
+                <p className="font-body text-xs text-muted-foreground">
+                  Quem dá mais palpite? 👀
+                </p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      )}
+            {isOpen ? (
+              <ChevronUp className="w-5 h-5 text-avo" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-avo" />
+            )}
+          </div>
+        </CollapsibleTrigger>
 
-      {/* Podium 3D */}
-      <div className="relative" style={{ perspective: "800px" }}>
-        <div className="flex items-end justify-center gap-3 pt-8 pb-4">
-          {podiumOrder.map((avo, visualIdx) => {
-            const actualPos = visualIdx === 0 ? 1 : visualIdx === 1 ? 0 : 2;
-            if (!avo) return null;
-            const heights = ["h-28", "h-36", "h-24"];
-            const medals = ["🥈", "🥇", "🥉"];
-            const scales = ["scale-95", "scale-105", "scale-90"];
-            const title = getGrandmaTitle(avo.total);
-            const isMe = avo.user_id === user?.id;
-
-            return (
-              <div
-                key={avo.user_id}
-                className={`flex flex-col items-center transition-all duration-700 ${scales[visualIdx]} ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-                style={{
-                  transitionDelay: `${visualIdx * 150}ms`,
-                  transform: animate ? `${scales[visualIdx]} rotateX(2deg)` : undefined,
-                }}
-              >
-                {/* Avatar */}
-                <div className={`relative mb-2 ${isMe ? "ring-2 ring-avo ring-offset-2" : ""} rounded-full`}>
-                  <Avatar className="w-14 h-14 border-2 border-avo-border">
-                    <AvatarImage src={avo.avatar_url || undefined} />
-                    <AvatarFallback className="bg-avo/20 text-avo font-display text-lg">
-                      {(avo.display_name || "V")[0]}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="absolute -top-2 -right-2 text-xl">{medals[visualIdx]}</span>
-                </div>
-
-                {/* Name */}
-                <p className="font-body font-semibold text-xs text-center truncate max-w-[80px]">
-                  {avo.display_name?.split(" ")[0] || "Vovó"}
-                </p>
-                <p className="text-[10px] text-muted-foreground">{avo.total} palpites</p>
-
-                {/* Podium block */}
-                <div
-                  className={`${heights[visualIdx]} w-20 rounded-t-xl mt-2 flex flex-col items-center justify-start pt-3 border-2 border-avo-border relative overflow-hidden`}
-                  style={{
-                    background: `linear-gradient(to bottom, hsl(var(--avo-bg)), hsl(var(--avo-border)))`,
-                    boxShadow: "0 8px 24px -4px hsl(270 60% 55% / 0.2), inset 0 2px 0 hsl(var(--avo-bg))",
-                  }}
-                >
-                  <span className="text-2xl font-display font-bold text-avo">{actualPos + 1}</span>
-                  <span className="text-[9px] text-avo-text font-body mt-1">{title.emoji}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Rest of ranking */}
-      {rest.length > 0 && (
-        <div className="space-y-2">
-          {rest.map((avo, i) => {
-            const pos = i + 3;
-            const title = getGrandmaTitle(avo.total);
-            const isMe = avo.user_id === user?.id;
-
-            return (
-              <div
-                key={avo.user_id}
-                className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
-                  isMe ? "bg-avo-bg border-2 border-avo" : "bg-card border border-border"
-                }`}
-              >
-                <span className="font-display font-bold text-lg text-avo w-8 text-center">
-                  {pos + 1}
-                </span>
-                <Avatar className="w-10 h-10 border-2 border-avo-border">
-                  <AvatarImage src={avo.avatar_url || undefined} />
-                  <AvatarFallback className="bg-avo/20 text-avo font-display">
-                    {(avo.display_name || "V")[0]}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-body font-semibold text-sm truncate">{avo.display_name || "Vovó"}</span>
-                    <span className="text-xs">{title.emoji}</span>
+        <CollapsibleContent className="space-y-6 mt-4">
+          {/* My position card */}
+          {myStats && (
+            <Card className="border-2 border-avo bg-gradient-to-r from-avo-bg to-white overflow-hidden">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 rounded-full bg-avo/20 flex items-center justify-center text-2xl border-2 border-avo">
+                    {myTitle.emoji}
                   </div>
-                  <div className="flex gap-2 text-[10px] font-body text-muted-foreground">
-                    <span>💬 {avo.total}</span>
-                    <span>✅ {avo.accepted}</span>
-                    <span>❌ {avo.rejected}</span>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-display font-bold text-lg text-avo">#{myPos + 1}</span>
+                      <Badge className="bg-avo text-white text-[10px]">{myTitle.title}</Badge>
+                    </div>
+                    <div className="flex gap-3 mt-1 text-xs font-body text-muted-foreground">
+                      <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {myStats.total} palpites</span>
+                      <span className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-green-500" /> {myStats.accepted} aceitos</span>
+                      <span className="flex items-center gap-1"><XCircle className="w-3 h-3 text-red-400" /> {myStats.rejected} recusados</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              </CardContent>
+            </Card>
+          )}
 
-      {/* Share */}
-      {myPos >= 0 && (
-        <Button
-          onClick={handleShare}
-          className="w-full font-display gap-2 bg-avo hover:bg-avo/80 text-white"
-          style={{ boxShadow: "0 4px 16px hsl(270 60% 55% / 0.3)" }}
-        >
-          <Share2 className="w-4 h-4" /> Compartilhar meu ranking de vovó
-        </Button>
-      )}
+          {/* Podium 3D */}
+          <div className="relative" style={{ perspective: "800px" }}>
+            <div className="flex items-end justify-center gap-3 pt-8 pb-4">
+              {podiumOrder.map((avo, visualIdx) => {
+                const actualPos = visualIdx === 0 ? 1 : visualIdx === 1 ? 0 : 2;
+                if (!avo) return null;
+                const heights = ["h-28", "h-36", "h-24"];
+                const medals = ["🥈", "🥇", "🥉"];
+                const scales = ["scale-95", "scale-105", "scale-90"];
+                const title = getGrandmaTitle(avo.total);
+                const isMe = avo.user_id === user?.id;
+
+                return (
+                  <div
+                    key={avo.user_id}
+                    className={`flex flex-col items-center transition-all duration-700 ${scales[visualIdx]} ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+                    style={{
+                      transitionDelay: `${visualIdx * 150}ms`,
+                      transform: animate ? `${scales[visualIdx]} rotateX(2deg)` : undefined,
+                    }}
+                  >
+                    <div className={`relative mb-2 ${isMe ? "ring-2 ring-avo ring-offset-2" : ""} rounded-full`}>
+                      <Avatar className="w-14 h-14 border-2 border-avo-border">
+                        <AvatarImage src={avo.avatar_url || undefined} />
+                        <AvatarFallback className="bg-avo/20 text-avo font-display text-lg">
+                          {(avo.display_name || "V")[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="absolute -top-2 -right-2 text-xl">{medals[visualIdx]}</span>
+                    </div>
+                    <p className="font-body font-semibold text-xs text-center truncate max-w-[80px]">
+                      {avo.display_name?.split(" ")[0] || "Vovó"}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">{avo.total} palpites</p>
+                    <div
+                      className={`${heights[visualIdx]} w-20 rounded-t-xl mt-2 flex flex-col items-center justify-start pt-3 border-2 border-avo-border relative overflow-hidden`}
+                      style={{
+                        background: `linear-gradient(to bottom, hsl(var(--avo-bg)), hsl(var(--avo-border)))`,
+                        boxShadow: "0 8px 24px -4px hsl(270 60% 55% / 0.2), inset 0 2px 0 hsl(var(--avo-bg))",
+                      }}
+                    >
+                      <span className="text-2xl font-display font-bold text-avo">{actualPos + 1}</span>
+                      <span className="text-[9px] text-avo-text font-body mt-1">{title.emoji}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Rest of ranking */}
+          {rest.length > 0 && (
+            <div className="space-y-2">
+              {rest.map((avo, i) => {
+                const pos = i + 3;
+                const title = getGrandmaTitle(avo.total);
+                const isMe = avo.user_id === user?.id;
+
+                return (
+                  <div
+                    key={avo.user_id}
+                    className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+                      isMe ? "bg-avo-bg border-2 border-avo" : "bg-card border border-border"
+                    }`}
+                  >
+                    <span className="font-display font-bold text-lg text-avo w-8 text-center">
+                      {pos + 1}
+                    </span>
+                    <Avatar className="w-10 h-10 border-2 border-avo-border">
+                      <AvatarImage src={avo.avatar_url || undefined} />
+                      <AvatarFallback className="bg-avo/20 text-avo font-display">
+                        {(avo.display_name || "V")[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-body font-semibold text-sm truncate">{avo.display_name || "Vovó"}</span>
+                        <span className="text-xs">{title.emoji}</span>
+                      </div>
+                      <div className="flex gap-2 text-[10px] font-body text-muted-foreground">
+                        <span>💬 {avo.total}</span>
+                        <span>✅ {avo.accepted}</span>
+                        <span>❌ {avo.rejected}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Share */}
+          {myPos >= 0 && (
+            <Button
+              onClick={handleShare}
+              className="w-full font-display gap-2 bg-avo hover:bg-avo/80 text-white"
+              style={{ boxShadow: "0 4px 16px hsl(270 60% 55% / 0.3)" }}
+            >
+              <Share2 className="w-4 h-4" /> Compartilhar meu ranking de vovó
+            </Button>
+          )}
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }
