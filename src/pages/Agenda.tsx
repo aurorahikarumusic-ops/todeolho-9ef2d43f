@@ -397,25 +397,25 @@ export default function Agenda() {
                             "Mãe adicionou"
                           )}
                         </Badge>
-                        <span className="text-[9px] font-body" style={!isMom ? { color: "hsl(30 15% 60%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
+                        <span className="text-[9px] font-body" style={{ color: "hsl(var(--muted-foreground) / 0.5)" }}>
                           {getTimeLabel(eventDate)}
                         </span>
                       </div>
                     </div>
 
-                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 mt-2 ${isExpanded ? "rotate-90" : ""}`} style={!isMom ? { color: "hsl(30 15% 55%)" } : { color: "hsl(var(--muted-foreground) / 0.4)" }} />
+                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 mt-2 ${isExpanded ? "rotate-90" : ""}`} style={{ color: "hsl(var(--muted-foreground) / 0.4)" }} />
                   </div>
 
                   {/* Expanded content */}
                   {isExpanded && (
-                    <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.3)" : "1px solid hsl(30 30% 18%)" }}>
+                    <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: "1px solid hsl(var(--muted) / 0.3)" }}>
                       {event.description && (
-                        <p className="text-xs font-body" style={!isMom ? { color: "hsl(30 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>
+                        <p className="text-xs font-body text-muted-foreground">
                           📝 {event.description}
                         </p>
                       )}
 
-                      <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(30 15% 65%)" } : { color: "hsl(var(--muted-foreground) / 0.7)" }}>
+                      <p className="text-[10px] font-body italic" style={{ color: "hsl(var(--muted-foreground) / 0.7)" }}>
                         {isDadEvent
                           ? "Você mesmo adicionou. Parabéns pela iniciativa."
                           : isPast
