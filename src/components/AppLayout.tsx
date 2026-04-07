@@ -69,14 +69,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               className={`flex items-center gap-3 px-3 py-3 rounded-lg transition-colors text-sm font-body font-semibold justify-center lg:justify-start ${
                 isNeon
                   ? active
-                    ? isMom ? "text-pink-500 bg-pink-100 dark:bg-pink-900/20" : "text-blue-500 bg-blue-100 dark:bg-blue-900/20"
-                    : isMom ? "text-pink-400 hover:text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-900/10" : "text-blue-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10"
+                    ? "text-primary bg-primary/10"
+                    : "text-primary/70 hover:text-primary hover:bg-primary/5"
                   : active
                     ? `${accentColor} bg-muted`
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               }`}
             >
-              <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "stroke-[2.5]" : ""} ${isNeon ? (isMom ? "drop-shadow-[0_0_6px_rgba(236,72,153,0.7)]" : "drop-shadow-[0_0_6px_rgba(59,130,246,0.7)]") : ""}`} />
+              <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "stroke-[2.5]" : ""}`} />
               <span className="hidden lg:inline">{label}</span>
             </button>
           );
