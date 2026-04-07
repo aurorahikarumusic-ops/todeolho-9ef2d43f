@@ -399,7 +399,7 @@ export default function Tarefas() {
                     <>{isMom ? "Você criou" : "Mãe mandou"}</>
                   )}
                 </Badge>
-                <span className="text-[9px]" style={!isMom ? { color: "hsl(30 15% 60%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
+                <span className="text-[9px]" style={{ color: "hsl(var(--muted-foreground) / 0.5)" }}>
                   {format(new Date(task.created_at), "dd/MM")}
                 </span>
               </div>
