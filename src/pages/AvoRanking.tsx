@@ -34,6 +34,7 @@ export default function AvoRanking() {
   const { data: profile } = useProfile();
   const { data: ranking = [] } = useGrandmaRanking();
   const [animate, setAnimate] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setAnimate(true), 300);
