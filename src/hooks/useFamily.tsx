@@ -11,7 +11,7 @@ export function useFamilyPartner() {
       if (!profile?.family_id) return null;
       const { data } = await supabase
         .from("profiles")
-        .select("*")
+        .select("id, user_id, display_name, role, avatar_url, points, streak_days, family_id")
         .eq("family_id", profile.family_id)
         .neq("user_id", profile.user_id);
       return data && data.length > 0 ? data : null;
