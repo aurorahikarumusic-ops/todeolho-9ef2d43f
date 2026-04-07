@@ -400,15 +400,18 @@ export default function Perfil() {
           </div>
         </section>
       ) : (
-        <section className="dad-neo-card relative overflow-hidden">
-          <div className="h-2" style={{ background: "hsl(var(--dad-accent))" }} />
+        <section className="relative rounded-2xl overflow-hidden" style={{
+          background: "hsl(var(--card))",
+          border: "1px solid hsl(var(--dad-border) / 0.4)",
+          boxShadow: "0 8px 32px hsl(var(--dad-accent) / 0.08), inset 0 1px 0 rgba(255,255,255,0.1)",
+        }}>
+          <div className="h-2" style={{ background: "linear-gradient(90deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))" }} />
           <div className="relative p-5 pt-6">
             <div className="flex items-center gap-4">
               <label className="cursor-pointer relative group shrink-0">
                 <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
-                <div className="relative w-20 h-20 rounded-full flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform" style={{
-                  border: "4px solid hsl(var(--dad-text))",
-                  boxShadow: "4px 4px 0 hsl(var(--dad-text))",
+                <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform shadow-lg" style={{
+                  borderColor: "hsl(var(--dad-accent) / 0.3)",
                   background: "hsl(var(--dad-bg))",
                 }}>
                   {profile.avatar_url ? (
@@ -417,10 +420,8 @@ export default function Perfil() {
                     <span className="font-display text-3xl font-bold" style={{ color: "hsl(var(--dad-text))" }}>{(profile.display_name || "U")[0].toUpperCase()}</span>
                   )}
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-lg" style={{
-                  background: "hsl(var(--dad-accent))",
-                  border: "2px solid hsl(var(--dad-text))",
-                  boxShadow: "2px 2px 0 hsl(var(--dad-text))",
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md border-2 border-white" style={{
+                  background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
                 }}>
                   <Edit2 className="w-3.5 h-3.5 text-white" />
                 </div>
@@ -430,25 +431,24 @@ export default function Perfil() {
                 {editMode ? (
                   <div className="flex gap-2">
                     <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm" autoFocus />
-                    <Button size="sm" className="h-8 text-xs text-white border-0" style={{ background: "hsl(var(--dad-accent))" }} onClick={handleSaveName}>Salvar</Button>
+                    <Button size="sm" className="h-8 text-xs text-white border-0" style={{ background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))" }} onClick={handleSaveName}>Salvar</Button>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <h1 className="font-display text-xl font-bold truncate" style={{ color: "hsl(var(--dad-text))" }}>{profile.display_name}</h1>
+                    <h1 className="font-display text-xl font-bold truncate">{profile.display_name}</h1>
                     <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
-                      <Edit2 className="w-4 h-4" style={{ color: "hsl(var(--dad-accent-hover))" }} />
+                      <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
                     </button>
                   </div>
                 )}
                 <div className="mt-1">
-                  <span className="dad-neo-badge text-[10px]" style={{
-                    background: "hsl(var(--dad-cta))",
-                    color: "white",
+                  <Badge className="text-[10px] border-0 text-white" style={{
+                    background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
                   }}>
                     {dadTitle.emoji} {dadTitle.title}
-                  </span>
+                  </Badge>
                 </div>
-                <p className="text-[11px] font-body italic mt-1.5 leading-tight" style={{ color: "hsl(var(--dad-accent-hover))" }}>
+                <p className="text-[11px] text-muted-foreground font-body italic mt-1.5 leading-tight">
                   {rescues > 0
                     ? `A mãe te salvou ${rescues}x esse mês`
                     : lastActiveHours > 24 ? `Última ação: ${lastActiveHours}h atrás` : "Ativo hoje. Bom começo."}
@@ -456,12 +456,11 @@ export default function Perfil() {
               </div>
             </div>
 
-            {/* Neo-Brutalist stats row */}
             <div className="grid grid-cols-3 gap-2.5 mt-4">
               {(stats as any[]).slice(0, 3).map((s: any, i: number) => (
-                <div key={i} className="dad-neo-card-sm p-2.5 text-center">
+                <div key={i} className="bg-white rounded-xl p-2.5 text-center shadow-sm border border-border">
                   <p className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>{s.value}</p>
-                  <p className="text-[10px] font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{s.label}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -480,30 +479,36 @@ export default function Perfil() {
             </CardContent>
           </Card>
         ) : (
-          <div key={i} className="dad-neo-card-sm p-3 text-center">
-            <div className="flex justify-center mb-1">{s.icon}</div>
-            <p className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>{s.value}</p>
-            <p className="text-[10px] font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{s.label}</p>
-          </div>
+          <Card key={i} className="border shadow-sm bg-white">
+            <CardContent className="p-3 text-center">
+              <div className="flex justify-center mb-1">{s.icon}</div>
+              <p className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>{s.value}</p>
+              <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
+            </CardContent>
+          </Card>
         ))}
       </section>
 
       {/* ═══════════════════ SECTION 3: Level Progress (Dad) ═══════════════════ */}
       {!isMom && (
         <section>
-          <div className="dad-neo-card overflow-hidden relative">
+          <div className="rounded-2xl overflow-hidden relative" style={{
+            background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.06), hsl(var(--card)))",
+            border: "1px solid hsl(var(--dad-border) / 0.4)",
+            boxShadow: "0 8px 32px hsl(var(--dad-accent) / 0.08)",
+          }}>
             <div className="p-4 relative">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-display font-bold text-sm" style={{ color: "hsl(var(--dad-text))" }}>{dadTitle.emoji} {dadTitle.title}</span>
-                <span className="text-xs font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{profile.points} pts</span>
+                <span className="font-display font-bold text-sm">{dadTitle.emoji} {dadTitle.title}</span>
+                <span className="text-xs font-body text-muted-foreground">{profile.points} pts</span>
               </div>
-              <div className="h-3 rounded-full overflow-hidden" style={{ background: "hsl(var(--dad-bg))", border: "2px solid hsl(var(--dad-text))" }}>
+              <div className="h-3 rounded-full overflow-hidden" style={{ background: "hsl(var(--muted))" }}>
                 <div className="h-full rounded-full transition-all duration-1000" style={{
                   width: `${Math.min(100, (profile.points % 200) / 2)}%`,
-                  background: "hsl(var(--dad-accent))",
+                  background: "linear-gradient(90deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
                 }} />
               </div>
-              <p className="text-[10px] font-body italic mt-2" style={{ color: "hsl(var(--dad-accent-hover))" }}>
+              <p className="text-[10px] font-body italic mt-2 text-muted-foreground">
                 {profile.points < 200 ? "Próximo: 'Pai Tentando' — 201 pts"
                   : profile.points < 500 ? "Próximo: 'Pai Promissor' — 501 pts"
                   : profile.points < 900 ? "Próximo: 'Pai de Verdade' — 901 pts"
@@ -668,28 +673,25 @@ export default function Perfil() {
           <CartasRecebidas />
         </section>
       )}
-      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "hsl(var(--dad-border))" }} />}
+      <Separator className="my-2" />
 
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}
       <section>
-        <h2 className="font-display text-base font-bold mb-3 flex items-center gap-2"
-          style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
-          <User className="w-4 h-4" style={!isMom ? { color: "hsl(var(--dad-accent))" } : undefined} /> Conexão Familiar
+        <h2 className="font-display text-base font-bold mb-3 flex items-center gap-2">
+          <User className="w-4 h-4" /> Conexão Familiar
         </h2>
         {!profile.family_id ? (
           isMom ? <InvitePartner /> : <JoinFamily />
         ) : allMembers.length === 0 ? (
-          <div className="dad-neo-card-sm p-3 text-center">
-            <p className="font-body text-xs" style={{ color: "hsl(var(--dad-accent-hover))" }}>
-              Conectado à família ✓
-            </p>
+          <div className="rounded-xl p-3 text-center" style={{ background: "hsl(var(--muted) / 0.3)" }}>
+            <p className="font-body text-xs text-muted-foreground">Conectado à família ✓</p>
           </div>
         ) : (
           <div className="space-y-2">
             {allMembers.map((member: any) => {
               const roleEmoji = member.role === "mae" ? "👩" : member.role === "avo" ? "👵" : "👨";
               const roleLabel = member.role === "mae" ? "A mãe" : member.role === "avo" ? "A avó" : "O pai";
-              return isMom ? (
+              return (
                 <Card key={member.id} className="border-0 shadow-sm bg-primary/5">
                   <CardContent className="p-3 flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/15">
@@ -701,45 +703,33 @@ export default function Perfil() {
                     </div>
                   </CardContent>
                 </Card>
-              ) : (
-                <div key={member.id} className="dad-neo-card-sm p-3 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "hsl(var(--dad-cta) / 0.2)", border: "2px solid hsl(var(--dad-text))" }}>
-                    <span className="text-lg">{roleEmoji}</span>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-display font-bold text-sm" style={{ color: "hsl(var(--dad-text))" }}>{member.display_name}</p>
-                    <p className="text-[10px] font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{roleLabel} — conectado ✓</p>
-                  </div>
-                </div>
               );
             })}
           </div>
         )}
       </section>
 
-      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "hsl(var(--dad-border))" }} />}
+      <Separator className="my-2" />
 
       {/* ═══════════════════ SECTION 7: Children ═══════════════════ */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-display text-base font-bold flex items-center gap-2"
-            style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
-            <Baby className="w-4 h-4" style={!isMom ? { color: "hsl(var(--dad-accent))" } : undefined} /> Filhos
+        <h2 className="font-display text-base font-bold flex items-center gap-2">
+            <Baby className="w-4 h-4" /> Filhos
           </h2>
           {isMom ? (
             <Button size="sm" variant="outline" className={`h-7 text-xs ${accentBorder} ${accent}`} onClick={() => setShowChildSheet(true)}>
               Adicionar
             </Button>
           ) : (
-            <button className="dad-neo-badge text-[10px] cursor-pointer" style={{ background: "hsl(var(--dad-cta))", color: "white" }} onClick={() => setShowChildSheet(true)}>
+            <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => setShowChildSheet(true)}>
               Adicionar
-            </button>
+            </Button>
           )}
         </div>
 
         {children.length === 0 ? (
-          <p className={isMom ? "text-xs text-muted-foreground font-body italic text-center py-4" : "text-xs font-body italic text-center py-4"}
-            style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>
+          <p className="text-xs text-muted-foreground font-body italic text-center py-4">
             {isMom ? "Nenhum filho cadastrado ainda." : "Nenhum filho cadastrado. Você tem filhos, né?"}
           </p>
         ) : (
@@ -767,41 +757,38 @@ export default function Perfil() {
                   </CardContent>
                 </Card>
               ) : (
-                <div key={child.id} className="dad-neo-card-sm p-3">
-                  <div className="flex items-center gap-3 mb-1.5">
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-base" style={{ background: "hsl(var(--dad-cta) / 0.2)", border: "2px solid hsl(var(--dad-text))" }}>👶</div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-display font-bold text-sm" style={{ color: "hsl(var(--dad-text))" }}>{child.name}</p>
-                      {child.birth_date && <p className="text-[10px]" style={{ color: "hsl(var(--dad-accent-hover))" }}>{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
+                <Card key={child.id} className="border-0 shadow-sm">
+                  <CardContent className="p-3">
+                    <div className="flex items-center gap-3 mb-1.5">
+                      <div className="w-9 h-9 rounded-full bg-accent/20 flex items-center justify-center text-base">👶</div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-display font-bold text-sm">{child.name}</p>
+                        {child.birth_date && <p className="text-[10px] text-muted-foreground">{format(new Date(child.birth_date), "dd/MM/yyyy")}</p>}
+                      </div>
+                      <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--dad-accent))" }}>{pct}%</span>
                     </div>
-                    <span className="text-xs font-display font-bold" style={{ color: "hsl(var(--dad-accent))" }}>{pct}%</span>
-                  </div>
-                  <div className="h-2 rounded-full overflow-hidden" style={{ background: "hsl(var(--dad-bg))", border: "2px solid hsl(var(--dad-text))" }}>
-                    <div className="h-full rounded-full transition-all" style={{
-                      width: `${pct}%`,
-                      background: "hsl(var(--dad-accent))",
-                    }} />
-                  </div>
-                  <div className="flex flex-wrap gap-1 mt-1.5">
-                    {child.school && <span className="dad-neo-badge text-[9px] py-0.5" style={{ background: "hsl(var(--dad-bg))" }}>🏫 {child.school}</span>}
-                    {child.doctor_name && <span className="dad-neo-badge text-[9px] py-0.5" style={{ background: "hsl(var(--dad-bg))" }}>🏥 {child.doctor_name}</span>}
-                    {!child.school && <span className="text-[10px] italic" style={{ color: "hsl(var(--dad-accent-hover))" }}>Falta: escola</span>}
-                    {!child.doctor_name && <span className="text-[10px] italic" style={{ color: "hsl(var(--dad-accent-hover))" }}>Falta: pediatra</span>}
-                  </div>
-                </div>
+                    <Progress value={pct} className="h-1 mb-1.5" />
+                    <div className="flex flex-wrap gap-1">
+                      {child.school && <Badge variant="outline" className="text-[9px] h-5">🏫 {child.school}</Badge>}
+                      {child.doctor_name && <Badge variant="outline" className="text-[9px] h-5">🏥 {child.doctor_name}</Badge>}
+                      {!child.school && <span className="text-[9px] text-secondary italic">Falta: escola</span>}
+                      {!child.doctor_name && <span className="text-[9px] text-secondary italic">Falta: pediatra</span>}
+                    </div>
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
         )}
       </section>
 
-      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "hsl(var(--dad-border))" }} />}
+      <Separator className="my-2" />
 
       {/* ═══════════════════ SECTION 8: Settings & Legal ═══════════════════ */}
       <section className="space-y-2">
-        <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3"
-          style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
-          <Shield className="w-4 h-4" style={!isMom ? { color: "hsl(var(--dad-accent))" } : undefined} /> Configurações
+        <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3">
+          <Shield className="w-4 h-4" /> Configurações
+        </h2>
         </h2>
 
         {isMom ? (
@@ -821,14 +808,18 @@ export default function Perfil() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-2">
-            <div className="dad-neo-card-sm p-3 text-center">
-              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(var(--dad-accent-hover))" }}>Código família</p>
-              <p className="text-xs font-mono font-bold" style={{ color: "hsl(var(--dad-text))" }}>{profile.family_code || "—"}</p>
-            </div>
-            <div className="dad-neo-card-sm p-3 text-center">
-              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(var(--dad-accent-hover))" }}>Membro desde</p>
-              <p className="text-xs font-bold" style={{ color: "hsl(var(--dad-text))" }}>{format(new Date(profile.created_at), "dd/MM/yy")}</p>
-            </div>
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-3 text-center">
+                <p className="text-[10px] text-muted-foreground font-body mb-1">Código família</p>
+                <p className="text-xs font-mono font-bold">{profile.family_code || "—"}</p>
+              </CardContent>
+            </Card>
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-3 text-center">
+                <p className="text-[10px] text-muted-foreground font-body mb-1">Membro desde</p>
+                <p className="text-xs font-bold">{format(new Date(profile.created_at), "dd/MM/yy")}</p>
+              </CardContent>
+            </Card>
           </div>
         )}
 
@@ -848,8 +839,9 @@ export default function Perfil() {
             </Button>
           ) : (
             <>
-              <button
-                className="dad-neo-btn flex-1 text-xs h-9 justify-center"
+              <Button
+                variant="outline"
+                className="flex-1 text-xs h-9 font-display"
                 onClick={async () => {
                   const perm = await getNotificationPermission();
                   if (perm !== "granted" && user) await requestPushSubscription(user.id);
@@ -857,14 +849,14 @@ export default function Perfil() {
                 }}
               >
                 <Bell className="w-3.5 h-3.5" /> Testar notificação
-              </button>
-              <button className="dad-neo-btn flex-1 text-xs h-9 justify-center" onClick={() => {
+              </Button>
+              <Button variant="outline" className="flex-1 text-xs h-9 font-display" onClick={() => {
                 const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nEstou de Olho — porque alguém tem que lembrar`;
                 if (navigator.share) navigator.share({ text });
                 else { navigator.clipboard.writeText(text); toast("DNA copiado!"); }
               }}>
                 <Share2 className="w-3.5 h-3.5" /> Compartilhar DNA
-              </button>
+              </Button>
             </>
           )}
         </div>
@@ -878,10 +870,7 @@ export default function Perfil() {
             { path: "/suporte", label: "Suporte", icon: "💬" },
           ].map(link => (
             <button key={link.path} onClick={() => navigate(link.path)}
-              className="text-left text-xs font-body transition-colors py-2 px-3 rounded-lg flex items-center gap-1.5"
-              style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : { color: "hsl(var(--muted-foreground))" }}
-              onMouseEnter={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--dad-accent))"); }}
-              onMouseLeave={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--dad-accent-hover))"); }}>
+              className="text-left text-xs font-body transition-colors py-2 px-3 rounded-lg flex items-center gap-1.5 text-muted-foreground hover:text-foreground">
               <span>{link.icon}</span> {link.label}
             </button>
           ))}
@@ -890,8 +879,7 @@ export default function Perfil() {
         {/* Logout */}
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="ghost" className={`w-full font-display text-sm mt-2 ${isMom ? "text-destructive" : ""}`}
-              style={!isMom ? { color: "hsl(var(--arena-fire))" } : undefined}>
+            <Button variant="ghost" className="w-full font-display text-sm mt-2 text-destructive">
               <LogOut className="w-4 h-4 mr-2" /> Sair do app
             </Button>
           </AlertDialogTrigger>
@@ -1022,32 +1010,36 @@ function DadBadgesCarousel({ earnedKeys, onSelect }: { earnedKeys: string[]; onS
   const totalCount = DAD_ACHIEVEMENTS.earned.length + DAD_ACHIEVEMENTS.shame.length + DAD_ACHIEVEMENTS.locked.length;
 
   return (
-    <div className="dad-neo-card space-y-4 p-4 relative overflow-hidden">
+    <div className="space-y-4 p-4 rounded-2xl relative overflow-hidden" style={{
+      background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.06), hsl(var(--card)))",
+      border: "1px solid hsl(var(--dad-border) / 0.4)",
+      boxShadow: "0 8px 32px hsl(var(--dad-accent) / 0.08)",
+    }}>
       <div className="flex items-center justify-between relative">
-        <h2 className="font-display text-base font-bold" style={{ color: "hsl(var(--dad-text))" }}>⚔️ Arsenal de Selos</h2>
-        <span className="dad-neo-badge text-[10px]" style={{ background: "hsl(var(--dad-cta))", color: "white" }}>{earnedCount}/{totalCount}</span>
+        <h2 className="font-display text-base font-bold">⚔️ Arsenal de Selos</h2>
+        <Badge variant="outline" className="text-[10px]">{earnedCount}/{totalCount}</Badge>
       </div>
 
       <HorizontalScroll title="Conquistados" icon={<Star className="w-3.5 h-3.5" style={{ color: "hsl(var(--dad-accent))" }} />}>
         {DAD_ACHIEVEMENTS.earned.map(a => (
           <BadgeCard key={a.key} emoji={a.emoji} name={a.name} desc={a.desc}
-            earned={earnedKeys.includes(a.key)} type="good" isDad
+            earned={earnedKeys.includes(a.key)} type="good"
             onClick={() => onSelect(a)} />
         ))}
       </HorizontalScroll>
 
-      <HorizontalScroll title="Registros Históricos" icon={<Gavel className="w-3.5 h-3.5" style={{ color: "hsl(var(--dad-accent-hover))" }} />}>
+      <HorizontalScroll title="Registros Históricos" icon={<Gavel className="w-3.5 h-3.5 text-muted-foreground" />}>
         {DAD_ACHIEVEMENTS.shame.map(a => (
           <BadgeCard key={a.key} emoji={a.emoji} name={a.name} desc={a.desc}
-            earned={earnedKeys.includes(a.key)} type="shame" isDad
+            earned={earnedKeys.includes(a.key)} type="shame"
             onClick={() => onSelect(a)} />
         ))}
       </HorizontalScroll>
 
-      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5" style={{ color: "hsl(var(--dad-accent-hover))" }} />}>
+      <HorizontalScroll title="Trancados" icon={<Lock className="w-3.5 h-3.5 text-muted-foreground" />}>
         {DAD_ACHIEVEMENTS.locked.map((a, i) => (
           <BadgeCard key={i} emoji="🔒" name={a.hint} desc="Continue jogando para desbloquear"
-            earned={false} type="locked" isDad
+            earned={false} type="locked"
             onClick={() => {}} />
         ))}
       </HorizontalScroll>

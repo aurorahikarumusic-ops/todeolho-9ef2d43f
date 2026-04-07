@@ -262,19 +262,14 @@ export default function Tarefas() {
     return (
       <div
         key={task.id}
-        className={`overflow-hidden transition-all duration-300 cursor-pointer ${
+        className={`overflow-hidden transition-all duration-300 cursor-pointer rounded-2xl ${
           isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
-        } ${task.rescued_by_mom ? "opacity-70" : ""} ${
-          isMom ? "rounded-2xl" : "dad-neo-card-sm"
-        }`}
-        style={isMom ? {
+        } ${task.rescued_by_mom ? "opacity-70" : ""}`}
+        style={{
           background: "hsl(var(--card))",
           boxShadow: isExpanded
             ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
             : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`,
-        } : {
-          borderLeftWidth: "6px",
-          borderLeftColor: cat.color,
         }}
         onClick={() => setExpandedTask(isExpanded ? null : task.id)}
       >
@@ -329,7 +324,7 @@ export default function Tarefas() {
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through" : ""}`} style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
+                <h3 className={`font-display font-bold text-sm truncate ${task.completed_at ? "line-through" : ""}`}>
                   {cat.emoji} {task.title}
                 </h3>
               </div>
@@ -339,9 +334,8 @@ export default function Tarefas() {
                 <span className={`text-[10px] flex items-center gap-1 px-2 py-0.5 rounded-full ${
                     isOverdue
                       ? "bg-red-500/10 text-red-500 font-bold"
-                      : isMom ? "bg-muted/50 text-muted-foreground" : ""
-                  }`}
-                  style={!isMom && !isOverdue ? { background: "hsl(var(--dad-bg))", color: "hsl(var(--dad-accent-hover))", border: "2px solid hsl(var(--dad-border))" } : undefined}>
+                      : "bg-muted/50 text-muted-foreground"
+                  }`}>
                     <Clock className="w-2.5 h-2.5" />
                     {format(new Date(task.due_date), "dd/MM · HH:mm")}
                     {isOverdue && " ⚠️"}
@@ -363,7 +357,7 @@ export default function Tarefas() {
                 )}
               </div>
 
-              <p className="text-[10px] font-body italic" style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>
+              <p className="text-[10px] font-body italic text-muted-foreground">
                 {getTaskIronicComment(task, isMom)}
               </p>
             </div>
@@ -386,15 +380,15 @@ export default function Tarefas() {
               {task.rescued_by_mom && (
                 <span className="text-xs font-display font-black text-red-500">-30pts</span>
               )}
-              <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} style={!isMom ? { color: "hsl(30 15% 50%)" } : { color: "hsl(var(--muted-foreground) / 0.3)" }} />
+              <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} style={{ color: "hsl(var(--muted-foreground) / 0.3)" }} />
             </div>
           </div>
 
           {/* Expanded details */}
           {isExpanded && (
-            <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: isMom ? "1px solid hsl(var(--muted) / 0.2)" : "1px solid hsl(30 30% 18%)" }}>
+            <div className="mt-3 pt-3 space-y-3 animate-fade-in" style={{ borderTop: "1px solid hsl(var(--muted) / 0.2)" }}>
               {task.description && (
-                <p className="text-xs font-body" style={!isMom ? { color: "hsl(30 15% 75%)" } : { color: "hsl(var(--muted-foreground))" }}>📝 {task.description}</p>
+                <p className="text-xs font-body text-muted-foreground">📝 {task.description}</p>
               )}
 
               <div className="flex items-center gap-2">
@@ -405,7 +399,7 @@ export default function Tarefas() {
                     <>{isMom ? "Você criou" : "Mãe mandou"}</>
                   )}
                 </Badge>
-                <span className="text-[9px]" style={!isMom ? { color: "hsl(30 15% 60%)" } : { color: "hsl(var(--muted-foreground) / 0.5)" }}>
+                <span className="text-[9px]" style={{ color: "hsl(var(--muted-foreground) / 0.5)" }}>
                   {format(new Date(task.created_at), "dd/MM")}
                 </span>
               </div>
@@ -463,17 +457,14 @@ export default function Tarefas() {
   };
 
   const renderEmptyState = (emoji: string, title: string, text: string) => (
-    <div className={`p-10 text-center ${isMom ? "rounded-3xl" : "dad-neo-card"}`}
-      style={isMom ? {
+    <div className="p-10 text-center rounded-3xl"
+      style={{
         border: "2px dashed hsl(var(--muted))",
         boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
-      } : {
-        background: "#FFF0E6",
-        borderStyle: "dashed",
       }}>
       <p className="text-5xl mb-3">{emoji}</p>
-      <p className="font-display text-lg font-black mb-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>{title}</p>
-      <p className="text-sm font-body italic whitespace-pre-line" style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>{text}</p>
+      <p className="font-display text-lg font-black mb-1">{title}</p>
+      <p className="text-sm font-body italic whitespace-pre-line text-muted-foreground">{text}</p>
     </div>
   );
 
@@ -487,49 +478,43 @@ export default function Tarefas() {
 
   return (
     <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4"
-      style={!isMom ? { background: "#FFF8F1", minHeight: "100vh" } : undefined}>
+      style={{ minHeight: "100vh" }}>
       {/* Hero Header */}
       <div
-        className={`relative overflow-hidden ${isMom ? "rounded-3xl p-5" : "dad-neo-card p-5"}`}
-        style={isMom ? {
-          background: "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))",
-        } : {
-          background: "#FFEAAE",
+        className="relative overflow-hidden rounded-3xl p-5"
+        style={{
+          background: isMom
+            ? "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))"
+            : "linear-gradient(135deg, hsl(var(--dad-bg)), hsl(var(--dad-border)), hsl(var(--dad-cta)))",
         }}
       >
-        {isMom && (
-          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
-            style={{ background: "hsl(var(--mom-accent))" }} />
-        )}
+        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
+          style={{ background: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--dad-accent))" }} />
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
             {isMom ? <Shield className="w-6 h-6 text-mom" /> : <CheckSquare className="w-6 h-6" style={{ color: "hsl(var(--dad-accent))" }} />}
-            <h1 className="font-display text-xl font-black" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
+            <h1 className="font-display text-xl font-black">
               {isMom ? "Painel de Controle" : "⚔️ Missões do Pai"}
             </h1>
           </div>
-          <p className={`text-xs font-body italic mb-4 ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>{subtitle}</p>
+          <p className="text-xs font-body italic mb-4 text-muted-foreground">{subtitle}</p>
 
-          {/* Quick stats — Neo-Brutalista for Dad */}
+          {/* Quick stats */}
           <div className="flex gap-2">
             {[
-              { value: pending.length, label: "Pendentes", bg: "#D8F3DC", border: "#2D6A4F", shadow: "#1B4332" },
-              ...(isMom ? [{ value: awaitingApproval.length, label: "Aprovação", bg: "#FFEAAE", border: "#D4A10A", shadow: "#B8890A" }] : []),
-              { value: completed.length, label: "Feitas", bg: "#D6EAFF", border: "#2B7ACA", shadow: "#1A4B7B" },
-              { value: isMom ? rescued.length : overdue.length, label: isMom ? "Resgates" : "Atrasadas", bg: "#FFD6D6", border: "#C0392B", shadow: "#922B21" },
+              { value: pending.length, label: "Pendentes" },
+              ...(isMom ? [{ value: awaitingApproval.length, label: "Aprovação" }] : []),
+              { value: completed.length, label: "Feitas" },
+              { value: isMom ? rescued.length : overdue.length, label: isMom ? "Resgates" : "Atrasadas" },
             ].map((stat, i) => (
               <div key={i} className="flex-1 rounded-2xl p-3 text-center transition-all duration-300 hover:translate-y-[-2px]"
-                style={!isMom ? {
-                  background: stat.bg,
-                  border: `3px solid ${stat.border}`,
-                  boxShadow: `4px 4px 0 ${stat.shadow}`,
-                } : {
+                style={{
                   background: "rgba(255,255,255,0.4)",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)",
                 }}>
-                <p className="font-display text-2xl font-black" style={!isMom ? { color: stat.shadow } : undefined}>{stat.value}</p>
-                <p className="text-[8px] font-display font-bold uppercase tracking-wider" style={!isMom ? { color: stat.border } : { color: "hsl(var(--muted-foreground))" }}>{stat.label}</p>
+                <p className="font-display text-2xl font-black">{stat.value}</p>
+                <p className="text-[8px] font-display font-bold uppercase tracking-wider text-muted-foreground">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -538,22 +523,29 @@ export default function Tarefas() {
 
       {/* Daily Mission - Dad only */}
       {!isMom && todayMission && !todayMission.completed_at && (
-        <div className="dad-neo-card p-4 overflow-hidden relative" style={{ background: "#FFEAAE" }}>
+        <div className="rounded-3xl p-4 overflow-hidden relative"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--dad-bg)), hsl(var(--dad-border)))",
+            boxShadow: "0 8px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)",
+          }}>
           <div className="relative z-10 flex items-start gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
               style={{
-                background: "hsl(var(--dad-accent))",
-                border: "3px solid hsl(var(--dad-text))",
-                boxShadow: "3px 3px 0 hsl(var(--dad-text))",
+                background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
+                boxShadow: "0 4px 12px hsl(var(--dad-accent) / 0.3)",
               }}>
               <Star className="w-5 h-5 text-white" />
             </div>
             <div className="flex-1">
-              <p className="font-display text-xs font-black uppercase tracking-wider mb-1" style={{ color: "hsl(var(--dad-text))" }}>
+              <p className="font-display text-xs font-black uppercase tracking-wider mb-1">
                 ⭐ Missão Surpresa do Dia
               </p>
-              <p className="font-body text-sm mb-3" style={{ color: "hsl(var(--dad-accent-hover))" }}>{todayMission.mission_text}</p>
-              <button className="dad-neo-btn text-xs" style={{ padding: "0.5rem 1rem", fontSize: "0.8rem" }}
+              <p className="font-body text-sm mb-3 text-muted-foreground">{todayMission.mission_text}</p>
+              <button className="px-4 py-2 rounded-xl text-xs font-display font-bold text-white transition-all hover:scale-105 active:scale-95"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
+                  boxShadow: "0 4px 12px hsl(var(--dad-accent) / 0.3)",
+                }}
                 onClick={() => completeMissionMutation.mutate()}
                 disabled={completeMissionMutation.isPending}
               >
@@ -565,7 +557,11 @@ export default function Tarefas() {
       )}
 
       {!isMom && todayMission?.completed_at && (
-        <div className="dad-neo-card-sm p-3 text-center" style={{ background: "#D8F3DC" }}>
+        <div className="rounded-2xl p-3 text-center"
+          style={{
+            background: "rgba(216,243,220,0.5)",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.3)",
+          }}>
           <p className="text-xs font-body italic font-bold" style={{ color: "#1B4332" }}>
             ✅ Missão do dia cumprida! Sem a mãe pedir. Isso sim é evolução.
           </p>

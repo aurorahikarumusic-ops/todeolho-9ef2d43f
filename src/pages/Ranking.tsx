@@ -68,41 +68,45 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
   const third = ranking[2];
 
   const podiumData = [
-    { dad: second, pos: 2, height: "h-24", delay: "0.5s", medal: "🥈" },
-    { dad: first, pos: 1, height: "h-36", delay: "0.3s", medal: "👑" },
-    { dad: third, pos: 3, height: "h-20", delay: "0.7s", medal: "🥉" },
+    { dad: second, pos: 2, height: "h-20", delay: "0.5s", medal: "🥈" },
+    { dad: first, pos: 1, height: "h-28", delay: "0.2s", medal: "💎" },
+    { dad: third, pos: 3, height: "h-16", delay: "0.7s", medal: "🥉" },
   ];
 
   return (
     <div className="relative py-4">
-      {/* Neo-brutalist backdrop */}
       <div className="absolute inset-0 rounded-3xl" style={{
-        background: "hsl(var(--dad-bg))",
-        border: "3px solid hsl(var(--dad-text))",
-        borderRadius: "24px",
-        boxShadow: "6px 6px 0 hsl(var(--dad-text))",
+        background: "radial-gradient(ellipse at 50% 0%, hsl(var(--dad-accent) / 0.12) 0%, transparent 70%)",
       }} />
 
-      <div className="relative flex items-end justify-center gap-4 px-4 pt-8 pb-2">
+      <div className="relative flex items-end justify-center gap-4 px-4 pt-4 pb-2">
         {podiumData.map(({ dad, pos, height, delay, medal }) => {
           if (!dad) return <div key={pos} className="w-24" />;
           const isMe = myProfile?.id === dad.id;
           const title = getDadTitle(dad.points);
           return (
-            <div key={dad.id} className="flex flex-col items-center gap-2" style={{ animation: animate ? `arenaPodiumRise 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay} both` : "none" }}>
-              {/* Medal */}
+            <div
+              key={dad.id}
+              className="flex flex-col items-center gap-2"
+              style={{ animation: animate ? `momPodiumRise 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay} both` : "none" }}
+            >
               <div className="relative">
-                <span className="text-3xl">{medal}</span>
+                <span className="text-2xl" style={{
+                  filter: pos === 1 ? "drop-shadow(0 0 12px hsl(var(--dad-accent) / 0.6))" : "drop-shadow(0 2px 6px rgba(0,0,0,0.15))",
+                }}>{medal}</span>
                 {pos === 1 && (
-                  <Flame className="absolute -top-3 -left-2 w-4 h-4 animate-pulse" style={{ color: "hsl(var(--dad-accent))" }} />
+                  <Flame className="absolute -top-2 -right-3 w-4 h-4 animate-pulse" style={{ color: "hsl(var(--dad-accent))" }} />
                 )}
               </div>
 
-              {/* Avatar with bold border */}
               <div className={`relative ${pos === 1 ? "scale-110" : ""}`}>
-                <Avatar className="relative h-14 w-14 shadow-lg" style={{
-                  border: `3px solid hsl(var(--dad-text))`,
-                  boxShadow: "4px 4px 0 hsl(var(--dad-text))",
+                <div className="absolute -inset-1.5 rounded-full blur-md" style={{
+                  background: pos === 1
+                    ? "linear-gradient(135deg, hsl(var(--dad-accent) / 0.4), hsl(30 80% 70% / 0.3))"
+                    : "linear-gradient(135deg, hsl(var(--dad-accent) / 0.15), transparent)",
+                }} />
+                <Avatar className="relative h-14 w-14 ring-2 border-2 border-card shadow-lg" style={{
+                  boxShadow: pos === 1 ? "0 4px 20px hsl(var(--dad-accent) / 0.3)" : undefined,
                 }}>
                   <AvatarImage src={dad.avatar_url || undefined} />
                   <AvatarFallback className="font-display font-bold text-lg" style={{
@@ -113,29 +117,34 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
                   <div className="absolute -bottom-1 -right-1 rounded-full w-5 h-5 flex items-center justify-center text-[8px] font-bold" style={{
                     background: "hsl(var(--dad-accent))",
                     color: "white",
-                    border: "2px solid hsl(var(--dad-text))",
                   }}>EU</div>
                 )}
               </div>
 
-              <p className="font-display font-bold text-xs text-center truncate max-w-[80px]" style={{ color: "hsl(var(--dad-text))" }}>{(dad.display_name || "Pai").split(" ")[0]}</p>
+              <p className="font-display font-bold text-xs text-center truncate max-w-[80px]">{(dad.display_name || "Pai").split(" ")[0]}</p>
               
-              <span className="dad-neo-badge text-[10px]" style={{
-                background: pos === 1 ? "hsl(var(--dad-cta))" : pos === 2 ? "hsl(var(--dad-bg))" : "hsl(var(--dad-bg))",
+              <Badge className="text-[10px] font-display border-0" style={{
+                background: pos === 1
+                  ? "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))"
+                  : "hsl(var(--dad-bg))",
                 color: pos === 1 ? "white" : "hsl(var(--dad-text))",
+                boxShadow: pos === 1 ? "0 2px 10px hsl(var(--dad-accent) / 0.3)" : undefined,
               }}>
                 {dad.points}pts
-              </span>
+              </Badge>
 
-              {/* Neo podium bar */}
-              <div className={`w-22 ${height} rounded-t-2xl relative overflow-hidden`} style={{
-                background: pos === 1 ? "hsl(var(--dad-cta))" : pos === 2 ? "hsl(var(--dad-accent))" : "hsl(var(--dad-accent-hover))",
-                border: "3px solid hsl(var(--dad-text))",
-                borderBottom: "none",
-                boxShadow: "4px 0 0 hsl(var(--dad-text))",
+              <div className={`w-20 ${height} rounded-t-2xl relative overflow-hidden`} style={{
+                background: pos === 1
+                  ? "linear-gradient(180deg, hsl(var(--dad-accent) / 0.25), hsl(var(--dad-accent) / 0.08))"
+                  : "linear-gradient(180deg, hsl(var(--dad-border) / 0.3), hsl(var(--dad-bg) / 0.5))",
+                border: "1px solid hsl(var(--dad-border) / 0.4)",
+                boxShadow: "inset 0 2px 10px rgba(255,255,255,0.15), 0 -4px 20px rgba(0,0,0,0.05)",
               }}>
+                <div className="absolute inset-0" style={{
+                  background: "linear-gradient(90deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(255,255,255,0.06) 100%)",
+                }} />
                 <div className="absolute bottom-2 left-0 right-0 text-center">
-                  <span className="font-display font-bold text-lg" style={{ color: "white" }}>{pos}°</span>
+                  <span className="font-display font-bold text-base" style={{ color: "hsl(var(--dad-text) / 0.5)" }}>{pos}°</span>
                 </div>
                 {dad.streak_days > 0 && (
                   <div className="absolute top-2 left-0 right-0 text-center"><span className="text-[10px]">🔥{dad.streak_days}</span></div>
@@ -257,19 +266,25 @@ function MomPodiumSection({ ranking }: { ranking: any[] }) {
   );
 }
 
-// Dad stats bar (Neo-Brutalist style)
+// Dad stats bar (Clean style)
 function MyStatsBar({ profile, position, total }: { profile: any; position: number; total: number }) {
   if (!profile || position < 0) return null;
   const percentile = total > 1 ? Math.round(((total - position) / total) * 100) : 100;
   const title = getDadTitle(profile.points);
 
   return (
-    <div className="dad-neo-card p-4 relative overflow-hidden">
+    <div className="rounded-2xl p-4 relative overflow-hidden" style={{
+      background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.06), hsl(var(--card)))",
+      boxShadow: "0 8px 32px hsl(var(--dad-accent) / 0.08), inset 0 1px 0 rgba(255,255,255,0.1)",
+      border: "1px solid hsl(var(--dad-border) / 0.4)",
+    }}>
       <div className="relative flex items-center gap-4">
         <div className="relative">
-          <Avatar className="relative h-12 w-12" style={{
-            border: "3px solid hsl(var(--dad-text))",
-            boxShadow: "4px 4px 0 hsl(var(--dad-text))",
+          <div className="absolute -inset-1.5 rounded-full blur-md" style={{
+            background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.2), transparent)",
+          }} />
+          <Avatar className="relative h-12 w-12 ring-2 shadow-lg" style={{
+            boxShadow: "0 4px 12px hsl(var(--dad-accent) / 0.15)",
           }}>
             <AvatarImage src={profile.avatar_url || undefined} />
             <AvatarFallback className="font-display font-bold" style={{
@@ -280,34 +295,34 @@ function MyStatsBar({ profile, position, total }: { profile: any; position: numb
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
             <span className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>#{position + 1}</span>
-            <span className="text-sm font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>de {total}</span>
+            <span className="text-sm text-muted-foreground font-body">de {total}</span>
             {position <= 2 && <Crown className="w-4 h-4" style={{ color: "hsl(var(--dad-accent))" }} />}
           </div>
-          <p className="text-xs font-body italic truncate" style={{ color: "hsl(var(--dad-accent-hover))" }}>
+          <p className="text-xs font-body italic truncate" style={{ color: "hsl(var(--muted-foreground))" }}>
             {title.emoji} {title.title} • Top {percentile}% dos pais
           </p>
         </div>
         <div className="text-right">
           <div className="flex items-center gap-1">
             <Zap className="w-4 h-4" style={{ color: "hsl(var(--dad-accent))" }} />
-            <span className="font-display font-bold text-xl" style={{ color: "hsl(var(--dad-text))" }}>{profile.points}</span>
+            <span className="font-display font-bold text-xl" style={{ color: "hsl(var(--dad-accent))" }}>{profile.points}</span>
           </div>
-          <p className="text-[10px]" style={{ color: "hsl(var(--dad-accent-hover))" }}>pontos</p>
+          <p className="text-[10px] text-muted-foreground">pontos</p>
         </div>
       </div>
       {position > 0 && (
-        <div className="relative mt-3">
-          <div className="flex items-center justify-between text-[10px] mb-1" style={{ color: "hsl(var(--dad-accent-hover))" }}>
+        <div className="relative mt-3 pt-3" style={{ borderTop: "1px solid hsl(var(--dad-border) / 0.3)" }}>
+          <div className="flex items-center justify-between text-[10px] mb-1 text-muted-foreground">
             <span className="flex items-center gap-1">
               <ChevronUp className="w-3 h-3" />
               Pra subir: +{Math.max(1, ranking_diff(profile, position))}pts
             </span>
             <span className="font-display">{profile.streak_days > 0 ? `🔥 ${profile.streak_days} dias` : ""}</span>
           </div>
-          <div className="h-3 rounded-full overflow-hidden" style={{ background: "hsl(var(--dad-bg))", border: "2px solid hsl(var(--dad-text))" }}>
+          <div className="h-3 rounded-full overflow-hidden" style={{ background: "hsl(var(--muted))" }}>
             <div className="h-full rounded-full transition-all duration-1000" style={{
               width: `${Math.min(95, Math.max(5, percentile))}%`,
-              background: "hsl(var(--dad-accent))",
+              background: "linear-gradient(90deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
             }} />
           </div>
         </div>
@@ -513,10 +528,10 @@ export default function Ranking() {
       if (pos === 2) return { borderLeft: "4px solid hsl(var(--mom-accent) / 0.5)", background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.05), hsl(var(--card)))" };
       return {};
     }
-    if (pos === 0) return { border: "3px solid hsl(var(--dad-text))", background: "hsl(var(--dad-bg))", boxShadow: "6px 6px 0 hsl(var(--dad-text))" };
-    if (pos === 1) return { border: "3px solid hsl(var(--dad-text))", background: "hsl(var(--dad-bg))", boxShadow: "4px 4px 0 hsl(var(--dad-text))" };
-    if (pos === 2) return { border: "2px solid hsl(var(--dad-text))", background: "hsl(var(--dad-bg))", boxShadow: "3px 3px 0 hsl(var(--dad-text))" };
-    return { border: "2px solid hsl(var(--dad-border))", background: "#FFF8F1" };
+    if (pos === 0) return { borderLeft: "4px solid hsl(var(--dad-accent))", background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.1), hsl(var(--card)))" };
+    if (pos === 1) return { borderLeft: "4px solid hsl(var(--dad-border))", background: "linear-gradient(135deg, hsl(var(--dad-bg) / 0.5), hsl(var(--card)))" };
+    if (pos === 2) return { borderLeft: "4px solid hsl(var(--dad-accent) / 0.5)", background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.05), hsl(var(--card)))" };
+    return {};
   };
 
   const renderRankingList = (list: typeof ranking, startIdx = 3) => (
@@ -534,13 +549,13 @@ export default function Ranking() {
             key={dad.id}
             onClick={() => setExpandedCard(isExpanded ? null : dad.id)}
             className={`rounded-xl border p-3 cursor-pointer transition-all duration-300 ${
-              isMe ? (isMom ? "ring-2" : "ring-2 ring-primary/30") : ""
-            } ${isLast && list.length > 3 ? "" : ""}`}
+              isMe ? "ring-2 ring-primary/30" : ""
+            }`}
             style={{
               ...getPositionStyle(index),
-              borderColor: isMe && isMom ? "hsl(var(--mom-accent) / 0.3)" : isLast && list.length > 3 ? "hsl(var(--destructive) / 0.3)" : undefined,
+              borderColor: isMe ? "hsl(var(--dad-accent) / 0.3)" : isLast && list.length > 3 ? "hsl(var(--destructive) / 0.3)" : undefined,
               boxShadow: isExpanded
-                ? isMom ? "0 8px 24px hsl(var(--mom-accent) / 0.1), 0 2px 8px rgba(0,0,0,0.06)" : "8px 8px 0 hsl(var(--dad-text))"
+                ? "0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06)"
                 : undefined,
               transform: isExpanded ? "translate(-2px, -2px)" : "scale(1)",
             }}
@@ -553,7 +568,6 @@ export default function Ranking() {
                 color: isLast && list.length > 3
                   ? "hsl(var(--destructive))"
                   : isMom ? "hsl(var(--mom-text))" : "hsl(var(--dad-text))",
-                border: !isMom ? "2px solid hsl(var(--dad-text))" : undefined,
               }}>
                 {index + 1}
               </div>
@@ -568,7 +582,7 @@ export default function Ranking() {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="font-display font-bold text-sm truncate" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>{(dad.display_name || "Pai").split(" ")[0]}</p>
+                  <p className="font-display font-bold text-sm truncate">{(dad.display_name || "Pai").split(" ")[0]}</p>
                   {isMe && (
                     <Badge className="text-[9px] px-1.5 py-0 border-0" style={{
                       background: isMom ? "hsl(var(--mom-accent) / 0.15)" : "hsl(var(--secondary) / 0.8)",
@@ -579,7 +593,7 @@ export default function Ranking() {
                   )}
                   <span className="text-xs">{title.emoji}</span>
                 </div>
-                <p className="text-[10px] font-body italic truncate" style={{ color: isMom ? "hsl(var(--muted-foreground))" : "hsl(var(--dad-accent-hover))" }}>
+                <p className="text-[10px] font-body italic truncate text-muted-foreground">
                   {isMom ? getMomPositionDescription(index, list.length) : getPositionDescription(index, list.length)}
                 </p>
               </div>
@@ -603,7 +617,7 @@ export default function Ranking() {
 
             {isExpanded && (
               <div className="mt-3 pt-3 space-y-2" style={{
-                borderTop: `2px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--dad-border))"}`,
+                borderTop: "1px solid hsl(var(--border) / 0.3)",
                 animation: "fadeSlideDown 0.3s ease-out",
               }}>
                 <div className="flex items-center justify-between">
@@ -675,23 +689,37 @@ export default function Ranking() {
           </>
         ) : (
           <>
-            {/* Neo-Brutalist Dad header */}
+            {/* Clean Dad header */}
             <div className="relative">
-              <div className="dad-neo-card inline-flex items-center justify-center w-18 h-18 rounded-2xl mb-3 p-4" style={{
-                background: "hsl(var(--dad-cta))",
-              }}>
-                <Trophy className="w-9 h-9 text-white" />
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-48 h-48 rounded-full blur-3xl" style={{
+                background: "radial-gradient(circle, hsl(var(--dad-accent) / 0.1), transparent)",
+              }} />
+              <div className="relative">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-3 shadow-lg" style={{
+                  background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.15), hsl(var(--dad-bg)))",
+                  boxShadow: "0 8px 32px hsl(var(--dad-accent) / 0.12), inset 0 2px 0 rgba(255,255,255,0.2)",
+                  border: "1px solid hsl(var(--dad-border) / 0.3)",
+                }}>
+                  <Trophy className="w-8 h-8" style={{
+                    color: "hsl(var(--dad-accent))",
+                    filter: "drop-shadow(0 2px 4px hsl(var(--dad-accent) / 0.3))",
+                  }} />
+                </div>
+                <h1 className="font-display text-2xl font-bold mb-1" style={{
+                  background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>
+                  ⚔️ O Mural da Vergonha
+                </h1>
+                <p className="text-sm font-body italic text-muted-foreground">
+                  {myPos >= 0
+                    ? myPos <= 2
+                      ? "🔥 Você tá no pódio. Não estraga agora."
+                      : `⚡ Posição #${myPos + 1}. Hora de escalar.`
+                    : "Entre na arena fazendo alguma coisa, pai."}
+                </p>
               </div>
-              <h1 className="font-display text-2xl font-bold mb-1" style={{ color: "hsl(var(--dad-text))" }}>
-                ⚔️ O Mural da Vergonha
-              </h1>
-              <p className="text-sm font-body italic" style={{ color: "hsl(var(--dad-accent-hover))" }}>
-                {myPos >= 0
-                  ? myPos <= 2
-                    ? "🔥 Você tá no pódio. Não estraga agora."
-                    : `⚡ Posição #${myPos + 1}. Hora de escalar.`
-                  : "Entre na arena fazendo alguma coisa, pai."}
-              </p>
             </div>
           </>
         )}
@@ -784,13 +812,14 @@ export default function Ranking() {
 
               {/* Bottom card */}
               {ranking.length > 3 && (
-                <div className="dad-neo-card-sm p-3 text-center relative overflow-hidden" style={isMom ? {
+                <div className="rounded-2xl p-3 text-center relative overflow-hidden" style={isMom ? {
                   background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.05), hsl(var(--card)))",
                   border: "1px solid hsl(var(--mom-border) / 0.2)",
                   boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
                 } : {
-                  background: "hsl(var(--destructive) / 0.08)",
-                  borderColor: "hsl(var(--destructive) / 0.4)",
+                  background: "linear-gradient(135deg, hsl(var(--destructive) / 0.05), hsl(var(--card)))",
+                  border: "1px solid hsl(var(--destructive) / 0.2)",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.04)",
                 }}>
                   <p className="text-2xl mb-1 relative">{isMom ? "👀" : "💀"}</p>
                   <p className="font-display font-bold text-xs relative" style={{
@@ -964,13 +993,18 @@ export default function Ranking() {
 
       {/* Share */}
       {!isMom && myPos >= 0 && ranking.length > 1 && (
-        <button
-          className="dad-neo-btn w-full justify-center"
+        <Button
+          className="w-full font-display gap-2 border-0"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
+            color: "white",
+            boxShadow: "0 4px 16px hsl(var(--dad-accent) / 0.3)",
+          }}
           onClick={handleShare}
         >
           <Share2 className="w-4 h-4" />
           Compartilhar meu ranking
-        </button>
+        </Button>
       )}
 
       {isMom && ranking.length > 0 && (
