@@ -787,9 +787,9 @@ export default function Perfil() {
 
       {/* ═══════════════════ SECTION 8: Settings & Legal ═══════════════════ */}
       <section className="space-y-2">
-        <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3"
-          style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
-          <Shield className="w-4 h-4" style={!isMom ? { color: "hsl(var(--dad-accent))" } : undefined} /> Configurações
+        <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3">
+          <Shield className="w-4 h-4" /> Configurações
+        </h2>
         </h2>
 
         {isMom ? (
