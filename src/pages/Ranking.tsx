@@ -517,8 +517,8 @@ export default function Ranking() {
     toast.success("Copiado! Cola no WhatsApp e mostra que você serve pra algo. 📋");
   };
 
-  const getRatingForUser = (profileId: string) => {
-    return momRatings.find((r: any) => r.user_id === profileId);
+  const getRatingForUser = (targetUserId: string) => {
+    return momRatings.find((r: any) => r.user_id === targetUserId);
   };
 
   const getPositionStyle = (pos: number) => {
@@ -541,7 +541,7 @@ export default function Ranking() {
         const title = getDadTitle(dad.points);
         const isMe = myProfile?.id === dad.id;
         const isExpanded = expandedCard === dad.id;
-        const rating = getRatingForUser(dad.id);
+        const rating = getRatingForUser(dad.user_id);
         const isLast = index === list.length - 1;
 
         return (
@@ -961,10 +961,10 @@ export default function Ranking() {
                 <p className="text-xs font-body italic" style={{ color: "hsl(var(--mom-text) / 0.6)" }}>
                   Aqui você vê como avaliou seu marido. Ele merece?
                 </p>
-                {myProfile && getRatingForUser(myProfile.id) ? (
+                {myProfile && getRatingForUser(myProfile.user_id) ? (
                   <div className="flex items-center justify-center gap-2 mt-2">
                     <span className="text-sm font-body">Sua nota:</span>
-                    <StarRating stars={getRatingForUser(myProfile.id)!.stars} isMom />
+                    <StarRating stars={getRatingForUser(myProfile.user_id)!.stars} isMom />
                   </div>
                 ) : (
                   <p className="text-xs italic mt-2" style={{ color: "hsl(var(--mom-accent) / 0.6)" }}>
@@ -976,8 +976,8 @@ export default function Ranking() {
               <div className="space-y-2 mt-3">
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-sm font-body">Nota da mãe:</span>
-                  {myProfile && getRatingForUser(myProfile.id) ? (
-                    <StarRating stars={getRatingForUser(myProfile.id)!.stars} />
+                  {myProfile && getRatingForUser(myProfile.user_id) ? (
+                    <StarRating stars={getRatingForUser(myProfile.user_id)!.stars} />
                   ) : (
                     <span className="text-xs italic text-muted-foreground">Pendente</span>
                   )}
