@@ -523,22 +523,29 @@ export default function Tarefas() {
 
       {/* Daily Mission - Dad only */}
       {!isMom && todayMission && !todayMission.completed_at && (
-        <div className="dad-neo-card p-4 overflow-hidden relative" style={{ background: "#FFEAAE" }}>
+        <div className="rounded-3xl p-4 overflow-hidden relative"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--dad-bg)), hsl(var(--dad-border)))",
+            boxShadow: "0 8px 30px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.15)",
+          }}>
           <div className="relative z-10 flex items-start gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
               style={{
-                background: "hsl(var(--dad-accent))",
-                border: "3px solid hsl(var(--dad-text))",
-                boxShadow: "3px 3px 0 hsl(var(--dad-text))",
+                background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
+                boxShadow: "0 4px 12px hsl(var(--dad-accent) / 0.3)",
               }}>
               <Star className="w-5 h-5 text-white" />
             </div>
             <div className="flex-1">
-              <p className="font-display text-xs font-black uppercase tracking-wider mb-1" style={{ color: "hsl(var(--dad-text))" }}>
+              <p className="font-display text-xs font-black uppercase tracking-wider mb-1">
                 ⭐ Missão Surpresa do Dia
               </p>
-              <p className="font-body text-sm mb-3" style={{ color: "hsl(var(--dad-accent-hover))" }}>{todayMission.mission_text}</p>
-              <button className="dad-neo-btn text-xs" style={{ padding: "0.5rem 1rem", fontSize: "0.8rem" }}
+              <p className="font-body text-sm mb-3 text-muted-foreground">{todayMission.mission_text}</p>
+              <button className="px-4 py-2 rounded-xl text-xs font-display font-bold text-white transition-all hover:scale-105 active:scale-95"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
+                  boxShadow: "0 4px 12px hsl(var(--dad-accent) / 0.3)",
+                }}
                 onClick={() => completeMissionMutation.mutate()}
                 disabled={completeMissionMutation.isPending}
               >
@@ -550,7 +557,11 @@ export default function Tarefas() {
       )}
 
       {!isMom && todayMission?.completed_at && (
-        <div className="dad-neo-card-sm p-3 text-center" style={{ background: "#D8F3DC" }}>
+        <div className="rounded-2xl p-3 text-center"
+          style={{
+            background: "rgba(216,243,220,0.5)",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.3)",
+          }}>
           <p className="text-xs font-body italic font-bold" style={{ color: "#1B4332" }}>
             ✅ Missão do dia cumprida! Sem a mãe pedir. Isso sim é evolução.
           </p>
