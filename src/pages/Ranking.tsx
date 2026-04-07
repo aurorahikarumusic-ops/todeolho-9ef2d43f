@@ -447,13 +447,7 @@ export default function Ranking() {
     },
   });
 
-  // For mom view: find partner in ranking
-  const partnerInRanking = isMom
-    ? ranking.find((r: any) => {
-        // partner is in the same family
-        return true; // We show general ranking for mom
-      })
-    : null;
+
 
   const { data: myGroups = [] } = useQuery({
     queryKey: ["my-groups", user?.id],
