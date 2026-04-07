@@ -87,6 +87,23 @@ export default function Dashboard() {
     enabled: !!user,
   });
 
+  const weekStartDate = startOfWeek(now, { weekStartsOn: 1 }).toISOString().split("T")[0];
+
+  const { data: momRating } = useQuery({
+    queryKey: ["dad-mom-rating", user?.id, weekStartDate],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data } = await supabase
+        .from("mom_ratings")
+        .select("stars")
+        .eq("user_id", user.id)
+        .eq("week_start", weekStartDate)
+        .maybeSingle();
+      return data?.stars ?? null;
+    },
+    enabled: !!user,
+  });
+
   if (!profile) return null;
 
   // Pai sends to mom specifically
