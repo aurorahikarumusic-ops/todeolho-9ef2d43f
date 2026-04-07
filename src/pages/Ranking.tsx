@@ -54,11 +54,11 @@ const StarRating = ({ stars, isMom }: { stars: number; isMom?: boolean }) => (
   </div>
 );
 
-// ============ DAD PODIUM (Neo-Brutalist Style) ============
+// ============ UNIFIED 3D PODIUM ============
 function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any }) {
   const [animate, setAnimate] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setAnimate(true), 300);
+    const t = setTimeout(() => setAnimate(true), 200);
     return () => clearTimeout(t);
   }, []);
 
@@ -69,9 +69,9 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
   const third = ranking[2];
 
   const podiumData = [
-    { dad: second, pos: 2, height: "h-20", delay: "0.5s", medal: "🥈" },
-    { dad: first, pos: 1, height: "h-28", delay: "0.2s", medal: "💎" },
-    { dad: third, pos: 3, height: "h-16", delay: "0.7s", medal: "🥉" },
+    { dad: second, pos: 2, barH: 100, delay: "0.5s", medal: "🥈", glow: "hsl(var(--secondary) / 0.3)" },
+    { dad: first, pos: 1, barH: 140, delay: "0.15s", medal: "👑", glow: "hsl(var(--primary) / 0.4)" },
+    { dad: third, pos: 3, barH: 72, delay: "0.7s", medal: "🥉", glow: "hsl(var(--secondary) / 0.2)" },
   ];
 
   return (
