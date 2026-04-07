@@ -91,7 +91,7 @@ export default function BancoReus() {
   const placeholder = getRandomItem(SARCASTIC_PLACEHOLDERS);
 
   return (
-    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-0 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto" style={{ background: "hsl(var(--dad-bg))" }}>
+    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-0 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto bg-background">
 
       {/* ═══════ Neo-Brutalist Hero Header ═══════ */}
       <div className="dad-neo-card -mx-4 md:-mx-8 px-6 pt-8 pb-6 mb-6 relative overflow-hidden" style={{ borderRadius: 0, borderLeft: 0, borderRight: 0, borderTop: 0 }}>

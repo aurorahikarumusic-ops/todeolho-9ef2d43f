@@ -41,7 +41,7 @@ export default function MuralPalpites() {
   };
 
   return (
-    <div className="p-4 max-w-lg mx-auto space-y-6 pb-24" style={{ background: "hsl(270 80% 97%)" }}>
+    <div className="p-4 max-w-lg mx-auto space-y-6 pb-24 bg-background min-h-screen">
 
       {/* ═══════ Neo-Brutalist Hero Header ═══════ */}
       <div className="avo-neo-card relative overflow-hidden p-6">
