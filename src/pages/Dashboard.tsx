@@ -89,12 +89,15 @@ export default function Dashboard() {
 
   if (!profile) return null;
 
+  // Pai sends to mom specifically
+  const letterRecipient = allMembers.find(m => m.role === "mae") || partner;
+
   if (showRedencao) {
     return (
       <ModoRedencao
         onClose={() => setShowRedencao(false)}
-        recipientName={partner?.display_name}
-        recipientId={partner?.user_id}
+        recipientName={letterRecipient?.display_name}
+        recipientId={letterRecipient?.user_id}
       />
     );
   }
