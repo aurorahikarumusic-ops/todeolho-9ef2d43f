@@ -429,6 +429,7 @@ export default function Ranking() {
   const { data: myProfile } = useProfile();
   const { data: ranking = [], isLoading } = useRanking();
   const isMom = useIsMom();
+  const { data: familyPartner } = useFamilyPartner();
   const queryClient = useQueryClient();
   const [showGroupSheet, setShowGroupSheet] = useState(false);
   const [showJoinSheet, setShowJoinSheet] = useState(false);
