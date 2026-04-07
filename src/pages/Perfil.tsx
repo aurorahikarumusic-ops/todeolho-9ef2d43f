@@ -154,23 +154,6 @@ export default function Perfil() {
     enabled: !!user,
   });
 
-  const addChildMutation = useMutation({
-    mutationFn: async () => {
-      if (!profile?.family_id) throw new Error("Sem família");
-      const { error } = await supabase.from("children").insert({
-        family_id: profile.family_id, name: newChild.name,
-        school: newChild.school || null, doctor_name: newChild.doctor_name || null,
-        allergies: newChild.allergies || null, birth_date: newChild.birth_date || null,
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["children"] });
-      setShowChildSheet(false);
-      setNewChild({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" });
-      toast.success(isMom ? "Filho adicionado! 👑" : "Filho adicionado! Você sabe quantos tem agora? 😏");
-    },
-  });
 
   if (!profile) return null;
 
