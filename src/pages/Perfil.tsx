@@ -809,14 +809,18 @@ export default function Perfil() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-2">
-            <div className="dad-neo-card-sm p-3 text-center">
-              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(var(--dad-accent-hover))" }}>Código família</p>
-              <p className="text-xs font-mono font-bold" style={{ color: "hsl(var(--dad-text))" }}>{profile.family_code || "—"}</p>
-            </div>
-            <div className="dad-neo-card-sm p-3 text-center">
-              <p className="text-[10px] font-body mb-1" style={{ color: "hsl(var(--dad-accent-hover))" }}>Membro desde</p>
-              <p className="text-xs font-bold" style={{ color: "hsl(var(--dad-text))" }}>{format(new Date(profile.created_at), "dd/MM/yy")}</p>
-            </div>
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-3 text-center">
+                <p className="text-[10px] text-muted-foreground font-body mb-1">Código família</p>
+                <p className="text-xs font-mono font-bold">{profile.family_code || "—"}</p>
+              </CardContent>
+            </Card>
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-3 text-center">
+                <p className="text-[10px] text-muted-foreground font-body mb-1">Membro desde</p>
+                <p className="text-xs font-bold">{format(new Date(profile.created_at), "dd/MM/yy")}</p>
+              </CardContent>
+            </Card>
           </div>
         )}
 
