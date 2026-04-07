@@ -232,14 +232,8 @@ function PodiumSection({ ranking, myProfile }: { ranking: any[]; myProfile: any 
 const MomPodiumSection = ({ ranking }: { ranking: any[] }) => (
   <PodiumSection ranking={ranking} myProfile={null} />
 );
-                  filter: pos === 1 ? "drop-shadow(0 0 12px hsl(var(--mom-accent) / 0.6))" : "drop-shadow(0 2px 6px rgba(0,0,0,0.15))",
-                }}>{medal}</span>
-                {pos === 1 && (
-                  <Sparkles className="absolute -top-2 -right-3 w-4 h-4 text-mom animate-pulse" />
-                )}
-              </div>
 
-              {/* Avatar with rose ring */}
+
               <div className={`relative ${pos === 1 ? "scale-110" : ""}`} style={{
                 transform: pos === 1 ? "scale(1.1) translateZ(20px)" : undefined,
               }}>
