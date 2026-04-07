@@ -689,23 +689,37 @@ export default function Ranking() {
           </>
         ) : (
           <>
-            {/* Neo-Brutalist Dad header */}
+            {/* Clean Dad header */}
             <div className="relative">
-              <div className="dad-neo-card inline-flex items-center justify-center w-18 h-18 rounded-2xl mb-3 p-4" style={{
-                background: "hsl(var(--dad-cta))",
-              }}>
-                <Trophy className="w-9 h-9 text-white" />
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-48 h-48 rounded-full blur-3xl" style={{
+                background: "radial-gradient(circle, hsl(var(--dad-accent) / 0.1), transparent)",
+              }} />
+              <div className="relative">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-3 shadow-lg" style={{
+                  background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.15), hsl(var(--dad-bg)))",
+                  boxShadow: "0 8px 32px hsl(var(--dad-accent) / 0.12), inset 0 2px 0 rgba(255,255,255,0.2)",
+                  border: "1px solid hsl(var(--dad-border) / 0.3)",
+                }}>
+                  <Trophy className="w-8 h-8" style={{
+                    color: "hsl(var(--dad-accent))",
+                    filter: "drop-shadow(0 2px 4px hsl(var(--dad-accent) / 0.3))",
+                  }} />
+                </div>
+                <h1 className="font-display text-2xl font-bold mb-1" style={{
+                  background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}>
+                  ⚔️ O Mural da Vergonha
+                </h1>
+                <p className="text-sm font-body italic text-muted-foreground">
+                  {myPos >= 0
+                    ? myPos <= 2
+                      ? "🔥 Você tá no pódio. Não estraga agora."
+                      : `⚡ Posição #${myPos + 1}. Hora de escalar.`
+                    : "Entre na arena fazendo alguma coisa, pai."}
+                </p>
               </div>
-              <h1 className="font-display text-2xl font-bold mb-1" style={{ color: "hsl(var(--dad-text))" }}>
-                ⚔️ O Mural da Vergonha
-              </h1>
-              <p className="text-sm font-body italic" style={{ color: "hsl(var(--dad-accent-hover))" }}>
-                {myPos >= 0
-                  ? myPos <= 2
-                    ? "🔥 Você tá no pódio. Não estraga agora."
-                    : `⚡ Posição #${myPos + 1}. Hora de escalar.`
-                  : "Entre na arena fazendo alguma coisa, pai."}
-              </p>
             </div>
           </>
         )}
