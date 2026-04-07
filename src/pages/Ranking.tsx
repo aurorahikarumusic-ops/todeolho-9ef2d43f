@@ -517,8 +517,8 @@ export default function Ranking() {
     toast.success("Copiado! Cola no WhatsApp e mostra que você serve pra algo. 📋");
   };
 
-  const getRatingForUser = (profileId: string) => {
-    return momRatings.find((r: any) => r.user_id === profileId);
+  const getRatingForUser = (targetUserId: string) => {
+    return momRatings.find((r: any) => r.user_id === targetUserId);
   };
 
   const getPositionStyle = (pos: number) => {
