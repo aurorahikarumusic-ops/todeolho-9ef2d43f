@@ -266,19 +266,25 @@ function MomPodiumSection({ ranking }: { ranking: any[] }) {
   );
 }
 
-// Dad stats bar (Neo-Brutalist style)
+// Dad stats bar (Clean style)
 function MyStatsBar({ profile, position, total }: { profile: any; position: number; total: number }) {
   if (!profile || position < 0) return null;
   const percentile = total > 1 ? Math.round(((total - position) / total) * 100) : 100;
   const title = getDadTitle(profile.points);
 
   return (
-    <div className="dad-neo-card p-4 relative overflow-hidden">
+    <div className="rounded-2xl p-4 relative overflow-hidden" style={{
+      background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.06), hsl(var(--card)))",
+      boxShadow: "0 8px 32px hsl(var(--dad-accent) / 0.08), inset 0 1px 0 rgba(255,255,255,0.1)",
+      border: "1px solid hsl(var(--dad-border) / 0.4)",
+    }}>
       <div className="relative flex items-center gap-4">
         <div className="relative">
-          <Avatar className="relative h-12 w-12" style={{
-            border: "3px solid hsl(var(--dad-text))",
-            boxShadow: "4px 4px 0 hsl(var(--dad-text))",
+          <div className="absolute -inset-1.5 rounded-full blur-md" style={{
+            background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.2), transparent)",
+          }} />
+          <Avatar className="relative h-12 w-12 ring-2 shadow-lg" style={{
+            boxShadow: "0 4px 12px hsl(var(--dad-accent) / 0.15)",
           }}>
             <AvatarImage src={profile.avatar_url || undefined} />
             <AvatarFallback className="font-display font-bold" style={{
@@ -289,34 +295,34 @@ function MyStatsBar({ profile, position, total }: { profile: any; position: numb
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
             <span className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>#{position + 1}</span>
-            <span className="text-sm font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>de {total}</span>
+            <span className="text-sm text-muted-foreground font-body">de {total}</span>
             {position <= 2 && <Crown className="w-4 h-4" style={{ color: "hsl(var(--dad-accent))" }} />}
           </div>
-          <p className="text-xs font-body italic truncate" style={{ color: "hsl(var(--dad-accent-hover))" }}>
+          <p className="text-xs font-body italic truncate" style={{ color: "hsl(var(--muted-foreground))" }}>
             {title.emoji} {title.title} • Top {percentile}% dos pais
           </p>
         </div>
         <div className="text-right">
           <div className="flex items-center gap-1">
             <Zap className="w-4 h-4" style={{ color: "hsl(var(--dad-accent))" }} />
-            <span className="font-display font-bold text-xl" style={{ color: "hsl(var(--dad-text))" }}>{profile.points}</span>
+            <span className="font-display font-bold text-xl" style={{ color: "hsl(var(--dad-accent))" }}>{profile.points}</span>
           </div>
-          <p className="text-[10px]" style={{ color: "hsl(var(--dad-accent-hover))" }}>pontos</p>
+          <p className="text-[10px] text-muted-foreground">pontos</p>
         </div>
       </div>
       {position > 0 && (
-        <div className="relative mt-3">
-          <div className="flex items-center justify-between text-[10px] mb-1" style={{ color: "hsl(var(--dad-accent-hover))" }}>
+        <div className="relative mt-3 pt-3" style={{ borderTop: "1px solid hsl(var(--dad-border) / 0.3)" }}>
+          <div className="flex items-center justify-between text-[10px] mb-1 text-muted-foreground">
             <span className="flex items-center gap-1">
               <ChevronUp className="w-3 h-3" />
               Pra subir: +{Math.max(1, ranking_diff(profile, position))}pts
             </span>
             <span className="font-display">{profile.streak_days > 0 ? `🔥 ${profile.streak_days} dias` : ""}</span>
           </div>
-          <div className="h-3 rounded-full overflow-hidden" style={{ background: "hsl(var(--dad-bg))", border: "2px solid hsl(var(--dad-text))" }}>
+          <div className="h-3 rounded-full overflow-hidden" style={{ background: "hsl(var(--muted))" }}>
             <div className="h-full rounded-full transition-all duration-1000" style={{
               width: `${Math.min(95, Math.max(5, percentile))}%`,
-              background: "hsl(var(--dad-accent))",
+              background: "linear-gradient(90deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
             }} />
           </div>
         </div>
