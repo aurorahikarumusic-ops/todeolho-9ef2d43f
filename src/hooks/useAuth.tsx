@@ -41,6 +41,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           onesignalInitRef.current = true;
           autoInitOneSignal(session.user.id);
         }
+
+        // Auto-join family if pending invite code (from Google OAuth)
+        if (event === 'SIGNED_IN' && session?.user) {
+          const pendingCode = localStorage.getItem("pending_invite_code");
+          if (pendingCode) {
+            localStorage.removeItem("pending_invite_code");
+            supabase.rpc("join_family_by_code", { invite_code: pendingCode }).then(({ data }) => {
+              const result = data as any;
+              if (result?.success) {
+                // Trigger a re-fetch of profile data
+                window.dispatchEvent(new Event("family-joined"));
+              }
+            });
+          }
+        }
       }
     );
 
