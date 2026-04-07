@@ -211,8 +211,7 @@ export default function Agenda() {
 
       {/* Next 3 days timeline */}
       <div className="space-y-1">
-        <p className={`text-xs font-display font-black uppercase tracking-wider px-1 ${isMom ? "text-muted-foreground" : ""}`}
-          style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>
+        <p className="text-xs font-display font-black uppercase tracking-wider px-1 text-muted-foreground">
           Próximos dias
         </p>
         <div className="flex gap-2">
@@ -222,30 +221,22 @@ export default function Agenda() {
               <button
                 key={i}
                 onClick={() => setSelectedDate(day)}
-                className={`flex-1 p-3 transition-all duration-300 text-center ${
-                  isMom
-                    ? `rounded-2xl ${isSelected ? "bg-primary text-primary-foreground shadow-lg scale-[1.02]" : "bg-card hover:bg-muted/50"}`
-                    : isSelected ? "dad-neo-card-sm scale-[1.02]" : "rounded-2xl hover:scale-[1.01]"
+                className={`flex-1 p-3 transition-all duration-300 text-center rounded-2xl ${
+                  isSelected ? "bg-primary text-primary-foreground shadow-lg scale-[1.02]" : "bg-card hover:bg-muted/50"
                 }`}
-                style={!isMom ? (isSelected ? {
-                  background: "#FFEAAE",
-                } : {
-                  background: "hsl(var(--dad-bg))",
-                  border: "2px solid hsl(var(--dad-border) / 0.3)",
-                  borderRadius: "20px",
-                }) : {
+                style={{
                   boxShadow: isSelected
                     ? "0 8px 20px hsl(var(--primary) / 0.3), inset 0 1px 0 rgba(255,255,255,0.2)"
                     : "0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1)",
                 }}
               >
                 <p className="text-[9px] font-display font-bold uppercase tracking-wider"
-                  style={!isMom ? { color: isSelected ? "hsl(var(--dad-accent-hover))" : "hsl(var(--muted-foreground))" } : {
+                  style={{
                     color: isSelected ? "hsl(var(--primary-foreground) / 0.7)" : "hsl(var(--muted-foreground))",
                   }}>
                   {isToday(day) ? "Hoje" : isTomorrow(day) ? "Amanhã" : format(day, "EEE", { locale: ptBR })}
                 </p>
-                <p className="font-display text-lg font-black" style={!isMom && isSelected ? { color: "hsl(var(--dad-text))" } : undefined}>
+                <p className="font-display text-lg font-black">
                   {format(day, "dd")}
                 </p>
                 {dayEvts.length > 0 ? (
@@ -253,7 +244,6 @@ export default function Agenda() {
                     {dayEvts.slice(0, 3).map((e, j) => (
                       <div key={j} className="w-2 h-2 rounded-full" style={{
                         background: getCategoryInfo(e.event_type).color,
-                        border: !isMom ? "1px solid hsl(var(--dad-text))" : undefined,
                       }} />
                     ))}
                   </div>
