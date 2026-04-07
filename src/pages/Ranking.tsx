@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile, useRanking } from "@/hooks/useProfile";
-import { useIsMom } from "@/hooks/useFamily";
+import { useIsMom, useFamilyPartner } from "@/hooks/useFamily";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
@@ -429,6 +429,7 @@ export default function Ranking() {
   const { data: myProfile } = useProfile();
   const { data: ranking = [], isLoading } = useRanking();
   const isMom = useIsMom();
+  const { data: familyPartner } = useFamilyPartner();
   const queryClient = useQueryClient();
   const [showGroupSheet, setShowGroupSheet] = useState(false);
   const [showJoinSheet, setShowJoinSheet] = useState(false);
@@ -446,13 +447,7 @@ export default function Ranking() {
     },
   });
 
-  // For mom view: find partner in ranking
-  const partnerInRanking = isMom
-    ? ranking.find((r: any) => {
-        // partner is in the same family
-        return true; // We show general ranking for mom
-      })
-    : null;
+
 
   const { data: myGroups = [] } = useQuery({
     queryKey: ["my-groups", user?.id],
@@ -728,7 +723,7 @@ export default function Ranking() {
 
       {/* Stats Bar */}
       {isMom ? (
-        <MomObserverBar ranking={ranking} partnerProfile={ranking[0]} />
+        <MomObserverBar ranking={ranking} partnerProfile={familyPartner ? (ranking.find((r: any) => r.user_id === familyPartner.user_id) || familyPartner) : null} />
       ) : (
         myProfile && myPos >= 0 && <MyStatsBar profile={myProfile} position={myPos} total={ranking.length} />
       )}

@@ -61,7 +61,7 @@ export function useRanking() {
         .select("id, user_id, display_name, points, streak_days, role, avatar_url")
         .eq("role", "pai")
         .order("points", { ascending: false })
-        .limit(20);
+        .limit(100);
       if (error) throw error;
       return data;
     },
