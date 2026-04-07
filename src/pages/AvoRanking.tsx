@@ -5,7 +5,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { Trophy, Share2, Sparkles, MessageSquare, CheckCircle, XCircle } from "lucide-react";
 
@@ -128,6 +128,7 @@ export default function AvoRanking() {
                 {/* Avatar */}
                 <div className={`relative mb-2 ${isMe ? "ring-2 ring-avo ring-offset-2" : ""} rounded-full`}>
                   <Avatar className="w-14 h-14 border-2 border-avo-border">
+                    <AvatarImage src={avo.avatar_url || undefined} />
                     <AvatarFallback className="bg-avo/20 text-avo font-display text-lg">
                       {(avo.display_name || "V")[0]}
                     </AvatarFallback>
@@ -177,6 +178,7 @@ export default function AvoRanking() {
                   {pos + 1}
                 </span>
                 <Avatar className="w-10 h-10 border-2 border-avo-border">
+                  <AvatarImage src={avo.avatar_url || undefined} />
                   <AvatarFallback className="bg-avo/20 text-avo font-display">
                     {(avo.display_name || "V")[0]}
                   </AvatarFallback>
