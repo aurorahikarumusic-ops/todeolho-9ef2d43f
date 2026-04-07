@@ -39,7 +39,7 @@ export default function BottomNav() {
         { path: "/ranking", icon: Trophy, label: "Ranking" },
       ];
 
-  const accentColor = isAvo ? "text-avo" : isMom ? "text-mom" : "text-primary";
+  const accentColor = "text-primary";
 
   return (
     <nav
