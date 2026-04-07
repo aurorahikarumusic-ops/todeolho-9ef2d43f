@@ -89,7 +89,7 @@ export default function DataDeletion() {
             <h2 className="font-display font-bold text-lg mb-2">Alternativas</h2>
             <p>
               Se preferir, você também pode solicitar a exclusão por e-mail:<br />
-              📧 <strong>contato@estoudeolho.app</strong>
+              📧 <strong>estoudeoho.contato@gmail.com</strong>
             </p>
             <p className="mt-2 text-muted-foreground italic">
               Inclua o e-mail da sua conta para agilizar o processo.
@@ -137,7 +137,7 @@ export default function DataDeletion() {
               <CardContent className="p-4 text-center">
                 <p className="text-sm text-muted-foreground">
                   Faça login para excluir seus dados pelo app, ou envie um e-mail para{" "}
-                  <strong>contato@estoudeolho.app</strong>.
+                  <strong>estoudeoho.contato@gmail.com</strong>.
                 </p>
               </CardContent>
             </Card>
