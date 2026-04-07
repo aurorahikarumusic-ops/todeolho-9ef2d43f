@@ -80,7 +80,11 @@ export default function GrandmaPalpitesCard() {
                     <p className="font-body text-[10px] text-muted-foreground truncate">{s.description}</p>
                   )}
                 </div>
-                {isMom && (
+                {s.status === "aceito" ? (
+                  <Badge className="bg-green-500/20 text-green-700 text-[10px] border-0 shrink-0">
+                    ✅ Adotado
+                  </Badge>
+                ) : isMom ? (
                   <Button
                     size="sm"
                     className="h-7 text-[10px] bg-avo hover:bg-avo/90 text-white shrink-0"
@@ -89,7 +93,7 @@ export default function GrandmaPalpitesCard() {
                   >
                     <Check className="w-3 h-3 mr-0.5" /> Adotar
                   </Button>
-                )}
+                ) : null}
               </div>
             ))}
           </div>
