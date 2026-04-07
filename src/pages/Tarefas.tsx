@@ -334,9 +334,8 @@ export default function Tarefas() {
                 <span className={`text-[10px] flex items-center gap-1 px-2 py-0.5 rounded-full ${
                     isOverdue
                       ? "bg-red-500/10 text-red-500 font-bold"
-                      : isMom ? "bg-muted/50 text-muted-foreground" : ""
-                  }`}
-                  style={!isMom && !isOverdue ? { background: "hsl(var(--dad-bg))", color: "hsl(var(--dad-accent-hover))", border: "2px solid hsl(var(--dad-border))" } : undefined}>
+                      : "bg-muted/50 text-muted-foreground"
+                  }`}>
                     <Clock className="w-2.5 h-2.5" />
                     {format(new Date(task.due_date), "dd/MM · HH:mm")}
                     {isOverdue && " ⚠️"}
