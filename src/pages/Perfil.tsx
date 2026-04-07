@@ -710,7 +710,7 @@ export default function Perfil() {
         )}
       </section>
 
-      {isMom ? <Separator className="my-2" /> : <div className="my-3 h-px" style={{ background: "hsl(var(--dad-border))" }} />}
+      <Separator className="my-2" />
 
       {/* ═══════════════════ SECTION 7: Children ═══════════════════ */}
       <section>
