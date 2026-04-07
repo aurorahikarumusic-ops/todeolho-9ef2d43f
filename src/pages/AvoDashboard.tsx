@@ -6,7 +6,7 @@ import {
   useCreateSuggestion,
   useGrandmaRanking,
 } from "@/hooks/useGrandmaSuggestions";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { Send, Trophy, CheckCircle, XCircle, Clock, Lightbulb, MessageSquare } from "lucide-react";
 import JoinFamilyAvo from "@/components/grandma/JoinFamilyAvo";
@@ -73,14 +73,13 @@ export default function AvoDashboard() {
       <div className="avo-neo-card p-5 relative overflow-hidden">
         <div className="absolute top-2 right-4 text-4xl opacity-20">🧶</div>
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center text-3xl"
-             style={{
-               background: "hsl(var(--avo-bg))",
+          <Avatar className="w-16 h-16" style={{
                border: "2px solid hsl(var(--border))",
                boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
              }}>
-            👵
-          </div>
+            <AvatarImage src={profile?.avatar_url || undefined} alt={profile?.display_name} />
+            <AvatarFallback className="text-3xl" style={{ background: "hsl(var(--avo-bg))" }}>👵</AvatarFallback>
+          </Avatar>
           <div>
             <h1 className="font-display text-xl font-black" style={{ color: "hsl(var(--avo-text))" }}>
               Olá, {profile?.display_name || "Vovó"}!
