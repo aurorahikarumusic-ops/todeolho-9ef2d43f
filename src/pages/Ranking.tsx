@@ -568,7 +568,6 @@ export default function Ranking() {
                 color: isLast && list.length > 3
                   ? "hsl(var(--destructive))"
                   : isMom ? "hsl(var(--mom-text))" : "hsl(var(--dad-text))",
-                border: !isMom ? "2px solid hsl(var(--dad-text))" : undefined,
               }}>
                 {index + 1}
               </div>
