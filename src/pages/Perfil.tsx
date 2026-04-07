@@ -840,8 +840,9 @@ export default function Perfil() {
             </Button>
           ) : (
             <>
-              <button
-                className="dad-neo-btn flex-1 text-xs h-9 justify-center"
+              <Button
+                variant="outline"
+                className="flex-1 text-xs h-9 font-display"
                 onClick={async () => {
                   const perm = await getNotificationPermission();
                   if (perm !== "granted" && user) await requestPushSubscription(user.id);
@@ -849,14 +850,14 @@ export default function Perfil() {
                 }}
               >
                 <Bell className="w-3.5 h-3.5" /> Testar notificação
-              </button>
-              <button className="dad-neo-btn flex-1 text-xs h-9 justify-center" onClick={() => {
+              </Button>
+              <Button variant="outline" className="flex-1 text-xs h-9 font-display" onClick={() => {
                 const text = `DNA do Pai — ${format(new Date(), "MMMM yyyy", { locale: ptBR })} 👁️\n${profile.display_name}\n${dadTitle.emoji} ${dadTitle.title}\n${monthPct}% tarefas • ${profile.streak_days} dias seguidos • ${rescues} resgates\nEstou de Olho — porque alguém tem que lembrar`;
                 if (navigator.share) navigator.share({ text });
                 else { navigator.clipboard.writeText(text); toast("DNA copiado!"); }
               }}>
                 <Share2 className="w-3.5 h-3.5" /> Compartilhar DNA
-              </button>
+              </Button>
             </>
           )}
         </div>
