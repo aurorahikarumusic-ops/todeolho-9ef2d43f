@@ -247,7 +247,88 @@
   background: hsl(220 30% 25%);
 }
 
-/* ═══ Avó Neo-Brutalista Design System ═══ */
+/* ═══ Mom Neo-Brutalista Híbrido ═══ */
+.mom-neo-card {
+  background: hsl(var(--mom-bg));
+  border: 3px solid hsl(var(--mom-text));
+  border-radius: 20px;
+  box-shadow: 6px 6px 0 hsl(var(--mom-text));
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+.mom-neo-card:hover {
+  transform: translate(-3px, -3px) rotate(-0.3deg);
+  box-shadow: 9px 9px 0 hsl(var(--mom-text));
+}
+
+.mom-neo-card-sm {
+  background: hsl(var(--mom-bg));
+  border: 2px solid hsl(var(--mom-text));
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 hsl(var(--mom-text));
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.mom-neo-card-sm:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 hsl(var(--mom-text));
+}
+
+.mom-neo-badge {
+  border: 3px solid hsl(var(--mom-text));
+  border-radius: 50px;
+  padding: 0.4rem 1rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  box-shadow: 4px 4px 0 hsl(var(--mom-text));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+}
+.mom-neo-badge:hover {
+  transform: rotate(-2deg) scale(1.05) translateY(-2px);
+  box-shadow: 6px 6px 0 hsl(var(--mom-text));
+}
+
+.mom-neo-btn {
+  background: hsl(var(--mom-cta));
+  color: white;
+  border: 3px solid hsl(var(--mom-text));
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: 5px 5px 0 hsl(var(--mom-text));
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.mom-neo-btn:hover {
+  background: hsl(var(--mom-accent));
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 hsl(var(--mom-text));
+}
+.mom-neo-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 hsl(var(--mom-text));
+}
+
+.mom-neo-page {
+  background: #FFF5F8;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .mom-neo-card { box-shadow: 4px 4px 0 hsl(var(--mom-text)); border-width: 2px; }
+  .mom-neo-card:hover { box-shadow: 6px 6px 0 hsl(var(--mom-text)); transform: translate(-2px, -2px); }
+  .mom-neo-card-sm { box-shadow: 3px 3px 0 hsl(var(--mom-text)); border-width: 2px; }
+  .mom-neo-btn { box-shadow: 3px 3px 0 hsl(var(--mom-text)); border-width: 2px; }
+}
+
+/* ═══ Avó Neo-Brutalista Híbrido ═══ */
 .avo-neo-card {
   background: white;
   border: 3px solid hsl(270 40% 25%);
@@ -256,29 +337,41 @@
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
 }
 .avo-neo-card:hover {
-  transform: translate(-4px, -4px) rotate(-0.5deg);
-  box-shadow: 10px 10px 0 hsl(270 40% 25%);
+  transform: translate(-3px, -3px) rotate(-0.3deg);
+  box-shadow: 9px 9px 0 hsl(270 40% 25%);
+}
+
+.avo-neo-card-sm {
+  background: white;
+  border: 2px solid hsl(270 40% 25%);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 hsl(270 40% 25%);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.avo-neo-card-sm:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 hsl(270 40% 25%);
 }
 
 .avo-neo-btn {
-  background: hsl(var(--avo, 270 60% 55%));
+  background: hsl(var(--avo-accent));
   color: white;
   border: 3px solid hsl(270 40% 25%);
   border-radius: 50px;
-  padding: 0.6rem 1.2rem;
+  padding: 0.75rem 1.5rem;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 0.85rem;
-  box-shadow: 4px 4px 0 hsl(270 40% 25%);
+  font-size: 0.95rem;
+  box-shadow: 5px 5px 0 hsl(270 40% 25%);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 .avo-neo-btn:hover {
   transform: translate(-3px, -3px);
-  box-shadow: 7px 7px 0 hsl(270 40% 25%);
+  box-shadow: 8px 8px 0 hsl(270 40% 25%);
 }
 .avo-neo-btn:active {
   transform: translate(2px, 2px);
@@ -286,26 +379,32 @@
 }
 
 .avo-neo-badge {
-  border: 2px solid hsl(270 40% 25%);
+  border: 3px solid hsl(270 40% 25%);
   border-radius: 50px;
-  padding: 0.3rem 0.8rem;
+  padding: 0.4rem 1rem;
   font-weight: 800;
   font-family: var(--font-display);
-  font-size: 0.7rem;
-  box-shadow: 3px 3px 0 hsl(270 40% 25%);
+  font-size: 0.8rem;
+  box-shadow: 4px 4px 0 hsl(270 40% 25%);
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.4rem;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
 }
 .avo-neo-badge:hover {
   transform: rotate(-2deg) scale(1.05) translateY(-2px);
-  box-shadow: 5px 5px 0 hsl(270 40% 25%);
+  box-shadow: 6px 6px 0 hsl(270 40% 25%);
+}
+
+.avo-neo-page {
+  background: hsl(var(--avo-bg));
+  min-height: 100vh;
 }
 
 @media (max-width: 768px) {
   .avo-neo-card { box-shadow: 4px 4px 0 hsl(270 40% 25%); border-width: 2px; }
-  .avo-neo-card:hover { box-shadow: 6px 6px 0 hsl(270 40% 25%); transform: translate(-3px, -3px); }
+  .avo-neo-card:hover { box-shadow: 6px 6px 0 hsl(270 40% 25%); transform: translate(-2px, -2px); }
+  .avo-neo-card-sm { box-shadow: 3px 3px 0 hsl(270 40% 25%); border-width: 2px; }
   .avo-neo-btn { box-shadow: 3px 3px 0 hsl(270 40% 25%); border-width: 2px; }
 }
 

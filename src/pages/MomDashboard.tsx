@@ -3,11 +3,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useFamilyPartner } from "@/hooks/useFamily";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Eye, Plus, CalendarDays, BarChart3 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Eye, Plus, CalendarDays, BarChart3, Users } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { startOfWeek, endOfWeek, startOfMonth, endOfMonth } from "date-fns";
 import { getMomGreeting } from "@/lib/mom-constants";
@@ -34,11 +31,9 @@ export default function MomDashboard() {
     queryFn: async () => {
       if (!profile?.family_id) return [];
       const { data } = await supabase
-        .from("tasks")
-        .select("*")
+        .from("tasks").select("*")
         .eq("family_id", profile.family_id)
-        .gte("created_at", weekStart)
-        .lte("created_at", weekEnd);
+        .gte("created_at", weekStart).lte("created_at", weekEnd);
       return data || [];
     },
     enabled: !!profile?.family_id,
@@ -49,11 +44,9 @@ export default function MomDashboard() {
     queryFn: async () => {
       if (!profile?.family_id) return [];
       const { data } = await supabase
-        .from("tasks")
-        .select("*")
+        .from("tasks").select("*")
         .eq("family_id", profile.family_id)
-        .gte("created_at", monthStart)
-        .lte("created_at", monthEnd);
+        .gte("created_at", monthStart).lte("created_at", monthEnd);
       return data || [];
     },
     enabled: !!profile?.family_id,
@@ -64,12 +57,10 @@ export default function MomDashboard() {
     queryFn: async () => {
       if (!user) return null;
       const { data } = await supabase
-        .from("mom_ratings")
-        .select("*")
+        .from("mom_ratings").select("*")
         .eq("rated_by", user.id)
         .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        .limit(1).maybeSingle();
       return data;
     },
     enabled: !!user,
@@ -83,7 +74,6 @@ export default function MomDashboard() {
   const rescues = monthTasks.filter((t: any) => t.rescued_by_mom).length;
   const pendingApproval = weekTasks.filter((t: any) => t.completed_at && t.mom_approved === null && !t.rescued_by_mom).length;
 
-  // Dynamic subtitle
   let subtitle = `O ${dadName} tem ${tasksTotal - tasksCompleted} tarefas pendentes. Ele sabe disso.`;
   if (tasksCompleted === tasksTotal && tasksTotal > 0) {
     subtitle = `Essa semana o ${dadName} fez tudo. Guarda esse print.`;
@@ -95,116 +85,104 @@ export default function MomDashboard() {
   const greeting = getMomGreeting(dadName, monthTasks.length);
 
   return (
-    <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
-      {/* Header */}
+    <div className="mom-neo-page pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4">
+      {/* Header — Neo-Brutalista */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 md:hidden">
-          <Eye className="w-6 h-6 text-mom" />
-          <h1 className="font-display text-2xl font-bold">
-            Estou de <span className="text-mom">Olho</span>
+          <Eye className="w-7 h-7" style={{ color: "hsl(var(--mom-accent))" }} />
+          <h1 className="font-display text-2xl font-black">
+            Estou de <span style={{ color: "hsl(var(--mom-accent))" }}>Olho</span>
           </h1>
         </div>
         <div className="flex items-center gap-3">
-          <Badge className="bg-mom text-white font-display text-xs">
+          <span className="mom-neo-badge" style={{ background: "hsl(var(--mom-cta))", color: "white" }}>
             👩 CEO da Família
-          </Badge>
+          </span>
           <button onClick={() => navigate("/perfil")} className="flex flex-col items-center gap-0.5 group">
-            <Avatar className="h-10 w-10 ring-2 ring-mom/30 group-hover:ring-mom transition-all">
+            <Avatar className="h-11 w-11 group-hover:scale-105 transition-transform"
+              style={{
+                border: "3px solid hsl(var(--mom-text))",
+                boxShadow: "4px 4px 0 hsl(var(--mom-text))",
+              }}>
               <AvatarImage src={profile.avatar_url || undefined} alt={profile.display_name} />
-              <AvatarFallback className="bg-mom/10 text-mom font-display text-sm">
+              <AvatarFallback className="font-display text-sm font-bold"
+                style={{ background: "hsl(var(--mom-bg))", color: "hsl(var(--mom-text))" }}>
                 {profile.display_name?.charAt(0)?.toUpperCase() || "M"}
               </AvatarFallback>
             </Avatar>
-            <span className="text-[9px] text-muted-foreground group-hover:text-mom transition-colors">Ver perfil</span>
+            <span className="text-[10px] font-display font-bold" style={{ color: "hsl(var(--mom-accent-hover))" }}>Ver perfil</span>
           </button>
         </div>
       </div>
 
-      {/* Greeting Card */}
-      <Card className="border-mom-border bg-mom-bg">
-        <CardContent className="p-4">
-          <p className="font-display text-lg font-bold text-mom-text">
-            Olá, {profile.display_name}! 👩
-          </p>
-          <p className="font-body text-sm text-mom-text/80 mt-1">
-            {subtitle}
-          </p>
-          <p className="font-body text-xs italic text-mom/70 mt-2">
-            {greeting}
-          </p>
-        </CardContent>
-      </Card>
+      {/* Greeting Card — Neo */}
+      <div className="mom-neo-card p-5">
+        <p className="font-display text-lg font-bold" style={{ color: "hsl(var(--mom-text))" }}>
+          Olá, {profile.display_name}! 👩
+        </p>
+        <p className="font-body text-sm mt-1" style={{ color: "hsl(var(--mom-text) / 0.8)" }}>
+          {subtitle}
+        </p>
+        <p className="font-body text-xs italic mt-2" style={{ color: "hsl(var(--mom-accent) / 0.7)" }}>
+          {greeting}
+        </p>
+      </div>
 
       {/* Love Letter Notification */}
       <MomLetterNotification />
 
       {/* Partner banner */}
       {!partnerLoading && !profile.family_id && (
-        <div className="space-y-2">
-          <Card className="border-mom-border border-dashed bg-mom-bg/50">
-            <CardContent className="p-4 text-center">
-              <p className="font-body text-sm text-mom-text mb-2">
-                O pai ainda não entrou no app.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mb-2 border-mom text-mom hover:bg-mom/10"
-                onClick={() => navigate("/perfil")}
-              >
-                Reenviar convite — ele provavelmente não viu.
-              </Button>
-            </CardContent>
-          </Card>
+        <div className="mom-neo-card p-4 text-center" style={{ borderStyle: "dashed" }}>
+          <Users className="w-8 h-8 mx-auto mb-2" style={{ color: "hsl(var(--mom-accent))" }} />
+          <p className="font-display font-bold text-sm mb-1" style={{ color: "hsl(var(--mom-text))" }}>
+            O pai ainda não entrou no app.
+          </p>
+          <p className="font-body text-xs mb-3" style={{ color: "hsl(var(--mom-accent-hover))" }}>
+            Reenvie o convite — ele provavelmente não viu.
+          </p>
           <InvitePartner />
         </div>
       )}
 
-      {/* Stats Strip */}
-      <div className="grid grid-cols-3 gap-2">
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-3 text-center">
-            <p className={`font-display text-xl font-bold ${tasksCompleted >= tasksTotal * 0.7 ? "text-primary" : "text-secondary"}`}>
-              {tasksCompleted}/{tasksTotal}
-            </p>
-            <p className="text-[10px] text-muted-foreground font-body">tarefas semana</p>
-          </CardContent>
-        </Card>
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-3 text-center">
-            <p className={`font-display text-xl font-bold ${rescues > 0 ? "text-secondary" : "text-primary"}`}>
-              {rescues}
-            </p>
-            <p className="text-[10px] text-muted-foreground font-body">resgates/mês</p>
-          </CardContent>
-        </Card>
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-3 text-center">
-            <p className="font-display text-xl font-bold text-mom">
-              {lastRating ? `${lastRating.stars}★` : "—"}
-            </p>
-            <p className="text-[10px] text-muted-foreground font-body">última avaliação</p>
-          </CardContent>
-        </Card>
+      {/* Stats Strip — Neo cards */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className="mom-neo-card-sm p-3 text-center">
+          <p className={`font-display text-xl font-bold ${tasksCompleted >= tasksTotal * 0.7 ? "text-primary" : "text-secondary"}`}>
+            {tasksCompleted}/{tasksTotal}
+          </p>
+          <p className="text-[10px] font-body" style={{ color: "hsl(var(--mom-accent-hover))" }}>tarefas semana</p>
+        </div>
+        <div className="mom-neo-card-sm p-3 text-center">
+          <p className={`font-display text-xl font-bold ${rescues > 0 ? "text-secondary" : "text-primary"}`}>
+            {rescues}
+          </p>
+          <p className="text-[10px] font-body" style={{ color: "hsl(var(--mom-accent-hover))" }}>resgates/mês</p>
+        </div>
+        <div className="mom-neo-card-sm p-3 text-center">
+          <p className="font-display text-xl font-bold" style={{ color: "hsl(var(--mom-accent))" }}>
+            {lastRating ? `${lastRating.stars}★` : "—"}
+          </p>
+          <p className="text-[10px] font-body" style={{ color: "hsl(var(--mom-accent-hover))" }}>última avaliação</p>
+        </div>
       </div>
 
-      {/* Pending approval */}
+      {/* Pending approval — Neo */}
       {pendingApproval > 0 && (
-        <Card className="border-secondary bg-secondary/10">
-          <CardContent className="p-4 flex items-center justify-between">
-            <div>
-              <p className="font-display font-bold text-sm">
-                {pendingApproval} tarefa(s) aguardando aprovação
-              </p>
-              <p className="text-xs text-muted-foreground font-body italic">
-                O {dadName} concluiu. Você confere.
-              </p>
-            </div>
-            <Button size="sm" className="bg-mom" onClick={() => navigate("/tarefas")}>
-              Ver
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="mom-neo-card p-4 flex items-center justify-between"
+          style={{ background: "hsl(var(--mom-cta) / 0.15)" }}>
+          <div>
+            <p className="font-display font-bold text-sm" style={{ color: "hsl(var(--mom-text))" }}>
+              {pendingApproval} tarefa(s) aguardando aprovação
+            </p>
+            <p className="text-xs font-body italic" style={{ color: "hsl(var(--mom-accent-hover))" }}>
+              O {dadName} concluiu. Você confere.
+            </p>
+          </div>
+          <button className="mom-neo-btn text-sm" onClick={() => navigate("/tarefas")}>
+            Ver
+          </button>
+        </div>
       )}
 
       {/* Grandma Palpites */}
@@ -213,57 +191,51 @@ export default function MomDashboard() {
       {/* Monthly Challenge */}
       <MonthlyChallenge />
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-3 gap-2">
-        <Button
-          className="h-14 bg-mom hover:bg-mom/90 font-display text-xs flex flex-col gap-1"
-          onClick={() => navigate("/tarefas")}
-        >
+      {/* Quick Actions — Neo buttons */}
+      <div className="grid grid-cols-3 gap-3">
+        <button className="mom-neo-btn flex-col text-xs py-3 justify-center w-full"
+          onClick={() => navigate("/tarefas")}>
           <Plus className="w-5 h-5" />
           Nova Tarefa
-        </Button>
-        <Button
-          variant="outline"
-          className="h-14 border-primary text-primary hover:bg-primary/10 font-display text-xs flex flex-col gap-1"
-          onClick={() => navigate("/agenda")}
-        >
+        </button>
+        <button className="mom-neo-btn flex-col text-xs py-3 justify-center w-full"
+          style={{ background: "hsl(var(--mom-bg))", color: "hsl(var(--mom-text))" }}
+          onClick={() => navigate("/agenda")}>
           <CalendarDays className="w-5 h-5" />
           Novo Evento
-        </Button>
-        <Button
-          variant="outline"
-          className="h-14 border-mom text-mom hover:bg-mom/10 font-display text-xs flex flex-col gap-1"
-          onClick={() => navigate("/ranking")}
-        >
+        </button>
+        <button className="mom-neo-btn flex-col text-xs py-3 justify-center w-full"
+          style={{ background: "hsl(var(--mom-bg))", color: "hsl(var(--mom-text))" }}
+          onClick={() => navigate("/ranking")}>
           <BarChart3 className="w-5 h-5" />
           Ranking
-        </Button>
+        </button>
       </div>
 
-      {/* Weekly Summary */}
-      <Card>
-        <CardContent className="p-4">
-          <h3 className="font-display font-bold text-sm mb-3">📊 Semana em números</h3>
-          <div className="space-y-2 text-sm font-body">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Tarefas criadas</span>
-              <span className="font-bold">{tasksTotal}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Completadas pelo pai</span>
-              <span className="font-bold text-primary">{tasksCompleted}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Resgates (mês)</span>
-              <span className={`font-bold ${rescues > 0 ? "text-secondary" : "text-primary"}`}>{rescues}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Aguardando aprovação</span>
-              <span className="font-bold text-mom">{pendingApproval}</span>
-            </div>
+      {/* Weekly Summary — Neo card */}
+      <div className="mom-neo-card p-4">
+        <h3 className="font-display font-bold text-sm mb-3" style={{ color: "hsl(var(--mom-text))" }}>
+          📊 Semana em números
+        </h3>
+        <div className="space-y-2 text-sm font-body">
+          <div className="flex justify-between">
+            <span style={{ color: "hsl(var(--mom-accent-hover))" }}>Tarefas criadas</span>
+            <span className="font-bold" style={{ color: "hsl(var(--mom-text))" }}>{tasksTotal}</span>
           </div>
-        </CardContent>
-      </Card>
+          <div className="flex justify-between">
+            <span style={{ color: "hsl(var(--mom-accent-hover))" }}>Completadas pelo pai</span>
+            <span className="font-bold text-primary">{tasksCompleted}</span>
+          </div>
+          <div className="flex justify-between">
+            <span style={{ color: "hsl(var(--mom-accent-hover))" }}>Resgates (mês)</span>
+            <span className={`font-bold ${rescues > 0 ? "text-secondary" : "text-primary"}`}>{rescues}</span>
+          </div>
+          <div className="flex justify-between">
+            <span style={{ color: "hsl(var(--mom-accent-hover))" }}>Aguardando aprovação</span>
+            <span className="font-bold" style={{ color: "hsl(var(--mom-accent))" }}>{pendingApproval}</span>
+          </div>
+        </div>
+      </div>
 
       {/* Monthly Report */}
       <MonthlyReport />
