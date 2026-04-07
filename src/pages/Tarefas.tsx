@@ -478,49 +478,43 @@ export default function Tarefas() {
 
   return (
     <div className="pb-24 md:pb-8 px-4 md:px-8 pt-6 max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto space-y-4"
-      style={!isMom ? { background: "#FFF8F1", minHeight: "100vh" } : undefined}>
+      style={{ minHeight: "100vh" }}>
       {/* Hero Header */}
       <div
-        className={`relative overflow-hidden ${isMom ? "rounded-3xl p-5" : "dad-neo-card p-5"}`}
-        style={isMom ? {
-          background: "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))",
-        } : {
-          background: "#FFEAAE",
+        className="relative overflow-hidden rounded-3xl p-5"
+        style={{
+          background: isMom
+            ? "linear-gradient(135deg, hsl(var(--mom-bg)), hsl(var(--mom-border)), hsl(var(--mom-cta)))"
+            : "linear-gradient(135deg, hsl(var(--dad-bg)), hsl(var(--dad-border)), hsl(var(--dad-cta)))",
         }}
       >
-        {isMom && (
-          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
-            style={{ background: "hsl(var(--mom-accent))" }} />
-        )}
+        <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-30"
+          style={{ background: isMom ? "hsl(var(--mom-accent))" : "hsl(var(--dad-accent))" }} />
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
             {isMom ? <Shield className="w-6 h-6 text-mom" /> : <CheckSquare className="w-6 h-6" style={{ color: "hsl(var(--dad-accent))" }} />}
-            <h1 className="font-display text-xl font-black" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
+            <h1 className="font-display text-xl font-black">
               {isMom ? "Painel de Controle" : "⚔️ Missões do Pai"}
             </h1>
           </div>
-          <p className={`text-xs font-body italic mb-4 ${isMom ? "text-muted-foreground" : ""}`} style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>{subtitle}</p>
+          <p className="text-xs font-body italic mb-4 text-muted-foreground">{subtitle}</p>
 
-          {/* Quick stats — Neo-Brutalista for Dad */}
+          {/* Quick stats */}
           <div className="flex gap-2">
             {[
-              { value: pending.length, label: "Pendentes", bg: "#D8F3DC", border: "#2D6A4F", shadow: "#1B4332" },
-              ...(isMom ? [{ value: awaitingApproval.length, label: "Aprovação", bg: "#FFEAAE", border: "#D4A10A", shadow: "#B8890A" }] : []),
-              { value: completed.length, label: "Feitas", bg: "#D6EAFF", border: "#2B7ACA", shadow: "#1A4B7B" },
-              { value: isMom ? rescued.length : overdue.length, label: isMom ? "Resgates" : "Atrasadas", bg: "#FFD6D6", border: "#C0392B", shadow: "#922B21" },
+              { value: pending.length, label: "Pendentes" },
+              ...(isMom ? [{ value: awaitingApproval.length, label: "Aprovação" }] : []),
+              { value: completed.length, label: "Feitas" },
+              { value: isMom ? rescued.length : overdue.length, label: isMom ? "Resgates" : "Atrasadas" },
             ].map((stat, i) => (
               <div key={i} className="flex-1 rounded-2xl p-3 text-center transition-all duration-300 hover:translate-y-[-2px]"
-                style={!isMom ? {
-                  background: stat.bg,
-                  border: `3px solid ${stat.border}`,
-                  boxShadow: `4px 4px 0 ${stat.shadow}`,
-                } : {
+                style={{
                   background: "rgba(255,255,255,0.4)",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3)",
                 }}>
-                <p className="font-display text-2xl font-black" style={!isMom ? { color: stat.shadow } : undefined}>{stat.value}</p>
-                <p className="text-[8px] font-display font-bold uppercase tracking-wider" style={!isMom ? { color: stat.border } : { color: "hsl(var(--muted-foreground))" }}>{stat.label}</p>
+                <p className="font-display text-2xl font-black">{stat.value}</p>
+                <p className="text-[8px] font-display font-bold uppercase tracking-wider text-muted-foreground">{stat.label}</p>
               </div>
             ))}
           </div>
