@@ -57,9 +57,8 @@ export function useRanking() {
     queryKey: ["ranking"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("profiles")
-        .select("id, user_id, display_name, points, streak_days, role, avatar_url")
-        .eq("role", "pai")
+        .from("ranking_view" as any)
+        .select("id, user_id, display_name, points, streak_days, avatar_url, role")
         .order("points", { ascending: false })
         .limit(100);
       if (error) throw error;
