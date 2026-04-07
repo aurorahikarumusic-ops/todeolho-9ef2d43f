@@ -113,7 +113,7 @@ export default function MomAvaliacao() {
             </p>
           </CardContent>
         </Card>
-      ) : partner ? (
+      ) : dadPartner ? (
         <Card className="border-mom-border">
           <CardContent className="p-6">
             <p className="font-display font-bold text-center mb-4">
