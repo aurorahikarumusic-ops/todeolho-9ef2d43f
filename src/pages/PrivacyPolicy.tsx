@@ -85,7 +85,7 @@ export default function PrivacyPolicy() {
               <li>Cancelar o consentimento quando quiser.</li>
             </ul>
             <p className="mt-2">
-              Pra qualquer uma dessas coisas: <strong>estoudeoho.contato@gmail.com</strong>
+              Pra qualquer uma dessas coisas: <strong>estoudeolho.contato@gmail.com</strong>
             </p>
           </section>
 
@@ -116,7 +116,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="font-display font-bold text-lg mb-2">10. Fale com a gente</h2>
             <p>
-              📧 <strong>estoudeoho.contato@gmail.com</strong><br />
+              📧 <strong>estoudeolho.contato@gmail.com</strong><br />
               🌐 <strong>estoudeolho.lovable.app</strong>
             </p>
           </section>
