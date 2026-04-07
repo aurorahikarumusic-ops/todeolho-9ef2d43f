@@ -211,7 +211,7 @@ export default function Dashboard() {
         tasksTotal={tasksTotal}
         nextEvent={nextEvent || null}
         rankingPosition={rankingPosition || null}
-        momRating={null}
+        momRating={momRating ?? null}
       />
       <GrandmaPalpitesCard />
       <ShareWeekCard
