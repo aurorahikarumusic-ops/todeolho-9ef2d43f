@@ -38,9 +38,7 @@ export default function Perfil() {
   const updateProfile = useUpdateProfile();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [showChildSheet, setShowChildSheet] = useState(false);
   const [showRedencao, setShowRedencao] = useState(false);
-  const [newChild, setNewChild] = useState({ name: "", school: "", doctor_name: "", allergies: "", birth_date: "" });
   const [selectedBadge, setSelectedBadge] = useState<{ emoji: string; name: string; desc: string } | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const paymentVerifiedRef = useRef(false);
