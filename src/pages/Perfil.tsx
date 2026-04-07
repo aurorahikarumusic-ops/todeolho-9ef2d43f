@@ -23,7 +23,7 @@ import FamilyConnection from "@/components/profile/FamilyConnection";
 import PalpitesHistorySection from "@/components/profile/PalpitesHistorySection";
 import CartasRecebidas from "@/components/redemption/CartasRecebidas";
 import ModoRedencao from "@/components/redemption/ModoRedencao";
-import { Trophy } from "lucide-react";
+
 
 export default function Perfil() {
   const { user } = useAuth();
