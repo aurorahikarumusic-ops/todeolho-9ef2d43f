@@ -375,11 +375,10 @@ export default function Agenda() {
                           {format(eventDate, "HH")}
                         </div>
                         <div>
-                          <h3 className="font-display font-bold text-sm leading-tight" style={!isMom ? { color: "hsl(30 15% 90%)" } : undefined}>{event.title}</h3>
+                          <h3 className="font-display font-bold text-sm leading-tight">{event.title}</h3>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <Clock className="w-3 h-3" style={!isMom ? { color: "hsl(30 15% 70%)" } : undefined} />
-                            <span className={`text-[10px] font-body ${isMom ? "text-muted-foreground" : ""}`}
-                              style={!isMom ? { color: "hsl(30 15% 75%)" } : undefined}>
+                            <Clock className="w-3 h-3" />
+                            <span className="text-[10px] font-body text-muted-foreground">
                               {format(eventDate, "HH:mm")} · {category.label}
                             </span>
                           </div>
