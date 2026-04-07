@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { getDadTitle } from "@/lib/constants";
 import { Trophy, Crown, Medal, Skull, Share2, Users, Plus, Copy, Flame, TrendingUp, Zap, ChevronUp, ChevronDown, Eye, Star, Sparkles, Heart } from "lucide-react";
 import { startOfWeek } from "date-fns";
+import { RATING_LABELS } from "@/lib/mom-constants";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 function getPositionDescription(pos: number, total: number): string {
