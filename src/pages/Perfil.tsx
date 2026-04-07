@@ -350,41 +350,6 @@ export default function Perfil() {
         rankPos={rankPos} monthPct={monthPct} rescues={rescues}
       />
 
-      {/* Add Child Sheet */}
-      <Sheet open={showChildSheet} onOpenChange={setShowChildSheet}>
-        <SheetContent side="bottom" className="rounded-t-2xl max-h-[85vh] overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle className="font-display text-lg">Adicionar Filho</SheetTitle>
-          </SheetHeader>
-          <div className="space-y-4 mt-4">
-            <div>
-              <label className="text-xs font-body">Nome</label>
-              <Input value={newChild.name} onChange={e => setNewChild(p => ({ ...p, name: e.target.value }))} className="mt-1" placeholder="Nome do filho" />
-            </div>
-            <div>
-              <label className="text-xs font-body">Data de nascimento</label>
-              <Input type="date" value={newChild.birth_date} onChange={e => setNewChild(p => ({ ...p, birth_date: e.target.value }))} className="mt-1" />
-            </div>
-            <div>
-              <label className="text-xs font-body">Escola</label>
-              <Input value={newChild.school} onChange={e => setNewChild(p => ({ ...p, school: e.target.value }))} className="mt-1" placeholder="Nome da escola" />
-            </div>
-            <div>
-              <label className="text-xs font-body">Pediatra</label>
-              <Input value={newChild.doctor_name} onChange={e => setNewChild(p => ({ ...p, doctor_name: e.target.value }))} className="mt-1" placeholder="Nome do pediatra" />
-            </div>
-            <div>
-              <label className="text-xs font-body">Alergias / Observações</label>
-              <Input value={newChild.allergies} onChange={e => setNewChild(p => ({ ...p, allergies: e.target.value }))} className="mt-1" placeholder="Ex: Alergia a amendoim" />
-            </div>
-            <Button className={`w-full font-display ${isMom ? "bg-mom hover:bg-mom/90" : "bg-primary"}`}
-              onClick={() => addChildMutation.mutate()}
-              disabled={!newChild.name || addChildMutation.isPending}>
-              {addChildMutation.isPending ? "Salvando..." : "Adicionar Filho"}
-            </Button>
-          </div>
-        </SheetContent>
-      </Sheet>
     </div>
   );
 }
