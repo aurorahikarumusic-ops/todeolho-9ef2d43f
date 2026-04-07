@@ -162,8 +162,9 @@ export default function Perfil() {
     queryFn: async () => {
       if (!user) return null;
       const { data } = await supabase.from("mom_ratings").select("*")
-        .eq(isMom ? "rated_by" : "user_id", user.id).eq("week_start", weekStart).maybeSingle();
-      return data;
+        .eq(isMom ? "rated_by" : "user_id", user.id).eq("week_start", weekStart)
+        .order("created_at", { ascending: false }).limit(1);
+      return data && data.length > 0 ? data[0] : null;
     },
     enabled: !!user,
   });

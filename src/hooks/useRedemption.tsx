@@ -60,12 +60,14 @@ export function useRedemptionCheck() {
       const rankPos = rankings?.findIndex(p => p.user_id === user.id);
       const isTop3 = rankPos !== undefined && rankPos >= 0 && rankPos < 3;
 
-      const { data: momRating } = await supabase
+      const { data: momRatingArr } = await supabase
         .from("mom_ratings")
         .select("stars")
         .eq("user_id", user.id)
         .eq("week_start", weekStart)
-        .maybeSingle();
+        .order("created_at", { ascending: false })
+        .limit(1);
+      const momRating = momRatingArr && momRatingArr.length > 0 ? momRatingArr[0] : null;
 
       if (isTop3 && momRating && momRating.stars >= 4) return null;
 
