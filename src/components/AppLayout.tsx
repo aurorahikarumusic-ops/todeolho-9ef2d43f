@@ -50,9 +50,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <aside className="fixed left-0 top-0 bottom-0 z-40 w-20 lg:w-56 bg-card border-r border-border flex flex-col items-center lg:items-stretch py-6 px-2 lg:px-4 gap-1 shadow-sm">
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8 justify-center lg:justify-start px-2">
-          <Eye className={`w-7 h-7 ${isMom ? "text-mom" : "text-primary"}`} />
+          <Eye className="w-7 h-7 text-primary" />
           <span className="hidden lg:inline font-display text-lg font-bold">
-            Estou de <span className={isMom ? "text-mom" : "text-secondary"}>Olho</span>
+            Estou de <span className="text-secondary">Olho</span>
           </span>
         </div>
 
