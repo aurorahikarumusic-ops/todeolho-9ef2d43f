@@ -181,52 +181,59 @@ export default function AvoDashboard() {
 
       {/* Ranking */}
       {ranking.length > 0 && (
-        <div className="avo-neo-card overflow-hidden">
-          <div className="p-4" style={{ background: "hsl(var(--avo-accent))" }}>
-            <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
-              <Trophy className="w-5 h-5" /> Ranking das Avós Palpiteiras
-            </h3>
-            <p className="text-xs text-white/80 font-body">Quem dá mais palpite? 👀</p>
-          </div>
-          <div className="p-4 space-y-3">
-            {ranking.map((avo, i) => (
-              <div
-                key={avo.user_id}
-                className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
-                  i === 0 ? "avo-neo-card-sm" : ""
-                }`}
-                style={{
-                  background: i === 0 ? "hsl(var(--avo-bg))" : "hsl(var(--avo-bg) / 0.3)",
-                }}
-              >
-                <div className="text-2xl font-display font-bold w-8 text-center"
-                  style={{ color: "hsl(var(--avo-accent))" }}>
-                  {i === 0 ? "👑" : i + 1}
+        <Collapsible>
+          <CollapsibleTrigger className="w-full">
+            <div className="flex items-center justify-between p-4 rounded-xl" style={{ background: "hsl(var(--avo-accent))" }}>
+              <div className="flex items-center gap-2 text-left">
+                <Trophy className="w-5 h-5 text-white" />
+                <div>
+                  <h3 className="font-display text-lg font-bold text-white">Ranking das Avós Palpiteiras</h3>
+                  <p className="text-xs text-white/80 font-body">Quem dá mais palpite? 👀</p>
                 </div>
-                <Avatar className="w-10 h-10" style={{ border: "2px solid hsl(var(--avo-border))" }}>
-                  <AvatarFallback className="font-display"
-                    style={{ background: "hsl(var(--avo-bg))", color: "hsl(var(--avo-accent))" }}>
-                    {(avo.display_name || "V")[0]}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <div className="font-body font-semibold text-sm">{avo.display_name || "Vovó"}</div>
-                  <div className="flex gap-2 text-[10px] font-body" style={{ color: "hsl(var(--avo-text) / 0.6)" }}>
-                    <span>📝 {avo.total} palpites</span>
-                    <span>✅ {avo.accepted} aceitos</span>
-                  </div>
-                </div>
-                {i === 0 && (
-                  <span className="avo-neo-badge text-[10px]"
-                    style={{ background: "hsl(var(--avo-accent))", color: "white" }}>
-                    Top Palpiteira
-                  </span>
-                )}
               </div>
-            ))}
-          </div>
-        </div>
-      )}
+              <ChevronDown className="w-5 h-5 text-white group-data-[state=open]:hidden" />
+            </div>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="p-4 space-y-3 avo-neo-card rounded-t-none border-t-0">
+              {ranking.map((avo, i) => (
+                <div
+                  key={avo.user_id}
+                  className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+                    i === 0 ? "avo-neo-card-sm" : ""
+                  }`}
+                  style={{
+                    background: i === 0 ? "hsl(var(--avo-bg))" : "hsl(var(--avo-bg) / 0.3)",
+                  }}
+                >
+                  <div className="text-2xl font-display font-bold w-8 text-center"
+                    style={{ color: "hsl(var(--avo-accent))" }}>
+                    {i === 0 ? "👑" : i + 1}
+                  </div>
+                  <Avatar className="w-10 h-10" style={{ border: "2px solid hsl(var(--avo-border))" }}>
+                    <AvatarFallback className="font-display"
+                      style={{ background: "hsl(var(--avo-bg))", color: "hsl(var(--avo-accent))" }}>
+                      {(avo.display_name || "V")[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="font-body font-semibold text-sm">{avo.display_name || "Vovó"}</div>
+                    <div className="flex gap-2 text-[10px] font-body" style={{ color: "hsl(var(--avo-text) / 0.6)" }}>
+                      <span>📝 {avo.total} palpites</span>
+                      <span>✅ {avo.accepted} aceitos</span>
+                    </div>
+                  </div>
+                  {i === 0 && (
+                    <span className="avo-neo-badge text-[10px]"
+                      style={{ background: "hsl(var(--avo-accent))", color: "white" }}>
+                      Top Palpiteira
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
 
       {/* History */}
       <div>
