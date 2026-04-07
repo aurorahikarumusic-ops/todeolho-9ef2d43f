@@ -58,9 +58,9 @@ export default function MomAvaliacao() {
 
   const submitRating = useMutation({
     mutationFn: async () => {
-      if (!user || !partner) throw new Error("Falta parceiro");
+      if (!user || !dadPartner) throw new Error("Falta parceiro");
       const { error } = await supabase.from("mom_ratings").insert({
-        user_id: partner.user_id,
+        user_id: dadPartner.user_id,
         rated_by: user.id,
         stars,
         comment: comment.trim() || null,
