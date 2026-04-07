@@ -617,7 +617,7 @@ export default function Ranking() {
 
             {isExpanded && (
               <div className="mt-3 pt-3 space-y-2" style={{
-                borderTop: `2px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--dad-border))"}`,
+                borderTop: "1px solid hsl(var(--border) / 0.3)",
                 animation: "fadeSlideDown 0.3s ease-out",
               }}>
                 <div className="flex items-center justify-between">
