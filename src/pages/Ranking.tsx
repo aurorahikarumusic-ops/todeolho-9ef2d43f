@@ -992,13 +992,18 @@ export default function Ranking() {
 
       {/* Share */}
       {!isMom && myPos >= 0 && ranking.length > 1 && (
-        <button
-          className="dad-neo-btn w-full justify-center"
+        <Button
+          className="w-full font-display gap-2 border-0"
+          style={{
+            background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
+            color: "white",
+            boxShadow: "0 4px 16px hsl(var(--dad-accent) / 0.3)",
+          }}
           onClick={handleShare}
         >
           <Share2 className="w-4 h-4" />
           Compartilhar meu ranking
-        </button>
+        </Button>
       )}
 
       {isMom && ranking.length > 0 && (
