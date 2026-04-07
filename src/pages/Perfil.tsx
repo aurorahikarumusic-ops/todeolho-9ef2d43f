@@ -400,15 +400,18 @@ export default function Perfil() {
           </div>
         </section>
       ) : (
-        <section className="dad-neo-card relative overflow-hidden">
-          <div className="h-2" style={{ background: "hsl(var(--dad-accent))" }} />
+        <section className="relative rounded-2xl overflow-hidden" style={{
+          background: "hsl(var(--card))",
+          border: "1px solid hsl(var(--dad-border) / 0.4)",
+          boxShadow: "0 8px 32px hsl(var(--dad-accent) / 0.08), inset 0 1px 0 rgba(255,255,255,0.1)",
+        }}>
+          <div className="h-2" style={{ background: "linear-gradient(90deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))" }} />
           <div className="relative p-5 pt-6">
             <div className="flex items-center gap-4">
               <label className="cursor-pointer relative group shrink-0">
                 <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
-                <div className="relative w-20 h-20 rounded-full flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform" style={{
-                  border: "4px solid hsl(var(--dad-text))",
-                  boxShadow: "4px 4px 0 hsl(var(--dad-text))",
+                <div className="w-20 h-20 rounded-full border-4 flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform shadow-lg" style={{
+                  borderColor: "hsl(var(--dad-accent) / 0.3)",
                   background: "hsl(var(--dad-bg))",
                 }}>
                   {profile.avatar_url ? (
@@ -417,10 +420,8 @@ export default function Perfil() {
                     <span className="font-display text-3xl font-bold" style={{ color: "hsl(var(--dad-text))" }}>{(profile.display_name || "U")[0].toUpperCase()}</span>
                   )}
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-lg" style={{
-                  background: "hsl(var(--dad-accent))",
-                  border: "2px solid hsl(var(--dad-text))",
-                  boxShadow: "2px 2px 0 hsl(var(--dad-text))",
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-md border-2 border-white" style={{
+                  background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
                 }}>
                   <Edit2 className="w-3.5 h-3.5 text-white" />
                 </div>
@@ -430,25 +431,24 @@ export default function Perfil() {
                 {editMode ? (
                   <div className="flex gap-2">
                     <Input value={editName} onChange={e => setEditName(e.target.value)} className="h-8 text-sm" autoFocus />
-                    <Button size="sm" className="h-8 text-xs text-white border-0" style={{ background: "hsl(var(--dad-accent))" }} onClick={handleSaveName}>Salvar</Button>
+                    <Button size="sm" className="h-8 text-xs text-white border-0" style={{ background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))" }} onClick={handleSaveName}>Salvar</Button>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <h1 className="font-display text-xl font-bold truncate" style={{ color: "hsl(var(--dad-text))" }}>{profile.display_name}</h1>
+                    <h1 className="font-display text-xl font-bold truncate">{profile.display_name}</h1>
                     <button onClick={() => { setEditName(profile.display_name); setEditMode(true); }}>
-                      <Edit2 className="w-4 h-4" style={{ color: "hsl(var(--dad-accent-hover))" }} />
+                      <Edit2 className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
                     </button>
                   </div>
                 )}
                 <div className="mt-1">
-                  <span className="dad-neo-badge text-[10px]" style={{
-                    background: "hsl(var(--dad-cta))",
-                    color: "white",
+                  <Badge className="text-[10px] border-0 text-white" style={{
+                    background: "linear-gradient(135deg, hsl(var(--dad-accent)), hsl(var(--dad-cta)))",
                   }}>
                     {dadTitle.emoji} {dadTitle.title}
-                  </span>
+                  </Badge>
                 </div>
-                <p className="text-[11px] font-body italic mt-1.5 leading-tight" style={{ color: "hsl(var(--dad-accent-hover))" }}>
+                <p className="text-[11px] text-muted-foreground font-body italic mt-1.5 leading-tight">
                   {rescues > 0
                     ? `A mãe te salvou ${rescues}x esse mês`
                     : lastActiveHours > 24 ? `Última ação: ${lastActiveHours}h atrás` : "Ativo hoje. Bom começo."}
@@ -456,12 +456,11 @@ export default function Perfil() {
               </div>
             </div>
 
-            {/* Neo-Brutalist stats row */}
             <div className="grid grid-cols-3 gap-2.5 mt-4">
               {(stats as any[]).slice(0, 3).map((s: any, i: number) => (
-                <div key={i} className="dad-neo-card-sm p-2.5 text-center">
+                <div key={i} className="bg-white rounded-xl p-2.5 text-center shadow-sm border border-border">
                   <p className="font-display font-bold text-lg" style={{ color: "hsl(var(--dad-accent))" }}>{s.value}</p>
-                  <p className="text-[10px] font-body" style={{ color: "hsl(var(--dad-accent-hover))" }}>{s.label}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
                 </div>
               ))}
             </div>
