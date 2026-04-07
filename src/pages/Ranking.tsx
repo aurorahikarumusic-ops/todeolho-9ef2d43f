@@ -549,13 +549,13 @@ export default function Ranking() {
             key={dad.id}
             onClick={() => setExpandedCard(isExpanded ? null : dad.id)}
             className={`rounded-xl border p-3 cursor-pointer transition-all duration-300 ${
-              isMe ? (isMom ? "ring-2" : "ring-2 ring-primary/30") : ""
-            } ${isLast && list.length > 3 ? "" : ""}`}
+              isMe ? "ring-2 ring-primary/30" : ""
+            }`}
             style={{
               ...getPositionStyle(index),
-              borderColor: isMe && isMom ? "hsl(var(--mom-accent) / 0.3)" : isLast && list.length > 3 ? "hsl(var(--destructive) / 0.3)" : undefined,
+              borderColor: isMe ? "hsl(var(--dad-accent) / 0.3)" : isLast && list.length > 3 ? "hsl(var(--destructive) / 0.3)" : undefined,
               boxShadow: isExpanded
-                ? isMom ? "0 8px 24px hsl(var(--mom-accent) / 0.1), 0 2px 8px rgba(0,0,0,0.06)" : "8px 8px 0 hsl(var(--dad-text))"
+                ? "0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06)"
                 : undefined,
               transform: isExpanded ? "translate(-2px, -2px)" : "scale(1)",
             }}
