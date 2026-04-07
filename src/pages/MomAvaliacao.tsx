@@ -35,8 +35,9 @@ export default function MomAvaliacao() {
         .select("*")
         .eq("rated_by", user.id)
         .eq("week_start", weekStart)
-        .maybeSingle();
-      return data;
+        .order("created_at", { ascending: false })
+        .limit(1);
+      return data && data.length > 0 ? data[0] : null;
     },
     enabled: !!user,
   });
