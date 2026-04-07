@@ -74,11 +74,11 @@ export default function AvoDashboard() {
         <div className="absolute top-2 right-4 text-4xl opacity-20">🧶</div>
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full flex items-center justify-center text-3xl"
-            style={{
-              background: "hsl(var(--avo-bg))",
-              border: "3px solid hsl(270 40% 25%)",
-              boxShadow: "4px 4px 0 hsl(270 40% 25%)",
-            }}>
+             style={{
+               background: "hsl(var(--avo-bg))",
+               border: "2px solid hsl(var(--border))",
+               boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+             }}>
             👵
           </div>
           <div>
