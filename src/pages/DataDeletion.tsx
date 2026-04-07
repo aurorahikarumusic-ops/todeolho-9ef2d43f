@@ -89,6 +89,7 @@ export default function DataDeletion() {
             <h2 className="font-display font-bold text-lg mb-2">Alternativas</h2>
             <p>
               Se preferir, você também pode solicitar a exclusão por e-mail:<br />
+              <strong>Responsável:</strong> Tonylton Silveira Motoki<br />
               📧 <strong>estoudeolho.contato@gmail.com</strong>
             </p>
             <p className="mt-2 text-muted-foreground italic">
