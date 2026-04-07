@@ -677,9 +677,9 @@ export default function Perfil() {
 
       {/* ═══════════════════ SECTION 6: Family Connection ═══════════════════ */}
       <section>
-        <h2 className="font-display text-base font-bold mb-3 flex items-center gap-2"
-          style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
-          <User className="w-4 h-4" style={!isMom ? { color: "hsl(var(--dad-accent))" } : undefined} /> Conexão Familiar
+        <h2 className="font-display text-base font-bold mb-3 flex items-center gap-2">
+          <User className="w-4 h-4" /> Conexão Familiar
+        </h2>
         </h2>
         {!profile.family_id ? (
           isMom ? <InvitePartner /> : <JoinFamily />
