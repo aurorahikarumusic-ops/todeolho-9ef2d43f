@@ -133,7 +133,7 @@ export default function TermsOfUse() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">11. Contato</h2>
+            <h2 className="font-display font-bold text-lg mb-2">13. Contato</h2>
             <p>
               📧 <strong>estoudeolho.contato@gmail.com</strong><br />
               🌐 <strong>estoudeolho.lovable.app</strong>
