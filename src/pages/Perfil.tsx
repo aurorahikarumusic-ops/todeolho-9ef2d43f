@@ -715,18 +715,17 @@ export default function Perfil() {
       {/* ═══════════════════ SECTION 7: Children ═══════════════════ */}
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-display text-base font-bold flex items-center gap-2"
-            style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
-            <Baby className="w-4 h-4" style={!isMom ? { color: "hsl(var(--dad-accent))" } : undefined} /> Filhos
+        <h2 className="font-display text-base font-bold flex items-center gap-2">
+            <Baby className="w-4 h-4" /> Filhos
           </h2>
           {isMom ? (
             <Button size="sm" variant="outline" className={`h-7 text-xs ${accentBorder} ${accent}`} onClick={() => setShowChildSheet(true)}>
               Adicionar
             </Button>
           ) : (
-            <button className="dad-neo-badge text-[10px] cursor-pointer" style={{ background: "hsl(var(--dad-cta))", color: "white" }} onClick={() => setShowChildSheet(true)}>
+            <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => setShowChildSheet(true)}>
               Adicionar
-            </button>
+            </Button>
           )}
         </div>
 
