@@ -256,27 +256,23 @@ export default function Agenda() {
         </div>
       </div>
 
-      {/* Calendar — Neo card for Dad */}
-      <div
-        className={!isMom ? "dad-neo-card overflow-hidden" : "rounded-3xl overflow-hidden"}
-        style={isMom ? {
+      {/* Calendar */}
+      <div className="rounded-3xl overflow-hidden"
+        style={{
           background: "hsl(var(--card))",
           boxShadow: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.15)",
-        } : {
-          background: "hsl(var(--dad-bg))",
         }}
       >
         <div className="px-4 pt-3 pb-1 flex items-center justify-between">
-          <p className="text-xs font-display font-black uppercase tracking-wider"
-            style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : { color: "hsl(var(--muted-foreground))" }}>
+          <p className="text-xs font-display font-black uppercase tracking-wider text-muted-foreground">
             📅 Calendário
           </p>
           <div className="flex gap-2 text-[9px] font-display font-bold">
-            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
-              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--secondary))" : "hsl(var(--dad-accent))", border: !isMom ? "1px solid hsl(var(--dad-text))" : undefined }} /> Mãe ({momCount})
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: "hsl(var(--secondary))" }} /> Mãe ({momCount})
             </span>
-            <span className="flex items-center gap-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>
-              <span className="w-2 h-2 rounded-full inline-block" style={{ background: isMom ? "hsl(var(--primary))" : "#2D6A4F", border: !isMom ? "1px solid hsl(var(--dad-text))" : undefined }} /> Pai ({dadCount})
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full inline-block" style={{ background: "hsl(var(--primary))" }} /> Pai ({dadCount})
             </span>
           </div>
         </div>
@@ -285,7 +281,7 @@ export default function Agenda() {
           selected={selectedDate}
           onSelect={setSelectedDate}
           locale={ptBR}
-          className={`pointer-events-auto px-2 pb-2`}
+          className="pointer-events-auto px-2 pb-2"
           modifiers={{ hasEvent: eventDates }}
           modifiersClassNames={{
             hasEvent: "relative after:absolute after:bottom-0.5 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:rounded-full after:bg-secondary",
@@ -296,37 +292,34 @@ export default function Agenda() {
       {/* Selected date header */}
       {selectedDate && (
         <div className="flex items-center justify-between px-1">
-          <h2 className="font-display text-base font-bold"
-            style={!isMom ? { color: "hsl(30 15% 90%)" } : undefined}>
+          <h2 className="font-display text-base font-bold">
             {isToday(selectedDate) ? "📍 Hoje" : isTomorrow(selectedDate) ? "⏰ Amanhã" : format(selectedDate, "d 'de' MMMM", { locale: ptBR })}
           </h2>
-          <Badge variant="secondary" className="text-[10px] font-display"
-            style={!isMom ? { background: "hsl(var(--arena-neon) / 0.12)", color: "hsl(var(--arena-neon))", border: "none" } : undefined}>
+          <Badge variant="secondary" className="text-[10px] font-display">
             {filteredEvents.length} evento{filteredEvents.length !== 1 ? "s" : ""}
           </Badge>
         </div>
       )}
 
-      {/* Events list - 3D cards */}
+      {/* Events list */}
       {events.length === 0 ? (
-        <div
-          className={isMom ? "rounded-3xl border-2 border-dashed p-10 text-center" : "dad-neo-card p-10 text-center border-dashed"}
-          style={isMom ? {
+        <div className="rounded-3xl border-2 border-dashed p-10 text-center"
+          style={{
             borderColor: "hsl(var(--muted))",
             boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
-          } : undefined}
+          }}
         >
           <p className="text-5xl mb-3">📅</p>
-          <p className="font-display text-lg font-bold mb-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>Nada agendado</p>
-          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(var(--dad-text) / 0.7)" } : undefined}>
+          <p className="font-display text-lg font-bold mb-1">Nada agendado</p>
+          <p className="text-sm font-body italic text-muted-foreground">
             {isMom ? "Adicione o primeiro compromisso da família." : "Mês livre? Vai confirmar com a mãe."}
           </p>
         </div>
       ) : filteredEvents.length === 0 ? (
-        <div className={isMom ? "rounded-3xl p-8 text-center border-2 border-dashed" : "dad-neo-card p-8 text-center border-dashed"}
-          style={isMom ? { borderColor: "hsl(var(--muted))" } : undefined}>
+        <div className="rounded-3xl p-8 text-center border-2 border-dashed"
+          style={{ borderColor: "hsl(var(--muted))" }}>
           <p className="text-3xl mb-2">🤷</p>
-          <p className="text-sm font-body italic" style={!isMom ? { color: "hsl(var(--dad-text) / 0.7)" } : undefined}>
+          <p className="text-sm font-body italic text-muted-foreground">
             Nada nesse dia. Ou a mãe ainda não atualizou.
           </p>
         </div>
