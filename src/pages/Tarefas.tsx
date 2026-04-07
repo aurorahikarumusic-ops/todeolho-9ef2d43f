@@ -262,19 +262,14 @@ export default function Tarefas() {
     return (
       <div
         key={task.id}
-        className={`overflow-hidden transition-all duration-300 cursor-pointer ${
+        className={`overflow-hidden transition-all duration-300 cursor-pointer rounded-2xl ${
           isExpanded ? "scale-[1.01]" : "hover:scale-[1.005]"
-        } ${task.rescued_by_mom ? "opacity-70" : ""} ${
-          isMom ? "rounded-2xl" : "dad-neo-card-sm"
-        }`}
-        style={isMom ? {
+        } ${task.rescued_by_mom ? "opacity-70" : ""}`}
+        style={{
           background: "hsl(var(--card))",
           boxShadow: isExpanded
             ? `0 12px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15), -4px 0 0 ${cat.color}`
             : `0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1), -4px 0 0 ${cat.color}`,
-        } : {
-          borderLeftWidth: "6px",
-          borderLeftColor: cat.color,
         }}
         onClick={() => setExpandedTask(isExpanded ? null : task.id)}
       >
