@@ -457,17 +457,14 @@ export default function Tarefas() {
   };
 
   const renderEmptyState = (emoji: string, title: string, text: string) => (
-    <div className={`p-10 text-center ${isMom ? "rounded-3xl" : "dad-neo-card"}`}
-      style={isMom ? {
+    <div className="p-10 text-center rounded-3xl"
+      style={{
         border: "2px dashed hsl(var(--muted))",
         boxShadow: "inset 0 2px 8px rgba(0,0,0,0.03)",
-      } : {
-        background: "#FFF0E6",
-        borderStyle: "dashed",
       }}>
       <p className="text-5xl mb-3">{emoji}</p>
-      <p className="font-display text-lg font-black mb-1" style={!isMom ? { color: "hsl(var(--dad-text))" } : undefined}>{title}</p>
-      <p className="text-sm font-body italic whitespace-pre-line" style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : undefined}>{text}</p>
+      <p className="font-display text-lg font-black mb-1">{title}</p>
+      <p className="text-sm font-body italic whitespace-pre-line text-muted-foreground">{text}</p>
     </div>
   );
 
