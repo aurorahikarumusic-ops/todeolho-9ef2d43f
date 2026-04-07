@@ -41,7 +41,7 @@ export default function MuralPalpites() {
   };
 
   return (
-    <div className="p-4 max-w-lg mx-auto space-y-6 pb-24" style={{ background: "hsl(270 80% 97%)" }}>
+    <div className="p-4 max-w-lg mx-auto space-y-6 pb-24 bg-background min-h-screen">
 
       {/* ═══════ Neo-Brutalist Hero Header ═══════ */}
       <div className="avo-neo-card relative overflow-hidden p-6">
@@ -53,10 +53,10 @@ export default function MuralPalpites() {
             <Megaphone className="w-6 h-6 text-avo" />
             <span className="avo-neo-badge bg-avo text-white">MURAL PÚBLICO</span>
           </div>
-          <h1 className="font-display text-xl font-bold leading-tight" style={{ color: "hsl(270 40% 25%)" }}>
+          <h1 className="font-display text-xl font-bold leading-tight" style={{ color: "hsl(var(--avo-text))" }}>
             "Ninguém pediu, mas mesmo assim vou dar meu palpite" 👵
           </h1>
-          <p className="font-body text-sm mt-2 italic" style={{ color: "hsl(270 40% 25% / 0.7)" }}>
+          <p className="font-body text-sm mt-2 italic" style={{ color: "hsl(var(--avo-text) / 0.7)" }}>
             {randomHeader}
           </p>
         </div>
@@ -72,13 +72,13 @@ export default function MuralPalpites() {
               style={{ background: "white" }}
             >
               <span className="text-sm">{i === 0 ? "👑" : i === 1 ? "🥈" : i === 2 ? "🥉" : "👵"}</span>
-              <Avatar className="w-6 h-6 border-2" style={{ borderColor: "hsl(270 40% 25%)" }}>
+              <Avatar className="w-6 h-6 border-2" style={{ borderColor: "hsl(var(--avo-text))" }}>
                 <AvatarFallback className="bg-avo/20 text-avo text-[10px] font-display">
                   {(avo.display_name || "V")[0]}
                 </AvatarFallback>
               </Avatar>
               <span className="font-body text-xs font-semibold whitespace-nowrap">{avo.display_name || "Vovó"}</span>
-              <span className="avo-neo-badge text-[9px] !py-0.5 !px-1.5" style={{ color: "hsl(270 40% 25%)" }}>
+              <span className="avo-neo-badge text-[9px] !py-0.5 !px-1.5" style={{ color: "hsl(var(--avo-text))" }}>
                 {avo.total} 💬
               </span>
             </div>
@@ -90,13 +90,13 @@ export default function MuralPalpites() {
       {isLoading ? (
         <div className="text-center py-12">
           <div className="text-5xl animate-bounce mb-3">🧶</div>
-          <p className="font-body text-sm" style={{ color: "hsl(270 40% 25% / 0.6)" }}>Carregando palpites das vovós...</p>
+          <p className="font-body text-sm" style={{ color: "hsl(var(--avo-text) / 0.6)" }}>Carregando palpites das vovós...</p>
         </div>
       ) : suggestions.length === 0 ? (
         <div className="avo-neo-card p-8 text-center !border-dashed">
           <span className="text-5xl block mb-3">🤫</span>
-          <h3 className="font-display text-lg font-bold mb-1" style={{ color: "hsl(270 40% 25%)" }}>Silêncio incomum...</h3>
-          <p className="font-body text-sm" style={{ color: "hsl(270 40% 25% / 0.6)" }}>
+          <h3 className="font-display text-lg font-bold mb-1" style={{ color: "hsl(var(--avo-text))" }}>Silêncio incomum...</h3>
+          <p className="font-body text-sm" style={{ color: "hsl(var(--avo-text) / 0.6)" }}>
             As avós estão quietas? Isso não é normal.<br />
             Devem estar planejando algo grande. 👀
           </p>
@@ -117,26 +117,26 @@ export default function MuralPalpites() {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <span className="text-xl">{cfg.emoji}</span>
-                      <span className="avo-neo-badge text-[10px] !py-0.5 !px-2" style={{ color: "hsl(270 40% 25%)" }}>
+                      <span className="avo-neo-badge text-[10px] !py-0.5 !px-2" style={{ color: "hsl(var(--avo-text))" }}>
                         {cfg.label}
                       </span>
                     </div>
-                    <span className="text-[10px] font-body" style={{ color: "hsl(270 40% 25% / 0.5)" }}>
+                    <span className="text-[10px] font-body" style={{ color: "hsl(var(--avo-text) / 0.5)" }}>
                       {new Date(s.created_at).toLocaleDateString("pt-BR")}
                     </span>
                   </div>
 
-                  <h4 className="font-display font-bold text-base mb-1" style={{ color: "hsl(270 40% 25%)" }}>{s.title}</h4>
+                  <h4 className="font-display font-bold text-base mb-1" style={{ color: "hsl(var(--avo-text))" }}>{s.title}</h4>
                   {s.description && (
                     <p className="font-body text-sm mb-3 italic text-avo">
                       "{s.description}"
                     </p>
                   )}
 
-                  <div className="flex items-center justify-between mt-3 pt-3" style={{ borderTop: "2px solid hsl(270 40% 25% / 0.1)" }}>
+                  <div className="flex items-center justify-between mt-3 pt-3" style={{ borderTop: "2px solid hsl(var(--avo-text) / 0.1)" }}>
                     <div className="flex items-center gap-2">
                       <span className="text-lg">👵</span>
-                      <span className="font-body text-xs" style={{ color: "hsl(270 40% 25% / 0.5)" }}>Uma avó sabia escreveu isso</span>
+                      <span className="font-body text-xs" style={{ color: "hsl(var(--avo-text) / 0.5)" }}>Uma avó sabia escreveu isso</span>
                     </div>
 
                     {s.status === "aceito" ? (
@@ -163,7 +163,7 @@ export default function MuralPalpites() {
 
       {/* Bottom tip */}
       <div className="text-center py-4">
-        <p className="font-body text-xs italic" style={{ color: "hsl(270 40% 25% / 0.5)" }}>
+        <p className="font-body text-xs italic" style={{ color: "hsl(var(--avo-text) / 0.5)" }}>
           {isMom
             ? "💡 Adote um palpite e ele vira tarefa pro pai automaticamente!"
             : "👀 Só as mães podem adotar palpites... os pais só observam e tremem."}

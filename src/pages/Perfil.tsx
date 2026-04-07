@@ -789,7 +789,6 @@ export default function Perfil() {
         <h2 className="font-display text-base font-bold flex items-center gap-2 mb-3">
           <Shield className="w-4 h-4" /> Configurações
         </h2>
-        </h2>
 
         {isMom ? (
           <div className="grid grid-cols-2 gap-2">

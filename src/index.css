@@ -46,38 +46,39 @@
     --font-display: 'Baloo 2', cursive;
     --font-body: 'Nunito', sans-serif;
 
-    /* Mom panel tokens — Rosa Premium */
-    --mom-accent: 340 48% 40%;
-    --mom-accent-hover: 340 52% 29%;
-    --mom-bg: 340 65% 95%;
-    --mom-border: 340 40% 75%;
-    --mom-text: 340 55% 19%;
-    --mom-cta: 340 58% 58%;
+    /* ═══ Unified role tokens — all mapped to global landing page palette ═══ */
+    /* Mom panel tokens */
+    --mom-accent: 153 42% 30%;
+    --mom-accent-hover: 153 42% 22%;
+    --mom-bg: 15 100% 98.4%;
+    --mom-border: 30 20% 88%;
+    --mom-text: 210 14% 11%;
+    --mom-cta: 15 87% 66%;
 
-    /* Dad panel tokens — Orange Premium */
-    --dad-accent: 30 83% 50%;
-    --dad-accent-hover: 30 87% 41%;
-    --dad-bg: 37 92% 93%;
-    --dad-border: 30 80% 34%;
-    --dad-text: 30 100% 12%;
-    --dad-cta: 35 90% 60%;
+    /* Dad panel tokens */
+    --dad-accent: 15 87% 66%;
+    --dad-accent-hover: 15 87% 55%;
+    --dad-bg: 15 100% 98.4%;
+    --dad-border: 30 20% 88%;
+    --dad-text: 210 14% 11%;
+    --dad-cta: 153 42% 30%;
 
-    /* Dad arena tokens — Orange Ramp Premium */
-    --arena-gold: 35 87% 55%;
-    --arena-silver: 35 25% 50%;
-    --arena-bronze: 30 55% 38%;
-    --arena-fire: 37 80% 41%;
-    --arena-neon: 35 87% 55%;
-    --arena-electric: 38 90% 65%;
-    --arena-dark: 30 45% 8%;
-    --arena-glow: 37 70% 50%;
+    /* Arena tokens */
+    --arena-gold: 43 100% 50%;
+    --arena-silver: 30 10% 60%;
+    --arena-bronze: 30 40% 45%;
+    --arena-fire: 15 87% 56%;
+    --arena-neon: 153 42% 40%;
+    --arena-electric: 43 100% 60%;
+    --arena-dark: 210 14% 11%;
+    --arena-glow: 153 42% 45%;
 
     /* Grandma panel tokens */
-    --avo-accent: 270 60% 55%;
-    --avo-bg: 270 80% 97%;
-    --avo-border: 270 40% 78%;
-    --avo-text: 270 50% 30%;
-    --avo-glow: 270 80% 70%;
+    --avo-accent: 153 42% 30%;
+    --avo-bg: 15 100% 98.4%;
+    --avo-border: 30 20% 88%;
+    --avo-text: 210 14% 11%;
+    --avo-glow: 43 100% 84%;
   }
 }
 
@@ -133,279 +134,123 @@
   }
 }
 
-/* ═══ Dad Neo-Brutalista Design System ═══ */
-.dad-neo-card {
-  background: hsl(var(--dad-bg));
-  border: 4px solid hsl(var(--dad-text));
-  border-radius: 24px;
-  box-shadow: 8px 8px 0 hsl(var(--dad-text));
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+/* ═══ Unified Clean Card System ═══ */
+.dad-neo-card,
+.mom-neo-card,
+.avo-neo-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.dad-neo-card:hover {
-  transform: translate(-4px, -4px) rotate(-0.5deg);
-  box-shadow: 12px 12px 0 hsl(var(--dad-text));
-}
-
-.dad-neo-card-sm {
-  background: hsl(var(--dad-bg));
-  border: 3px solid hsl(var(--dad-text));
-  border-radius: 20px;
-  box-shadow: 6px 6px 0 hsl(var(--dad-text));
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-}
-.dad-neo-card-sm:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 9px 9px 0 hsl(var(--dad-text));
+.dad-neo-card:hover,
+.mom-neo-card:hover,
+.avo-neo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
-.dad-neo-badge {
-  border: 3px solid hsl(var(--dad-text));
+.dad-neo-card-sm,
+.mom-neo-card-sm,
+.avo-neo-card-sm {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.dad-neo-card-sm:hover,
+.mom-neo-card-sm:hover,
+.avo-neo-card-sm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.dad-neo-badge,
+.mom-neo-badge,
+.avo-neo-badge {
+  border: 1px solid hsl(var(--border));
   border-radius: 50px;
-  padding: 0.4rem 1rem;
-  font-weight: 800;
+  padding: 0.35rem 0.85rem;
+  font-weight: 700;
   font-family: var(--font-display);
   font-size: 0.8rem;
-  box-shadow: 4px 4px 0 hsl(var(--dad-text));
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s;
 }
-.dad-neo-badge:hover {
-  transform: rotate(-2deg) scale(1.05) translateY(-2px);
-  box-shadow: 6px 6px 0 hsl(var(--dad-text));
+.dad-neo-badge:hover,
+.mom-neo-badge:hover,
+.avo-neo-badge:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.dad-neo-btn {
-  background: hsl(var(--dad-accent));
+.dad-neo-btn,
+.mom-neo-btn,
+.avo-neo-btn {
+  background: hsl(var(--primary));
   color: white;
-  border: 4px solid hsl(var(--dad-text));
+  border: 1px solid hsl(var(--primary));
   border-radius: 50px;
   padding: 0.75rem 1.5rem;
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 0.95rem;
-  box-shadow: 6px 6px 0 hsl(var(--dad-text));
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px hsl(var(--primary) / 0.2);
+  transition: all 0.3s ease;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
 }
-.dad-neo-btn:hover {
-  background: hsl(var(--dad-cta));
-  transform: translate(-3px, -3px);
-  box-shadow: 9px 9px 0 hsl(var(--dad-text));
+.dad-neo-btn:hover,
+.mom-neo-btn:hover,
+.avo-neo-btn:hover {
+  background: hsl(var(--primary) / 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px hsl(var(--primary) / 0.3);
 }
-.dad-neo-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 hsl(var(--dad-text));
+.dad-neo-btn:active,
+.mom-neo-btn:active,
+.avo-neo-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px hsl(var(--primary) / 0.15);
 }
 
 .dad-neo-accent-card {
-  background: hsl(var(--dad-cta));
-  border: 4px solid hsl(var(--dad-text));
-  border-radius: 24px;
-  box-shadow: 8px 8px 0 hsl(var(--dad-accent-hover));
+  background: hsl(var(--secondary));
+  border: 1px solid hsl(var(--secondary));
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px hsl(var(--secondary) / 0.2);
   color: white;
 }
 
-.dad-neo-page {
-  background: #FFF8F1;
-  min-height: 100vh;
-}
-
-@media (max-width: 768px) {
-  .dad-neo-card { box-shadow: 6px 6px 0 hsl(var(--dad-text)); border-width: 3px; }
-  .dad-neo-card:hover { box-shadow: 8px 8px 0 hsl(var(--dad-text)); transform: translate(-3px, -3px); }
-  .dad-neo-card-sm { box-shadow: 4px 4px 0 hsl(var(--dad-text)); border-width: 2px; }
-  .dad-neo-btn { box-shadow: 4px 4px 0 hsl(var(--dad-text)); border-width: 3px; }
-}
-
-/* Dad dark calendar — force light text on dark bg */
-.dad-calendar-dark {
-  color: hsl(220 15% 85%);
-}
-.dad-calendar-dark .rdp-head_cell,
-.dad-calendar-dark .rdp-caption_label {
-  color: hsl(220 15% 80%);
-}
-.dad-calendar-dark .rdp-day {
-  color: hsl(220 15% 85%);
-}
-.dad-calendar-dark .rdp-day:hover {
-  background: hsl(220 30% 25%);
-  color: hsl(220 15% 95%);
-}
-.dad-calendar-dark .rdp-day_outside {
-  color: hsl(220 15% 45%);
-}
-.dad-calendar-dark .rdp-nav_button {
-  color: hsl(220 15% 70%);
-}
-.dad-calendar-dark .rdp-nav_button:hover {
-  background: hsl(220 30% 25%);
-}
-
-/* ═══ Mom Neo-Brutalista Híbrido ═══ */
-.mom-neo-card {
-  background: hsl(var(--mom-bg));
-  border: 3px solid hsl(var(--mom-text));
-  border-radius: 20px;
-  box-shadow: 6px 6px 0 hsl(var(--mom-text));
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
-}
-.mom-neo-card:hover {
-  transform: translate(-3px, -3px) rotate(-0.3deg);
-  box-shadow: 9px 9px 0 hsl(var(--mom-text));
-}
-
-.mom-neo-card-sm {
-  background: hsl(var(--mom-bg));
-  border: 2px solid hsl(var(--mom-text));
-  border-radius: 16px;
-  box-shadow: 4px 4px 0 hsl(var(--mom-text));
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-}
-.mom-neo-card-sm:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 hsl(var(--mom-text));
-}
-
-.mom-neo-badge {
-  border: 3px solid hsl(var(--mom-text));
-  border-radius: 50px;
-  padding: 0.4rem 1rem;
-  font-weight: 800;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  box-shadow: 4px 4px 0 hsl(var(--mom-text));
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
-}
-.mom-neo-badge:hover {
-  transform: rotate(-2deg) scale(1.05) translateY(-2px);
-  box-shadow: 6px 6px 0 hsl(var(--mom-text));
-}
-
-.mom-neo-btn {
-  background: hsl(var(--mom-cta));
-  color: white;
-  border: 3px solid hsl(var(--mom-text));
-  border-radius: 50px;
-  padding: 0.75rem 1.5rem;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 0.95rem;
-  box-shadow: 5px 5px 0 hsl(var(--mom-text));
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.mom-neo-btn:hover {
-  background: hsl(var(--mom-accent));
-  transform: translate(-3px, -3px);
-  box-shadow: 8px 8px 0 hsl(var(--mom-text));
-}
-.mom-neo-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 hsl(var(--mom-text));
-}
-
-.mom-neo-page {
-  background: #FFF5F8;
-  min-height: 100vh;
-}
-
-@media (max-width: 768px) {
-  .mom-neo-card { box-shadow: 4px 4px 0 hsl(var(--mom-text)); border-width: 2px; }
-  .mom-neo-card:hover { box-shadow: 6px 6px 0 hsl(var(--mom-text)); transform: translate(-2px, -2px); }
-  .mom-neo-card-sm { box-shadow: 3px 3px 0 hsl(var(--mom-text)); border-width: 2px; }
-  .mom-neo-btn { box-shadow: 3px 3px 0 hsl(var(--mom-text)); border-width: 2px; }
-}
-
-/* ═══ Avó Neo-Brutalista Híbrido ═══ */
-.avo-neo-card {
-  background: white;
-  border: 3px solid hsl(270 40% 25%);
-  border-radius: 20px;
-  box-shadow: 6px 6px 0 hsl(270 40% 25%);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
-}
-.avo-neo-card:hover {
-  transform: translate(-3px, -3px) rotate(-0.3deg);
-  box-shadow: 9px 9px 0 hsl(270 40% 25%);
-}
-
-.avo-neo-card-sm {
-  background: white;
-  border: 2px solid hsl(270 40% 25%);
-  border-radius: 16px;
-  box-shadow: 4px 4px 0 hsl(270 40% 25%);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-}
-.avo-neo-card-sm:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 hsl(270 40% 25%);
-}
-
-.avo-neo-btn {
-  background: hsl(var(--avo-accent));
-  color: white;
-  border: 3px solid hsl(270 40% 25%);
-  border-radius: 50px;
-  padding: 0.75rem 1.5rem;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 0.95rem;
-  box-shadow: 5px 5px 0 hsl(270 40% 25%);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.avo-neo-btn:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 8px 8px 0 hsl(270 40% 25%);
-}
-.avo-neo-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 hsl(270 40% 25%);
-}
-
-.avo-neo-badge {
-  border: 3px solid hsl(270 40% 25%);
-  border-radius: 50px;
-  padding: 0.4rem 1rem;
-  font-weight: 800;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  box-shadow: 4px 4px 0 hsl(270 40% 25%);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
-}
-.avo-neo-badge:hover {
-  transform: rotate(-2deg) scale(1.05) translateY(-2px);
-  box-shadow: 6px 6px 0 hsl(270 40% 25%);
-}
-
+.dad-neo-page,
+.mom-neo-page,
 .avo-neo-page {
-  background: hsl(var(--avo-bg));
+  background: hsl(var(--background));
   min-height: 100vh;
 }
 
 @media (max-width: 768px) {
-  .avo-neo-card { box-shadow: 4px 4px 0 hsl(270 40% 25%); border-width: 2px; }
-  .avo-neo-card:hover { box-shadow: 6px 6px 0 hsl(270 40% 25%); transform: translate(-2px, -2px); }
-  .avo-neo-card-sm { box-shadow: 3px 3px 0 hsl(270 40% 25%); border-width: 2px; }
-  .avo-neo-btn { box-shadow: 3px 3px 0 hsl(270 40% 25%); border-width: 2px; }
+  .dad-neo-card, .mom-neo-card, .avo-neo-card {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .dad-neo-card-sm, .mom-neo-card-sm, .avo-neo-card-sm {
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+  }
+  .dad-neo-btn, .mom-neo-btn, .avo-neo-btn {
+    box-shadow: 0 3px 8px hsl(var(--primary) / 0.15);
+  }
+}
+
+/* Calendar clean styling */
+.dad-calendar-dark {
+  color: hsl(var(--foreground));
 }
 
 
