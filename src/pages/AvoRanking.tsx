@@ -178,6 +178,7 @@ export default function AvoRanking() {
                   {pos + 1}
                 </span>
                 <Avatar className="w-10 h-10 border-2 border-avo-border">
+                  <AvatarImage src={avo.avatar_url || undefined} />
                   <AvatarFallback className="bg-avo/20 text-avo font-display">
                     {(avo.display_name || "V")[0]}
                   </AvatarFallback>
