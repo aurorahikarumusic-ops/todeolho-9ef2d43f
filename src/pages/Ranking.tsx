@@ -234,15 +234,7 @@ const MomPodiumSection = ({ ranking }: { ranking: any[] }) => (
 );
 
 
-              <div className={`relative ${pos === 1 ? "scale-110" : ""}`} style={{
-                transform: pos === 1 ? "scale(1.1) translateZ(20px)" : undefined,
-              }}>
-                <div className="absolute -inset-1.5 rounded-full blur-md" style={{
-                  background: pos === 1
-                    ? "linear-gradient(135deg, hsl(var(--mom-accent) / 0.4), hsl(340 80% 70% / 0.3))"
-                    : "linear-gradient(135deg, hsl(var(--mom-accent) / 0.15), transparent)",
-                }} />
-                <Avatar className={`relative h-14 w-14 ring-2 border-2 border-card shadow-lg`} style={{
+
                   boxShadow: pos === 1 ? "0 4px 20px hsl(var(--mom-accent) / 0.3)" : undefined,
                   borderColor: pos === 1 ? "hsl(var(--mom-accent) / 0.3)" : undefined,
                 }}>
