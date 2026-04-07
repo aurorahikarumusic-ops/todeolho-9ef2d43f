@@ -187,6 +187,8 @@ function DadLoginForm({ initialInviteCode }: { initialInviteCode?: string }) {
             variant="outline"
             className="w-full font-body h-12 text-base"
             onClick={async () => {
+              const code = form.inviteCode?.trim();
+              if (code) localStorage.setItem("pending_invite_code", code);
               const result = await lovable.auth.signInWithOAuth("google", {
                 redirect_uri: window.location.origin,
               });
@@ -392,7 +394,11 @@ type AuthView = "dad" | "mom" | "grandma";
 
 export default function AuthPage() {
   const [searchParams] = useSearchParams();
-  const inviteCode = useMemo(() => searchParams.get("convite")?.toUpperCase() || "", [searchParams]);
+  const inviteCode = useMemo(() => {
+    const code = searchParams.get("convite")?.toUpperCase() || "";
+    if (code) localStorage.setItem("pending_invite_code", code);
+    return code;
+  }, [searchParams]);
   const [view, setView] = useState<AuthView>("dad");
   const [isFlipped, setIsFlipped] = useState(false);
   const [pendingView, setPendingView] = useState<AuthView | null>(null);

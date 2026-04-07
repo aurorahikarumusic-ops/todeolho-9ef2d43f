@@ -1,9 +1,18 @@
+import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 
 export function useProfile() {
   const { user } = useAuth();
+  const qc = useQueryClient();
+
+  // Re-fetch profile when family is joined (e.g. after Google OAuth with invite code)
+  useEffect(() => {
+    const handler = () => qc.invalidateQueries({ queryKey: ["profile"] });
+    window.addEventListener("family-joined", handler);
+    return () => window.removeEventListener("family-joined", handler);
+  }, [qc]);
 
   return useQuery({
     queryKey: ["profile", user?.id],
