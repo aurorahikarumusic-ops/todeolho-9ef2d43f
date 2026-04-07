@@ -948,45 +948,133 @@ export default function Ranking() {
           )}
         </TabsContent>
 
-        <TabsContent value="familia" className="mt-4">
-          <div className="rounded-xl p-6 text-center" style={{
-            border: `1px solid ${isMom ? "hsl(var(--mom-border) / 0.3)" : "hsl(var(--border))"}`,
-            boxShadow: isMom ? "0 4px 16px hsl(var(--mom-accent) / 0.06)" : "0 4px 16px rgba(0,0,0,0.04)",
-            background: isMom ? "linear-gradient(135deg, hsl(var(--mom-accent) / 0.03), hsl(var(--card)))" : undefined,
+        <TabsContent value="familia" className="mt-4 space-y-4">
+          {/* Rating Card */}
+          <div className="rounded-2xl overflow-hidden" style={{
+            border: "1px solid hsl(var(--border))",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.06)",
+            background: "linear-gradient(160deg, hsl(var(--card)), hsl(var(--background)))",
           }}>
-            <p className="text-3xl mb-3">{isMom ? "👩‍👧‍👦" : "👨‍👩‍👧‍👦"}</p>
-            <p className="font-display font-bold mb-1">{isMom ? "Seu Veredito" : "Avaliação da Família"}</p>
-            {isMom ? (
-              <div className="space-y-2 mt-3">
-                <p className="text-xs font-body italic" style={{ color: "hsl(var(--mom-text) / 0.6)" }}>
-                  Aqui você vê como avaliou seu marido. Ele merece?
-                </p>
-                {myProfile && getRatingForUser(myProfile.user_id) ? (
-                  <div className="flex items-center justify-center gap-2 mt-2">
-                    <span className="text-sm font-body">Sua nota:</span>
-                    <StarRating stars={getRatingForUser(myProfile.user_id)!.stars} isMom />
-                  </div>
-                ) : (
-                  <p className="text-xs italic mt-2" style={{ color: "hsl(var(--mom-accent) / 0.6)" }}>
-                    Avaliação pendente. Vá em Avaliar. 📝
-                  </p>
-                )}
-              </div>
-            ) : (
-              <div className="space-y-2 mt-3">
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-sm font-body">Nota da mãe:</span>
-                  {myProfile && getRatingForUser(myProfile.user_id) ? (
-                    <StarRating stars={getRatingForUser(myProfile.user_id)!.stars} />
-                  ) : (
-                    <span className="text-xs italic text-muted-foreground">Pendente</span>
-                  )}
+            {/* Header strip */}
+            <div className="px-6 py-4 relative overflow-hidden" style={{
+              background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--secondary) / 0.06))",
+              borderBottom: "1px solid hsl(var(--border) / 0.5)",
+            }}>
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl" style={{
+                background: "radial-gradient(circle, hsl(var(--secondary) / 0.1), transparent)",
+              }} />
+              <div className="relative flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--primary) / 0.04))",
+                  border: "1px solid hsl(var(--primary) / 0.15)",
+                }}>
+                  <Star className="w-5 h-5" style={{ color: "hsl(var(--primary))" }} />
                 </div>
-                <p className="text-xs text-muted-foreground font-body italic">
-                  A mãe avalia toda semana. Torça pelo melhor. Ou por um 3.
-                </p>
+                <div>
+                  <h3 className="font-display font-bold text-sm">{isMom ? "Seu Veredito Semanal" : "Avaliação da Família"}</h3>
+                  <p className="text-[11px] font-body" style={{ color: "hsl(var(--muted-foreground))" }}>
+                    Semana de {weekStart.split("-").reverse().slice(0, 2).join("/")}
+                  </p>
+                </div>
               </div>
-            )}
+            </div>
+
+            {/* Content */}
+            <div className="px-6 py-5">
+              {(() => {
+                const rating = myProfile ? getRatingForUser(myProfile.user_id) : null;
+                if (rating) {
+                  const label = RATING_LABELS[rating.stars] || "";
+                  return (
+                    <div className="space-y-4">
+                      {/* Stars display */}
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="flex items-center gap-1.5">
+                          {[1, 2, 3, 4, 5].map(s => (
+                            <Star key={s} className="w-7 h-7 transition-all" style={{
+                              color: s <= rating.stars ? "hsl(var(--secondary))" : "hsl(var(--muted-foreground) / 0.2)",
+                              fill: s <= rating.stars ? "hsl(var(--secondary))" : "none",
+                              filter: s <= rating.stars ? "drop-shadow(0 2px 4px hsl(var(--secondary) / 0.3))" : "none",
+                            }} />
+                          ))}
+                        </div>
+                        <span className="font-display font-bold text-lg" style={{
+                          background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                        }}>
+                          {rating.stars}/5
+                        </span>
+                      </div>
+
+                      {/* Label badge */}
+                      <div className="flex justify-center">
+                        <span className="px-4 py-1.5 rounded-full text-xs font-display font-bold" style={{
+                          background: rating.stars >= 4
+                            ? "linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05))"
+                            : rating.stars >= 3
+                              ? "hsl(var(--secondary) / 0.1)"
+                              : "hsl(var(--destructive) / 0.08)",
+                          color: rating.stars >= 4
+                            ? "hsl(var(--primary))"
+                            : rating.stars >= 3
+                              ? "hsl(var(--secondary))"
+                              : "hsl(var(--destructive))",
+                          border: `1px solid ${rating.stars >= 4
+                            ? "hsl(var(--primary) / 0.15)"
+                            : rating.stars >= 3
+                              ? "hsl(var(--secondary) / 0.2)"
+                              : "hsl(var(--destructive) / 0.15)"}`,
+                        }}>
+                          {label}
+                        </span>
+                      </div>
+
+                      {/* Comment if exists */}
+                      {rating.comment && (
+                        <div className="rounded-xl p-3 text-center" style={{
+                          background: "hsl(var(--muted) / 0.4)",
+                          border: "1px solid hsl(var(--border) / 0.5)",
+                        }}>
+                          <p className="text-xs font-body italic" style={{ color: "hsl(var(--muted-foreground))" }}>
+                            "{rating.comment}"
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Footer */}
+                      <p className="text-[10px] text-center font-body" style={{ color: "hsl(var(--muted-foreground) / 0.7)" }}>
+                        {isMom ? "Você avaliou esta semana ✓" : "Avaliação publicada pela mãe ✓"}
+                      </p>
+                    </div>
+                  );
+                }
+
+                // No rating yet
+                return (
+                  <div className="flex flex-col items-center gap-3 py-2">
+                    <div className="flex items-center gap-1.5">
+                      {[1, 2, 3, 4, 5].map(s => (
+                        <Star key={s} className="w-7 h-7" style={{
+                          color: "hsl(var(--muted-foreground) / 0.15)",
+                          fill: "none",
+                        }} />
+                      ))}
+                    </div>
+                    <div className="text-center space-y-1">
+                      <p className="font-display font-bold text-sm" style={{ color: "hsl(var(--muted-foreground))" }}>
+                        {isMom ? "Avaliação pendente" : "Aguardando nota"}
+                      </p>
+                      <p className="text-xs font-body italic" style={{ color: "hsl(var(--muted-foreground) / 0.7)" }}>
+                        {isMom
+                          ? "Vá em Avaliar para dar sua nota semanal. 📝"
+                          : "A mãe avalia toda semana. Torça pelo melhor. Ou por um 3."}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
           </div>
         </TabsContent>
       </Tabs>
