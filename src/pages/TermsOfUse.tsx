@@ -98,14 +98,42 @@ export default function TermsOfUse() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">10. Legislação</h2>
+            <h2 className="font-display font-bold text-lg mb-2">10. Compras e Pagamentos</h2>
+            <p>
+              O Estou de Olho oferece funcionalidades pagas opcionais, como o envio de cartas 
+              no <strong>Modo Redenção</strong> (a partir de R$ 2,99 por carta). A primeira carta é gratuita.
+            </p>
+            <ul className="list-disc pl-6 space-y-1 mt-2">
+              <li>Os pagamentos são processados de forma segura por plataforma terceirizada (Stripe).</li>
+              <li>Não armazenamos dados de cartão de crédito em nossos servidores.</li>
+              <li>Os métodos aceitos incluem cartão de crédito, Apple Pay, Google Pay e Link.</li>
+            </ul>
+            <p className="mt-2">
+              <strong>Direito de arrependimento:</strong> Conforme o Art. 49 do Código de Defesa do Consumidor, 
+              você pode solicitar reembolso em até <strong>7 dias corridos</strong> após a compra, desde que 
+              a carta não tenha sido aberta pela destinatária. Solicite pelo e-mail{" "}
+              <strong>estoudeolho.contato@gmail.com</strong>.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-display font-bold text-lg mb-2">11. Registros de acesso</h2>
+            <p>
+              Conforme o Art. 15 do Marco Civil da Internet (Lei nº 12.965/2014), mantemos 
+              registros de acesso ao aplicativo pelo prazo de <strong>6 meses</strong>, 
+              sob sigilo e em ambiente controlado.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-display font-bold text-lg mb-2">12. Legislação</h2>
             <p>
               Vale a lei brasileira. Qualquer problema vai pro foro da sua cidade.
             </p>
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">11. Contato</h2>
+            <h2 className="font-display font-bold text-lg mb-2">13. Contato</h2>
             <p>
               📧 <strong>estoudeolho.contato@gmail.com</strong><br />
               🌐 <strong>estoudeolho.lovable.app</strong>

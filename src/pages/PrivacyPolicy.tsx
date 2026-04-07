@@ -31,6 +31,14 @@ export default function PrivacyPolicy() {
             <p className="mt-2">
               Seguimos a <strong>LGPD (Lei nº 13.709/2018)</strong>.
             </p>
+            <div className="mt-3 p-3 bg-muted/50 rounded-lg text-xs space-y-1">
+              <p><strong>Controlador dos dados:</strong> Estou de Olho Tecnologia</p>
+              <p><strong>CNPJ:</strong> [Inserir CNPJ quando disponível]</p>
+              <p><strong>E-mail do controlador:</strong> estoudeolho.contato@gmail.com</p>
+              <p><strong>Encarregado (DPO):</strong> Dispensado nos termos da Resolução CD/ANPD nº 2/2022 
+              (agente de tratamento de pequeno porte). Para exercer seus direitos, entre em contato 
+              pelo e-mail acima.</p>
+            </div>
           </section>
 
           <section>
@@ -44,13 +52,21 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">3. Pra que usamos</h2>
+            <h2 className="font-display font-bold text-lg mb-2">3. Pra que usamos e base legal</h2>
             <p>Basicamente: pra fazer o app funcionar. Mais especificamente:</p>
             <ul className="list-disc pl-6 space-y-1 mt-2">
               <li>Mostrar suas tarefas, ranking e agenda.</li>
               <li>Mandar lembretes quando você esquece das coisas (acontece muito).</li>
               <li>Conectar você aos outros membros da família no app.</li>
             </ul>
+            <div className="mt-3 p-3 bg-muted/50 rounded-lg text-xs space-y-1">
+              <p className="font-bold mb-1">Base legal (Art. 7, LGPD):</p>
+              <p>• <strong>Dados de cadastro</strong> (nome, e-mail): execução de contrato (Art. 7, V)</p>
+              <p>• <strong>Dados de uso do app</strong> (tarefas, pontos, ranking): legítimo interesse (Art. 7, IX)</p>
+              <p>• <strong>Notificações push</strong>: consentimento (Art. 7, I)</p>
+              <p>• <strong>Dados de filhos</strong>: consentimento do responsável legal (Art. 14)</p>
+              <p>• <strong>Pagamentos</strong>: execução de contrato e obrigação legal (Art. 7, V e II)</p>
+            </div>
           </section>
 
           <section>
@@ -106,7 +122,29 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">9. Mudanças</h2>
+            <h2 className="font-display font-bold text-lg mb-2">9. Cookies e tecnologias</h2>
+            <p>
+              O Estou de Olho utiliza <strong>cookies essenciais</strong> para manter sua sessão 
+              ativa e garantir o funcionamento do app. Não utilizamos cookies de rastreamento 
+              publicitário ou de terceiros para fins de marketing.
+            </p>
+            <ul className="list-disc pl-6 space-y-1 mt-2">
+              <li><strong>Cookies de sessão:</strong> necessários para manter você logado (base legal: execução de contrato).</li>
+              <li><strong>Armazenamento local:</strong> preferências do app e dados offline (base legal: legítimo interesse).</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="font-display font-bold text-lg mb-2">10. Registros de acesso</h2>
+            <p>
+              Conforme o Art. 15 do Marco Civil da Internet (Lei nº 12.965/2014), mantemos 
+              registros de acesso ao aplicativo pelo prazo de <strong>6 meses</strong>, 
+              sob sigilo e em ambiente controlado de segurança.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-display font-bold text-lg mb-2">11. Mudanças</h2>
             <p>
               Se mudarmos algo importante aqui, avisamos pelo app. 
               Continuar usando depois da mudança significa que você concorda.
@@ -114,7 +152,7 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">10. Fale com a gente</h2>
+            <h2 className="font-display font-bold text-lg mb-2">12. Fale com a gente</h2>
             <p>
               📧 <strong>estoudeolho.contato@gmail.com</strong><br />
               🌐 <strong>estoudeolho.lovable.app</strong>
