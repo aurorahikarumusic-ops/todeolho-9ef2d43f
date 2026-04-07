@@ -871,10 +871,7 @@ export default function Perfil() {
             { path: "/suporte", label: "Suporte", icon: "💬" },
           ].map(link => (
             <button key={link.path} onClick={() => navigate(link.path)}
-              className="text-left text-xs font-body transition-colors py-2 px-3 rounded-lg flex items-center gap-1.5"
-              style={!isMom ? { color: "hsl(var(--dad-accent-hover))" } : { color: "hsl(var(--muted-foreground))" }}
-              onMouseEnter={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--dad-accent))"); }}
-              onMouseLeave={e => { if (!isMom) (e.currentTarget.style.color = "hsl(var(--dad-accent-hover))"); }}>
+              className="text-left text-xs font-body transition-colors py-2 px-3 rounded-lg flex items-center gap-1.5 text-muted-foreground hover:text-foreground">
               <span>{link.icon}</span> {link.label}
             </button>
           ))}
