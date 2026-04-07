@@ -52,13 +52,21 @@ export default function PrivacyPolicy() {
           </section>
 
           <section>
-            <h2 className="font-display font-bold text-lg mb-2">3. Pra que usamos</h2>
+            <h2 className="font-display font-bold text-lg mb-2">3. Pra que usamos e base legal</h2>
             <p>Basicamente: pra fazer o app funcionar. Mais especificamente:</p>
             <ul className="list-disc pl-6 space-y-1 mt-2">
               <li>Mostrar suas tarefas, ranking e agenda.</li>
               <li>Mandar lembretes quando você esquece das coisas (acontece muito).</li>
               <li>Conectar você aos outros membros da família no app.</li>
             </ul>
+            <div className="mt-3 p-3 bg-muted/50 rounded-lg text-xs space-y-1">
+              <p className="font-bold mb-1">Base legal (Art. 7, LGPD):</p>
+              <p>• <strong>Dados de cadastro</strong> (nome, e-mail): execução de contrato (Art. 7, V)</p>
+              <p>• <strong>Dados de uso do app</strong> (tarefas, pontos, ranking): legítimo interesse (Art. 7, IX)</p>
+              <p>• <strong>Notificações push</strong>: consentimento (Art. 7, I)</p>
+              <p>• <strong>Dados de filhos</strong>: consentimento do responsável legal (Art. 14)</p>
+              <p>• <strong>Pagamentos</strong>: execução de contrato e obrigação legal (Art. 7, V e II)</p>
+            </div>
           </section>
 
           <section>
