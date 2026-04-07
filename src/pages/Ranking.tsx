@@ -528,10 +528,10 @@ export default function Ranking() {
       if (pos === 2) return { borderLeft: "4px solid hsl(var(--mom-accent) / 0.5)", background: "linear-gradient(135deg, hsl(var(--mom-accent) / 0.05), hsl(var(--card)))" };
       return {};
     }
-    if (pos === 0) return { border: "3px solid hsl(var(--dad-text))", background: "hsl(var(--dad-bg))", boxShadow: "6px 6px 0 hsl(var(--dad-text))" };
-    if (pos === 1) return { border: "3px solid hsl(var(--dad-text))", background: "hsl(var(--dad-bg))", boxShadow: "4px 4px 0 hsl(var(--dad-text))" };
-    if (pos === 2) return { border: "2px solid hsl(var(--dad-text))", background: "hsl(var(--dad-bg))", boxShadow: "3px 3px 0 hsl(var(--dad-text))" };
-    return { border: "2px solid hsl(var(--dad-border))", background: "#FFF8F1" };
+    if (pos === 0) return { borderLeft: "4px solid hsl(var(--dad-accent))", background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.1), hsl(var(--card)))" };
+    if (pos === 1) return { borderLeft: "4px solid hsl(var(--dad-border))", background: "linear-gradient(135deg, hsl(var(--dad-bg) / 0.5), hsl(var(--card)))" };
+    if (pos === 2) return { borderLeft: "4px solid hsl(var(--dad-accent) / 0.5)", background: "linear-gradient(135deg, hsl(var(--dad-accent) / 0.05), hsl(var(--card)))" };
+    return {};
   };
 
   const renderRankingList = (list: typeof ranking, startIdx = 3) => (
