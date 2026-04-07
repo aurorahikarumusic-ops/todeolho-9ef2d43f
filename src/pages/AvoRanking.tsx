@@ -128,6 +128,7 @@ export default function AvoRanking() {
                 {/* Avatar */}
                 <div className={`relative mb-2 ${isMe ? "ring-2 ring-avo ring-offset-2" : ""} rounded-full`}>
                   <Avatar className="w-14 h-14 border-2 border-avo-border">
+                    <AvatarImage src={avo.avatar_url || undefined} />
                     <AvatarFallback className="bg-avo/20 text-avo font-display text-lg">
                       {(avo.display_name || "V")[0]}
                     </AvatarFallback>
