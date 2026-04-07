@@ -32,8 +32,7 @@ export default function PrivacyPolicy() {
               Seguimos a <strong>LGPD (Lei nº 13.709/2018)</strong>.
             </p>
             <div className="mt-3 p-3 bg-muted/50 rounded-lg text-xs space-y-1">
-              <p><strong>Controlador dos dados:</strong> Estou de Olho Tecnologia</p>
-              <p><strong>CNPJ:</strong> [Inserir CNPJ quando disponível]</p>
+              <p><strong>Controlador dos dados:</strong> Tonylton Silveira Motoki</p>
               <p><strong>E-mail do controlador:</strong> estoudeolho.contato@gmail.com</p>
               <p><strong>Encarregado (DPO):</strong> Dispensado nos termos da Resolução CD/ANPD nº 2/2022 
               (agente de tratamento de pequeno porte). Para exercer seus direitos, entre em contato 
