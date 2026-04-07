@@ -225,12 +225,17 @@ export default function Perfil() {
 
   if (!profile) return null;
 
+  // When mom sends a letter, target the pai specifically
+  const letterRecipient = isMom
+    ? allMembers.find(m => m.role === "pai") || partner
+    : partner;
+
   if (showRedencao) {
     return (
       <ModoRedencao
         onClose={() => setShowRedencao(false)}
-        recipientName={partner?.display_name}
-        recipientId={partner?.user_id}
+        recipientName={letterRecipient?.display_name}
+        recipientId={letterRecipient?.user_id}
       />
     );
   }
