@@ -98,8 +98,9 @@ export default function Dashboard() {
         .select("stars")
         .eq("user_id", user.id)
         .eq("week_start", weekStartDate)
-        .maybeSingle();
-      return data?.stars ?? null;
+        .order("created_at", { ascending: false })
+        .limit(1);
+      return data && data.length > 0 ? data[0].stars : null;
     },
     enabled: !!user,
   });
