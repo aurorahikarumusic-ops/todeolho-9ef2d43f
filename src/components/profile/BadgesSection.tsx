@@ -8,7 +8,7 @@ const DAD_ACHIEVEMENTS = {
     { key: "streak_7", emoji: "🔥", name: "Sequência de 7 dias", desc: "7 dias seguidos de presença" },
     { key: "hero_snack", emoji: "⭐", name: "Herói do Lanche", desc: "Lembrou do lanche sem lembrete" },
     { key: "self_scheduler", emoji: "📅", name: "Agendou Sozinho", desc: "3+ eventos criados em 1 semana" },
-    { key: "photo_proof_5", emoji: "📸", name: "Prova em Mãos", desc: "5 provas fotográficas enviadas" },
+    { key: "weekly_streak_3", emoji: "🔥", name: "Fogo no Streak", desc: "3 semanas seguidas ativo" },
     { key: "top_3", emoji: "🏆", name: "Top 3", desc: "Chegou no pódio do ranking" },
     { key: "missions_10", emoji: "💬", name: "Missão Cumprida", desc: "10 missões diárias completadas" },
     { key: "dad_of_month", emoji: "👑", name: "Pai do Mês", desc: "Venceu o ranking mensal" },
