@@ -321,11 +321,6 @@ export default function Tarefas() {
                 >
                   {urgency.label}
                 </span>
-                {task.proof_required && (
-                  <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-display font-bold">
-                    📸 Prova
-                  </span>
-                )}
               </div>
 
               <p className="text-[10px] font-body italic text-muted-foreground">
