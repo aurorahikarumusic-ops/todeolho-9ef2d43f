@@ -167,17 +167,14 @@ export default function MomTaskApproval({ task, dadName }: Props) {
             <div className="flex flex-col gap-1 shrink-0">
               {isAwaitingApproval && (
                 <>
-                  {task.photo_proof_url && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-7 text-[10px]"
-                      onClick={() => setShowProof(true)}
-                    >
-                      <Camera className="w-3 h-3 mr-1" /> Ver foto
-                    </Button>
-                  )}
                   <Button
+                    size="sm"
+                    className="h-7 text-[10px] bg-primary"
+                    onClick={() => approveMutation.mutate()}
+                    disabled={approveMutation.isPending}
+                  >
+                    <Check className="w-3 h-3 mr-1" /> Aprovar
+                  </Button>
                     size="sm"
                     className="h-7 text-[10px] bg-primary"
                     onClick={() => approveMutation.mutate()}
