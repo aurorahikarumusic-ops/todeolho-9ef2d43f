@@ -223,16 +223,6 @@ export default function MomTaskApproval({ task, dadName }: Props) {
         </CardContent>
       </Card>
 
-      {/* Proof Photo Viewer */}
-      {task.photo_proof_url && (
-        <ProofPhotoViewer
-          open={showProof}
-          onClose={() => setShowProof(false)}
-          photoUrl={task.photo_proof_url}
-          taskTitle={task.title}
-          storagePath={`${task.assigned_to || "unknown"}/${task.id}.jpg`}
-        />
-      )}
 
       {/* Reprove Sheet */}
       <Sheet open={showReprove} onOpenChange={setShowReprove}>
