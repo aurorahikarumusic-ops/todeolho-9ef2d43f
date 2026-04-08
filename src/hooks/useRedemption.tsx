@@ -51,12 +51,7 @@ export function useRedemptionCheck() {
       const monthEnd = endOfMonth(now).toISOString();
 
       // Check if top 3 AND has 4+ stars → never show
-      const { data: rankings } = await supabase
-        .from("profiles")
-        .select("user_id, points")
-        .eq("role", "pai")
-        .order("points", { ascending: false })
-        .limit(50);
+      const { data: rankings } = await supabase.rpc("get_ranking_profiles");
       const rankPos = rankings?.findIndex(p => p.user_id === user.id);
       const isTop3 = rankPos !== undefined && rankPos >= 0 && rankPos < 3;
 
