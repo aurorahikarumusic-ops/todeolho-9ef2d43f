@@ -8,11 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Check, X, Camera, LifeBuoy, Trash2 } from "lucide-react";
+import { Check, X, LifeBuoy, Trash2 } from "lucide-react";
 import { notifyCrossPanel } from "@/lib/notify";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 
 interface Props {
   task: any;
