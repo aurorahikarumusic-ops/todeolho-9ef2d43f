@@ -151,9 +151,6 @@ export default function MomTaskApproval({ task, dadName }: Props) {
                 <p className="text-xs text-muted-foreground font-body mt-1">{task.description}</p>
               )}
               <div className="flex gap-1 mt-2 flex-wrap">
-                {task.proof_required && (
-                  <Badge variant="outline" className="text-[10px]">📸 Prova exigida</Badge>
-                )}
                 {task.urgency === "urgente" && (
                   <Badge className="bg-secondary text-[10px]">⚡ Urgente</Badge>
                 )}
@@ -168,13 +165,6 @@ export default function MomTaskApproval({ task, dadName }: Props) {
               {isAwaitingApproval && (
                 <>
                   <Button
-                    size="sm"
-                    className="h-7 text-[10px] bg-primary"
-                    onClick={() => approveMutation.mutate()}
-                    disabled={approveMutation.isPending}
-                  >
-                    <Check className="w-3 h-3 mr-1" /> Aprovar
-                  </Button>
                     size="sm"
                     className="h-7 text-[10px] bg-primary"
                     onClick={() => approveMutation.mutate()}
