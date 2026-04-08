@@ -18,6 +18,11 @@ serve(async (req) => {
     Deno.env.get("SUPABASE_ANON_KEY") ?? "",
   );
 
+  const serviceClient = createClient(
+    Deno.env.get("SUPABASE_URL") ?? "",
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+  );
+
   try {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) throw new Error("Authorization header missing");
@@ -25,6 +30,21 @@ serve(async (req) => {
     const { data } = await supabaseClient.auth.getUser(token);
     const user = data.user;
     if (!user?.email) throw new Error("User not authenticated");
+
+    // Rate limiting: 5 checkouts per 10 minutes
+    const { data: allowed } = await serviceClient.rpc("check_rate_limit", {
+      p_identifier: user.id,
+      p_function_name: "create-pix-checkout",
+      p_max_requests: 5,
+      p_window_seconds: 600,
+    });
+
+    if (!allowed) {
+      return new Response(JSON.stringify({ error: "Muitas tentativas. Aguarde alguns minutos." }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     const { letterId } = await req.json();
     if (!letterId) throw new Error("letterId is required");

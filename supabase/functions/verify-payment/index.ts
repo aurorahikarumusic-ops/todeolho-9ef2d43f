@@ -30,6 +30,21 @@ serve(async (req) => {
     const user = authData.user;
     if (!user) throw new Error("User not authenticated");
 
+    // Rate limiting: 10 verifications per 5 minutes
+    const { data: allowed } = await supabaseClient.rpc("check_rate_limit", {
+      p_identifier: user.id,
+      p_function_name: "verify-payment",
+      p_max_requests: 10,
+      p_window_seconds: 300,
+    });
+
+    if (!allowed) {
+      return new Response(JSON.stringify({ error: "Muitas tentativas. Aguarde alguns minutos." }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { sessionId } = await req.json();
     if (!sessionId) throw new Error("sessionId is required");
 

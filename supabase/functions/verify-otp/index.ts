@@ -35,6 +35,21 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Rate limiting: 5 attempts per 5 minutes
+    const { data: allowed } = await supabase.rpc("check_rate_limit", {
+      p_identifier: user.id,
+      p_function_name: "verify-otp",
+      p_max_requests: 5,
+      p_window_seconds: 300,
+    });
+
+    if (!allowed) {
+      return new Response(JSON.stringify({ error: "Muitas tentativas. Aguarde 5 minutos." }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const body = await req.json();
     const { otp_code } = body;
 
