@@ -138,49 +138,26 @@ export default function Tarefas() {
     !t.completed_at && !t.rescued_by_mom && t.due_date && isBefore(new Date(t.due_date), new Date())
   );
 
-  // Photo upload
-  const uploadProofPhoto = async (taskId: string, file: File): Promise<string | null> => {
-    if (!user) return null;
-    const ext = file.name.split(".").pop() || "jpg";
-    const path = `${user.id}/${taskId}.${ext}`;
-    const { error } = await supabase.storage.from("task-proofs").upload(path, file, { upsert: true });
-    if (error) throw error;
-    const { data: urlData } = supabase.storage.from("task-proofs").getPublicUrl(path);
-    return urlData.publicUrl;
-  };
-
   const completeTaskMutation = useMutation({
-    mutationFn: async ({ taskId, withPhoto, photoFile }: { taskId: string; withPhoto: boolean; photoFile?: File }) => {
+    mutationFn: async ({ taskId }: { taskId: string }) => {
       const task = tasks.find(t => t.id === taskId);
       if (!task || !user) throw new Error("Erro");
-      const pts = calculatePoints(task, withPhoto);
-      let photoUrl: string | null = null;
-      let storagePath: string | null = null;
-      if (withPhoto && photoFile) {
-        photoUrl = await uploadProofPhoto(taskId, photoFile);
-        const ext = photoFile.name.split(".").pop() || "jpg";
-        storagePath = `${user.id}/${taskId}.${ext}`;
-      }
+      const pts = calculatePoints(task);
       await supabase.from("tasks").update({
         completed_at: new Date().toISOString(),
-        photo_proof_url: photoUrl,
       }).eq("id", taskId);
       if (pts > 0) {
         await supabase.from("profiles").update({ points: (profile?.points || 0) + pts }).eq("user_id", user.id);
       }
-      return { pts, photoUrl, storagePath, taskTitle: task.title };
+      return { pts, taskTitle: task.title };
     },
-    onSuccess: ({ pts, photoUrl, storagePath, taskTitle }) => {
+    onSuccess: ({ pts, taskTitle }) => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       setCompletingTask(null);
-      setProofFile(null);
       if (pts > 0) setCelebration({ points: pts });
-      if (photoUrl && storagePath) {
-        setTimeout(() => setProofViewer({ photoUrl, taskTitle, storagePath }), pts > 0 ? 2000 : 300);
-      }
       if (user && profile?.family_id) {
-        notifyCrossPanel("task_completed", profile.family_id, user.id, { title: taskTitle, has_photo: !!photoUrl });
+        notifyCrossPanel("task_completed", profile.family_id, user.id, { title: taskTitle });
       }
     },
     onError: () => toast.error("Erro ao concluir. Tenta de novo."),
