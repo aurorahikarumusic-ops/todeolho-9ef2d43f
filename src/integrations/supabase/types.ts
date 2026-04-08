@@ -745,6 +745,18 @@ export type Database = {
     }
     Functions: {
       get_current_user_family_id: { Args: never; Returns: string }
+      get_ranking_profiles: {
+        Args: never
+        Returns: {
+          avatar_url: string
+          display_name: string
+          id: string
+          points: number
+          role: string
+          streak_days: number
+          user_id: string
+        }[]
+      }
       join_family_by_code: { Args: { invite_code: string }; Returns: Json }
     }
     Enums: {
