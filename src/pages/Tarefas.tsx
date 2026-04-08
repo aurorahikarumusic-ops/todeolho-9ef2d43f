@@ -687,16 +687,6 @@ export default function Tarefas() {
                 className="mt-1 min-h-[60px] rounded-xl" />
             </div>
 
-            <div className="flex items-center justify-between bg-muted/30 rounded-xl p-3">
-              <div>
-                <Label className="text-xs font-display font-bold">Exigir foto como prova?</Label>
-                <p className="text-[9px] text-muted-foreground font-body">
-                  {isMom ? "Sem foto, ele não ganha ponto." : "Foto vale +15pts bônus."}
-                </p>
-              </div>
-              <Switch checked={newTask.proof_required}
-                onCheckedChange={v => setNewTask(p => ({ ...p, proof_required: v }))} />
-            </div>
 
             {isMom && (
               <div>
