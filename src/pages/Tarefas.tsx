@@ -732,12 +732,8 @@ export default function Tarefas() {
         </SheetContent>
       </Sheet>
 
-      {/* Celebration & Proof Viewer */}
+      {/* Celebration */}
       {celebration && <TaskCelebration points={celebration.points} onClose={() => setCelebration(null)} />}
-      {proofViewer && (
-        <ProofPhotoViewer open={!!proofViewer} onClose={() => setProofViewer(null)}
-          photoUrl={proofViewer.photoUrl} taskTitle={proofViewer.taskTitle} storagePath={proofViewer.storagePath} />
-      )}
     </div>
   );
 }
