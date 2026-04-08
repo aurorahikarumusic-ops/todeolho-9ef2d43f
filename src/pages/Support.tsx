@@ -85,7 +85,7 @@ export default function Support() {
                     <div>
                       <p className="text-xs font-bold">Como ganho pontos?</p>
                       <p className="text-xs text-muted-foreground">
-                        Completando tarefas e missões. Manter o streak ativo ajuda. Foto como prova dá bônus.
+                        Completando tarefas e missões diárias. Manter o streak ativo ajuda.
                       </p>
                     </div>
                   </div>

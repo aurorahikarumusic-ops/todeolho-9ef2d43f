@@ -8,11 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Check, X, Camera, LifeBuoy, Trash2 } from "lucide-react";
+import { Check, X, LifeBuoy, Trash2 } from "lucide-react";
 import { notifyCrossPanel } from "@/lib/notify";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 
 interface Props {
   task: any;
@@ -25,7 +24,7 @@ export default function MomTaskApproval({ task, dadName }: Props) {
   const queryClient = useQueryClient();
   const [showReprove, setShowReprove] = useState(false);
   const [reproveComment, setReproveComment] = useState("");
-  const [showProof, setShowProof] = useState(false);
+  
 
   const approveMutation = useMutation({
     mutationFn: async () => {
@@ -152,9 +151,6 @@ export default function MomTaskApproval({ task, dadName }: Props) {
                 <p className="text-xs text-muted-foreground font-body mt-1">{task.description}</p>
               )}
               <div className="flex gap-1 mt-2 flex-wrap">
-                {task.proof_required && (
-                  <Badge variant="outline" className="text-[10px]">📸 Prova exigida</Badge>
-                )}
                 {task.urgency === "urgente" && (
                   <Badge className="bg-secondary text-[10px]">⚡ Urgente</Badge>
                 )}
@@ -163,34 +159,11 @@ export default function MomTaskApproval({ task, dadName }: Props) {
                 )}
               </div>
 
-              {/* Photo proof thumbnail */}
-              {task.photo_proof_url && (
-                <button
-                  onClick={() => setShowProof(true)}
-                  className="mt-2 rounded-lg overflow-hidden border-2 border-mom/30 hover:border-mom transition-colors w-20 h-20"
-                >
-                  <img
-                    src={task.photo_proof_url}
-                    alt="Prova"
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              )}
             </div>
 
             <div className="flex flex-col gap-1 shrink-0">
               {isAwaitingApproval && (
                 <>
-                  {task.photo_proof_url && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-7 text-[10px]"
-                      onClick={() => setShowProof(true)}
-                    >
-                      <Camera className="w-3 h-3 mr-1" /> Ver foto
-                    </Button>
-                  )}
                   <Button
                     size="sm"
                     className="h-7 text-[10px] bg-primary"
@@ -240,16 +213,6 @@ export default function MomTaskApproval({ task, dadName }: Props) {
         </CardContent>
       </Card>
 
-      {/* Proof Photo Viewer */}
-      {task.photo_proof_url && (
-        <ProofPhotoViewer
-          open={showProof}
-          onClose={() => setShowProof(false)}
-          photoUrl={task.photo_proof_url}
-          taskTitle={task.title}
-          storagePath={`${task.assigned_to || "unknown"}/${task.id}.jpg`}
-        />
-      )}
 
       {/* Reprove Sheet */}
       <Sheet open={showReprove} onOpenChange={setShowReprove}>

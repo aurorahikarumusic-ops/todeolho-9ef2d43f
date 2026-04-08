@@ -10,17 +10,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Switch } from "@/components/ui/switch";
+
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { format, isBefore, isToday, differenceInHours } from "date-fns";
 import {
-  Plus, CheckSquare, Camera, Star, LifeBuoy, Trash2,
+  Plus, CheckSquare, Star, LifeBuoy, Trash2,
   Clock, AlertTriangle, Flame, Trophy, ChevronRight, Zap, Shield
 } from "lucide-react";
 import TaskCelebration from "@/components/tasks/TaskCelebration";
 import { notifyCrossPanel } from "@/lib/notify";
-import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 import MomTaskApproval from "@/components/tasks/MomTaskApproval";
 
 const CATEGORIES: Record<string, { label: string; emoji: string; color: string }> = {
@@ -71,13 +70,13 @@ function getTaskIronicComment(task: any, isMom: boolean) {
   return isMom ? "Aguardando. Tick tock." : "Ainda dá tempo. Não desperdiça.";
 }
 
-function calculatePoints(task: any, withPhoto: boolean): number {
+function calculatePoints(task: any): number {
   if (task.rescued_by_mom) return -30;
   const dueDate = task.due_date ? new Date(task.due_date) : null;
   const now = new Date();
   const isLate = dueDate && isBefore(dueDate, now);
-  if (isLate) return withPhoto ? 20 : 10;
-  return withPhoto ? 50 : 35;
+  if (isLate) return 10;
+  return 35;
 }
 
 export default function Tarefas() {
@@ -88,16 +87,12 @@ export default function Tarefas() {
   const queryClient = useQueryClient();
   const [showAddSheet, setShowAddSheet] = useState(false);
   const [completingTask, setCompletingTask] = useState<any>(null);
-  const [proofFile, setProofFile] = useState<File | null>(null);
   const [expandedTask, setExpandedTask] = useState<string | null>(null);
   const [newTask, setNewTask] = useState({
     title: "", description: "", due_date: "", due_time: "18:00",
-    category: "home", proof_required: isMom, urgency: "normal",
+    category: "home", urgency: "normal",
   });
   const [celebration, setCelebration] = useState<{ points: number } | null>(null);
-  const [proofViewer, setProofViewer] = useState<{
-    photoUrl: string; taskTitle: string; storagePath: string;
-  } | null>(null);
 
   const dadName = partner?.display_name || "o pai";
 
@@ -143,49 +138,26 @@ export default function Tarefas() {
     !t.completed_at && !t.rescued_by_mom && t.due_date && isBefore(new Date(t.due_date), new Date())
   );
 
-  // Photo upload
-  const uploadProofPhoto = async (taskId: string, file: File): Promise<string | null> => {
-    if (!user) return null;
-    const ext = file.name.split(".").pop() || "jpg";
-    const path = `${user.id}/${taskId}.${ext}`;
-    const { error } = await supabase.storage.from("task-proofs").upload(path, file, { upsert: true });
-    if (error) throw error;
-    const { data: urlData } = supabase.storage.from("task-proofs").getPublicUrl(path);
-    return urlData.publicUrl;
-  };
-
   const completeTaskMutation = useMutation({
-    mutationFn: async ({ taskId, withPhoto, photoFile }: { taskId: string; withPhoto: boolean; photoFile?: File }) => {
+    mutationFn: async ({ taskId }: { taskId: string }) => {
       const task = tasks.find(t => t.id === taskId);
       if (!task || !user) throw new Error("Erro");
-      const pts = calculatePoints(task, withPhoto);
-      let photoUrl: string | null = null;
-      let storagePath: string | null = null;
-      if (withPhoto && photoFile) {
-        photoUrl = await uploadProofPhoto(taskId, photoFile);
-        const ext = photoFile.name.split(".").pop() || "jpg";
-        storagePath = `${user.id}/${taskId}.${ext}`;
-      }
+      const pts = calculatePoints(task);
       await supabase.from("tasks").update({
         completed_at: new Date().toISOString(),
-        photo_proof_url: photoUrl,
       }).eq("id", taskId);
       if (pts > 0) {
         await supabase.from("profiles").update({ points: (profile?.points || 0) + pts }).eq("user_id", user.id);
       }
-      return { pts, photoUrl, storagePath, taskTitle: task.title };
+      return { pts, taskTitle: task.title };
     },
-    onSuccess: ({ pts, photoUrl, storagePath, taskTitle }) => {
+    onSuccess: ({ pts, taskTitle }) => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       queryClient.invalidateQueries({ queryKey: ["profile"] });
       setCompletingTask(null);
-      setProofFile(null);
       if (pts > 0) setCelebration({ points: pts });
-      if (photoUrl && storagePath) {
-        setTimeout(() => setProofViewer({ photoUrl, taskTitle, storagePath }), pts > 0 ? 2000 : 300);
-      }
       if (user && profile?.family_id) {
-        notifyCrossPanel("task_completed", profile.family_id, user.id, { title: taskTitle, has_photo: !!photoUrl });
+        notifyCrossPanel("task_completed", profile.family_id, user.id, { title: taskTitle });
       }
     },
     onError: () => toast.error("Erro ao concluir. Tenta de novo."),
@@ -214,7 +186,6 @@ export default function Tarefas() {
         description: newTask.description || null,
         due_date: dueDate,
         category: newTask.category,
-        proof_required: newTask.proof_required,
         family_id: profile.family_id,
         created_by: user.id,
         assigned_to: isMom && partner ? partner.user_id : user.id,
@@ -227,7 +198,7 @@ export default function Tarefas() {
     onSuccess: (inserted) => {
       queryClient.invalidateQueries({ queryKey: ["all-tasks"] });
       setShowAddSheet(false);
-      setNewTask({ title: "", description: "", due_date: "", due_time: "18:00", category: "home", proof_required: false, urgency: "normal" });
+      setNewTask({ title: "", description: "", due_date: "", due_time: "18:00", category: "home", urgency: "normal" });
       toast.success(
         isMom
           ? `Tarefa enviada pro ${dadName}! Ele já foi notificado. 😈`
@@ -350,11 +321,6 @@ export default function Tarefas() {
                 >
                   {urgency.label}
                 </span>
-                {task.proof_required && (
-                  <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 font-display font-bold">
-                    📸 Prova
-                  </span>
-                )}
               </div>
 
               <p className="text-[10px] font-body italic text-muted-foreground">
@@ -427,25 +393,6 @@ export default function Tarefas() {
                   >
                     <Trash2 className="w-3.5 h-3.5 mr-1" />
                     Excluir
-                  </Button>
-                )}
-                {task.photo_proof_url && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-xs h-8 rounded-xl"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const ext = task.photo_proof_url?.split(".").pop()?.split("?")[0] || "jpg";
-                      setProofViewer({
-                        photoUrl: task.photo_proof_url!,
-                        taskTitle: task.title,
-                        storagePath: `${task.assigned_to || task.created_by}/${task.id}.${ext}`,
-                      });
-                    }}
-                  >
-                    <Camera className="w-3.5 h-3.5 mr-1" />
-                    Ver foto
                   </Button>
                 )}
               </div>
@@ -646,7 +593,7 @@ export default function Tarefas() {
       )}
 
       {/* Complete Task Sheet */}
-      <Sheet open={!!completingTask} onOpenChange={(open) => { if (!open) { setCompletingTask(null); setProofFile(null); } }}>
+      <Sheet open={!!completingTask} onOpenChange={(open) => { if (!open) { setCompletingTask(null); } }}>
         <SheetContent side="bottom" className="rounded-t-3xl">
           <SheetHeader>
             <SheetTitle className="font-display text-lg">🎉 Tarefa concluída!</SheetTitle>
@@ -656,67 +603,23 @@ export default function Tarefas() {
               <div className="rounded-2xl p-4 bg-muted/30">
                 <p className="font-display font-bold text-sm">{completingTask.title}</p>
                 <p className="text-[10px] text-muted-foreground font-body mt-1">
-                  {completingTask.proof_required ? "📸 A mãe exigiu foto. Sem foto, sem pontos." : "Foto é opcional, mas vale +15pts bônus."}
+                  Concluir essa tarefa vale +35pts. Bora!
                 </p>
               </div>
 
-              <input type="file" accept="image/*" capture="environment" id="proof-photo" className="hidden"
-                onChange={(e) => setProofFile(e.target.files?.[0] || null)} />
-
-              {proofFile && (
-                <div className="rounded-xl bg-green-500/10 p-2 flex items-center gap-2">
-                  <Camera className="w-4 h-4 text-green-600" />
-                  <p className="text-xs text-green-700 font-body font-bold">📷 {proofFile.name}</p>
-                </div>
-              )}
-
-              {completingTask.proof_required ? (
-                <Button
-                  className="w-full font-display font-bold h-12 rounded-xl"
-                  style={{
-                    background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
-                    boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
-                  }}
-                  onClick={() => {
-                    if (!proofFile) { document.getElementById("proof-photo")?.click(); return; }
-                    completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
-                  }}
-                  disabled={completeTaskMutation.isPending}
-                >
-                  <Camera className="w-4 h-4 mr-2" />
-                  {proofFile ? "Enviar foto e concluir (+50pts)" : "Tirar foto como prova (+50pts)"}
-                </Button>
-              ) : (
-                <div className="space-y-2">
-                  <Button
-                    className="w-full font-display font-bold h-12 rounded-xl"
-                    style={{
-                      background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
-                      boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
-                    }}
-                    onClick={() => {
-                      if (proofFile) {
-                        completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
-                      } else {
-                        completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: false });
-                      }
-                    }}
-                    disabled={completeTaskMutation.isPending}
-                  >
-                    {proofFile ? "Enviar foto e concluir (+50pts)" : "✅ Concluir tarefa (+35pts)"}
-                  </Button>
-                  {!proofFile && (
-                    <Button
-                      variant="outline"
-                      className="w-full font-display text-muted-foreground rounded-xl"
-                      onClick={() => document.getElementById("proof-photo")?.click()}
-                    >
-                      <Camera className="w-4 h-4 mr-2" />
-                      Adicionar foto (+15pts bônus)
-                    </Button>
-                  )}
-                </div>
-              )}
+              <Button
+                className="w-full font-display font-bold h-12 rounded-xl"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+                  boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
+                }}
+                onClick={() => {
+                  completeTaskMutation.mutate({ taskId: completingTask.id });
+                }}
+                disabled={completeTaskMutation.isPending}
+              >
+                ✅ Concluir tarefa (+35pts)
+              </Button>
             </div>
           )}
         </SheetContent>
@@ -779,16 +682,6 @@ export default function Tarefas() {
                 className="mt-1 min-h-[60px] rounded-xl" />
             </div>
 
-            <div className="flex items-center justify-between bg-muted/30 rounded-xl p-3">
-              <div>
-                <Label className="text-xs font-display font-bold">Exigir foto como prova?</Label>
-                <p className="text-[9px] text-muted-foreground font-body">
-                  {isMom ? "Sem foto, ele não ganha ponto." : "Foto vale +15pts bônus."}
-                </p>
-              </div>
-              <Switch checked={newTask.proof_required}
-                onCheckedChange={v => setNewTask(p => ({ ...p, proof_required: v }))} />
-            </div>
 
             {isMom && (
               <div>
@@ -834,12 +727,8 @@ export default function Tarefas() {
         </SheetContent>
       </Sheet>
 
-      {/* Celebration & Proof Viewer */}
+      {/* Celebration */}
       {celebration && <TaskCelebration points={celebration.points} onClose={() => setCelebration(null)} />}
-      {proofViewer && (
-        <ProofPhotoViewer open={!!proofViewer} onClose={() => setProofViewer(null)}
-          photoUrl={proofViewer.photoUrl} taskTitle={proofViewer.taskTitle} storagePath={proofViewer.storagePath} />
-      )}
     </div>
   );
 }
