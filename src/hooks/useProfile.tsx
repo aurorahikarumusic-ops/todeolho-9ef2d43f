@@ -65,12 +65,7 @@ export function useRanking() {
   return useQuery({
     queryKey: ["ranking"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("id, user_id, display_name, points, streak_days, avatar_url, role")
-        .eq("role", "pai")
-        .order("points", { ascending: false })
-        .limit(100);
+      const { data, error } = await supabase.rpc("get_ranking_profiles");
       if (error) throw error;
       return data;
     },

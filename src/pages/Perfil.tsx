@@ -120,8 +120,7 @@ export default function Perfil() {
     queryKey: ["rank-pos", user?.id],
     queryFn: async () => {
       if (isMom) return null;
-      const { data } = await supabase.from("profiles").select("user_id, points")
-        .eq("role", "pai").order("points", { ascending: false }).limit(50);
+      const { data } = await supabase.rpc("get_ranking_profiles");
       if (!data) return null;
       const idx = data.findIndex(p => p.user_id === user?.id);
       return idx >= 0 ? idx + 1 : null;
