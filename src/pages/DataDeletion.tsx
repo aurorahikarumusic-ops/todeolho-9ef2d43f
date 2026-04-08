@@ -73,7 +73,6 @@ export default function DataDeletion() {
               <li>Histórico de tarefas e eventos</li>
               <li>Pontuação, ranking e conquistas</li>
               <li>Dados de notificação push</li>
-              <li>Fotos enviadas como prova de tarefas</li>
               <li>Dados dos perfis de filhos cadastrados</li>
             </ul>
           </section>

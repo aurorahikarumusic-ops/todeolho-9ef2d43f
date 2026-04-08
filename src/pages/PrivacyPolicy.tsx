@@ -43,11 +43,14 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="font-display font-bold text-lg mb-2">2. O que coletamos</h2>
             <ul className="list-disc pl-6 space-y-1 mt-2">
-              <li><strong>Cadastro:</strong> nome, e-mail e foto (se você enviar ou usar o Google).</li>
+              <li><strong>Cadastro:</strong> nome e e-mail (se usar o Google, recebemos apenas nome e e-mail da conta).</li>
               <li><strong>Família:</strong> nomes dos filhos, escola, pediatra, alergias — só o que você escolher preencher.</li>
               <li><strong>Uso do app:</strong> tarefas, eventos, pontos, streaks e conquistas.</li>
               <li><strong>Notificações:</strong> token do dispositivo para enviar lembretes.</li>
             </ul>
+            <div className="mt-3 p-3 bg-muted/50 rounded-lg text-xs">
+              <p>⚠️ <strong>O Estou de Olho não coleta, armazena ou processa imagens, fotos ou arquivos de mídia.</strong> Nenhum upload de imagem é realizado pelo app.</p>
+            </div>
           </section>
 
           <section>
