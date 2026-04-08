@@ -186,7 +186,6 @@ export default function Tarefas() {
         description: newTask.description || null,
         due_date: dueDate,
         category: newTask.category,
-        proof_required: newTask.proof_required,
         family_id: profile.family_id,
         created_by: user.id,
         assigned_to: isMom && partner ? partner.user_id : user.id,
