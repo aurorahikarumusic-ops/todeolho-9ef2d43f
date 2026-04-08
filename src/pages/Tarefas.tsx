@@ -598,7 +598,7 @@ export default function Tarefas() {
       )}
 
       {/* Complete Task Sheet */}
-      <Sheet open={!!completingTask} onOpenChange={(open) => { if (!open) { setCompletingTask(null); setProofFile(null); } }}>
+      <Sheet open={!!completingTask} onOpenChange={(open) => { if (!open) { setCompletingTask(null); } }}>
         <SheetContent side="bottom" className="rounded-t-3xl">
           <SheetHeader>
             <SheetTitle className="font-display text-lg">🎉 Tarefa concluída!</SheetTitle>
@@ -608,67 +608,23 @@ export default function Tarefas() {
               <div className="rounded-2xl p-4 bg-muted/30">
                 <p className="font-display font-bold text-sm">{completingTask.title}</p>
                 <p className="text-[10px] text-muted-foreground font-body mt-1">
-                  {completingTask.proof_required ? "📸 A mãe exigiu foto. Sem foto, sem pontos." : "Foto é opcional, mas vale +15pts bônus."}
+                  Concluir essa tarefa vale +35pts. Bora!
                 </p>
               </div>
 
-              <input type="file" accept="image/*" capture="environment" id="proof-photo" className="hidden"
-                onChange={(e) => setProofFile(e.target.files?.[0] || null)} />
-
-              {proofFile && (
-                <div className="rounded-xl bg-green-500/10 p-2 flex items-center gap-2">
-                  <Camera className="w-4 h-4 text-green-600" />
-                  <p className="text-xs text-green-700 font-body font-bold">📷 {proofFile.name}</p>
-                </div>
-              )}
-
-              {completingTask.proof_required ? (
-                <Button
-                  className="w-full font-display font-bold h-12 rounded-xl"
-                  style={{
-                    background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
-                    boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
-                  }}
-                  onClick={() => {
-                    if (!proofFile) { document.getElementById("proof-photo")?.click(); return; }
-                    completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
-                  }}
-                  disabled={completeTaskMutation.isPending}
-                >
-                  <Camera className="w-4 h-4 mr-2" />
-                  {proofFile ? "Enviar foto e concluir (+50pts)" : "Tirar foto como prova (+50pts)"}
-                </Button>
-              ) : (
-                <div className="space-y-2">
-                  <Button
-                    className="w-full font-display font-bold h-12 rounded-xl"
-                    style={{
-                      background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
-                      boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
-                    }}
-                    onClick={() => {
-                      if (proofFile) {
-                        completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: true, photoFile: proofFile });
-                      } else {
-                        completeTaskMutation.mutate({ taskId: completingTask.id, withPhoto: false });
-                      }
-                    }}
-                    disabled={completeTaskMutation.isPending}
-                  >
-                    {proofFile ? "Enviar foto e concluir (+50pts)" : "✅ Concluir tarefa (+35pts)"}
-                  </Button>
-                  {!proofFile && (
-                    <Button
-                      variant="outline"
-                      className="w-full font-display text-muted-foreground rounded-xl"
-                      onClick={() => document.getElementById("proof-photo")?.click()}
-                    >
-                      <Camera className="w-4 h-4 mr-2" />
-                      Adicionar foto (+15pts bônus)
-                    </Button>
-                  )}
-                </div>
-              )}
+              <Button
+                className="w-full font-display font-bold h-12 rounded-xl"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8))",
+                  boxShadow: "0 4px 16px hsl(var(--primary) / 0.3)",
+                }}
+                onClick={() => {
+                  completeTaskMutation.mutate({ taskId: completingTask.id });
+                }}
+                disabled={completeTaskMutation.isPending}
+              >
+                ✅ Concluir tarefa (+35pts)
+              </Button>
             </div>
           )}
         </SheetContent>
