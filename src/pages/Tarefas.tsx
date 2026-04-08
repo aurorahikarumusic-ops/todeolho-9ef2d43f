@@ -87,16 +87,12 @@ export default function Tarefas() {
   const queryClient = useQueryClient();
   const [showAddSheet, setShowAddSheet] = useState(false);
   const [completingTask, setCompletingTask] = useState<any>(null);
-  const [proofFile, setProofFile] = useState<File | null>(null);
   const [expandedTask, setExpandedTask] = useState<string | null>(null);
   const [newTask, setNewTask] = useState({
     title: "", description: "", due_date: "", due_time: "18:00",
-    category: "home", proof_required: isMom, urgency: "normal",
+    category: "home", urgency: "normal",
   });
   const [celebration, setCelebration] = useState<{ points: number } | null>(null);
-  const [proofViewer, setProofViewer] = useState<{
-    photoUrl: string; taskTitle: string; storagePath: string;
-  } | null>(null);
 
   const dadName = partner?.display_name || "o pai";
 
