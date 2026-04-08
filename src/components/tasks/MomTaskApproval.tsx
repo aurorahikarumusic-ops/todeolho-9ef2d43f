@@ -162,19 +162,6 @@ export default function MomTaskApproval({ task, dadName }: Props) {
                 )}
               </div>
 
-              {/* Photo proof thumbnail */}
-              {task.photo_proof_url && (
-                <button
-                  onClick={() => setShowProof(true)}
-                  className="mt-2 rounded-lg overflow-hidden border-2 border-mom/30 hover:border-mom transition-colors w-20 h-20"
-                >
-                  <img
-                    src={task.photo_proof_url}
-                    alt="Prova"
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              )}
             </div>
 
             <div className="flex flex-col gap-1 shrink-0">
