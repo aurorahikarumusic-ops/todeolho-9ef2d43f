@@ -24,7 +24,7 @@ export default function MomTaskApproval({ task, dadName }: Props) {
   const queryClient = useQueryClient();
   const [showReprove, setShowReprove] = useState(false);
   const [reproveComment, setReproveComment] = useState("");
-  const [showProof, setShowProof] = useState(false);
+  
 
   const approveMutation = useMutation({
     mutationFn: async () => {
