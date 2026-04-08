@@ -400,25 +400,6 @@ export default function Tarefas() {
                     Excluir
                   </Button>
                 )}
-                {task.photo_proof_url && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="text-xs h-8 rounded-xl"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const ext = task.photo_proof_url?.split(".").pop()?.split("?")[0] || "jpg";
-                      setProofViewer({
-                        photoUrl: task.photo_proof_url!,
-                        taskTitle: task.title,
-                        storagePath: `${task.assigned_to || task.created_by}/${task.id}.${ext}`,
-                      });
-                    }}
-                  >
-                    <Camera className="w-3.5 h-3.5 mr-1" />
-                    Ver foto
-                  </Button>
-                )}
               </div>
             </div>
           )}
