@@ -15,12 +15,11 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { format, isBefore, isToday, differenceInHours } from "date-fns";
 import {
-  Plus, CheckSquare, Camera, Star, LifeBuoy, Trash2,
+  Plus, CheckSquare, Star, LifeBuoy, Trash2,
   Clock, AlertTriangle, Flame, Trophy, ChevronRight, Zap, Shield
 } from "lucide-react";
 import TaskCelebration from "@/components/tasks/TaskCelebration";
 import { notifyCrossPanel } from "@/lib/notify";
-import ProofPhotoViewer from "@/components/tasks/ProofPhotoViewer";
 import MomTaskApproval from "@/components/tasks/MomTaskApproval";
 
 const CATEGORIES: Record<string, { label: string; emoji: string; color: string }> = {
