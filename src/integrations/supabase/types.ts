@@ -757,6 +757,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_user_family_id: { Args: { _user_id: string }; Returns: string }
       join_family_by_code: { Args: { invite_code: string }; Returns: Json }
     }
     Enums: {
