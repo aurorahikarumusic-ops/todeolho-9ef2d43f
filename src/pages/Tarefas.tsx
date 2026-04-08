@@ -70,13 +70,13 @@ function getTaskIronicComment(task: any, isMom: boolean) {
   return isMom ? "Aguardando. Tick tock." : "Ainda dá tempo. Não desperdiça.";
 }
 
-function calculatePoints(task: any, withPhoto: boolean): number {
+function calculatePoints(task: any): number {
   if (task.rescued_by_mom) return -30;
   const dueDate = task.due_date ? new Date(task.due_date) : null;
   const now = new Date();
   const isLate = dueDate && isBefore(dueDate, now);
-  if (isLate) return withPhoto ? 20 : 10;
-  return withPhoto ? 50 : 35;
+  if (isLate) return 10;
+  return 35;
 }
 
 export default function Tarefas() {
