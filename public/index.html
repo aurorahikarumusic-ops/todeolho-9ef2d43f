@@ -415,7 +415,45 @@
         </header>
 
         <main id="contentArea" class="flex-1 p-4 sm:p-6 lg:p-10">
-            <!-- As seções de página entrarão aqui -->
+            <!-- 1. Dashboard Welcome Section -->
+            <div id="page-dashboard" class="page-section active space-y-8">
+                <div class="dash-card bg-gradient-to-r from-aqua-50 via-white to-rose-50 p-6 lg:p-10 relative overflow-hidden border-none">
+                    <!-- Background Decoration -->
+                    <div class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 text-aqua-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative z-10">
+                        <div class="max-w-xl">
+                            <h2 class="text-3xl lg:text-4xl font-serif font-bold text-slate-700 mb-2">Olá, Claudia! 💚</h2>
+                            <p class="text-slate-500 leading-relaxed">
+                                Você está na <span class="text-aqua-600 font-bold bg-aqua-100/50 px-2 py-0.5 rounded">semana 6</span> da sua jornada intestinal. Seu corpo está respondendo positivamente às novas fibras fermentáveis.
+                            </p>
+                        </div>
+
+                        <div class="flex gap-3 w-full sm:w-auto">
+                            <!-- Gut Score Card -->
+                            <div class="flex-1 sm:flex-none px-6 py-4 bg-white/60 backdrop-blur shadow-sm rounded-2xl border border-white flex flex-col items-center justify-center text-center">
+                                <span class="text-3xl font-black text-aqua-600 tracking-tighter leading-none">73</span>
+                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Gut Score</span>
+                            </div>
+                            
+                            <!-- Streak Card -->
+                            <div class="flex-1 sm:flex-none px-6 py-4 bg-white/60 backdrop-blur shadow-sm rounded-2xl border border-white flex flex-col items-center justify-center text-center">
+                                <div class="flex items-center gap-1">
+                                    <span class="text-3xl font-black text-orange-500 tracking-tighter leading-none">7</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M17.557 6.462c-.544.367-1.047.814-1.503 1.332C14.82 4.415 12.33 2 9.5 2c-3.037 0-5.5 2.463-5.5 5.5 0 1.25.967 2.378 2.34 3.09C4.845 11.532 4 13.167 4 15c0 3.866 3.134 7 7 7s7-3.134 7-7c0-2.316-1.33-4.32-3.264-5.32 1.134-.73 2.145-1.636 2.986-2.68.841-1.045 1.278-2.227 1.278-3.32 0-.41-.122-.806-.343-1.138v-.08zm-6.557 12.538c-2.206 0-4-1.794-4-4 0-1.127.957-2.073 2.13-2.176.13-.01.246.064.29.18.412 1.11 1.58 2 1.58 2s.11-.89 1.58-2c.044-.116.16-.19.29-.18C14.043 12.927 15 13.873 15 15c0 2.206-1.794 4-4 4z" />
+                                    </svg>
+                                </div>
+                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Dias Seguidos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 </body>
