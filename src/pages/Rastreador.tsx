@@ -93,67 +93,110 @@ export default function Rastreador() {
 
 function DashboardView({ gutScore, setView, getScoreColor, onShowDisclaimer }: any) {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-6">
-      <header className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Olá, Maria!</h1>
-          <p className="text-[#2A8C7E] font-medium flex items-center gap-1">
-            <Sparkles className="w-4 h-4" /> Ciência e bem-estar hoje
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="p-6 space-y-8 relative z-10">
+      <header className="flex justify-between items-center">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight">Olá, Maria</h1>
+          <p className="text-[#2A8C7E] font-semibold flex items-center gap-1.5 text-sm bg-[#A3D9D3]/10 w-fit px-3 py-1 rounded-full">
+            <Sparkles className="w-3.5 h-3.5 fill-[#2A8C7E]/20" /> Seu corpo em equilíbrio
           </p>
         </div>
-        <Button variant="ghost" size="icon" onClick={onShowDisclaimer} className="text-[#A3D9D3]">
-          <Info className="w-6 h-6" />
+        <Button variant="ghost" size="icon" onClick={onShowDisclaimer} className="bg-white/80 backdrop-blur shadow-sm rounded-2xl border border-gray-100 hover:bg-white transition-all">
+          <Info className="w-6 h-6 text-[#2A8C7E]" />
         </Button>
       </header>
 
-      {/* Gut Health Score - Baseado em padrões da Mayo Clinic */}
-      <Card className="p-8 rounded-[2rem] border-none bg-white shadow-lg flex flex-col items-center gap-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4">
-           <Stethoscope className="w-6 h-6 text-[#A3D9D3] opacity-20" />
+      {/* Gut Health Score - Design Premium */}
+      <Card className="p-8 rounded-[2.5rem] border-none bg-white shadow-[0_20px_50px_rgba(42,140,126,0.12)] flex flex-col items-center gap-6 relative overflow-hidden group">
+        <div className="absolute top-0 right-0 p-6">
+           <Stethoscope className="w-10 h-10 text-[#A3D9D3] opacity-10 group-hover:rotate-12 transition-transform duration-500" />
         </div>
-        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">Microbiome Balance Index</h2>
-        <div className="relative w-40 h-40 flex items-center justify-center">
-            <svg className="w-full h-full transform -rotate-90">
-                <circle cx="80" cy="80" r="70" stroke="#F1F5F9" strokeWidth="12" fill="none" />
-                <circle cx="80" cy="80" r="70" stroke="#2A8C7E" strokeWidth="12" fill="none" strokeDasharray={`${gutScore * 4.4} 440`} strokeLinecap="round" />
+        
+        <div className="space-y-1 text-center">
+          <h2 className="text-[10px] font-black text-[#2A8C7E]/40 uppercase tracking-[0.2em]">Microbiome Index</h2>
+          <div className="h-1 w-8 bg-[#A3D9D3] rounded-full mx-auto" />
+        </div>
+
+        <div className="relative w-48 h-48 flex items-center justify-center">
+            {/* Outer Glow */}
+            <div className="absolute inset-0 bg-[#A3D9D3]/20 rounded-full blur-2xl group-hover:bg-[#A3D9D3]/30 transition-colors" />
+            
+            <svg className="w-full h-full transform -rotate-90 relative z-10">
+                <circle cx="96" cy="96" r="82" stroke="#F1F5F9" strokeWidth="10" fill="none" />
+                <circle 
+                  cx="96" 
+                  cy="96" 
+                  r="82" 
+                  stroke="url(#gradientScore)" 
+                  strokeWidth="14" 
+                  fill="none" 
+                  strokeDasharray={`${gutScore * 5.15} 515`} 
+                  strokeLinecap="round" 
+                  className="drop-shadow-[0_0_8px_rgba(42,140,126,0.4)]"
+                />
+                <defs>
+                  <linearGradient id="gradientScore" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#A3D9D3" />
+                    <stop offset="100%" stopColor="#2A8C7E" />
+                  </linearGradient>
+                </defs>
             </svg>
-            <div className="absolute flex flex-col items-center">
-               <span className="text-5xl font-black text-gray-900">{gutScore}</span>
-               <span className="text-[10px] text-gray-400 font-bold uppercase">Optimal</span>
+            <div className="absolute z-20 flex flex-col items-center bg-white rounded-full w-32 h-32 justify-center shadow-inner">
+               <span className="text-6xl font-black text-gray-900 tracking-tighter">{gutScore}</span>
+               <span className="text-[11px] text-[#2A8C7E] font-black uppercase tracking-wider">Ótimo</span>
             </div>
         </div>
-        <p className={`font-bold text-lg text-center ${getScoreColor(gutScore)}`}>
-           {gutScore >= 80 ? "Sua flora está em simbiose clínica!" : "Sinais de disbiose leve detectados."}
-        </p>
+        
+        <div className="text-center space-y-1.5 px-4 relative z-10">
+          <p className={`font-black text-xl tracking-tight ${getScoreColor(gutScore)}`}>
+             Sua flora está vibrante!
+          </p>
+          <p className="text-xs text-gray-400 leading-relaxed max-w-[200px] mx-auto">
+            Seu metabolismo respondeu bem ao café da manhã proteico de ontem.
+          </p>
+        </div>
       </Card>
 
-      <div className="grid grid-cols-2 gap-4">
-        <Button onClick={() => setView("registro_rapido")} className="h-40 rounded-[2rem] bg-[#2A8C7E] text-white flex flex-col gap-3 shadow-xl shadow-[#2A8C7E]/20 group">
-            <div className="p-3 bg-white/20 rounded-2xl group-active:scale-95 transition-transform">
-              <Plus className="w-8 h-8" />
+      <div className="grid grid-cols-2 gap-5">
+        <Button onClick={() => setView("registro_rapido")} className="h-44 rounded-[2.5rem] bg-[#2A8C7E] text-white flex flex-col gap-4 shadow-[0_20px_40px_rgba(42,140,126,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all border-none group">
+            <div className="p-4 bg-white/20 rounded-[1.5rem] group-hover:rotate-6 transition-transform">
+              <Plus className="w-10 h-10" />
             </div>
-            <span className="font-bold text-lg">Check-in<br/>Diário</span>
+            <span className="font-black text-xl leading-tight">Check-in<br/>Diário</span>
         </Button>
-        <div className="flex flex-col gap-4">
-            <Button variant="outline" onClick={() => setView("historico")} className="flex-1 rounded-[1.5rem] border-[#A3D9D3] bg-white flex flex-col gap-1 p-4 shadow-sm">
-               <BarChart3 className="w-6 h-6 text-[#2A8C7E]" />
-               <span className="text-xs font-bold text-gray-600">Padrões</span>
+        <div className="flex flex-col gap-5">
+            <Button variant="outline" onClick={() => setView("historico")} className="flex-1 rounded-[2rem] border-gray-100 bg-white flex flex-col items-center justify-center gap-2 p-5 shadow-sm hover:border-[#A3D9D3] transition-colors group">
+               <div className="p-2.5 bg-[#A3D9D3]/10 rounded-2xl group-hover:bg-[#A3D9D3]/20 transition-colors">
+                  <BarChart3 className="w-7 h-7 text-[#2A8C7E]" />
+               </div>
+               <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Padrões</span>
             </Button>
-            <Button variant="outline" onClick={() => setView("insights")} className="flex-1 rounded-[1.5rem] border-[#A3D9D3] bg-white flex flex-col gap-1 p-4 shadow-sm">
-               <Sparkles className="w-6 h-6 text-[#2A8C7E]" />
-               <span className="text-xs font-bold text-gray-600">Insights</span>
+            <Button variant="outline" onClick={() => setView("insights")} className="flex-1 rounded-[2rem] border-gray-100 bg-white flex flex-col items-center justify-center gap-2 p-5 shadow-sm hover:border-[#A3D9D3] transition-colors group">
+               <div className="p-2.5 bg-[#A3D9D3]/10 rounded-2xl group-hover:bg-[#A3D9D3]/20 transition-colors">
+                  <Sparkles className="w-7 h-7 text-[#2A8C7E]" />
+               </div>
+               <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Insights</span>
             </Button>
         </div>
       </div>
 
-      {/* Tendências Rápidas - Baseado no Midday/LUCI (Menopause Apps EUA) */}
-      <Card className="p-5 rounded-3xl border-none bg-[#FDF8F3]">
-        <h3 className="text-sm font-bold text-gray-500 mb-4 uppercase">Gatilhos Recentes (FODMAPs)</h3>
-        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-           {["Glúten", "Lactose", "Café"].map(trigger => (
-             <div key={trigger} className="px-4 py-2 bg-white rounded-full text-xs font-bold text-[#2A8C7E] border border-[#A3D9D3] whitespace-nowrap">
+      {/* Gatilhos - Design Minimalista */}
+      <Card className="p-6 rounded-[2rem] border-none bg-white/50 backdrop-blur shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.15em]">Gatilhos Ativos</h3>
+          <Info className="w-3.5 h-3.5 text-gray-300" />
+        </div>
+        <div className="flex gap-2.5 overflow-x-auto pb-1 no-scrollbar">
+           {["Glúten", "Café", "Lactose", "Açúcar"].map((trigger, i) => (
+             <motion.div 
+               key={trigger}
+               initial={{ opacity: 0, x: 20 }}
+               animate={{ opacity: 1, x: 0 }}
+               transition={{ delay: i * 0.1 }}
+               className="px-5 py-2.5 bg-white rounded-2xl text-[11px] font-black text-[#2A8C7E] border border-gray-100 shadow-sm whitespace-nowrap active:bg-[#A3D9D3]/10"
+             >
                {trigger}
-             </div>
+             </motion.div>
            ))}
         </div>
       </Card>
