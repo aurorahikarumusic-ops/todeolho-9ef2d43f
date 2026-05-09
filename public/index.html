@@ -767,7 +767,39 @@
             btn.classList.add('scale-110', 'grayscale-0', 'opacity-100');
         }
 
-        function saveCheckin() {
+        function toggleCheck(checkbox) {
+            const label = checkbox.parentElement;
+            const viewBox = label.querySelector('.check-box');
+            const icon = label.querySelector('.check-icon');
+            const text = label.querySelector('span');
+            
+            if (checkbox.checked) {
+                viewBox.classList.add('bg-aqua-400', 'border-aqua-400');
+                viewBox.classList.remove('border-cream-300');
+                icon.classList.remove('opacity-0');
+                icon.classList.add('check-animated');
+                text.classList.add('line-through', 'opacity-40');
+            } else {
+                viewBox.classList.remove('bg-aqua-400', 'border-aqua-400');
+                viewBox.classList.add('border-cream-300');
+                icon.classList.add('opacity-0');
+                icon.classList.remove('check-animated');
+                text.classList.remove('line-through', 'opacity-40');
+            }
+
+            // Atualiza progresso
+            const total = document.querySelectorAll('.check-item').length;
+            const checked = document.querySelectorAll('.check-item:checked').length;
+            const percent = (checked / total) * 100;
+            
+            document.getElementById('checkProgress').innerText = `${checked} de ${total} concluídos`;
+            document.getElementById('checkProgressBar').style.width = `${percent}%`;
+
+            if (checked === total) {
+                document.getElementById('toastMessage').innerText = "🎉 Parabéns! Você concluiu todas as metas de hoje!";
+                saveCheckin();
+            }
+        }
             const toast = document.getElementById('toast');
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 3000);
