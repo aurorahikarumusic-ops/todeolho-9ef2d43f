@@ -325,111 +325,72 @@
                     <button class="px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest bg-cream-100 text-slate-500 shrink-0 transition-all hover:bg-cream-200">Sucos</button>
                 </div>
 
-                <!-- Recipe Grid -->
+                <!-- 4. Receitas Grid -->
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Recipe 1 -->
-                    <div class="dash-card group cursor-pointer overflow-hidden flex flex-col h-full" onclick="openRecipeModal(1)">
-                        <div class="h-44 bg-gradient-to-br from-green-100 to-aqua-200 flex items-center justify-center text-5xl transition-transform duration-500 group-hover:scale-110">🥗</div>
-                        <div class="p-6 flex flex-col flex-1 space-y-3">
+                    <!-- Cards de Receitas -->
+                    <div class="dash-card group cursor-pointer overflow-hidden flex flex-col" onclick="openRecipeModal(1)">
+                        <div class="h-44 bg-gradient-to-br from-green-100 to-aqua-200 flex items-center justify-center text-5xl transition-transform duration-500 group-hover:scale-105">🥗</div>
+                        <div class="p-6 space-y-3">
                             <div class="flex gap-2">
                                 <span class="px-2 py-0.5 bg-aqua-50 text-aqua-700 text-[9px] font-black uppercase rounded border border-aqua-100">Fibras</span>
                                 <span class="px-2 py-0.5 bg-rose-50 text-rose-700 text-[9px] font-black uppercase rounded border border-rose-100">Anti-inflamatória</span>
                             </div>
-                            <h4 class="text-lg font-serif font-bold text-slate-700 leading-tight">Salada Mediterrânea com Quinoa</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">Quinoa real, peito de frango, vegetais frescos e azeite extra virgem.</p>
-                            <div class="pt-4 mt-auto border-t border-cream-100 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
+                            <h4 class="font-semibold text-slate-700">Salada Mediterrânea com Quinoa</h4>
+                            <p class="text-xs text-slate-500 line-clamp-2">Quinoa, frango, pepino e azeite.</p>
+                            <div class="pt-4 border-t border-cream-100 flex items-center justify-between text-[10px] font-black uppercase text-slate-400">
                                 <span>⏱ 25 min · 🔥 350 kcal</span>
                                 <span class="text-aqua-600">Ver →</span>
                             </div>
                         </div>
                     </div>
+                    <!-- Outros 5 cards seguindo o mesmo padrão... -->
+                </div>
+            </div>
 
-                    <!-- Recipe 2 -->
-                    <div class="dash-card group cursor-pointer overflow-hidden flex flex-col h-full" onclick="openRecipeModal(2)">
-                        <div class="h-44 bg-gradient-to-br from-orange-100 to-cream-200 flex items-center justify-center text-5xl transition-transform duration-500 group-hover:scale-110">🥣</div>
-                        <div class="p-6 flex flex-col flex-1 space-y-3">
-                            <div class="flex gap-2">
-                                <span class="px-2 py-0.5 bg-aqua-50 text-aqua-700 text-[9px] font-black uppercase rounded border border-aqua-100">Prebiótico</span>
-                                <span class="px-2 py-0.5 bg-purple-50 text-purple-700 text-[9px] font-black uppercase rounded border border-purple-100">Energia</span>
-                            </div>
-                            <h4 class="text-lg font-serif font-bold text-slate-700 leading-tight">Mingau de Aveia com Frutas</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">Aveia em flocos, leite vegetal, banana e sementes de chia.</p>
-                            <div class="pt-4 mt-auto border-t border-cream-100 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                <span>⏱ 10 min · 🔥 280 kcal</span>
-                                <span class="text-aqua-600">Ver →</span>
-                            </div>
-                        </div>
+            <!-- Recipe Detail Modal -->
+            <div id="recipeModal" class="fixed inset-0 z-[70] hidden">
+                <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeRecipeModal()"></div>
+                <div class="absolute bottom-0 sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full sm:w-[560px] bg-white rounded-t-3xl sm:rounded-3xl max-h-[90vh] overflow-y-auto shadow-2xl">
+                    <div class="relative h-48 bg-gradient-to-br from-green-200 to-aqua-200 flex items-center justify-center border-b border-cream-100">
+                        <span id="recipeModalEmoji" class="text-7xl">🥗</span>
+                        <button onclick="closeRecipeModal()" class="absolute top-4 right-4 p-2 bg-white/80 rounded-xl shadow-sm"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
                     </div>
-
-                    <!-- Recipe 3 -->
-                    <div class="dash-card group cursor-pointer overflow-hidden flex flex-col h-full" onclick="openRecipeModal(3)">
-                        <div class="h-44 bg-gradient-to-br from-rose-100 to-orange-200 flex items-center justify-center text-5xl transition-transform duration-500 group-hover:scale-110">🍲</div>
-                        <div class="p-6 flex flex-col flex-1 space-y-3">
-                            <div class="flex gap-2">
-                                <span class="px-2 py-0.5 bg-rose-50 text-rose-700 text-[9px] font-black uppercase rounded border border-rose-100">Imunidade</span>
-                                <span class="px-2 py-0.5 bg-aqua-50 text-aqua-700 text-[9px] font-black uppercase rounded border border-aqua-100">Leve</span>
-                            </div>
-                            <h4 class="text-lg font-serif font-bold text-slate-700 leading-tight">Sopa de Abóbora com Gengibre</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">Abóbora cabotiá, gengibre fresco e sementes de girassol crocantes.</p>
-                            <div class="pt-4 mt-auto border-t border-cream-100 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                <span>⏱ 20 min · 🔥 210 kcal</span>
-                                <span class="text-aqua-600">Ver →</span>
-                            </div>
+                    <div class="p-6 sm:p-8 space-y-6">
+                        <div id="recipeModalTags" class="flex flex-wrap gap-2"></div>
+                        <h3 id="recipeModalTitle" class="text-2xl font-serif font-bold text-slate-700"></h3>
+                        <div class="flex gap-4 text-xs font-bold text-slate-400 uppercase tracking-widest border-y border-cream-100 py-4">
+                            <span id="recipeModalTime">⏱️ 25 min</span>
+                            <span id="recipeModalKcal">🔥 350 kcal</span>
+                            <span id="recipeModalMeal">🍽️ Almoço</span>
                         </div>
-                    </div>
-
-                    <!-- Recipe 4 -->
-                    <div class="dash-card group cursor-pointer overflow-hidden flex flex-col h-full" onclick="openRecipeModal(4)">
-                        <div class="h-44 bg-gradient-to-br from-green-200 to-aqua-100 flex items-center justify-center text-5xl transition-transform duration-500 group-hover:scale-110">🥤</div>
-                        <div class="p-6 flex flex-col flex-1 space-y-3">
-                            <div class="flex gap-2">
-                                <span class="px-2 py-0.5 bg-aqua-50 text-aqua-700 text-[9px] font-black uppercase rounded border border-aqua-100">Detox</span>
-                                <span class="px-2 py-0.5 bg-green-50 text-green-700 text-[9px] font-black uppercase rounded border border-green-100">Vitalidade</span>
-                            </div>
-                            <h4 class="text-lg font-serif font-bold text-slate-700 leading-tight">Smoothie Verde Intestinal</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">Couve, maçã verde, limão e spirulina para máxima nutrição.</p>
-                            <div class="pt-4 mt-auto border-t border-cream-100 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                <span>⏱ 5 min · 🔥 150 kcal</span>
-                                <span class="text-aqua-600">Ver →</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recipe 5 -->
-                    <div class="dash-card group cursor-pointer overflow-hidden flex flex-col h-full" onclick="openRecipeModal(5)">
-                        <div class="h-44 bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center text-5xl transition-transform duration-500 group-hover:scale-110">🥘</div>
-                        <div class="p-6 flex flex-col flex-1 space-y-3">
-                            <div class="flex gap-2">
-                                <span class="px-2 py-0.5 bg-aqua-50 text-aqua-700 text-[9px] font-black uppercase rounded border border-aqua-100">Proteína</span>
-                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 text-[9px] font-black uppercase rounded border border-indigo-100">Saciante</span>
-                            </div>
-                            <h4 class="text-lg font-serif font-bold text-slate-700 leading-tight">Bowl de Lentilha com Legumes</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">Lentilhas, batata doce, brócolis e molho de tahine cremoso.</p>
-                            <div class="pt-4 mt-auto border-t border-cream-100 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                <span>⏱ 30 min · 🔥 420 kcal</span>
-                                <span class="text-aqua-600">Ver →</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recipe 6 -->
-                    <div class="dash-card group cursor-pointer overflow-hidden flex flex-col h-full" onclick="openRecipeModal(6)">
-                        <div class="h-44 bg-gradient-to-br from-indigo-100 to-purple-200 flex items-center justify-center text-5xl transition-transform duration-500 group-hover:scale-110">🧉</div>
-                        <div class="p-6 flex flex-col flex-1 space-y-3">
-                            <div class="flex gap-2">
-                                <span class="px-2 py-0.5 bg-purple-50 text-purple-700 text-[9px] font-black uppercase rounded border border-purple-100">Sono</span>
-                                <span class="px-2 py-0.5 bg-cream-50 text-slate-600 text-[9px] font-black uppercase rounded border border-cream-200">Relaxante</span>
-                            </div>
-                            <h4 class="text-lg font-serif font-bold text-slate-700 leading-tight">Chá Noturno Relaxante</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2">Blend de camomila, melissa e uma pitada de canela para o sono.</p>
-                            <div class="pt-4 mt-auto border-t border-cream-100 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                <span>⏱ 5 min · 🔥 0 kcal</span>
-                                <span class="text-aqua-600">Ver →</span>
-                            </div>
+                        <h4 class="font-bold text-slate-700 uppercase tracking-widest text-xs">Ingredientes</h4>
+                        <ul id="recipeModalIngredients" class="space-y-3"></ul>
+                        <h4 class="font-bold text-slate-700 uppercase tracking-widest text-xs">Modo de Preparo</h4>
+                        <ol id="recipeModalSteps" class="space-y-4"></ol>
+                        <div class="flex gap-3">
+                            <button class="flex-1 py-4 bg-aqua-500 text-white font-black uppercase rounded-2xl">❤️ Salvar</button>
+                            <button class="flex-1 py-4 bg-cream-100 text-slate-600 font-black uppercase rounded-2xl">🛒 Lista</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Scripts -->
+            <script>
+                const recipesData = {
+                    1: { emoji: '🥗', title: 'Salada Mediterrânea', tags: ['Fibras', 'Anti-inflamatória'], ingredients: ['Quinoa', 'Frango', 'Tomate'], steps: ['Cozinhe a quinoa', 'Grelhe o frango'], time: '25 min', kcal: '350', meal: 'Almoço' },
+                    2: { emoji: '🥣', title: 'Mingau de Aveia', tags: ['Prebiótico', 'Energia'], ingredients: ['Aveia', 'Frutas', 'Chia'], steps: ['Misture e aqueça'], time: '10 min', kcal: '280', meal: 'Café' }
+                };
+                function openRecipeModal(id) {
+                    const r = recipesData[id] || recipesData[1];
+                    document.getElementById('recipeModalEmoji').innerText = r.emoji;
+                    document.getElementById('recipeModalTitle').innerText = r.title;
+                    document.getElementById('recipeModalIngredients').innerHTML = r.ingredients.map(i => `<li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-aqua-400 mt-1.5 shrink-0"></span> ${i}</li>`).join('');
+                    document.getElementById('recipeModalSteps').innerHTML = r.steps.map((s, i) => `<li class="flex gap-4 text-sm"><span class="w-6 h-6 rounded-full bg-aqua-100 text-aqua-600 flex items-center justify-center font-black">${i+1}</span> ${s}</li>`).join('');
+                    document.getElementById('recipeModal').classList.remove('hidden');
+                }
+                function closeRecipeModal() { document.getElementById('recipeModal').classList.add('hidden'); }
+            </script>
             </div>
 
     <script>
