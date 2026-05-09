@@ -375,4 +375,48 @@
             </div>
         </div>
     </aside>
+    <!-- Main Content Wrapper -->
+    <div class="lg:ml-[260px] min-h-screen flex flex-col">
+        <!-- Top Navigation Header -->
+        <header class="sticky top-0 z-30 bg-cream-50/90 backdrop-blur-md border-b border-cream-200 shadow-sm">
+            <div class="flex items-center justify-between px-4 sm:px-6 lg:px-10 py-4">
+                <div class="flex items-center gap-4">
+                    <button class="lg:hidden p-2 text-slate-500 hover:bg-aqua-50 rounded-xl transition-colors" onclick="toggleSidebar()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <div class="flex flex-col">
+                        <p id="greetingText" class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Bom dia, Claudia</p>
+                        <h1 id="pageHeader" class="text-xl font-serif font-bold text-slate-700">Dashboard</h1>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 sm:gap-6">
+                    <!-- Streak Indicator -->
+                    <div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-100 rounded-full">
+                        <div class="text-orange-500 animate-pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.557 6.462c-.544.367-1.047.814-1.503 1.332C14.82 4.415 12.33 2 9.5 2c-3.037 0-5.5 2.463-5.5 5.5 0 1.25.967 2.378 2.34 3.09C4.845 11.532 4 13.167 4 15c0 3.866 3.134 7 7 7s7-3.134 7-7c0-2.316-1.33-4.32-3.264-5.32 1.134-.73 2.145-1.636 2.986-2.68.841-1.045 1.278-2.227 1.278-3.32 0-.41-.122-.806-.343-1.138v-.08zm-6.557 12.538c-2.206 0-4-1.794-4-4 0-1.127.957-2.073 2.13-2.176.13-.01.246.064.29.18.412 1.11 1.58 2 1.58 2s.11-.89 1.58-2c.044-.116.16-.19.29-.18C14.043 12.927 15 13.873 15 15c0 2.206-1.794 4-4 4z" />
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-orange-600">7 dias seguidos!</span>
+                    </div>
+
+                    <!-- Notifications -->
+                    <button class="relative p-2.5 bg-white border border-cream-200 rounded-xl text-slate-400 hover:text-aqua-500 hover:border-aqua-200 transition-all shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-rose-400 rounded-full border-2 border-white"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main id="contentArea" class="flex-1 p-4 sm:p-6 lg:p-10">
+            <!-- As seções de página entrarão aqui -->
+        </main>
+    </div>
+</body>
 </html>
