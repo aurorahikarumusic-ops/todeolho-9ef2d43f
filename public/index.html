@@ -153,12 +153,35 @@
         }
         function navigateTo(pageId, element) {
             document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
+            const target = document.getElementById('page-' + pageId);
+            if (target) target.classList.add('active');
+            
             document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-            element.classList.add('active');
-            document.getElementById('pageHeader').innerText = pageId === 'dashboard' ? 'Dashboard' : 'Rastreador';
+            if (element) element.classList.add('active');
+
+            const headerTitle = document.getElementById('pageHeader');
+            const titles = {
+                'dashboard': 'Dashboard',
+                'rastreador': 'Rastreador de Sintomas',
+                'plano': 'Plano Alimentar',
+                'receitas': 'Receitas',
+                'relatorios': 'Relatórios',
+                'comunidade': 'Comunidade'
+            };
+            if (headerTitle) headerTitle.innerText = titles[pageId] || 'Flora 40+';
+
             if (pageId === 'rastreador') setTimeout(initSymptomsChart, 100);
-            if (window.innerWidth < 1024) toggleSidebar();
+            if (pageId === 'dashboard') setTimeout(initWeeklyChart, 100);
+            if (window.innerWidth < 1024 && document.getElementById('sidebar').classList.contains('open')) toggleSidebar();
+        }
+
+        function selectDay(btn) {
+            document.querySelectorAll('.day-tab').forEach(t => {
+                t.classList.remove('bg-aqua-500', 'text-white', 'shadow-lg', 'shadow-aqua-500/20');
+                t.classList.add('bg-cream-100', 'text-slate-500');
+            });
+            btn.classList.add('bg-aqua-500', 'text-white', 'shadow-lg', 'shadow-aqua-500/20');
+            btn.classList.remove('bg-cream-100', 'text-slate-500');
         }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('show'); }
         function toggleCheck(checkbox) {
