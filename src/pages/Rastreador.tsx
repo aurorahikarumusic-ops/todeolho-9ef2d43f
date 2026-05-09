@@ -50,13 +50,35 @@ export default function Rastreador() {
   const [gutScore, setGutScore] = useState(75);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState("sintomas");
+  const [aiInsight, setAiInsight] = useState<string | null>(null);
+  const [isLoadingInsight, setIsLoadingInsight] = useState(false);
   
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem("flora_onboarding_done");
     if (!hasSeenOnboarding) {
       setShowOnboarding(true);
     }
+    fetchAiInsight();
   }, []);
+
+  const fetchAiInsight = async () => {
+    setIsLoadingInsight(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("flora-ai", {
+        body: { 
+          prompt: "Gere um insight para Maria, uma mulher de 52 anos que registrou inchaço leve ontem, mas completou 2L de água.", 
+          type: "insight" 
+        },
+      });
+      if (error) throw error;
+      setAiInsight(data.content);
+    } catch (error) {
+      console.error("Erro ao buscar insight:", error);
+      setAiInsight("Mantenha o foco na hidratação! Sua dedicação hoje é o equilíbrio de amanhã.");
+    } finally {
+      setIsLoadingInsight(false);
+    }
+  };
 
   const finishOnboarding = () => {
     localStorage.setItem("flora_onboarding_done", "true");
@@ -68,6 +90,7 @@ export default function Rastreador() {
     toast.success("Registro salvo com sucesso!", {
       description: "Seu score de saúde intestinal foi atualizado.",
     });
+    fetchAiInsight();
   };
 
   const habits = [
