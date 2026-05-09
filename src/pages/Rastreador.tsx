@@ -21,6 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // Mock Data e Escalas Validadas (Padrão EUA/Clínico)
 const BRISTOL_SCALE = [
@@ -47,17 +48,18 @@ export default function Rastreador() {
   const [showMedicalDisclaimer, setShowMedicalDisclaimer] = useState(false);
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-[#2A8C7E]";
-    if (score >= 60) return "text-yellow-600";
-    return "text-red-500";
+    if (score >= 80) return "text-[#A3D9D3]";
+    if (score >= 60) return "text-yellow-400";
+    return "text-red-400";
   };
 
   return (
     <div className="max-w-[400px] mx-auto min-h-screen pb-24 relative overflow-hidden">
-      {/* Animated background blobs */}
+      {/* Animated background blobs for Glassmorphism depth */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[20%] right-[-10%] w-[300px] h-[300px] bg-[#A3D9D3]/10 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-[20%] left-[-10%] w-[250px] h-[250px] bg-[#E8C7C8]/10 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-[15%] right-[-10%] w-[300px] h-[300px] bg-[#A3D9D3]/15 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-[20%] left-[-15%] w-[250px] h-[250px] bg-[#E8C7C8]/15 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-[50%] left-[20%] w-[150px] h-[150px] bg-white/5 rounded-full blur-[60px]" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -76,18 +78,17 @@ export default function Rastreador() {
       </AnimatePresence>
 
       <Dialog open={showMedicalDisclaimer} onOpenChange={setShowMedicalDisclaimer}>
-        <DialogContent className="rounded-3xl max-w-[90vw]">
+        <DialogContent className="rounded-[2.5rem] max-w-[90vw] glass-morphism border-white/20 text-white">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-[#2A8C7E]">
+            <DialogTitle className="flex items-center gap-2 text-[#A3D9D3]">
               <AlertCircle className="w-5 h-5" /> Nota Importante
             </DialogTitle>
-            <DialogDescription className="text-gray-700 pt-4 text-base leading-relaxed">
+            <DialogDescription className="text-white/80 pt-4 text-base leading-relaxed">
               Este rastreador baseia-se em escalas clínicas (Bristol e MenoScale) validadas internacionalmente. 
-              Os dados coletados são informativos e não substituem o diagnóstico médico. 
-              Sempre compartilhe seu relatório com seu ginecologista ou nutricionista.
+              Os dados coletados são informativos e não substituem o diagnóstico médico.
             </DialogDescription>
           </DialogHeader>
-          <Button onClick={() => setShowMedicalDisclaimer(false)} className="w-full bg-[#2A8C7E] rounded-full py-6 text-lg font-bold">
+          <Button onClick={() => setShowMedicalDisclaimer(false)} className="w-full glass-button py-6 text-lg font-bold">
             Entendido
           </Button>
         </DialogContent>
@@ -111,7 +112,7 @@ function DashboardView({ gutScore, setView, getScoreColor, onShowDisclaimer }: a
         </Button>
       </header>
 
-      {/* Gut Health Score - Design Premium Glassmorphism */}
+      {/* Gut Health Score - Glassmorphism Design */}
       <Card className="p-8 rounded-[2.5rem] border-none bg-white/10 backdrop-blur-xl shadow-2xl flex flex-col items-center gap-6 relative overflow-hidden group border border-white/20">
         <div className="absolute top-0 right-0 p-6">
            <Stethoscope className="w-10 h-10 text-white opacity-10 group-hover:rotate-12 transition-transform duration-500" />
@@ -123,7 +124,6 @@ function DashboardView({ gutScore, setView, getScoreColor, onShowDisclaimer }: a
         </div>
 
         <div className="relative w-48 h-48 flex items-center justify-center">
-            {/* Inner Glow */}
             <div className="absolute inset-4 bg-white/5 rounded-full blur-xl" />
             
             <svg className="w-full h-full transform -rotate-90 relative z-10">
@@ -185,7 +185,7 @@ function DashboardView({ gutScore, setView, getScoreColor, onShowDisclaimer }: a
         </div>
       </div>
 
-      {/* Gatilhos - Glassmorphism Minimalista */}
+      {/* Gatilhos - Minimalist Glassmorphism */}
       <Card className="p-6 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xs font-black text-white/40 uppercase tracking-[0.15em]">Gatilhos Ativos</h3>
@@ -216,21 +216,21 @@ function QuickRegisterView({ setView }: any) {
   return (
     <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="p-6 space-y-8 relative z-10">
        <header className="flex items-center justify-between">
-          <button onClick={() => setView("dashboard")} className="text-gray-400 hover:text-[#2A8C7E] font-black uppercase text-[10px] tracking-widest flex items-center gap-1.5 transition-colors">
+          <button onClick={() => setView("dashboard")} className="text-white/60 hover:text-white font-black uppercase text-[10px] tracking-widest flex items-center gap-1.5 transition-colors bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
             <ArrowLeft className="w-4 h-4" /> Cancelar
           </button>
           <div className="flex gap-1.5">
             {[1, 2, 3].map(s => (
-              <div key={s} className={`h-1.5 w-10 rounded-full transition-all duration-500 ${step >= s ? 'bg-[#2A8C7E]' : 'bg-gray-200'}`} />
+              <div key={s} className={`h-1.5 w-10 rounded-full transition-all duration-500 ${step >= s ? 'bg-[#A3D9D3] shadow-[0_0_8px_rgba(163,217,211,0.5)]' : 'bg-white/10'}`} />
             ))}
           </div>
        </header>
 
        {step === 1 && (
-         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 text-white">
             <div className="space-y-2">
-              <h2 className="text-3xl font-black text-gray-900 leading-tight tracking-tight">Saúde Digestiva</h2>
-              <p className="text-[#2A8C7E] font-bold text-sm bg-[#A3D9D3]/10 w-fit px-3 py-1 rounded-full">Escala de Bristol</p>
+              <h2 className="text-3xl font-display font-black leading-tight tracking-tight">Saúde Digestiva</h2>
+              <p className="text-[#A3D9D3] font-bold text-sm bg-white/10 backdrop-blur-md w-fit px-3 py-1 rounded-full border border-white/10 uppercase tracking-wider">Escala de Bristol</p>
             </div>
             
             <div className="grid grid-cols-1 gap-4">
@@ -241,27 +241,27 @@ function QuickRegisterView({ setView }: any) {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
                   onClick={() => setBristol(item.type)}
-                  className={`p-5 rounded-[2rem] border-2 text-left transition-all flex justify-between items-center group ${bristol === item.type ? 'border-[#2A8C7E] bg-white shadow-xl shadow-[#2A8C7E]/10' : 'border-gray-50 bg-white/50'}`}
+                  className={`p-5 rounded-[2rem] border transition-all flex justify-between items-center group ${bristol === item.type ? 'border-white/40 bg-white/20 shadow-2xl scale-[1.02]' : 'border-white/10 bg-white/5 backdrop-blur-lg'}`}
                  >
-                   <div className="flex flex-col gap-0.5">
-                      <span className={`font-black text-sm uppercase tracking-wider transition-colors ${bristol === item.type ? 'text-[#2A8C7E]' : 'text-gray-400'}`}>Tipo {item.type}</span>
-                      <span className={`font-bold text-base tracking-tight ${bristol === item.type ? 'text-gray-900' : 'text-gray-500'}`}>{item.desc}</span>
+                   <div className="flex flex-col gap-0.5 text-left">
+                      <span className={`font-black text-[10px] uppercase tracking-wider transition-colors ${bristol === item.type ? 'text-[#A3D9D3]' : 'text-white/40'}`}>Tipo {item.type}</span>
+                      <span className={`font-bold text-base tracking-tight ${bristol === item.type ? 'text-white' : 'text-white/70'}`}>{item.desc}</span>
                    </div>
-                   <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${bristol === item.type ? 'bg-[#2A8C7E] border-[#2A8C7E]' : 'border-gray-100 group-hover:border-[#A3D9D3]'}`}>
-                      {bristol === item.type && <CheckCircle2 className="w-4 h-4 text-white" />}
+                   <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${bristol === item.type ? 'bg-[#A3D9D3] border-[#A3D9D3] shadow-[0_0_10px_rgba(163,217,211,0.4)]' : 'border-white/20 group-hover:border-white/40'}`}>
+                      {bristol === item.type && <CheckCircle2 className="w-4 h-4 text-[#1E5A5A]" />}
                    </div>
                  </motion.button>
                ))}
             </div>
-            <Button onClick={() => setStep(2)} className="w-full h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-[0_15px_30px_rgba(42,140,126,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all border-none">Próximo</Button>
+            <Button onClick={() => setStep(2)} className="w-full h-20 rounded-full glass-button font-black text-xl shadow-2xl border-white/30 text-white hover:scale-[1.02]">Próximo</Button>
          </motion.div>
        )}
 
        {step === 2 && (
-         <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
+         <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 text-white">
             <div className="space-y-2">
-              <h2 className="text-3xl font-black text-gray-900 leading-tight tracking-tight">Equilíbrio Hormonal</h2>
-              <p className="text-[#E8C7C8] font-bold text-sm bg-[#E8C7C8]/10 w-fit px-3 py-1 rounded-full tracking-tight">Intensidade dos Sintomas</p>
+              <h2 className="text-3xl font-display font-black leading-tight tracking-tight">Equilíbrio Hormonal</h2>
+              <p className="text-[#E8C7C8] font-bold text-sm bg-white/10 backdrop-blur-md w-fit px-3 py-1 rounded-full border border-white/10 tracking-tight uppercase">Intensidade dos Sintomas</p>
             </div>
 
             <div className="space-y-10 py-4">
@@ -275,13 +275,13 @@ function QuickRegisterView({ setView }: any) {
                  >
                     <div className="flex items-center justify-between">
                        <div className="flex items-center gap-3">
-                          <div className="p-3 bg-white rounded-2xl shadow-sm border border-gray-50"><s.icon className="w-5 h-5 text-[#2A8C7E]" /></div>
-                          <Label className="font-black text-gray-800 tracking-tight text-lg">{s.label}</Label>
+                          <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl shadow-sm border border-white/10"><s.icon className="w-5 h-5 text-[#A3D9D3]" /></div>
+                          <Label className="font-display font-black text-white tracking-tight text-xl">{s.label}</Label>
                        </div>
                     </div>
                     <div className="px-1">
                       <Slider defaultValue={[0]} max={10} step={1} className="py-2" />
-                      <div className="flex justify-between text-[10px] font-black text-gray-300 uppercase tracking-widest mt-1">
+                      <div className="flex justify-between text-[10px] font-black text-white/30 uppercase tracking-widest mt-1">
                          <span>Leve</span>
                          <span>Intenso</span>
                       </div>
@@ -290,48 +290,48 @@ function QuickRegisterView({ setView }: any) {
                ))}
             </div>
             <div className="flex gap-4">
-              <Button variant="outline" onClick={() => setStep(1)} className="w-24 h-20 rounded-full border-gray-200 bg-white font-black text-gray-400">Voltar</Button>
-              <Button onClick={() => setStep(3)} className="flex-1 h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-lg">Próximo</Button>
+              <Button variant="outline" onClick={() => setStep(1)} className="w-24 h-20 rounded-full border-white/10 bg-white/5 font-black text-white/40 hover:bg-white/10">Voltar</Button>
+              <Button onClick={() => setStep(3)} className="flex-1 h-20 rounded-full glass-button font-black text-xl shadow-lg border-white/30 text-white">Próximo</Button>
             </div>
          </motion.div>
        )}
 
        {step === 3 && (
-         <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+         <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 text-white">
             <div className="space-y-2">
-              <h2 className="text-3xl font-black text-gray-900 leading-tight tracking-tight">Hábitos & Estilo</h2>
-              <p className="text-[#2A8C7E] font-bold text-sm bg-[#A3D9D3]/10 w-fit px-3 py-1 rounded-full">Metas das Últimas 24h</p>
+              <h2 className="text-3xl font-display font-black leading-tight tracking-tight">Hábitos & Estilo</h2>
+              <p className="text-[#A3D9D3] font-bold text-sm bg-white/10 backdrop-blur-md w-fit px-3 py-1 rounded-full border border-white/10 uppercase tracking-wider">Metas Diárias</p>
             </div>
 
             <div className="space-y-5">
-               <Card className="p-6 rounded-[2.5rem] border-none bg-white shadow-sm space-y-6">
+               <Card className="p-6 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl space-y-6">
                   <div className="flex items-center justify-between group cursor-pointer">
                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-[#FDF8F3] rounded-2xl"><Utensils className="w-6 h-6 text-[#2A8C7E]" /></div>
+                        <div className="p-3 bg-white/10 rounded-2xl border border-white/10"><Utensils className="w-6 h-6 text-[#A3D9D3]" /></div>
                         <div className="flex flex-col">
-                           <span className="text-base font-black text-gray-900 tracking-tight">Fibras (30g)</span>
-                           <span className="text-xs text-gray-400 font-medium tracking-tight">Vital para o estroboloma</span>
+                           <span className="text-base font-black text-white tracking-tight">Fibras (30g)</span>
+                           <span className="text-[10px] text-white/40 font-bold uppercase tracking-tight">Estroboloma</span>
                         </div>
                      </div>
-                     <Checkbox className="h-7 w-7 rounded-xl border-2 border-gray-100 data-[state=checked]:bg-[#2A8C7E] data-[state=checked]:border-[#2A8C7E] transition-all" />
+                     <Checkbox className="h-7 w-7 rounded-xl border-2 border-white/10 data-[state=checked]:bg-[#A3D9D3] data-[state=checked]:border-[#A3D9D3] transition-all" />
                   </div>
                   
-                  <div className="h-px bg-gray-50 w-full" />
+                  <div className="h-px bg-white/5 w-full" />
 
                   <div className="flex items-center justify-between group cursor-pointer">
                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-[#FDF8F3] rounded-2xl"><Droplets className="w-6 h-6 text-[#2A8C7E]" /></div>
+                        <div className="p-3 bg-white/10 rounded-2xl border border-white/10"><Droplets className="w-6 h-6 text-[#A3D9D3]" /></div>
                         <div className="flex flex-col">
-                           <span className="text-base font-black text-gray-900 tracking-tight">Hidratação (2L)</span>
-                           <span className="text-xs text-gray-400 font-medium tracking-tight">Redução de inchaço</span>
+                           <span className="text-base font-black text-white tracking-tight">Hidratação (2L)</span>
+                           <span className="text-[10px] text-white/40 font-bold uppercase tracking-tight">Anti-inchaço</span>
                         </div>
                      </div>
-                     <Checkbox className="h-7 w-7 rounded-xl border-2 border-gray-100 data-[state=checked]:bg-[#2A8C7E] data-[state=checked]:border-[#2A8C7E] transition-all" />
+                     <Checkbox className="h-7 w-7 rounded-xl border-2 border-white/10 data-[state=checked]:bg-[#A3D9D3] data-[state=checked]:border-[#A3D9D3] transition-all" />
                   </div>
                </Card>
-               <Textarea placeholder="Algo a mais para sua nutri? (Ex: Estresse, suplementos...)" className="rounded-[2.5rem] p-8 min-h-[160px] bg-white border-none shadow-sm focus-visible:ring-1 focus-visible:ring-[#A3D9D3] text-gray-700 font-medium placeholder:text-gray-300" />
+               <Textarea placeholder="Algo mais sobre seu dia?" className="rounded-[2.5rem] p-8 min-h-[160px] bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl focus-visible:ring-1 focus-visible:ring-[#A3D9D3] text-white font-medium placeholder:text-white/20" />
             </div>
-            <Button onClick={() => toast.success("Registro Clínico Salvo!") || setView("dashboard")} className="w-full h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-[0_15px_30px_rgba(42,140,126,0.3)]">Finalizar</Button>
+            <Button onClick={() => toast.success("Registro Clínico Salvo!") || setView("dashboard")} className="w-full h-20 rounded-full glass-button font-black text-xl shadow-2xl border-white/30 text-white">Finalizar</Button>
          </motion.div>
        )}
     </motion.div>
@@ -340,21 +340,21 @@ function QuickRegisterView({ setView }: any) {
 
 function HistoryView({ setView }: any) {
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-8 relative z-10">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-8 relative z-10 text-white">
            <header className="flex items-center gap-4">
-             <button onClick={() => setView("dashboard")} className="p-3 bg-white rounded-2xl shadow-sm border border-gray-50 text-[#2A8C7E]">
+             <button onClick={() => setView("dashboard")} className="p-3 glass-morphism rounded-2xl border-white/10 text-white">
                <ArrowLeft className="w-5 h-5" />
              </button>
-             <h2 className="text-2xl font-black text-gray-900 tracking-tight">Sua Jornada</h2>
+             <h2 className="text-2xl font-display font-black tracking-tight">Sua Jornada</h2>
            </header>
            
-           <Card className="p-8 rounded-[2.5rem] bg-white border-none shadow-[0_15px_40px_rgba(0,0,0,0.04)] space-y-6">
+           <Card className="p-8 rounded-[2.5rem] glass-morphism border-white/10 shadow-2xl space-y-6">
              <div className="flex items-center justify-between">
                <div className="flex items-center gap-3">
-                 <div className="p-2.5 bg-[#A3D9D3]/10 rounded-xl"><Activity className="w-5 h-5 text-[#2A8C7E]" /></div>
-                 <h3 className="font-black text-gray-900 uppercase tracking-wider text-xs">Eixo Intestino-Hormônio</h3>
+                 <div className="p-2.5 bg-white/10 rounded-xl"><Activity className="w-5 h-5 text-[#A3D9D3]" /></div>
+                 <h3 className="font-black text-white/80 uppercase tracking-wider text-xs">Eixo Intestino-Hormônio</h3>
                </div>
-               <div className="text-[10px] font-black text-[#2A8C7E] bg-[#A3D9D3]/10 px-2 py-1 rounded-md">7 DIAS</div>
+               <div className="text-[10px] font-black text-[#A3D9D3] bg-white/10 px-2 py-1 rounded-md uppercase">7 DIAS</div>
              </div>
 
              <div className="h-48 flex items-end justify-between gap-1.5 px-2">
@@ -364,24 +364,23 @@ function HistoryView({ setView }: any) {
                       initial={{ height: 0 }} 
                       animate={{ height: `${h}%` }} 
                       transition={{ delay: i * 0.1, duration: 0.8, ease: "circOut" }}
-                      className={`w-full max-w-[12px] rounded-full transition-all duration-300 ${i === 3 ? 'bg-[#2A8C7E]' : 'bg-[#A3D9D3]/30 group-hover:bg-[#A3D9D3]'}`} 
+                      className={`w-full max-w-[12px] rounded-full transition-all duration-300 ${i === 3 ? 'bg-[#A3D9D3] shadow-[0_0_10px_rgba(163,217,211,0.5)]' : 'bg-white/10 group-hover:bg-white/20'}`} 
                     />
-                    <span className="text-[8px] font-black text-gray-300 uppercase">{['S','T','Q','Q','S','S','D'][i]}</span>
+                    <span className="text-[8px] font-black text-white/30 uppercase tracking-tighter">{['S','T','Q','Q','S','S','D'][i]}</span>
                   </div>
                 ))}
              </div>
              
-             <p className="text-[11px] text-gray-400 font-bold leading-relaxed text-center px-4">
-               Houve um aumento de <span className="text-[#2A8C7E]">12% na estabilidade hormonal</span> esta semana em comparação com a anterior.
+             <p className="text-[11px] text-white/60 font-bold leading-relaxed text-center px-4 italic">
+               Houve um aumento de <span className="text-[#A3D9D3]">12% na estabilidade hormonal</span> esta semana.
              </p>
            </Card>
 
            <div className="space-y-4">
-             <Button className="w-full h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-lg border-none flex gap-3 items-center justify-center group">
+             <Button className="w-full h-20 rounded-full glass-button font-black text-xl shadow-lg flex gap-3 items-center justify-center group">
                 <ChevronDown className="w-6 h-6 group-hover:translate-y-1 transition-transform" /> 
-                Baixar PDF Médico
+                Baixar Relatório Médico
              </Button>
-             <p className="text-center text-[10px] font-black text-gray-300 uppercase tracking-widest">Relatório otimizado para consulta</p>
            </div>
         </motion.div>
     );
@@ -389,22 +388,22 @@ function HistoryView({ setView }: any) {
 
 function InsightsView({ setView }: any) {
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-8 relative z-10">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-8 relative z-10 text-white">
            <header className="flex items-center gap-4">
-             <button onClick={() => setView("dashboard")} className="p-3 bg-white rounded-2xl shadow-sm border border-gray-50 text-[#2A8C7E]">
+             <button onClick={() => setView("dashboard")} className="p-3 glass-morphism rounded-2xl border-white/10 text-white">
                <ArrowLeft className="w-5 h-5" />
              </button>
-             <h2 className="text-2xl font-black text-gray-900 tracking-tight">Análise da Flora</h2>
+             <h2 className="text-2xl font-display font-black tracking-tight">Análise da Flora</h2>
            </header>
 
-           <Card className="p-8 rounded-[2.5rem] bg-gradient-to-br from-[#2A8C7E] to-[#1F6B60] border-none relative overflow-hidden shadow-2xl shadow-[#2A8C7E]/20">
+           <Card className="p-8 rounded-[2.5rem] bg-gradient-to-br from-[#A3D9D3]/20 to-white/5 backdrop-blur-xl border border-white/20 relative overflow-hidden shadow-2xl">
               <Sparkles className="w-32 h-32 text-white/10 absolute -top-8 -right-8" />
               <div className="space-y-6 relative z-10">
                 <div className="flex items-center gap-2 text-[#A3D9D3] font-black uppercase text-[10px] tracking-widest">
                   <Brain className="w-4 h-4 fill-[#A3D9D3]/20" /> Insight Personalizado
                 </div>
-                <p className="text-white leading-relaxed font-bold text-xl tracking-tight">
-                  "Sua digestão está 2x mais eficiente após as 18h quando você inclui sementes de abóbora no jantar. O magnésio parece ser a chave."
+                <p className="text-white leading-relaxed font-bold text-xl tracking-tight italic">
+                  "Sua digestão está 2x mais eficiente após as 18h quando você inclui sementes de abóbora no jantar."
                 </p>
                 <div className="pt-6 border-t border-white/10 flex items-center justify-between text-[9px] font-black text-white/40 uppercase tracking-widest">
                    <span>Baseado em 14 registros</span>
@@ -414,16 +413,16 @@ function InsightsView({ setView }: any) {
            </Card>
 
            <div className="grid grid-cols-1 gap-4">
-             <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-2">Recomendação do Dia</h3>
-             <Card className="p-5 rounded-3xl border-none bg-white shadow-sm flex items-center gap-5 hover:shadow-md transition-shadow cursor-pointer">
-                <div className="w-16 h-16 bg-[#FDF8F3] rounded-[1.5rem] flex items-center justify-center shadow-inner border border-gray-50">
-                  <Coffee className="w-8 h-8 text-[#2A8C7E]" />
+             <h3 className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] px-2">Recomendação do Dia</h3>
+             <Card className="p-5 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-lg shadow-sm flex items-center gap-5 hover:bg-white/10 transition-all cursor-pointer group">
+                <div className="w-16 h-16 glass-morphism rounded-[1.5rem] flex items-center justify-center shadow-inner border border-white/10">
+                  <Coffee className="w-8 h-8 text-[#A3D9D3] group-hover:scale-110 transition-transform" />
                 </div>
                 <div className="space-y-0.5">
-                   <p className="font-black text-gray-900 text-lg tracking-tight">Shot Matinal</p>
-                   <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Metabolismo & Fibras</p>
+                   <p className="font-display font-black text-white text-lg tracking-tight">Shot Matinal</p>
+                   <p className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Metabolismo & Fibras</p>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-200 ml-auto" />
+                <ChevronRight className="w-5 h-5 text-white/20 ml-auto" />
              </Card>
            </div>
         </motion.div>
