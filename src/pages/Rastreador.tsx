@@ -53,7 +53,8 @@ export default function Rastreador() {
   };
 
   return (
-    <div className="max-w-[400px] mx-auto min-h-screen pb-24 bg-[#F8F5F1]">
+    <div className="max-w-[400px] mx-auto min-h-screen pb-24 bg-[#FDFBF9]">
+      <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-[#A3D9D3]/20 to-transparent pointer-events-none" />
       <AnimatePresence mode="wait">
         {view === "dashboard" && (
           <DashboardView 
