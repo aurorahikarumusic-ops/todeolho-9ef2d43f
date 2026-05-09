@@ -121,21 +121,79 @@
                 <div class="dash-card p-6 lg:p-8"><h3 class="text-lg font-bold text-slate-700 mb-8">Progresso Semanal</h3><div class="h-72"><canvas id="weeklyChart"></canvas></div></div>
             </div>
 
-            <!-- SYMPTOMS SECTION -->
-            <div id="page-rastreador" class="page-section space-y-8">
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="dash-card p-5"><span class="text-[10px] uppercase font-black text-slate-400">Registros</span><br><span class="text-2xl font-black text-aqua-600">14 Dias</span></div>
-                    <div class="dash-card p-5"><span class="text-[10px] uppercase font-black text-slate-400">Inchaço</span><br><span class="text-2xl font-black text-green-500">↓ 23%</span></div>
+            <!-- 3. Plano Alimentar -->
+            <div id="page-plano" class="page-section space-y-8">
+                <!-- Day Tabs -->
+                <div class="flex items-center gap-3 overflow-x-auto no-scrollbar pb-4 -mx-2 px-2">
+                    <button onclick="selectDay(this)" class="day-tab px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest bg-aqua-500 text-white shadow-lg shadow-aqua-500/20 shrink-0 transition-all">Seg</button>
+                    <button onclick="selectDay(this)" class="day-tab px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest bg-cream-100 text-slate-500 shrink-0 transition-all hover:bg-cream-200">Ter</button>
+                    <button onclick="selectDay(this)" class="day-tab px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest bg-cream-100 text-slate-500 shrink-0 transition-all hover:bg-cream-200">Qua</button>
+                    <button onclick="selectDay(this)" class="day-tab px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest bg-cream-100 text-slate-500 shrink-0 transition-all hover:bg-cream-200">Qui</button>
+                    <button onclick="selectDay(this)" class="day-tab px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest bg-cream-100 text-slate-500 shrink-0 transition-all hover:bg-cream-200">Sex</button>
+                    <button onclick="selectDay(this)" class="day-tab px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest bg-cream-100 text-slate-500 shrink-0 transition-all hover:bg-cream-200">Sáb</button>
+                    <button onclick="selectDay(this)" class="day-tab px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest bg-cream-100 text-slate-500 shrink-0 transition-all hover:bg-cream-200">Dom</button>
                 </div>
-                <div class="dash-card p-6 lg:p-8"><h3 class="text-lg font-bold text-slate-700 mb-8">Evolução dos Sintomas</h3><div class="h-72"><canvas id="symptomsChart"></canvas></div></div>
-                <div class="dash-card p-6 lg:p-8">
-                    <h3 class="text-lg font-bold text-slate-700 mb-8">Registro de Hoje</h3>
-                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div class="space-y-4"><label class="text-xs uppercase font-black text-slate-400">Intestinal</label><div class="flex gap-2" id="bowelSelect"><button onclick="selectBowel(this, '0')" class="flex-1 py-3 bg-cream-50 border border-cream-200 rounded-xl font-bold">0</button><button onclick="selectBowel(this, '1')" class="flex-1 py-3 bg-cream-50 border border-cream-200 rounded-xl font-bold">1</button></div></div>
-                        <div class="space-y-4"><label class="text-xs uppercase font-black text-slate-400">Água</label><div class="flex items-center gap-4"><button onclick="adjustWater(-1)" class="w-10 h-10 border rounded-full">-</button><span id="waterCount" class="font-black">3</span><button onclick="adjustWater(1)" class="w-10 h-10 border rounded-full">+</button></div></div>
-                        <div class="space-y-4"><label class="text-xs uppercase font-black text-slate-400">Humor</label><div class="flex justify-between" id="moodSelect"><button onclick="selectMood(this, '😢')" class="text-2xl grayscale opacity-40">😢</button><button onclick="selectMood(this, '😄')" class="text-2xl grayscale opacity-40">😄</button></div></div>
+
+                <!-- Meal Cards -->
+                <div class="space-y-6 max-w-4xl">
+                    <div class="dash-card p-6 flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-gradient-to-br from-aqua-100 to-aqua-200 flex items-center justify-center text-4xl shrink-0 shadow-inner">☕</div>
+                        <div class="flex-1 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-aqua-600">08:00 · Café da Manhã</span>
+                                    <span class="px-2 py-0.5 bg-aqua-50 text-aqua-700 text-[9px] font-black uppercase rounded border border-aqua-100">Probiótico</span>
+                                </div>
+                                <span class="text-xs font-bold text-slate-400 italic">210 kcal</span>
+                            </div>
+                            <h4 class="text-xl font-serif font-bold text-slate-700 leading-tight">Smoothie de Kefir com Frutas Vermelhas</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Kefir de leite + mirtilos + morangos + semente de abóbora + linhaça dourada.</p>
+                            <span class="text-[10px] font-bold text-slate-400">⏱️ 5 min</span>
+                        </div>
                     </div>
-                    <button onclick="saveSymptomLog()" class="animate-pulse-soft w-full mt-10 py-5 bg-aqua-500 text-white font-black uppercase tracking-[0.2em] rounded-2xl border-none">Salvar Registro</button>
+
+                    <div class="dash-card p-6 flex flex-col sm:flex-row gap-6 items-start border-aqua-200 shadow-lg scale-[1.01]">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-gradient-to-br from-green-100 to-aqua-200 flex items-center justify-center text-4xl shrink-0 shadow-inner">🥗</div>
+                        <div class="flex-1 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-aqua-600">13:00 · Almoço</span>
+                                    <span class="px-2 py-0.5 bg-aqua-50 text-aqua-700 text-[9px] font-black uppercase rounded border border-aqua-100">Fibras</span>
+                                </div>
+                                <span class="text-xs font-bold text-slate-400 italic">450 kcal</span>
+                            </div>
+                            <h4 class="text-xl font-serif font-bold text-slate-700 leading-tight">Salada Mediterrânea com Quinoa e Frango</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Quinoa + frango + tomate cereja + pepino + azeite + limão siciliano.</p>
+                            <span class="text-[10px] font-bold text-slate-400">⏱️ 25 min</span>
+                        </div>
+                    </div>
+
+                    <div class="dash-card p-6 flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-gradient-to-br from-rose-100 to-rose-200 flex items-center justify-center text-4xl shrink-0 shadow-inner">🍲</div>
+                        <div class="flex-1 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-rose-500">19:30 · Jantar</span>
+                                    <span class="px-2 py-0.5 bg-rose-50 text-rose-700 text-[9px] font-black uppercase rounded border border-rose-100">Leve</span>
+                                </div>
+                                <span class="text-xs font-bold text-slate-400 italic">320 kcal</span>
+                            </div>
+                            <h4 class="text-xl font-serif font-bold text-slate-700 leading-tight">Sopa Detox de Abóbora com Gengibre</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Abóbora cabotiá + gengibre fresco + cúrcuma + sementes de girassol.</p>
+                            <span class="text-[10px] font-bold text-slate-400">⏱️ 20 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumo Nutricional -->
+                <div class="dash-card p-8 mt-12 bg-slate-700 text-white border-none shadow-2xl overflow-hidden relative">
+                    <div class="flex items-center gap-3 mb-8 text-aqua-200 uppercase font-black tracking-[0.2em] text-[10px]">Resumo Nutricional</div>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div><span class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Calorias</span><span class="text-3xl font-black">1.080</span></div>
+                        <div><span class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Fibras</span><span class="text-3xl font-black text-aqua-400">38g</span></div>
+                        <div><span class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Proteínas</span><span class="text-3xl font-black text-rose-300">72g</span></div>
+                        <div><span class="text-[10px] font-bold uppercase text-slate-400 block mb-1">Carbos</span><span class="text-3xl font-black text-orange-300">45g</span></div>
+                    </div>
                 </div>
             </div>
         </main>
