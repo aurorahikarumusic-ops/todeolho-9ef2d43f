@@ -509,7 +509,8 @@
             if (pageId === 'dashboard') { setTimeout(initWeeklyChart, 100); }
             if (pageId === 'rastreador') { setTimeout(initSymptomsChart, 100); }
             if (pageId === 'relatorios') { setTimeout(initMonthlyChart, 100); }
-            if (window.innerWidth < 1024 && document.getElementById('sidebar').classList.contains('open')) toggleSidebar();
+            
+            closeSidebar();
         }
 
         function selectDay(btn) {
@@ -521,6 +522,7 @@
             btn.classList.remove('bg-cream-100', 'text-slate-500');
         }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('show'); document.body.classList.toggle('overflow-hidden'); }
+        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); document.body.classList.remove('overflow-hidden'); }
         function toggleCheck(checkbox) {
             const viewBox = checkbox.parentElement.querySelector('.check-box');
             const icon = checkbox.parentElement.querySelector('.check-icon');
