@@ -53,7 +53,8 @@ export default function Rastreador() {
   };
 
   return (
-    <div className="max-w-[400px] mx-auto min-h-screen pb-24 bg-[#F8F5F1]">
+    <div className="max-w-[400px] mx-auto min-h-screen pb-24 bg-[#FDFBF9]">
+      <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-[#A3D9D3]/20 to-transparent pointer-events-none" />
       <AnimatePresence mode="wait">
         {view === "dashboard" && (
           <DashboardView 
@@ -92,67 +93,110 @@ export default function Rastreador() {
 
 function DashboardView({ gutScore, setView, getScoreColor, onShowDisclaimer }: any) {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-6">
-      <header className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Olá, Maria!</h1>
-          <p className="text-[#2A8C7E] font-medium flex items-center gap-1">
-            <Sparkles className="w-4 h-4" /> Ciência e bem-estar hoje
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="p-6 space-y-8 relative z-10">
+      <header className="flex justify-between items-center">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight">Olá, Maria</h1>
+          <p className="text-[#2A8C7E] font-semibold flex items-center gap-1.5 text-sm bg-[#A3D9D3]/10 w-fit px-3 py-1 rounded-full">
+            <Sparkles className="w-3.5 h-3.5 fill-[#2A8C7E]/20" /> Seu corpo em equilíbrio
           </p>
         </div>
-        <Button variant="ghost" size="icon" onClick={onShowDisclaimer} className="text-[#A3D9D3]">
-          <Info className="w-6 h-6" />
+        <Button variant="ghost" size="icon" onClick={onShowDisclaimer} className="bg-white/80 backdrop-blur shadow-sm rounded-2xl border border-gray-100 hover:bg-white transition-all">
+          <Info className="w-6 h-6 text-[#2A8C7E]" />
         </Button>
       </header>
 
-      {/* Gut Health Score - Baseado em padrões da Mayo Clinic */}
-      <Card className="p-8 rounded-[2rem] border-none bg-white shadow-lg flex flex-col items-center gap-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4">
-           <Stethoscope className="w-6 h-6 text-[#A3D9D3] opacity-20" />
+      {/* Gut Health Score - Design Premium */}
+      <Card className="p-8 rounded-[2.5rem] border-none bg-white shadow-[0_20px_50px_rgba(42,140,126,0.12)] flex flex-col items-center gap-6 relative overflow-hidden group">
+        <div className="absolute top-0 right-0 p-6">
+           <Stethoscope className="w-10 h-10 text-[#A3D9D3] opacity-10 group-hover:rotate-12 transition-transform duration-500" />
         </div>
-        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest">Microbiome Balance Index</h2>
-        <div className="relative w-40 h-40 flex items-center justify-center">
-            <svg className="w-full h-full transform -rotate-90">
-                <circle cx="80" cy="80" r="70" stroke="#F1F5F9" strokeWidth="12" fill="none" />
-                <circle cx="80" cy="80" r="70" stroke="#2A8C7E" strokeWidth="12" fill="none" strokeDasharray={`${gutScore * 4.4} 440`} strokeLinecap="round" />
+        
+        <div className="space-y-1 text-center">
+          <h2 className="text-[10px] font-black text-[#2A8C7E]/40 uppercase tracking-[0.2em]">Microbiome Index</h2>
+          <div className="h-1 w-8 bg-[#A3D9D3] rounded-full mx-auto" />
+        </div>
+
+        <div className="relative w-48 h-48 flex items-center justify-center">
+            {/* Outer Glow */}
+            <div className="absolute inset-0 bg-[#A3D9D3]/20 rounded-full blur-2xl group-hover:bg-[#A3D9D3]/30 transition-colors" />
+            
+            <svg className="w-full h-full transform -rotate-90 relative z-10">
+                <circle cx="96" cy="96" r="82" stroke="#F1F5F9" strokeWidth="10" fill="none" />
+                <circle 
+                  cx="96" 
+                  cy="96" 
+                  r="82" 
+                  stroke="url(#gradientScore)" 
+                  strokeWidth="14" 
+                  fill="none" 
+                  strokeDasharray={`${gutScore * 5.15} 515`} 
+                  strokeLinecap="round" 
+                  className="drop-shadow-[0_0_8px_rgba(42,140,126,0.4)]"
+                />
+                <defs>
+                  <linearGradient id="gradientScore" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#A3D9D3" />
+                    <stop offset="100%" stopColor="#2A8C7E" />
+                  </linearGradient>
+                </defs>
             </svg>
-            <div className="absolute flex flex-col items-center">
-               <span className="text-5xl font-black text-gray-900">{gutScore}</span>
-               <span className="text-[10px] text-gray-400 font-bold uppercase">Optimal</span>
+            <div className="absolute z-20 flex flex-col items-center bg-white rounded-full w-32 h-32 justify-center shadow-inner">
+               <span className="text-6xl font-black text-gray-900 tracking-tighter">{gutScore}</span>
+               <span className="text-[11px] text-[#2A8C7E] font-black uppercase tracking-wider">Ótimo</span>
             </div>
         </div>
-        <p className={`font-bold text-lg text-center ${getScoreColor(gutScore)}`}>
-           {gutScore >= 80 ? "Sua flora está em simbiose clínica!" : "Sinais de disbiose leve detectados."}
-        </p>
+        
+        <div className="text-center space-y-1.5 px-4 relative z-10">
+          <p className={`font-black text-xl tracking-tight ${getScoreColor(gutScore)}`}>
+             Sua flora está vibrante!
+          </p>
+          <p className="text-xs text-gray-400 leading-relaxed max-w-[200px] mx-auto">
+            Seu metabolismo respondeu bem ao café da manhã proteico de ontem.
+          </p>
+        </div>
       </Card>
 
-      <div className="grid grid-cols-2 gap-4">
-        <Button onClick={() => setView("registro_rapido")} className="h-40 rounded-[2rem] bg-[#2A8C7E] text-white flex flex-col gap-3 shadow-xl shadow-[#2A8C7E]/20 group">
-            <div className="p-3 bg-white/20 rounded-2xl group-active:scale-95 transition-transform">
-              <Plus className="w-8 h-8" />
+      <div className="grid grid-cols-2 gap-5">
+        <Button onClick={() => setView("registro_rapido")} className="h-44 rounded-[2.5rem] bg-[#2A8C7E] text-white flex flex-col gap-4 shadow-[0_20px_40px_rgba(42,140,126,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all border-none group">
+            <div className="p-4 bg-white/20 rounded-[1.5rem] group-hover:rotate-6 transition-transform">
+              <Plus className="w-10 h-10" />
             </div>
-            <span className="font-bold text-lg">Check-in<br/>Diário</span>
+            <span className="font-black text-xl leading-tight">Check-in<br/>Diário</span>
         </Button>
-        <div className="flex flex-col gap-4">
-            <Button variant="outline" onClick={() => setView("historico")} className="flex-1 rounded-[1.5rem] border-[#A3D9D3] bg-white flex flex-col gap-1 p-4 shadow-sm">
-               <BarChart3 className="w-6 h-6 text-[#2A8C7E]" />
-               <span className="text-xs font-bold text-gray-600">Padrões</span>
+        <div className="flex flex-col gap-5">
+            <Button variant="outline" onClick={() => setView("historico")} className="flex-1 rounded-[2rem] border-gray-100 bg-white flex flex-col items-center justify-center gap-2 p-5 shadow-sm hover:border-[#A3D9D3] transition-colors group">
+               <div className="p-2.5 bg-[#A3D9D3]/10 rounded-2xl group-hover:bg-[#A3D9D3]/20 transition-colors">
+                  <BarChart3 className="w-7 h-7 text-[#2A8C7E]" />
+               </div>
+               <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Padrões</span>
             </Button>
-            <Button variant="outline" onClick={() => setView("insights")} className="flex-1 rounded-[1.5rem] border-[#A3D9D3] bg-white flex flex-col gap-1 p-4 shadow-sm">
-               <Sparkles className="w-6 h-6 text-[#2A8C7E]" />
-               <span className="text-xs font-bold text-gray-600">Insights</span>
+            <Button variant="outline" onClick={() => setView("insights")} className="flex-1 rounded-[2rem] border-gray-100 bg-white flex flex-col items-center justify-center gap-2 p-5 shadow-sm hover:border-[#A3D9D3] transition-colors group">
+               <div className="p-2.5 bg-[#A3D9D3]/10 rounded-2xl group-hover:bg-[#A3D9D3]/20 transition-colors">
+                  <Sparkles className="w-7 h-7 text-[#2A8C7E]" />
+               </div>
+               <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Insights</span>
             </Button>
         </div>
       </div>
 
-      {/* Tendências Rápidas - Baseado no Midday/LUCI (Menopause Apps EUA) */}
-      <Card className="p-5 rounded-3xl border-none bg-[#FDF8F3]">
-        <h3 className="text-sm font-bold text-gray-500 mb-4 uppercase">Gatilhos Recentes (FODMAPs)</h3>
-        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-           {["Glúten", "Lactose", "Café"].map(trigger => (
-             <div key={trigger} className="px-4 py-2 bg-white rounded-full text-xs font-bold text-[#2A8C7E] border border-[#A3D9D3] whitespace-nowrap">
+      {/* Gatilhos - Design Minimalista */}
+      <Card className="p-6 rounded-[2rem] border-none bg-white/50 backdrop-blur shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.15em]">Gatilhos Ativos</h3>
+          <Info className="w-3.5 h-3.5 text-gray-300" />
+        </div>
+        <div className="flex gap-2.5 overflow-x-auto pb-1 no-scrollbar">
+           {["Glúten", "Café", "Lactose", "Açúcar"].map((trigger, i) => (
+             <motion.div 
+               key={trigger}
+               initial={{ opacity: 0, x: 20 }}
+               animate={{ opacity: 1, x: 0 }}
+               transition={{ delay: i * 0.1 }}
+               className="px-5 py-2.5 bg-white rounded-2xl text-[11px] font-black text-[#2A8C7E] border border-gray-100 shadow-sm whitespace-nowrap active:bg-[#A3D9D3]/10"
+             >
                {trigger}
-             </div>
+             </motion.div>
            ))}
         </div>
       </Card>
@@ -165,86 +209,124 @@ function QuickRegisterView({ setView }: any) {
   const [bristol, setBristol] = useState(4);
 
   return (
-    <motion.div initial={{ x: 300 }} animate={{ x: 0 }} exit={{ x: -300 }} className="p-6 space-y-6">
+    <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="p-6 space-y-8 relative z-10">
        <header className="flex items-center justify-between">
-          <button onClick={() => setView("dashboard")} className="text-[#2A8C7E] font-bold flex items-center gap-1">
-            <ArrowLeft className="w-5 h-5" /> Sair
+          <button onClick={() => setView("dashboard")} className="text-gray-400 hover:text-[#2A8C7E] font-black uppercase text-[10px] tracking-widest flex items-center gap-1.5 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Cancelar
           </button>
-          <div className="flex gap-1">
+          <div className="flex gap-1.5">
             {[1, 2, 3].map(s => (
-              <div key={s} className={`h-1.5 w-8 rounded-full ${step >= s ? 'bg-[#2A8C7E]' : 'bg-gray-200'}`} />
+              <div key={s} className={`h-1.5 w-10 rounded-full transition-all duration-500 ${step >= s ? 'bg-[#2A8C7E]' : 'bg-gray-200'}`} />
             ))}
           </div>
        </header>
 
        {step === 1 && (
-         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <h2 className="text-2xl font-black text-gray-900 leading-tight">Como foi sua evacuação?<br/><span className="text-[#2A8C7E] text-lg font-medium">Escala de Bristol</span></h2>
-            <div className="grid grid-cols-1 gap-3">
-               {BRISTOL_SCALE.map(item => (
-                 <button 
+         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-black text-gray-900 leading-tight tracking-tight">Saúde Digestiva</h2>
+              <p className="text-[#2A8C7E] font-bold text-sm bg-[#A3D9D3]/10 w-fit px-3 py-1 rounded-full">Escala de Bristol</p>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4">
+               {BRISTOL_SCALE.map((item, i) => (
+                 <motion.button 
                   key={item.type}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
                   onClick={() => setBristol(item.type)}
-                  className={`p-4 rounded-2xl border-2 text-left transition-all flex justify-between items-center ${bristol === item.type ? 'border-[#2A8C7E] bg-[#A3D9D3]/10 shadow-md' : 'border-gray-100 bg-white'}`}
+                  className={`p-5 rounded-[2rem] border-2 text-left transition-all flex justify-between items-center group ${bristol === item.type ? 'border-[#2A8C7E] bg-white shadow-xl shadow-[#2A8C7E]/10' : 'border-gray-50 bg-white/50'}`}
                  >
-                   <div className="flex flex-col">
-                      <span className="font-bold text-gray-900">Tipo {item.type}</span>
-                      <span className="text-xs text-gray-500">{item.desc}</span>
+                   <div className="flex flex-col gap-0.5">
+                      <span className={`font-black text-sm uppercase tracking-wider transition-colors ${bristol === item.type ? 'text-[#2A8C7E]' : 'text-gray-400'}`}>Tipo {item.type}</span>
+                      <span className={`font-bold text-base tracking-tight ${bristol === item.type ? 'text-gray-900' : 'text-gray-500'}`}>{item.desc}</span>
                    </div>
-                   {bristol === item.type && <CheckCircle2 className="w-5 h-5 text-[#2A8C7E]" />}
-                 </button>
+                   <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${bristol === item.type ? 'bg-[#2A8C7E] border-[#2A8C7E]' : 'border-gray-100 group-hover:border-[#A3D9D3]'}`}>
+                      {bristol === item.type && <CheckCircle2 className="w-4 h-4 text-white" />}
+                   </div>
+                 </motion.button>
                ))}
             </div>
-            <Button onClick={() => setStep(2)} className="w-full h-16 rounded-full bg-[#2A8C7E] font-bold text-lg shadow-lg">Próximo</Button>
+            <Button onClick={() => setStep(2)} className="w-full h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-[0_15px_30px_rgba(42,140,126,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all border-none">Próximo</Button>
          </motion.div>
        )}
 
        {step === 2 && (
-         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <h2 className="text-2xl font-black text-gray-900 leading-tight">Sintomas da Menopausa<br/><span className="text-[#E8C7C8] text-lg font-medium">Frequência/Intensidade</span></h2>
-            <div className="space-y-6">
-               {MENOPAUSE_SYMPTOMS.map(s => (
-                 <div key={s.id} className="space-y-3">
-                    <div className="flex items-center gap-3">
-                       <div className="p-2 bg-[#F8F5F1] rounded-xl"><s.icon className="w-5 h-5 text-[#2A8C7E]" /></div>
-                       <Label className="font-bold text-gray-800">{s.label}</Label>
+         <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-black text-gray-900 leading-tight tracking-tight">Equilíbrio Hormonal</h2>
+              <p className="text-[#E8C7C8] font-bold text-sm bg-[#E8C7C8]/10 w-fit px-3 py-1 rounded-full tracking-tight">Intensidade dos Sintomas</p>
+            </div>
+
+            <div className="space-y-10 py-4">
+               {MENOPAUSE_SYMPTOMS.map((s, i) => (
+                 <motion.div 
+                   key={s.id} 
+                   className="space-y-4"
+                   initial={{ opacity: 0, y: 10 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   transition={{ delay: i * 0.1 }}
+                 >
+                    <div className="flex items-center justify-between">
+                       <div className="flex items-center gap-3">
+                          <div className="p-3 bg-white rounded-2xl shadow-sm border border-gray-50"><s.icon className="w-5 h-5 text-[#2A8C7E]" /></div>
+                          <Label className="font-black text-gray-800 tracking-tight text-lg">{s.label}</Label>
+                       </div>
                     </div>
-                    <Slider defaultValue={[0]} max={10} step={1} className="py-2" />
-                    <div className="flex justify-between text-[10px] font-bold text-gray-400 uppercase">
-                       <span>Leve</span>
-                       <span>Moderado</span>
-                       <span>Severo</span>
+                    <div className="px-1">
+                      <Slider defaultValue={[0]} max={10} step={1} className="py-2" />
+                      <div className="flex justify-between text-[10px] font-black text-gray-300 uppercase tracking-widest mt-1">
+                         <span>Leve</span>
+                         <span>Intenso</span>
+                      </div>
                     </div>
-                 </div>
+                 </motion.div>
                ))}
             </div>
             <div className="flex gap-4">
-              <Button variant="outline" onClick={() => setStep(1)} className="w-20 h-16 rounded-full border-[#A3D9D3]">Voltar</Button>
-              <Button onClick={() => setStep(3)} className="flex-1 h-16 rounded-full bg-[#2A8C7E] font-bold text-lg shadow-lg">Próximo</Button>
+              <Button variant="outline" onClick={() => setStep(1)} className="w-24 h-20 rounded-full border-gray-200 bg-white font-black text-gray-400">Voltar</Button>
+              <Button onClick={() => setStep(3)} className="flex-1 h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-lg">Próximo</Button>
             </div>
          </motion.div>
        )}
 
        {step === 3 && (
-         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <h2 className="text-2xl font-black text-gray-900 leading-tight">Gatilhos e Hábitos<br/><span className="text-[#2A8C7E] text-lg font-medium">Últimas 24 horas</span></h2>
-            <div className="space-y-4">
-               <Card className="p-5 rounded-3xl border-none bg-white">
-                  <Label className="font-bold text-gray-800 mb-4 block">Ingestão de Fibras & Água</Label>
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                       <div className="flex items-center gap-2"><Utensils className="w-5 h-5 text-[#2A8C7E]" /> <span className="text-sm font-medium">Meta 30g Fibras</span></div>
-                       <Checkbox className="h-6 w-6 rounded-lg border-[#2A8C7E]" />
-                    </div>
-                    <div className="flex items-center justify-between">
-                       <div className="flex items-center gap-2"><Droplets className="w-5 h-5 text-[#2A8C7E]" /> <span className="text-sm font-medium">Meta 2L Água</span></div>
-                       <Checkbox className="h-6 w-6 rounded-lg border-[#2A8C7E]" />
-                    </div>
+         <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-black text-gray-900 leading-tight tracking-tight">Hábitos & Estilo</h2>
+              <p className="text-[#2A8C7E] font-bold text-sm bg-[#A3D9D3]/10 w-fit px-3 py-1 rounded-full">Metas das Últimas 24h</p>
+            </div>
+
+            <div className="space-y-5">
+               <Card className="p-6 rounded-[2.5rem] border-none bg-white shadow-sm space-y-6">
+                  <div className="flex items-center justify-between group cursor-pointer">
+                     <div className="flex items-center gap-4">
+                        <div className="p-3 bg-[#FDF8F3] rounded-2xl"><Utensils className="w-6 h-6 text-[#2A8C7E]" /></div>
+                        <div className="flex flex-col">
+                           <span className="text-base font-black text-gray-900 tracking-tight">Fibras (30g)</span>
+                           <span className="text-xs text-gray-400 font-medium tracking-tight">Vital para o estroboloma</span>
+                        </div>
+                     </div>
+                     <Checkbox className="h-7 w-7 rounded-xl border-2 border-gray-100 data-[state=checked]:bg-[#2A8C7E] data-[state=checked]:border-[#2A8C7E] transition-all" />
+                  </div>
+                  
+                  <div className="h-px bg-gray-50 w-full" />
+
+                  <div className="flex items-center justify-between group cursor-pointer">
+                     <div className="flex items-center gap-4">
+                        <div className="p-3 bg-[#FDF8F3] rounded-2xl"><Droplets className="w-6 h-6 text-[#2A8C7E]" /></div>
+                        <div className="flex flex-col">
+                           <span className="text-base font-black text-gray-900 tracking-tight">Hidratação (2L)</span>
+                           <span className="text-xs text-gray-400 font-medium tracking-tight">Redução de inchaço</span>
+                        </div>
+                     </div>
+                     <Checkbox className="h-7 w-7 rounded-xl border-2 border-gray-100 data-[state=checked]:bg-[#2A8C7E] data-[state=checked]:border-[#2A8C7E] transition-all" />
                   </div>
                </Card>
-               <Textarea placeholder="Observações extras (ex: tomei café tarde, estresse no trabalho...)" className="rounded-3xl min-h-[120px] bg-white border-none focus-visible:ring-[#2A8C7E]" />
+               <Textarea placeholder="Algo a mais para sua nutri? (Ex: Estresse, suplementos...)" className="rounded-[2.5rem] p-8 min-h-[160px] bg-white border-none shadow-sm focus-visible:ring-1 focus-visible:ring-[#A3D9D3] text-gray-700 font-medium placeholder:text-gray-300" />
             </div>
-            <Button onClick={() => toast.success("Registro Clínico Salvo!") || setView("dashboard")} className="w-full h-16 rounded-full bg-[#2A8C7E] font-bold text-lg shadow-lg">Finalizar Registro</Button>
+            <Button onClick={() => toast.success("Registro Clínico Salvo!") || setView("dashboard")} className="w-full h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-[0_15px_30px_rgba(42,140,126,0.3)]">Finalizar</Button>
          </motion.div>
        )}
     </motion.div>
@@ -253,70 +335,92 @@ function QuickRegisterView({ setView }: any) {
 
 function HistoryView({ setView }: any) {
     return (
-        <motion.div initial={{ x: 300 }} animate={{ x: 0 }} exit={{ x: -300 }} className="p-6 space-y-6">
-           <button onClick={() => setView("dashboard")} className="flex items-center gap-2 text-[#2A8C7E] font-bold">
-             <ArrowLeft className="w-5 h-5" /> Voltar
-           </button>
-           <h2 className="text-2xl font-black text-gray-900">Sua Jornada Clínica</h2>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-8 relative z-10">
+           <header className="flex items-center gap-4">
+             <button onClick={() => setView("dashboard")} className="p-3 bg-white rounded-2xl shadow-sm border border-gray-50 text-[#2A8C7E]">
+               <ArrowLeft className="w-5 h-5" />
+             </button>
+             <h2 className="text-2xl font-black text-gray-900 tracking-tight">Sua Jornada</h2>
+           </header>
            
-           {/* Tendências de Microambiente - Inspirado no ZOE PREDICT */}
-           <Card className="p-6 rounded-3xl bg-white border-none shadow-sm space-y-4">
-             <div className="flex items-center gap-2 text-[#2A8C7E]">
-               <Activity className="w-5 h-5" />
-               <h3 className="font-bold">Correlação Intestino-Hormônio</h3>
+           <Card className="p-8 rounded-[2.5rem] bg-white border-none shadow-[0_15px_40px_rgba(0,0,0,0.04)] space-y-6">
+             <div className="flex items-center justify-between">
+               <div className="flex items-center gap-3">
+                 <div className="p-2.5 bg-[#A3D9D3]/10 rounded-xl"><Activity className="w-5 h-5 text-[#2A8C7E]" /></div>
+                 <h3 className="font-black text-gray-900 uppercase tracking-wider text-xs">Eixo Intestino-Hormônio</h3>
+               </div>
+               <div className="text-[10px] font-black text-[#2A8C7E] bg-[#A3D9D3]/10 px-2 py-1 rounded-md">7 DIAS</div>
              </div>
-             <div className="h-48 bg-[#FDF8F3] rounded-2xl flex flex-col items-center justify-center p-4">
-                <div className="w-full flex justify-around items-end h-24 mb-4">
-                   {[40, 70, 45, 90, 65, 80, 75].map((h, i) => (
-                     <div key={i} className="w-3 bg-[#A3D9D3] rounded-t-full transition-all hover:bg-[#2A8C7E]" style={{ height: `${h}%` }} />
-                   ))}
-                </div>
-                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter text-center">
-                   Eixo HPA: Estabilidade hormonal vs. Saúde Intestinal
-                </p>
+
+             <div className="h-48 flex items-end justify-between gap-1.5 px-2">
+                {[45, 75, 50, 95, 60, 85, 70].map((h, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-2 group">
+                    <motion.div 
+                      initial={{ height: 0 }} 
+                      animate={{ height: `${h}%` }} 
+                      transition={{ delay: i * 0.1, duration: 0.8, ease: "circOut" }}
+                      className={`w-full max-w-[12px] rounded-full transition-all duration-300 ${i === 3 ? 'bg-[#2A8C7E]' : 'bg-[#A3D9D3]/30 group-hover:bg-[#A3D9D3]'}`} 
+                    />
+                    <span className="text-[8px] font-black text-gray-300 uppercase">{['S','T','Q','Q','S','S','D'][i]}</span>
+                  </div>
+                ))}
              </div>
+             
+             <p className="text-[11px] text-gray-400 font-bold leading-relaxed text-center px-4">
+               Houve um aumento de <span className="text-[#2A8C7E]">12% na estabilidade hormonal</span> esta semana em comparação com a anterior.
+             </p>
            </Card>
 
-           <Button variant="outline" className="w-full h-16 rounded-full border-2 border-[#2A8C7E] text-[#2A8C7E] font-bold flex gap-2 items-center justify-center">
-              <ChevronDown className="w-5 h-5" /> Baixar Relatório para Médico (PDF)
-           </Button>
+           <div className="space-y-4">
+             <Button className="w-full h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-lg border-none flex gap-3 items-center justify-center group">
+                <ChevronDown className="w-6 h-6 group-hover:translate-y-1 transition-transform" /> 
+                Baixar PDF Médico
+             </Button>
+             <p className="text-center text-[10px] font-black text-gray-300 uppercase tracking-widest">Relatório otimizado para consulta</p>
+           </div>
         </motion.div>
     );
 }
 
 function InsightsView({ setView }: any) {
     return (
-        <motion.div initial={{ x: 300 }} animate={{ x: 0 }} exit={{ x: -300 }} className="p-6 space-y-6">
-           <button onClick={() => setView("dashboard")} className="flex items-center gap-2 text-[#2A8C7E] font-bold">
-             <ArrowLeft className="w-5 h-5" /> Voltar
-           </button>
-           <h2 className="text-2xl font-black text-gray-900">Análise de Dados IA</h2>
-           <Card className="p-6 rounded-[2rem] bg-gradient-to-br from-[#E8C7C8]/20 to-[#A3D9D3]/20 border-none relative overflow-hidden">
-              <Sparkles className="w-12 h-12 text-[#2A8C7E] absolute -top-2 -right-2 opacity-20" />
-              <div className="space-y-4 relative z-10">
-                <div className="flex items-center gap-2 text-[#2A8C7E] font-bold uppercase text-xs tracking-widest">
-                  <Brain className="w-4 h-4" /> Insight Baseado em Evidências
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-8 relative z-10">
+           <header className="flex items-center gap-4">
+             <button onClick={() => setView("dashboard")} className="p-3 bg-white rounded-2xl shadow-sm border border-gray-50 text-[#2A8C7E]">
+               <ArrowLeft className="w-5 h-5" />
+             </button>
+             <h2 className="text-2xl font-black text-gray-900 tracking-tight">Análise da Flora</h2>
+           </header>
+
+           <Card className="p-8 rounded-[2.5rem] bg-gradient-to-br from-[#2A8C7E] to-[#1F6B60] border-none relative overflow-hidden shadow-2xl shadow-[#2A8C7E]/20">
+              <Sparkles className="w-32 h-32 text-white/10 absolute -top-8 -right-8" />
+              <div className="space-y-6 relative z-10">
+                <div className="flex items-center gap-2 text-[#A3D9D3] font-black uppercase text-[10px] tracking-widest">
+                  <Brain className="w-4 h-4 fill-[#A3D9D3]/20" /> Insight Personalizado
                 </div>
-                <p className="text-gray-800 leading-relaxed font-semibold text-lg">
-                  "Seu padrão de 'Névoa Mental' costuma aparecer 24h após registros de Tipo 2 (Prisão de Ventre). A ciência mostra que a reciclagem de estrogênio no intestino lento pode afetar o foco. Tente aumentar o magnésio hoje."
+                <p className="text-white leading-relaxed font-bold text-xl tracking-tight">
+                  "Sua digestão está 2x mais eficiente após as 18h quando você inclui sementes de abóbora no jantar. O magnésio parece ser a chave."
                 </p>
-                <div className="pt-4 border-t border-white/40 flex items-center justify-between text-[10px] font-bold text-gray-500">
-                   <span>Fonte: Harvard Health & ZOE Study</span>
-                   <CheckCircle2 className="w-4 h-4 text-[#2A8C7E]" />
+                <div className="pt-6 border-t border-white/10 flex items-center justify-between text-[9px] font-black text-white/40 uppercase tracking-widest">
+                   <span>Baseado em 14 registros</span>
+                   <div className="flex items-center gap-1">Protocolo Ativo <CheckCircle2 className="w-3 h-3" /></div>
                 </div>
               </div>
            </Card>
 
-           <Card className="p-5 rounded-3xl border-none bg-white shadow-sm">
-              <h4 className="font-bold text-gray-400 text-xs mb-3 uppercase">Recomendação do Protocolo</h4>
-              <div className="flex items-center gap-3">
-                 <div className="w-12 h-12 bg-[#FDF8F3] rounded-2xl flex items-center justify-center"><Coffee className="w-6 h-6 text-[#2A8C7E]" /></div>
-                 <div>
-                    <p className="font-bold text-gray-800">Shot Matinal Anti-inflamatório</p>
-                    <p className="text-xs text-gray-500">Ajuda no peristaltismo e fogachos.</p>
-                 </div>
-              </div>
-           </Card>
+           <div className="grid grid-cols-1 gap-4">
+             <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-2">Recomendação do Dia</h3>
+             <Card className="p-5 rounded-3xl border-none bg-white shadow-sm flex items-center gap-5 hover:shadow-md transition-shadow cursor-pointer">
+                <div className="w-16 h-16 bg-[#FDF8F3] rounded-[1.5rem] flex items-center justify-center shadow-inner border border-gray-50">
+                  <Coffee className="w-8 h-8 text-[#2A8C7E]" />
+                </div>
+                <div className="space-y-0.5">
+                   <p className="font-black text-gray-900 text-lg tracking-tight">Shot Matinal</p>
+                   <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Metabolismo & Fibras</p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-200 ml-auto" />
+             </Card>
+           </div>
         </motion.div>
     );
 }
