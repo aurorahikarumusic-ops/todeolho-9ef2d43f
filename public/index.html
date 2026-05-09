@@ -435,7 +435,7 @@
             btn.classList.add('bg-aqua-500', 'text-white', 'shadow-lg', 'shadow-aqua-500/20');
             btn.classList.remove('bg-cream-100', 'text-slate-500');
         }
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('show'); }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('show'); document.body.classList.toggle('overflow-hidden'); }
         function toggleCheck(checkbox) {
             const viewBox = checkbox.parentElement.querySelector('.check-box');
             const icon = checkbox.parentElement.querySelector('.check-icon');
