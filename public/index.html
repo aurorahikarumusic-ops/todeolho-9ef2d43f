@@ -67,15 +67,203 @@
     </script>
 
     <style>
+        :root {
+            --aqua-50: #f0f9f8;
+            --aqua-100: #d1efeb;
+            --aqua-200: #a3d9d3;
+            --aqua-500: #2a8c7e;
+            --aqua-600: #1f6b60;
+            --cream-100: #f8f5f1;
+            --cream-200: #f0e9e0;
+            --rose-200: #e8c7c8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: #fcfaf8; /* cream-50 */
-            color: #444444; /* slate-600 */
+            background-color: #fcfaf8;
+            color: #444444;
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
+
         h1, h2, h3, .font-serif {
             font-family: 'Playfair Display', serif;
+        }
+
+        /* 1. Sidebar */
+        .sidebar {
+            width: 260px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 50;
+        }
+
+        /* 2. Sidebar Link */
+        .sidebar-link {
+            transition: all 0.2s ease;
+            color: #666666;
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.75rem;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: linear-gradient(to right, var(--aqua-100), var(--aqua-200));
+            color: var(--aqua-600);
+            font-weight: 600;
+        }
+
+        /* 3. Dashboard Card */
+        .dash-card {
+            background: white;
+            border-radius: 1.5rem;
+            border: 1px solid var(--cream-200);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dash-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(42, 140, 126, 0.08);
+        }
+
+        /* 4. Symptom Pill */
+        .symptom-pill {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid var(--cream-200);
+            background: white;
+        }
+
+        .symptom-pill.selected {
+            background-color: var(--aqua-500);
+            color: white;
+            border-color: var(--aqua-500);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(42, 140, 126, 0.2);
+        }
+
+        /* 5. Progress Ring */
+        .progress-ring-circle {
+            transition: stroke-dashoffset 1.5s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            animation: ringProgress 1.5s ease-out forwards;
+        }
+
+        /* 6. Check Animated */
+        .check-animated {
+            transform-origin: center;
+            animation: checkPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* 7. Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* 8. Page Section */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .page-section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* 9. Scrollbar Custom */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream-100);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--aqua-200);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--aqua-500);
+        }
+
+        /* 10. Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 40;
+        }
+
+        .sidebar-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* KEYFRAMES */
+        @keyframes ringProgress {
+            from { stroke-dashoffset: 440; }
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes softPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(42, 140, 126, 0.4); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(42, 140, 126, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(42, 140, 126, 0); }
+        }
+
+        @keyframes likePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-pulse-soft {
+            animation: softPulse 2s infinite;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                transform: translateX(-100%);
+                background: white;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 20px 0 50px rgba(0, 0, 0, 0.1);
+            }
         }
     </style>
 </head>
