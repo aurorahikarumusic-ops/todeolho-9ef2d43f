@@ -451,6 +451,79 @@
                                 <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Dias Seguidos</span>
                             </div>
                         </div>
+                <!-- 2. Gut Health Score Card -->
+                <div class="dash-card p-6 lg:p-8">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-700">Seu Gut Health Score</h3>
+                            <p class="text-sm text-slate-400">Baseado no seu rastreamento de 7 dias</p>
+                        </div>
+                        <span class="px-3 py-1 bg-aqua-100 text-aqua-700 text-[10px] font-black uppercase tracking-widest rounded-full border border-aqua-200">
+                            +12 vs mês passado
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-10 lg:gap-16">
+                        <!-- Lado Esquerdo - Progress Ring -->
+                        <div class="relative flex items-center justify-center shrink-0">
+                            <svg class="w-44 h-44 -rotate-90 transform">
+                                <circle cx="88" cy="88" r="70" stroke="#f0e9e0" stroke-width="12" fill="none" class="opacity-40" />
+                                <circle cx="88" cy="88" r="70" stroke="#2a8c7e" stroke-width="14" fill="none" 
+                                    stroke-dasharray="440" stroke-dashoffset="118.8" stroke-linecap="round"
+                                    class="progress-ring-circle drop-shadow-[0_0_8px_rgba(42,140,126,0.3)]" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center rotate-0">
+                                <span class="text-5xl font-black text-slate-700 leading-none">73</span>
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-2">de 100</span>
+                            </div>
+                        </div>
+
+                        <!-- Lado Direito - Métricas Detalhadas -->
+                        <div class="flex-1 w-full space-y-6">
+                            <!-- Regularidade -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest">
+                                    <span class="text-slate-500">Regularidade intestinal</span>
+                                    <span class="text-aqua-600">85%</span>
+                                </div>
+                                <div class="w-full bg-cream-100 rounded-full h-2 overflow-hidden shadow-inner">
+                                    <div class="bg-aqua-500 h-full rounded-full transition-all duration-1000 ease-out" style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Inchaço -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest">
+                                    <span class="text-slate-500">Controle de Inchaço</span>
+                                    <span class="text-rose-500">62%</span>
+                                </div>
+                                <div class="w-full bg-cream-100 rounded-full h-2 overflow-hidden shadow-inner">
+                                    <div class="bg-rose-400 h-full rounded-full transition-all duration-1000 ease-out" style="width: 62%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Energia -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest">
+                                    <span class="text-slate-500">Nível de Energia</span>
+                                    <span class="text-orange-500">78%</span>
+                                </div>
+                                <div class="w-full bg-cream-100 rounded-full h-2 overflow-hidden shadow-inner">
+                                    <div class="bg-orange-400 h-full rounded-full transition-all duration-1000 ease-out" style="width: 78%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Sono -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest">
+                                    <span class="text-slate-500">Qualidade do Sono</span>
+                                    <span class="text-indigo-500">54%</span>
+                                </div>
+                                <div class="w-full bg-cream-100 rounded-full h-2 overflow-hidden shadow-inner">
+                                    <div class="bg-indigo-400 h-full rounded-full transition-all duration-1000 ease-out" style="width: 54%"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
