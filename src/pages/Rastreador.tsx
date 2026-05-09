@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { 
   Heart, Brain, Zap, Moon, Smile, Droplets, Utensils, 
   TrendingUp, Sparkles, Footprints, Info, CheckCircle2,
-  Calendar, ChevronRight
+  Calendar, ChevronRight, Loader2
 } from "lucide-react";
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
@@ -24,6 +24,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const BRISTOL_SCALE = [
   { type: 1, desc: "Caroços duros e separados" },
