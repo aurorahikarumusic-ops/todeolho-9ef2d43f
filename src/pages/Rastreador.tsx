@@ -53,8 +53,13 @@ export default function Rastreador() {
   };
 
   return (
-    <div className="max-w-[400px] mx-auto min-h-screen pb-24 bg-[#FDFBF9]">
-      <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-[#A3D9D3]/20 to-transparent pointer-events-none" />
+    <div className="max-w-[400px] mx-auto min-h-screen pb-24 relative overflow-hidden">
+      {/* Animated background blobs */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-[20%] right-[-10%] w-[300px] h-[300px] bg-[#A3D9D3]/10 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-[20%] left-[-10%] w-[250px] h-[250px] bg-[#E8C7C8]/10 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '3s' }} />
+      </div>
+
       <AnimatePresence mode="wait">
         {view === "dashboard" && (
           <DashboardView 
