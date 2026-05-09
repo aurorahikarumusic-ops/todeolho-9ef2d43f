@@ -11,6 +11,7 @@ import Rastreador from "./pages/Rastreador";
 import PlanoAlimentar from "./pages/PlanoAlimentar";
 import Receitas from "./pages/Receitas";
 import Comunidade from "./pages/Comunidade";
+import PWAPrompt from "./components/PWAPrompt";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <PWAPrompt />
       <BrowserRouter>
         <Routes>
           <Route path="/auth" element={<AuthPage />} />
