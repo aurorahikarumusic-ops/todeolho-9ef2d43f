@@ -101,33 +101,33 @@ function DashboardView({ gutScore, setView, getScoreColor, onShowDisclaimer }: a
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="p-6 space-y-8 relative z-10">
       <header className="flex justify-between items-center">
         <div className="space-y-1">
-          <h1 className="text-3xl font-black text-gray-900 tracking-tight">Olá, Maria</h1>
-          <p className="text-[#2A8C7E] font-semibold flex items-center gap-1.5 text-sm bg-[#A3D9D3]/10 w-fit px-3 py-1 rounded-full">
-            <Sparkles className="w-3.5 h-3.5 fill-[#2A8C7E]/20" /> Seu corpo em equilíbrio
+          <h1 className="text-3xl font-display font-black text-white tracking-tight">Olá, Maria</h1>
+          <p className="text-white/80 font-semibold flex items-center gap-1.5 text-sm bg-white/10 backdrop-blur-md w-fit px-3 py-1 rounded-full border border-white/20">
+            <Sparkles className="w-3.5 h-3.5 fill-white/20" /> Equilíbrio Interior
           </p>
         </div>
-        <Button variant="ghost" size="icon" onClick={onShowDisclaimer} className="bg-white/80 backdrop-blur shadow-sm rounded-2xl border border-gray-100 hover:bg-white transition-all">
-          <Info className="w-6 h-6 text-[#2A8C7E]" />
+        <Button variant="ghost" size="icon" onClick={onShowDisclaimer} className="glass-morphism rounded-2xl border-white/30 hover:bg-white/20 transition-all">
+          <Info className="w-6 h-6 text-white" />
         </Button>
       </header>
 
-      {/* Gut Health Score - Design Premium */}
-      <Card className="p-8 rounded-[2.5rem] border-none bg-white shadow-[0_20px_50px_rgba(42,140,126,0.12)] flex flex-col items-center gap-6 relative overflow-hidden group">
+      {/* Gut Health Score - Design Premium Glassmorphism */}
+      <Card className="p-8 rounded-[2.5rem] border-none bg-white/10 backdrop-blur-xl shadow-2xl flex flex-col items-center gap-6 relative overflow-hidden group border border-white/20">
         <div className="absolute top-0 right-0 p-6">
-           <Stethoscope className="w-10 h-10 text-[#A3D9D3] opacity-10 group-hover:rotate-12 transition-transform duration-500" />
+           <Stethoscope className="w-10 h-10 text-white opacity-10 group-hover:rotate-12 transition-transform duration-500" />
         </div>
         
         <div className="space-y-1 text-center">
-          <h2 className="text-[10px] font-black text-[#2A8C7E]/40 uppercase tracking-[0.2em]">Microbiome Index</h2>
-          <div className="h-1 w-8 bg-[#A3D9D3] rounded-full mx-auto" />
+          <h2 className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em]">Microbiome Index</h2>
+          <div className="h-1 w-8 bg-white/30 rounded-full mx-auto" />
         </div>
 
         <div className="relative w-48 h-48 flex items-center justify-center">
-            {/* Outer Glow */}
-            <div className="absolute inset-0 bg-[#A3D9D3]/20 rounded-full blur-2xl group-hover:bg-[#A3D9D3]/30 transition-colors" />
+            {/* Inner Glow */}
+            <div className="absolute inset-4 bg-white/5 rounded-full blur-xl" />
             
             <svg className="w-full h-full transform -rotate-90 relative z-10">
-                <circle cx="96" cy="96" r="82" stroke="#F1F5F9" strokeWidth="10" fill="none" />
+                <circle cx="96" cy="96" r="82" stroke="rgba(255,255,255,0.05)" strokeWidth="10" fill="none" />
                 <circle 
                   cx="96" 
                   cy="96" 
@@ -137,59 +137,59 @@ function DashboardView({ gutScore, setView, getScoreColor, onShowDisclaimer }: a
                   fill="none" 
                   strokeDasharray={`${gutScore * 5.15} 515`} 
                   strokeLinecap="round" 
-                  className="drop-shadow-[0_0_8px_rgba(42,140,126,0.4)]"
+                  className="drop-shadow-[0_0_15px_rgba(163,217,211,0.5)]"
                 />
                 <defs>
                   <linearGradient id="gradientScore" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="#A3D9D3" />
-                    <stop offset="100%" stopColor="#2A8C7E" />
+                    <stop offset="100%" stopColor="#FFFFFF" />
                   </linearGradient>
                 </defs>
             </svg>
-            <div className="absolute z-20 flex flex-col items-center bg-white rounded-full w-32 h-32 justify-center shadow-inner">
-               <span className="text-6xl font-black text-gray-900 tracking-tighter">{gutScore}</span>
-               <span className="text-[11px] text-[#2A8C7E] font-black uppercase tracking-wider">Ótimo</span>
+            <div className="absolute z-20 flex flex-col items-center glass-morphism rounded-full w-32 h-32 justify-center shadow-2xl border-white/30">
+               <span className="text-6xl font-black text-white tracking-tighter">{gutScore}</span>
+               <span className="text-[11px] text-[#A3D9D3] font-black uppercase tracking-wider">Ótimo</span>
             </div>
         </div>
         
         <div className="text-center space-y-1.5 px-4 relative z-10">
-          <p className={`font-black text-xl tracking-tight ${getScoreColor(gutScore)}`}>
-             Sua flora está vibrante!
+          <p className="font-display font-black text-xl tracking-tight text-white italic">
+             "Sua flora está vibrante!"
           </p>
-          <p className="text-xs text-gray-400 leading-relaxed max-w-[200px] mx-auto">
+          <p className="text-xs text-white/60 leading-relaxed max-w-[200px] mx-auto">
             Seu metabolismo respondeu bem ao café da manhã proteico de ontem.
           </p>
         </div>
       </Card>
 
       <div className="grid grid-cols-2 gap-5">
-        <Button onClick={() => setView("registro_rapido")} className="h-44 rounded-[2.5rem] bg-[#2A8C7E] text-white flex flex-col gap-4 shadow-[0_20px_40px_rgba(42,140,126,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all border-none group">
-            <div className="p-4 bg-white/20 rounded-[1.5rem] group-hover:rotate-6 transition-transform">
+        <Button onClick={() => setView("registro_rapido")} className="h-44 rounded-[2.5rem] bg-white/10 backdrop-blur-xl border border-white/20 text-white flex flex-col gap-4 shadow-2xl hover:bg-white/20 active:scale-[0.98] transition-all group">
+            <div className="p-4 bg-white/20 rounded-[1.5rem] group-hover:rotate-6 transition-transform shadow-inner">
               <Plus className="w-10 h-10" />
             </div>
-            <span className="font-black text-xl leading-tight">Check-in<br/>Diário</span>
+            <span className="font-display font-black text-xl leading-tight">Check-in<br/>Diário</span>
         </Button>
         <div className="flex flex-col gap-5">
-            <Button variant="outline" onClick={() => setView("historico")} className="flex-1 rounded-[2rem] border-gray-100 bg-white flex flex-col items-center justify-center gap-2 p-5 shadow-sm hover:border-[#A3D9D3] transition-colors group">
-               <div className="p-2.5 bg-[#A3D9D3]/10 rounded-2xl group-hover:bg-[#A3D9D3]/20 transition-colors">
-                  <BarChart3 className="w-7 h-7 text-[#2A8C7E]" />
+            <Button variant="outline" onClick={() => setView("historico")} className="flex-1 rounded-[2rem] border-white/10 bg-white/5 backdrop-blur-lg flex flex-col items-center justify-center gap-2 p-5 shadow-lg hover:bg-white/10 transition-colors group">
+               <div className="p-2.5 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-colors">
+                  <BarChart3 className="w-7 h-7 text-white" />
                </div>
-               <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Padrões</span>
+               <span className="text-xs font-black text-white/60 uppercase tracking-widest">Padrões</span>
             </Button>
-            <Button variant="outline" onClick={() => setView("insights")} className="flex-1 rounded-[2rem] border-gray-100 bg-white flex flex-col items-center justify-center gap-2 p-5 shadow-sm hover:border-[#A3D9D3] transition-colors group">
-               <div className="p-2.5 bg-[#A3D9D3]/10 rounded-2xl group-hover:bg-[#A3D9D3]/20 transition-colors">
-                  <Sparkles className="w-7 h-7 text-[#2A8C7E]" />
+            <Button variant="outline" onClick={() => setView("insights")} className="flex-1 rounded-[2rem] border-white/10 bg-white/5 backdrop-blur-lg flex flex-col items-center justify-center gap-2 p-5 shadow-lg hover:bg-white/10 transition-colors group">
+               <div className="p-2.5 bg-white/10 rounded-2xl group-hover:bg-white/20 transition-colors">
+                  <Sparkles className="w-7 h-7 text-white" />
                </div>
-               <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Insights</span>
+               <span className="text-xs font-black text-white/60 uppercase tracking-widest">Insights</span>
             </Button>
         </div>
       </div>
 
-      {/* Gatilhos - Design Minimalista */}
-      <Card className="p-6 rounded-[2rem] border-none bg-white/50 backdrop-blur shadow-sm">
+      {/* Gatilhos - Glassmorphism Minimalista */}
+      <Card className="p-6 rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.15em]">Gatilhos Ativos</h3>
-          <Info className="w-3.5 h-3.5 text-gray-300" />
+          <h3 className="text-xs font-black text-white/40 uppercase tracking-[0.15em]">Gatilhos Ativos</h3>
+          <Info className="w-3.5 h-3.5 text-white/20" />
         </div>
         <div className="flex gap-2.5 overflow-x-auto pb-1 no-scrollbar">
            {["Glúten", "Café", "Lactose", "Açúcar"].map((trigger, i) => (
@@ -198,7 +198,7 @@ function DashboardView({ gutScore, setView, getScoreColor, onShowDisclaimer }: a
                initial={{ opacity: 0, x: 20 }}
                animate={{ opacity: 1, x: 0 }}
                transition={{ delay: i * 0.1 }}
-               className="px-5 py-2.5 bg-white rounded-2xl text-[11px] font-black text-[#2A8C7E] border border-gray-100 shadow-sm whitespace-nowrap active:bg-[#A3D9D3]/10"
+               className="px-5 py-2.5 glass-morphism rounded-2xl text-[11px] font-black text-[#A3D9D3] border border-white/10 shadow-lg whitespace-nowrap active:bg-white/20"
              >
                {trigger}
              </motion.div>
