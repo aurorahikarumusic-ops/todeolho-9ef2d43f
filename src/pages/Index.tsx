@@ -4,7 +4,7 @@ const Index = () => {
   return (
     <iframe 
       src="/index.html" 
-      className="w-full h-screen border-none" 
+      className="fixed inset-0 w-full h-full border-none" 
       title="Flora 40+ Dashboard"
     />
   );
