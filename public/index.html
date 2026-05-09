@@ -128,7 +128,72 @@
                         </div>
                     </div>
                 </div>
-                <div class="dash-card p-6 lg:p-8"><h3 class="text-lg font-bold text-slate-700 mb-8 font-serif">Progresso Semanal</h3><div class="h-72"><canvas id="weeklyChart"></canvas></div></div>
+                <!-- 9. Interações Section -->
+                <div class="dash-card p-6 lg:p-10 space-y-10">
+                    <div class="flex items-center gap-3 mb-2 text-aqua-600 uppercase font-black tracking-widest text-[10px]">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        Painel de Interações Rápidas
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-10">
+                        <!-- Symptoms Interaction -->
+                        <div class="space-y-6">
+                            <h4 class="text-lg font-serif font-bold text-slate-700 flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center text-sm">💧</span>
+                                Registro de Sintomas
+                            </h4>
+                            <div class="flex flex-wrap gap-2.5">
+                                <button onclick="toggleSymptom(this)" class="symptom-pill px-4 py-2 rounded-full text-xs font-bold text-slate-500">Inchaço</button>
+                                <button onclick="toggleSymptom(this)" class="symptom-pill px-4 py-2 rounded-full text-xs font-bold text-slate-500">Cansaço</button>
+                                <button onclick="toggleSymptom(this)" class="symptom-pill px-4 py-2 rounded-full text-xs font-bold text-slate-500">Ondas de calor</button>
+                                <button onclick="toggleSymptom(this)" class="symptom-pill px-4 py-2 rounded-full text-xs font-bold text-slate-500">Gases</button>
+                            </div>
+                            <div class="pt-4 border-t border-cream-100">
+                                <p class="text-[10px] font-black uppercase text-slate-400 mb-3 tracking-widest">Intensidade:</p>
+                                <div class="flex gap-3">
+                                    <button onclick="selectSeverity(this, 1)" class="severity-btn w-10 h-10 rounded-xl bg-green-50 border-2 border-green-100 flex items-center justify-center text-xl grayscale opacity-60 transition-all">😊</button>
+                                    <button onclick="selectSeverity(this, 2)" class="severity-btn w-10 h-10 rounded-xl bg-yellow-50 border-2 border-yellow-100 flex items-center justify-center text-xl grayscale opacity-60 transition-all">😐</button>
+                                    <button onclick="selectSeverity(this, 3)" class="severity-btn w-10 h-10 rounded-xl bg-orange-50 border-2 border-orange-100 flex items-center justify-center text-xl grayscale opacity-60 transition-all">😣</button>
+                                    <button onclick="selectSeverity(this, 4)" class="severity-btn w-10 h-10 rounded-xl bg-red-50 border-2 border-red-100 flex items-center justify-center text-xl grayscale opacity-60 transition-all">😫</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Checklist Interaction -->
+                        <div class="space-y-6">
+                            <h4 class="text-lg font-serif font-bold text-slate-700 flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-lg bg-aqua-50 text-aqua-600 flex items-center justify-center text-sm">✅</span>
+                                Metas Rápidas
+                            </h4>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="checkbox" class="check-item hidden" onchange="toggleCheck(this)">
+                                    <div class="check-box w-5 h-5 rounded-md border-2 border-cream-300 flex items-center justify-center transition-all">
+                                        <svg class="check-icon h-3 w-3 text-white opacity-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span class="text-sm font-medium text-slate-600 group-hover:text-aqua-600 transition-colors">Hidratação Completa</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="checkbox" class="check-item hidden" onchange="toggleCheck(this)">
+                                    <div class="check-box w-5 h-5 rounded-md border-2 border-cream-300 flex items-center justify-center transition-all">
+                                        <svg class="check-icon h-3 w-3 text-white opacity-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span class="text-sm font-medium text-slate-600 group-hover:text-aqua-600 transition-colors">Caminhada Matinal</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="checkbox" class="check-item hidden" onchange="toggleCheck(this)">
+                                    <div class="check-box w-5 h-5 rounded-md border-2 border-cream-300 flex items-center justify-center transition-all">
+                                        <svg class="check-icon h-3 w-3 text-white opacity-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span class="text-sm font-medium text-slate-600 group-hover:text-aqua-600 transition-colors">Refeição com Fibras</span>
+                                </label>
+                            </div>
+                            <button onclick="showToast('📊 Dados sincronizados com sua jornada!')" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl transition-all border-none mt-4">
+                                Forçar Sincronização
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             </div>
