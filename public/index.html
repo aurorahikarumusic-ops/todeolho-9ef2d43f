@@ -409,12 +409,34 @@
                 </div>
             `;
         }
-
-        function closeRecipeModal() {
-            document.getElementById('recipeModal').classList.remove('show');
-            document.body.style.overflow = 'auto';
+        function closeRecipeModal() { document.getElementById('recipeModal').classList.remove('show'); document.body.style.overflow = 'auto'; }
+        function initMonthlyChart() {
+            const ctx = document.getElementById('monthlyChart')?.getContext('2d');
+            if(!ctx) return;
+            new Chart(ctx, { type: 'line', data: { labels: ['Sem 1','','Sem 2','','Sem 3','','Sem 4'], datasets: [{ label: 'Gut Score', data: [58,62,65,68,70,72,73,75], borderColor: '#2a8c7e', backgroundColor: 'rgba(42, 140, 126, 0.1)', fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100, grid: { color: '#f0f0f0' } } } } });
         }
-        document.addEventListener('DOMContentLoaded', initWeeklyChart);
+        function openSymptomModal() { document.getElementById('symptomModal').classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+        function closeSymptomModal() { document.getElementById('symptomModal').classList.add('hidden'); document.body.style.overflow = ''; }
+        function submitSymptoms() { closeSymptomModal(); showToast("✅ Sintomas registrados!"); }
+        function toggleLike(btn) {
+            btn.classList.toggle('text-rose-400');
+            const icon = btn.querySelector('svg');
+            const count = btn.querySelector('.like-count');
+            let val = parseInt(count.innerText);
+            if (btn.classList.contains('text-rose-400')) { val++; icon.setAttribute('fill', 'currentColor'); }
+            else { val--; icon.setAttribute('fill', 'none'); }
+            count.innerText = val;
+            icon.classList.add('animate-[likePop_0.4s]');
+            setTimeout(() => icon.classList.remove('animate-[likePop_0.4s]'), 400);
+        }
+        function toggleSymptom(element) { element.classList.toggle('selected'); }
+        function selectSeverity(btn, level) { document.querySelectorAll('.severity-btn').forEach(b => { b.classList.add('grayscale', 'opacity-60'); b.classList.remove('scale-110', 'grayscale-0', 'opacity-100'); }); btn.classList.remove('grayscale', 'opacity-60'); btn.classList.add('scale-110', 'grayscale-0', 'opacity-100'); }
+        function showToast(m) { document.getElementById('toastMessage').innerText = m; const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+        function saveSymptomLog() { showToast("📊 Registro clínico salvo!"); }
+        document.addEventListener('DOMContentLoaded', () => {
+            initWeeklyChart();
+            initSymptomsChart();
+        });
     </script>
 </body>
 </html>
