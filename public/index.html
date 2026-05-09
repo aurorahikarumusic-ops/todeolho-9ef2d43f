@@ -446,18 +446,27 @@
             <!-- Scripts -->
             <script>
                 const recipesData = {
-                    1: { emoji: '🥗', title: 'Salada Mediterrânea', tags: ['Fibras', 'Anti-inflamatória'], ingredients: ['Quinoa', 'Frango', 'Tomate'], steps: ['Cozinhe a quinoa', 'Grelhe o frango'], time: '25 min', kcal: '350', meal: 'Almoço' },
-                    2: { emoji: '🥣', title: 'Mingau de Aveia', tags: ['Prebiótico', 'Energia'], ingredients: ['Aveia', 'Frutas', 'Chia'], steps: ['Misture e aqueça'], time: '10 min', kcal: '280', meal: 'Café' }
+                    1: { emoji: '🥗', title: 'Salada Mediterrânea', tags: ['Fibras', 'Proteína'], ingredients: ['1 xícara de quinoa real cozida', '150g de peito de frango', 'Tomate cereja e pepino', 'Azeite extra virgem'], steps: ['Cozinhe a quinoa em água e sal', 'Grelhe o frango em cubos', 'Misture os vegetais picados', 'Finalize com azeite e limão'], time: '25 min', kcal: '350', meal: 'Almoço', benefit: 'A quinoa real é um prebiótico excelente.' },
+                    2: { emoji: '🥣', title: 'Mingau de Aveia', tags: ['Prebiótico', 'Energia'], ingredients: ['3 colheres de aveia em flocos', '200ml de leite vegetal', '1 banana picada'], steps: ['Aqueça a aveia e o leite', 'Mexa até engrossar', 'Adicione a banana'], time: '10 min', kcal: '280', meal: 'Café', benefit: 'A aveia contém beta-glucana para o trânsito intestinal.' },
+                    3: { emoji: '🍲', title: 'Sopa de Abóbora', tags: ['Imunidade', 'Leve'], ingredients: ['Abóbora cabotiá', 'Gengibre fresco', 'Cúrcuma'], steps: ['Cozinhe a abóbora', 'Bata com gengibre e temperos'], time: '20 min', kcal: '210', meal: 'Jantar', benefit: 'O gengibre é um potente anti-inflamatório.' },
+                    4: { emoji: '🥤', title: 'Smoothie Verde', tags: ['Detox', 'Vitalidade'], ingredients: ['Couve', 'Maçã verde', 'Spirulina'], steps: ['Bata tudo no liquidificador', 'Sirva gelado'], time: '5 min', kcal: '150', meal: 'Sucos', benefit: 'Rico em clorofila para desintoxicação.' },
+                    5: { emoji: '🥘', title: 'Bowl de Lentilha', tags: ['Proteína', 'Saciante'], ingredients: ['Lentilhas cozidas', 'Batata doce', 'Brócolis'], steps: ['Monte o bowl com a base', 'Adicione os legumes grelhados'], time: '30 min', kcal: '420', meal: 'Almoço', benefit: 'A lentilha é rica em ferro e fibras.' },
+                    6: { emoji: '🧉', title: 'Chá Relaxante', tags: ['Sono', 'Calma'], ingredients: ['Camomila', 'Melissa', 'Canela'], steps: ['Infusão por 5 minutos', 'Beba morno'], time: '5 min', kcal: '0', meal: 'Jantar', benefit: 'Ajuda na regulação do ciclo circadiano.' }
                 };
                 function openRecipeModal(id) {
                     const r = recipesData[id] || recipesData[1];
                     document.getElementById('recipeModalEmoji').innerText = r.emoji;
                     document.getElementById('recipeModalTitle').innerText = r.title;
+                    document.getElementById('recipeModalTime').innerText = `⏱️ ${r.time}`;
+                    document.getElementById('recipeModalKcal').innerText = `🔥 ${r.kcal} kcal`;
+                    document.getElementById('recipeModalMeal').innerText = `🍽️ ${r.meal}`;
+                    document.getElementById('recipeModalBenefit').innerText = r.benefit;
                     document.getElementById('recipeModalIngredients').innerHTML = r.ingredients.map(i => `<li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-aqua-400 mt-1.5 shrink-0"></span> ${i}</li>`).join('');
-                    document.getElementById('recipeModalSteps').innerHTML = r.steps.map((s, i) => `<li class="flex gap-4 text-sm"><span class="w-6 h-6 rounded-full bg-aqua-100 text-aqua-600 flex items-center justify-center font-black">${i+1}</span> ${s}</li>`).join('');
+                    document.getElementById('recipeModalSteps').innerHTML = r.steps.map((s, i) => `<li class="flex gap-4 text-sm text-slate-500"><span class="w-6 h-6 rounded-full bg-aqua-100 text-aqua-600 flex items-center justify-center font-black">${i+1}</span> ${s}</li>`).join('');
                     document.getElementById('recipeModal').classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
                 }
-                function closeRecipeModal() { document.getElementById('recipeModal').classList.add('hidden'); }
+                function closeRecipeModal() { document.getElementById('recipeModal').classList.add('hidden'); document.body.style.overflow = ''; }
             </script>
             </div>
 
