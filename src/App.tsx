@@ -1,130 +1,23 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider, useAuth } from "@/hooks/useAuth";
-import { useProfile } from "@/hooks/useProfile";
-import AuthPage from "./pages/AuthPage";
-import RoleSelection from "./pages/RoleSelection";
-import Dashboard from "./pages/Dashboard";
-import MomDashboard from "./pages/MomDashboard";
-import MomAvaliacao from "./pages/MomAvaliacao";
-import Ranking from "./pages/Ranking";
-import ComingSoon from "./pages/ComingSoon";
-import Agenda from "./pages/Agenda";
-import Tarefas from "./pages/Tarefas";
-import Perfil from "./pages/Perfil";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfUse from "./pages/TermsOfUse";
-import DataDeletion from "./pages/DataDeletion";
-import Support from "./pages/Support";
-import AppLayout from "./components/AppLayout";
+import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import LandingPage from "./pages/LandingPage";
-import Onboarding from "./pages/Onboarding";
-import SwUpdateToast from "./components/SwUpdateToast";
-import MuralPerolas from "./pages/MuralPerolas";
-import BancoReusPage from "./pages/BancoReus";
-import AvoDashboard from "./pages/AvoDashboard";
-import AvoRanking from "./pages/AvoRanking";
-import AvoPerfil from "./pages/AvoPerfil";
-import GrandmaSuggestionsFloat from "./components/grandma/GrandmaSuggestionsFloat";
-import MuralPalpites from "./pages/MuralPalpites";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 2, // 2 min — avoid redundant refetches
-      gcTime: 1000 * 60 * 5,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    },
-  },
-});
-
-
-function AppRoutes() {
-  const { user, loading } = useAuth();
-  const { data: profile, isLoading: profileLoading } = useProfile();
-  
-
-  if (loading || (user && profileLoading)) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="text-6xl animate-bounce">👁️</div>
-          <h1 className="font-display text-xl font-bold text-primary">Estou de Olho</h1>
-          <p className="font-body text-sm text-muted-foreground italic">
-            Calma, estamos conferindo se você esqueceu algo.
-          </p>
-          <div className="flex justify-center gap-1 mt-2">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: "0ms" }} />
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: "200ms" }} />
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" style={{ animationDelay: "400ms" }} />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <Routes>
-        <Route path="/" element={<Navigate to="/auth" replace />} />
-        <Route path="/inicio" element={<LandingPage />} />
-        <Route path="/app" element={<Navigate to="/auth" replace />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/privacidade" element={<PrivacyPolicy />} />
-        <Route path="/termos" element={<TermsOfUse />} />
-        <Route path="/exclusao-dados" element={<DataDeletion />} />
-        <Route path="/suporte" element={<Support />} />
-        <Route path="*" element={<Navigate to="/auth" replace />} />
-      </Routes>
-    );
-  }
-
-  const isMom = profile?.role === "mae";
-  const isAvo = profile?.role === "avo";
-
-  return (
-    <AppLayout>
-      <Routes>
-        <Route path="/" element={<Navigate to="/app" replace />} />
-        <Route path="/auth" element={<Navigate to="/app" replace />} />
-        <Route path="/app" element={isAvo ? <AvoDashboard /> : isMom ? <MomDashboard /> : <Dashboard />} />
-        <Route path="/inicio" element={<LandingPage />} />
-        <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/role" element={<RoleSelection />} />
-        <Route path="/agenda" element={<Agenda />} />
-        <Route path="/tarefas" element={<Tarefas />} />
-        <Route path="/ranking" element={isAvo ? <AvoRanking /> : <Ranking />} />
-        <Route path="/palpites" element={<MuralPalpites />} />
-        <Route path="/mural" element={isMom ? <MuralPerolas /> : <BancoReusPage />} />
-        <Route path="/avaliacao" element={<MomAvaliacao />} />
-        <Route path="/perfil" element={isAvo ? <AvoPerfil /> : <Perfil />} />
-        <Route path="/privacidade" element={<PrivacyPolicy />} />
-        <Route path="/termos" element={<TermsOfUse />} />
-        <Route path="/exclusao-dados" element={<DataDeletion />} />
-        <Route path="/suporte" element={<Support />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      {/* Floating grandma suggestions for mom and dad */}
-      {!isAvo && <GrandmaSuggestionsFloat />}
-    </AppLayout>
-  );
-}
+const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <SwUpdateToast />
       <BrowserRouter>
-        <AuthProvider>
-          <AppRoutes />
-        </AuthProvider>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

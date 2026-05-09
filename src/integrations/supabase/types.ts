@@ -412,54 +412,6 @@ export type Database = {
           },
         ]
       }
-      profiles: {
-        Row: {
-          avatar_url: string | null
-          created_at: string
-          display_name: string
-          family_code: string | null
-          family_id: string | null
-          id: string
-          last_active_at: string | null
-          points: number
-          push_subscription: Json | null
-          role: string
-          streak_days: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string
-          display_name?: string
-          family_code?: string | null
-          family_id?: string | null
-          id?: string
-          last_active_at?: string | null
-          points?: number
-          push_subscription?: Json | null
-          role?: string
-          streak_days?: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string
-          display_name?: string
-          family_code?: string | null
-          family_id?: string | null
-          id?: string
-          last_active_at?: string | null
-          points?: number
-          push_subscription?: Json | null
-          role?: string
-          streak_days?: number
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       push_subscriptions: {
         Row: {
           created_at: string
@@ -537,27 +489,6 @@ export type Database = {
         }
         Relationships: []
       }
-      rate_limit_log: {
-        Row: {
-          created_at: string
-          function_name: string
-          id: string
-          identifier: string
-        }
-        Insert: {
-          created_at?: string
-          function_name: string
-          id?: string
-          identifier: string
-        }
-        Update: {
-          created_at?: string
-          function_name?: string
-          id?: string
-          identifier?: string
-        }
-        Relationships: []
-      }
       redemption_events: {
         Row: {
           created_at: string
@@ -595,69 +526,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      tasks: {
-        Row: {
-          assigned_to: string | null
-          category: string
-          completed_at: string | null
-          created_at: string
-          created_by: string
-          description: string | null
-          due_date: string | null
-          family_id: string
-          id: string
-          mom_approved: boolean | null
-          mom_reprove_comment: string | null
-          photo_proof_url: string | null
-          points: number
-          proof_required: boolean
-          rescued_by_mom: boolean
-          title: string
-          updated_at: string
-          urgency: string
-        }
-        Insert: {
-          assigned_to?: string | null
-          category?: string
-          completed_at?: string | null
-          created_at?: string
-          created_by: string
-          description?: string | null
-          due_date?: string | null
-          family_id: string
-          id?: string
-          mom_approved?: boolean | null
-          mom_reprove_comment?: string | null
-          photo_proof_url?: string | null
-          points?: number
-          proof_required?: boolean
-          rescued_by_mom?: boolean
-          title: string
-          updated_at?: string
-          urgency?: string
-        }
-        Update: {
-          assigned_to?: string | null
-          category?: string
-          completed_at?: string | null
-          created_at?: string
-          created_by?: string
-          description?: string | null
-          due_date?: string | null
-          family_id?: string
-          id?: string
-          mom_approved?: boolean | null
-          mom_reprove_comment?: string | null
-          photo_proof_url?: string | null
-          points?: number
-          proof_required?: boolean
-          rescued_by_mom?: boolean
-          title?: string
-          updated_at?: string
-          urgency?: string
-        }
-        Relationships: []
       }
       whatsapp_message_log: {
         Row: {
@@ -733,47 +601,9 @@ export type Database = {
       }
     }
     Views: {
-      ranking_view: {
-        Row: {
-          avatar_url: string | null
-          display_name: string | null
-          id: string | null
-          points: number | null
-          role: string | null
-          streak_days: number | null
-          user_id: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          display_name?: string | null
-          id?: string | null
-          points?: number | null
-          role?: string | null
-          streak_days?: number | null
-          user_id?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          display_name?: string | null
-          id?: string | null
-          points?: number | null
-          role?: string | null
-          streak_days?: number | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      check_rate_limit: {
-        Args: {
-          p_function_name: string
-          p_identifier: string
-          p_max_requests?: number
-          p_window_seconds?: number
-        }
-        Returns: boolean
-      }
       get_current_user_family_id: { Args: never; Returns: string }
       get_ranking_profiles: {
         Args: never
@@ -787,7 +617,6 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_user_family_id: { Args: { _user_id: string }; Returns: string }
       join_family_by_code: { Args: { invite_code: string }; Returns: Json }
     }
     Enums: {
