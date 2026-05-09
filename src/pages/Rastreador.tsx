@@ -282,7 +282,13 @@ export default function Rastreador() {
             <h3 className="text-xl font-bold text-gray-900">Insight da Flora IA</h3>
           </div>
           <p className="text-gray-700 leading-relaxed text-lg">
-            "Olá Flora! Notei que sua **energia** está 30% maior nos dias em que você completa o hábito de **Caminhada**. Além disso, seu inchaço diminuiu desde que você reduziu laticínios no jantar. Continue assim!"
+            {isLoadingInsight ? (
+              <span className="flex items-center gap-2 text-gray-400 italic">
+                <Loader2 className="w-4 h-4 animate-spin" /> Gerando insight personalizado...
+              </span>
+            ) : (
+              aiInsight || "Olá Flora! Continue registrando seus dados para que eu possa gerar insights personalizados sobre seu equilíbrio."
+            )}
           </p>
           <Button variant="link" className="text-[#2A8C7E] p-0 mt-4 font-bold flex items-center gap-1 group">
             Ver relatório detalhado <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
