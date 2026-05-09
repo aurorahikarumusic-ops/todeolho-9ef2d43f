@@ -581,8 +581,23 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                <!-- 4. Weekly Progress Chart Card -->
+                <div class="dash-card p-6 lg:p-8">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-700 font-serif">Progresso Semanal</h3>
+                            <p class="text-sm text-slate-400">Comparativo de score vs. inchaço</p>
                         </div>
+                        <div class="flex bg-cream-100 p-1 rounded-xl">
+                            <button class="px-4 py-1.5 rounded-lg text-xs font-bold bg-white text-aqua-600 shadow-sm transition-all">Semana</button>
+                            <button class="px-4 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-slate-600 transition-all">Mês</button>
+                        </div>
+                    </div>
+                    
+                    <div class="h-72 w-full relative">
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                </div>
                     </div>
                 </div>
             </div>
