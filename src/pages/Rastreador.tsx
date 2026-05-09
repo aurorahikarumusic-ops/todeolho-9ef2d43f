@@ -4,7 +4,7 @@ import {
   Heart, Brain, Zap, Moon, Smile, Droplets, Utensils, 
   TrendingUp, Sparkles, Footprints, Info, CheckCircle2,
   Calendar, ChevronRight, Loader2, ArrowLeft, BarChart3, ChevronDown, Plus,
-  Stethoscope, Coffee, Wind, AlertCircle
+  Stethoscope, Coffee, Wind, AlertCircle, Activity
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
