@@ -57,9 +57,9 @@
     </style>
 </head>
 <body class="h-full">
-    <div id="toast" class="toast flex items-center gap-3 px-6 py-4 rounded-2xl bg-slate-700 text-white shadow-2xl">
+    <div id="toast" class="toast flex items-center gap-3 px-6 py-4 rounded-2xl bg-slate-700 text-white shadow-2xl pointer-events-none">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-aqua-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
-        <span id="toastMessage">Registrado com sucesso!</span>
+        <span id="toastMessage" class="text-sm font-medium">Registrado com sucesso!</span>
     </div>
     <div id="sidebarOverlay" class="sidebar-overlay lg:hidden" onclick="toggleSidebar()"></div>
 
