@@ -7,6 +7,10 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AppLayout from "./components/AppLayout";
 import AuthPage from "./pages/AuthPage";
+import Rastreador from "./pages/Rastreador";
+import PlanoAlimentar from "./pages/PlanoAlimentar";
+import Receitas from "./pages/Receitas";
+import Comunidade from "./pages/Comunidade";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +28,10 @@ const App = () => (
               <AppLayout>
                 <Routes>
                   <Route path="dashboard" element={<Index />} />
+                  <Route path="rastreador" element={<Rastreador />} />
+                  <Route path="plano-alimentar" element={<PlanoAlimentar />} />
+                  <Route path="receitas" element={<Receitas />} />
+                  <Route path="comunidade" element={<Comunidade />} />
                   <Route path="*" element={<Navigate to="dashboard" replace />} />
                 </Routes>
               </AppLayout>

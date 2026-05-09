@@ -1,8 +1,19 @@
 import { SidebarProvider, Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter } from "@/components/ui/sidebar";
 import { LayoutDashboard, Activity, Utensils, Users, BookOpen, Settings, LogOut, Search, Bell } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Link, useLocation } from "react-router-dom";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+
+  const menuItems = [
+    { icon: LayoutDashboard, label: "Dashboard", path: "/app/dashboard" },
+    { icon: Activity, label: "Rastreador", path: "/app/rastreador" },
+    { icon: Utensils, label: "Plano Alimentar", path: "/app/plano-alimentar" },
+    { icon: BookOpen, label: "Receitas", path: "/app/receitas" },
+    { icon: Users, label: "Comunidade", path: "/app/comunidade" },
+  ];
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-[#F8F5F1]">
@@ -20,19 +31,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarHeader>
           <SidebarContent>
             <SidebarMenu className="px-4 gap-2">
-              {[
-                { icon: LayoutDashboard, label: "Dashboard", active: true },
-                { icon: Activity, label: "Rastreador" },
-                { icon: Utensils, label: "Plano Alimentar" },
-                { icon: BookOpen, label: "Receitas" },
-                { icon: Users, label: "Comunidade" },
-              ].map((item) => (
+              {menuItems.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton 
-                    className={`p-6 rounded-xl transition-all ${item.active ? 'bg-[#A3D9D3] text-[#2A8C7E]' : 'text-[#444444] hover:bg-[#A3D9D3]/20'}`}
+                    asChild
+                    className={`p-6 rounded-xl transition-all ${location.pathname === item.path ? 'bg-[#A3D9D3] text-[#2A8C7E]' : 'text-[#444444] hover:bg-[#A3D9D3]/20'}`}
                   >
-                    <item.icon className="w-5 h-5" />
-                    <span className="font-medium text-lg">{item.label}</span>
+                    <Link to={item.path}>
+                      <item.icon className="w-5 h-5" />
+                      <span className="font-medium text-lg">{item.label}</span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -47,9 +55,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton className="text-red-500 p-4">
-                  <LogOut className="w-5 h-5" />
-                  <span>Sair</span>
+                <SidebarMenuButton className="text-red-500 p-4" asChild>
+                  <Link to="/auth">
+                    <LogOut className="w-5 h-5" />
+                    <span>Sair</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
