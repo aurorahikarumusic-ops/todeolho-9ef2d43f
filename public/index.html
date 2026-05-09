@@ -378,7 +378,42 @@
         function selectBowel(btn, v) { document.querySelectorAll('#bowelSelect button').forEach(b => b.classList.remove('bg-aqua-500', 'text-white')); btn.classList.add('bg-aqua-500', 'text-white'); }
         function adjustWater(a) { waterCount = Math.max(0, waterCount + a); document.getElementById('waterCount').innerText = waterCount; }
         function selectMood(btn, e) { document.querySelectorAll('#moodSelect button').forEach(b => b.classList.add('grayscale', 'opacity-40', 'scale-100')); btn.classList.remove('grayscale', 'opacity-40'); btn.classList.add('scale-125'); }
-        function saveSymptomLog() { document.getElementById('toastMessage').innerText = "📊 Registro clínico salvo!"; const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+        function openRecipeModal(id) {
+            const modal = document.getElementById('recipeModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Exemplo de conteúdo dinâmico
+            document.getElementById('recipeModalContent').innerHTML = `
+                <div class="h-64 bg-gradient-to-br from-green-100 to-aqua-200 flex items-center justify-center text-8xl">🥗</div>
+                <div class="p-8 space-y-6">
+                    <div>
+                        <span class="text-xs font-black uppercase tracking-[0.2em] text-aqua-600 mb-2 block">Receita em Destaque</span>
+                        <h3 class="text-3xl font-serif font-bold text-slate-700">Salada Mediterrânea com Quinoa</h3>
+                    </div>
+                    <div class="flex gap-4 border-y border-cream-100 py-4">
+                        <div class="flex-1 text-center border-r border-cream-100"><span class="block text-xs font-black text-slate-400 uppercase mb-1">Tempo</span><span class="font-bold">25 min</span></div>
+                        <div class="flex-1 text-center border-r border-cream-100"><span class="block text-xs font-black text-slate-400 uppercase mb-1">Calorias</span><span class="font-bold">350 kcal</span></div>
+                        <div class="flex-1 text-center"><span class="block text-xs font-black text-slate-400 uppercase mb-1">Proteína</span><span class="font-bold">28g</span></div>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="font-bold text-slate-700">Ingredientes</h4>
+                        <ul class="text-sm text-slate-500 space-y-2 list-disc pl-4">
+                            <li>1 xícara de quinoa real cozida</li>
+                            <li>150g de peito de frango grelhado em cubos</li>
+                            <li>Tomate cereja, pepino e cebola roxa</li>
+                            <li>Azeite de oliva extra virgem e limão siciliano</li>
+                        </ul>
+                    </div>
+                    <button onclick="closeRecipeModal()" class="w-full py-4 bg-aqua-500 text-white font-black uppercase rounded-2xl shadow-xl shadow-aqua-500/20">Cozinhar Agora</button>
+                </div>
+            `;
+        }
+
+        function closeRecipeModal() {
+            document.getElementById('recipeModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
         document.addEventListener('DOMContentLoaded', initWeeklyChart);
     </script>
 </body>
