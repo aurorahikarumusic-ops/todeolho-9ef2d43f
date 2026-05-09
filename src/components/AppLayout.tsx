@@ -9,10 +9,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <Sidebar className="border-r border-[#E8C7C8]/30">
           <SidebarHeader className="p-6">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-[#2A8C7E] rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">G</span>
+              <div className="w-8 h-8 bg-[#2A8C7E] rounded-full flex items-center justify-center shadow-sm">
+                <span className="text-white font-bold text-lg italic">f</span>
               </div>
-              <span className="font-semibold text-xl text-[#444444]">GutMenopausa</span>
+              <div className="flex flex-col leading-tight">
+                <span className="font-bold text-xl text-[#444444]">Flora 40+</span>
+                <span className="text-[10px] text-[#2A8C7E] font-medium uppercase tracking-widest">Equilíbrio Interior</span>
+              </div>
             </div>
           </SidebarHeader>
           <SidebarContent>

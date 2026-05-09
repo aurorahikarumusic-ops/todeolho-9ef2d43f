@@ -19,11 +19,14 @@ const AuthPage = () => {
     <div className="min-h-screen bg-[#F8F5F1] flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8 text-center animate-in fade-in slide-in-from-bottom-4 duration-1000">
         <div className="space-y-4">
-          <div className="mx-auto w-16 h-16 bg-[#2A8C7E] rounded-2xl flex items-center justify-center shadow-lg transform -rotate-6">
-            <span className="text-white font-bold text-3xl">G</span>
+          <div className="mx-auto w-16 h-16 bg-[#2A8C7E] rounded-full flex items-center justify-center shadow-lg transform -rotate-6">
+            <span className="text-white font-bold text-4xl italic">f</span>
           </div>
-          <h1 className="text-4xl font-bold text-[#444444]">GutMenopausa</h1>
-          <p className="text-[#444444]/60 text-lg italic">Equilíbrio intestinal para sua melhor fase.</p>
+          <div className="space-y-1">
+            <h1 className="text-4xl font-bold text-[#444444]">Flora 40+</h1>
+            <p className="text-[#2A8C7E] font-semibold tracking-widest uppercase text-xs">Seu equilíbrio interior</p>
+          </div>
+          <p className="text-[#444444]/60 text-lg italic pt-2">Sua melhor fase começa com uma saúde intestinal plena.</p>
         </div>
 
         <Card className="p-8 rounded-[2.5rem] border-none shadow-xl bg-white/80 backdrop-blur-sm">
@@ -69,7 +72,7 @@ const AuthPage = () => {
               )}
 
               <Button type="submit" className="w-full bg-[#2A8C7E] hover:bg-[#2A8C7E]/90 text-white rounded-full py-7 h-auto text-xl font-bold shadow-lg shadow-[#2A8C7E]/20 mt-4 transition-all active:scale-[0.98]">
-                {isLogin ? "Entrar na Plataforma" : "Começar Agora"}
+                {isLogin ? "Entrar na Plataforma" : "Começar Minha Jornada"}
               </Button>
             </form>
           </Tabs>
