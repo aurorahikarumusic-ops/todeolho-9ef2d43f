@@ -335,70 +335,92 @@ function QuickRegisterView({ setView }: any) {
 
 function HistoryView({ setView }: any) {
     return (
-        <motion.div initial={{ x: 300 }} animate={{ x: 0 }} exit={{ x: -300 }} className="p-6 space-y-6">
-           <button onClick={() => setView("dashboard")} className="flex items-center gap-2 text-[#2A8C7E] font-bold">
-             <ArrowLeft className="w-5 h-5" /> Voltar
-           </button>
-           <h2 className="text-2xl font-black text-gray-900">Sua Jornada Clínica</h2>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-8 relative z-10">
+           <header className="flex items-center gap-4">
+             <button onClick={() => setView("dashboard")} className="p-3 bg-white rounded-2xl shadow-sm border border-gray-50 text-[#2A8C7E]">
+               <ArrowLeft className="w-5 h-5" />
+             </button>
+             <h2 className="text-2xl font-black text-gray-900 tracking-tight">Sua Jornada</h2>
+           </header>
            
-           {/* Tendências de Microambiente - Inspirado no ZOE PREDICT */}
-           <Card className="p-6 rounded-3xl bg-white border-none shadow-sm space-y-4">
-             <div className="flex items-center gap-2 text-[#2A8C7E]">
-               <Activity className="w-5 h-5" />
-               <h3 className="font-bold">Correlação Intestino-Hormônio</h3>
+           <Card className="p-8 rounded-[2.5rem] bg-white border-none shadow-[0_15px_40px_rgba(0,0,0,0.04)] space-y-6">
+             <div className="flex items-center justify-between">
+               <div className="flex items-center gap-3">
+                 <div className="p-2.5 bg-[#A3D9D3]/10 rounded-xl"><Activity className="w-5 h-5 text-[#2A8C7E]" /></div>
+                 <h3 className="font-black text-gray-900 uppercase tracking-wider text-xs">Eixo Intestino-Hormônio</h3>
+               </div>
+               <div className="text-[10px] font-black text-[#2A8C7E] bg-[#A3D9D3]/10 px-2 py-1 rounded-md">7 DIAS</div>
              </div>
-             <div className="h-48 bg-[#FDF8F3] rounded-2xl flex flex-col items-center justify-center p-4">
-                <div className="w-full flex justify-around items-end h-24 mb-4">
-                   {[40, 70, 45, 90, 65, 80, 75].map((h, i) => (
-                     <div key={i} className="w-3 bg-[#A3D9D3] rounded-t-full transition-all hover:bg-[#2A8C7E]" style={{ height: `${h}%` }} />
-                   ))}
-                </div>
-                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter text-center">
-                   Eixo HPA: Estabilidade hormonal vs. Saúde Intestinal
-                </p>
+
+             <div className="h-48 flex items-end justify-between gap-1.5 px-2">
+                {[45, 75, 50, 95, 60, 85, 70].map((h, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-2 group">
+                    <motion.div 
+                      initial={{ height: 0 }} 
+                      animate={{ height: `${h}%` }} 
+                      transition={{ delay: i * 0.1, duration: 0.8, ease: "circOut" }}
+                      className={`w-full max-w-[12px] rounded-full transition-all duration-300 ${i === 3 ? 'bg-[#2A8C7E]' : 'bg-[#A3D9D3]/30 group-hover:bg-[#A3D9D3]'}`} 
+                    />
+                    <span className="text-[8px] font-black text-gray-300 uppercase">{['S','T','Q','Q','S','S','D'][i]}</span>
+                  </div>
+                ))}
              </div>
+             
+             <p className="text-[11px] text-gray-400 font-bold leading-relaxed text-center px-4">
+               Houve um aumento de <span className="text-[#2A8C7E]">12% na estabilidade hormonal</span> esta semana em comparação com a anterior.
+             </p>
            </Card>
 
-           <Button variant="outline" className="w-full h-16 rounded-full border-2 border-[#2A8C7E] text-[#2A8C7E] font-bold flex gap-2 items-center justify-center">
-              <ChevronDown className="w-5 h-5" /> Baixar Relatório para Médico (PDF)
-           </Button>
+           <div className="space-y-4">
+             <Button className="w-full h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-lg border-none flex gap-3 items-center justify-center group">
+                <ChevronDown className="w-6 h-6 group-hover:translate-y-1 transition-transform" /> 
+                Baixar PDF Médico
+             </Button>
+             <p className="text-center text-[10px] font-black text-gray-300 uppercase tracking-widest">Relatório otimizado para consulta</p>
+           </div>
         </motion.div>
     );
 }
 
 function InsightsView({ setView }: any) {
     return (
-        <motion.div initial={{ x: 300 }} animate={{ x: 0 }} exit={{ x: -300 }} className="p-6 space-y-6">
-           <button onClick={() => setView("dashboard")} className="flex items-center gap-2 text-[#2A8C7E] font-bold">
-             <ArrowLeft className="w-5 h-5" /> Voltar
-           </button>
-           <h2 className="text-2xl font-black text-gray-900">Análise de Dados IA</h2>
-           <Card className="p-6 rounded-[2rem] bg-gradient-to-br from-[#E8C7C8]/20 to-[#A3D9D3]/20 border-none relative overflow-hidden">
-              <Sparkles className="w-12 h-12 text-[#2A8C7E] absolute -top-2 -right-2 opacity-20" />
-              <div className="space-y-4 relative z-10">
-                <div className="flex items-center gap-2 text-[#2A8C7E] font-bold uppercase text-xs tracking-widest">
-                  <Brain className="w-4 h-4" /> Insight Baseado em Evidências
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 space-y-8 relative z-10">
+           <header className="flex items-center gap-4">
+             <button onClick={() => setView("dashboard")} className="p-3 bg-white rounded-2xl shadow-sm border border-gray-50 text-[#2A8C7E]">
+               <ArrowLeft className="w-5 h-5" />
+             </button>
+             <h2 className="text-2xl font-black text-gray-900 tracking-tight">Análise da Flora</h2>
+           </header>
+
+           <Card className="p-8 rounded-[2.5rem] bg-gradient-to-br from-[#2A8C7E] to-[#1F6B60] border-none relative overflow-hidden shadow-2xl shadow-[#2A8C7E]/20">
+              <Sparkles className="w-32 h-32 text-white/10 absolute -top-8 -right-8" />
+              <div className="space-y-6 relative z-10">
+                <div className="flex items-center gap-2 text-[#A3D9D3] font-black uppercase text-[10px] tracking-widest">
+                  <Brain className="w-4 h-4 fill-[#A3D9D3]/20" /> Insight Personalizado
                 </div>
-                <p className="text-gray-800 leading-relaxed font-semibold text-lg">
-                  "Seu padrão de 'Névoa Mental' costuma aparecer 24h após registros de Tipo 2 (Prisão de Ventre). A ciência mostra que a reciclagem de estrogênio no intestino lento pode afetar o foco. Tente aumentar o magnésio hoje."
+                <p className="text-white leading-relaxed font-bold text-xl tracking-tight">
+                  "Sua digestão está 2x mais eficiente após as 18h quando você inclui sementes de abóbora no jantar. O magnésio parece ser a chave."
                 </p>
-                <div className="pt-4 border-t border-white/40 flex items-center justify-between text-[10px] font-bold text-gray-500">
-                   <span>Fonte: Harvard Health & ZOE Study</span>
-                   <CheckCircle2 className="w-4 h-4 text-[#2A8C7E]" />
+                <div className="pt-6 border-t border-white/10 flex items-center justify-between text-[9px] font-black text-white/40 uppercase tracking-widest">
+                   <span>Baseado em 14 registros</span>
+                   <div className="flex items-center gap-1">Protocolo Ativo <CheckCircle2 className="w-3 h-3" /></div>
                 </div>
               </div>
            </Card>
 
-           <Card className="p-5 rounded-3xl border-none bg-white shadow-sm">
-              <h4 className="font-bold text-gray-400 text-xs mb-3 uppercase">Recomendação do Protocolo</h4>
-              <div className="flex items-center gap-3">
-                 <div className="w-12 h-12 bg-[#FDF8F3] rounded-2xl flex items-center justify-center"><Coffee className="w-6 h-6 text-[#2A8C7E]" /></div>
-                 <div>
-                    <p className="font-bold text-gray-800">Shot Matinal Anti-inflamatório</p>
-                    <p className="text-xs text-gray-500">Ajuda no peristaltismo e fogachos.</p>
-                 </div>
-              </div>
-           </Card>
+           <div className="grid grid-cols-1 gap-4">
+             <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-2">Recomendação do Dia</h3>
+             <Card className="p-5 rounded-3xl border-none bg-white shadow-sm flex items-center gap-5 hover:shadow-md transition-shadow cursor-pointer">
+                <div className="w-16 h-16 bg-[#FDF8F3] rounded-[1.5rem] flex items-center justify-center shadow-inner border border-gray-50">
+                  <Coffee className="w-8 h-8 text-[#2A8C7E]" />
+                </div>
+                <div className="space-y-0.5">
+                   <p className="font-black text-gray-900 text-lg tracking-tight">Shot Matinal</p>
+                   <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Metabolismo & Fibras</p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-200 ml-auto" />
+             </Card>
+           </div>
         </motion.div>
     );
 }
