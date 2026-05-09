@@ -12,7 +12,10 @@ import {
   CheckCircle2,
   Calendar,
   Sparkles,
-  Info
+  Info,
+  Droplets,
+  TrendingUp,
+  TrendingDown
 } from 'lucide-react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
