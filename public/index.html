@@ -509,7 +509,8 @@
             if (pageId === 'dashboard') { setTimeout(initWeeklyChart, 100); }
             if (pageId === 'rastreador') { setTimeout(initSymptomsChart, 100); }
             if (pageId === 'relatorios') { setTimeout(initMonthlyChart, 100); }
-            if (window.innerWidth < 1024 && document.getElementById('sidebar').classList.contains('open')) toggleSidebar();
+            
+            closeSidebar();
         }
 
         function selectDay(btn) {
