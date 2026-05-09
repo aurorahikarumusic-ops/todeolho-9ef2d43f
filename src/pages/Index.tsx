@@ -428,7 +428,4 @@ function Post({ user, time, text, likes, comments = 0 }: any) {
   );
 }
 
-// Icons placeholders for habits
-function Droplets(props: any) { return <span {...props}>💧</span>; }
-function TrendingUp(props: any) { return <span {...props}>↗️</span>; }
-function TrendingDown(props: any) { return <span {...props}>↘️</span>; }
+// Icons used from lucide-react above.
