@@ -64,6 +64,15 @@
     </div>
     <div id="sidebarOverlay" class="sidebar-overlay lg:hidden" onclick="toggleSidebar()"></div>
 
+    <!-- Bottom Navigation (Mobile Only) -->
+    <nav class="lg:hidden fixed bottom-6 left-6 right-6 h-18 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-[2rem] flex items-center justify-around px-4 z-[60] shadow-2xl">
+        <button onclick="navigateTo('dashboard', this)" class="mobile-nav-btn text-aqua-400 p-3"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg></button>
+        <button onclick="navigateTo('rastreador', this)" class="mobile-nav-btn text-white/40 p-3"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></button>
+        <button onclick="navigateTo('plano', this)" class="mobile-nav-btn text-white/40 p-3"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg></button>
+        <button onclick="navigateTo('receitas', this)" class="mobile-nav-btn text-white/40 p-3"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg></button>
+        <button onclick="navigateTo('comunidade', this)" class="mobile-nav-btn text-white/40 p-3"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg></button>
+    </nav>
+
     <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full bg-white border-r border-cream-200 p-6 flex flex-col shadow-sm">
         <div class="flex items-center gap-3 mb-10 px-2">
             <div class="w-10 h-10 rounded-full bg-gradient-to-br from-aqua-200 to-aqua-500 flex items-center justify-center text-white">
@@ -193,6 +202,37 @@
                             <h4 class="text-xl font-serif font-bold text-slate-700 leading-tight">Salada Mediterrânea com Quinoa e Frango</h4>
                             <p class="text-sm text-slate-500 leading-relaxed">Quinoa + frango + tomate cereja + pepino + azeite + limão siciliano.</p>
                             <span class="text-[10px] font-bold text-slate-400">⏱️ 25 min</span>
+                        </div>
+                    </div>
+
+                    <div class="dash-card p-6 flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-gradient-to-br from-orange-100 to-rose-100 flex items-center justify-center text-4xl shrink-0 shadow-inner">🥥</div>
+                        <div class="flex-1 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-rose-500">16:30 · Lanche da Tarde</span>
+                                    <span class="px-2 py-0.5 bg-rose-50 text-rose-700 text-[9px] font-black uppercase rounded border border-rose-100">Saciante</span>
+                                </div>
+                                <span class="text-xs font-bold text-slate-400 italic">150 kcal</span>
+                            </div>
+                            <h4 class="text-xl font-serif font-bold text-slate-700 leading-tight">Iogurte de Coco com Chia</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Iogurte natural de coco sem açúcar + 1 colher de sopa de chia.</p>
+                            <span class="text-[10px] font-bold text-slate-400">⏱️ 2 min</span>
+                        </div>
+                    </div>
+
+                    <div class="dash-card p-6 flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center text-4xl shrink-0 shadow-inner">🫐</div>
+                        <div class="flex-1 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-purple-500">21:30 · Ceia</span>
+                                    <span class="px-2 py-0.5 bg-purple-50 text-purple-700 text-[9px] font-black uppercase rounded border border-purple-100">Melatonina Natural</span>
+                                </div>
+                                <span class="text-xs font-bold text-slate-400 italic">80 kcal</span>
+                            </div>
+                            <h4 class="text-xl font-serif font-bold text-slate-700 leading-tight">Mix de Castanhas e Cranberries</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">3 nozes + 1 colher de cranberries secas sem açúcar.</p>
                         </div>
                     </div>
 
@@ -406,18 +446,27 @@
             <!-- Scripts -->
             <script>
                 const recipesData = {
-                    1: { emoji: '🥗', title: 'Salada Mediterrânea', tags: ['Fibras', 'Anti-inflamatória'], ingredients: ['Quinoa', 'Frango', 'Tomate'], steps: ['Cozinhe a quinoa', 'Grelhe o frango'], time: '25 min', kcal: '350', meal: 'Almoço' },
-                    2: { emoji: '🥣', title: 'Mingau de Aveia', tags: ['Prebiótico', 'Energia'], ingredients: ['Aveia', 'Frutas', 'Chia'], steps: ['Misture e aqueça'], time: '10 min', kcal: '280', meal: 'Café' }
+                    1: { emoji: '🥗', title: 'Salada Mediterrânea', tags: ['Fibras', 'Proteína'], ingredients: ['1 xícara de quinoa real cozida', '150g de peito de frango', 'Tomate cereja e pepino', 'Azeite extra virgem'], steps: ['Cozinhe a quinoa em água e sal', 'Grelhe o frango em cubos', 'Misture os vegetais picados', 'Finalize com azeite e limão'], time: '25 min', kcal: '350', meal: 'Almoço', benefit: 'A quinoa real é um prebiótico excelente.' },
+                    2: { emoji: '🥣', title: 'Mingau de Aveia', tags: ['Prebiótico', 'Energia'], ingredients: ['3 colheres de aveia em flocos', '200ml de leite vegetal', '1 banana picada'], steps: ['Aqueça a aveia e o leite', 'Mexa até engrossar', 'Adicione a banana'], time: '10 min', kcal: '280', meal: 'Café', benefit: 'A aveia contém beta-glucana para o trânsito intestinal.' },
+                    3: { emoji: '🍲', title: 'Sopa de Abóbora', tags: ['Imunidade', 'Leve'], ingredients: ['Abóbora cabotiá', 'Gengibre fresco', 'Cúrcuma'], steps: ['Cozinhe a abóbora', 'Bata com gengibre e temperos'], time: '20 min', kcal: '210', meal: 'Jantar', benefit: 'O gengibre é um potente anti-inflamatório.' },
+                    4: { emoji: '🥤', title: 'Smoothie Verde', tags: ['Detox', 'Vitalidade'], ingredients: ['Couve', 'Maçã verde', 'Spirulina'], steps: ['Bata tudo no liquidificador', 'Sirva gelado'], time: '5 min', kcal: '150', meal: 'Sucos', benefit: 'Rico em clorofila para desintoxicação.' },
+                    5: { emoji: '🥘', title: 'Bowl de Lentilha', tags: ['Proteína', 'Saciante'], ingredients: ['Lentilhas cozidas', 'Batata doce', 'Brócolis'], steps: ['Monte o bowl com a base', 'Adicione os legumes grelhados'], time: '30 min', kcal: '420', meal: 'Almoço', benefit: 'A lentilha é rica em ferro e fibras.' },
+                    6: { emoji: '🧉', title: 'Chá Relaxante', tags: ['Sono', 'Calma'], ingredients: ['Camomila', 'Melissa', 'Canela'], steps: ['Infusão por 5 minutos', 'Beba morno'], time: '5 min', kcal: '0', meal: 'Jantar', benefit: 'Ajuda na regulação do ciclo circadiano.' }
                 };
                 function openRecipeModal(id) {
                     const r = recipesData[id] || recipesData[1];
                     document.getElementById('recipeModalEmoji').innerText = r.emoji;
                     document.getElementById('recipeModalTitle').innerText = r.title;
+                    document.getElementById('recipeModalTime').innerText = `⏱️ ${r.time}`;
+                    document.getElementById('recipeModalKcal').innerText = `🔥 ${r.kcal} kcal`;
+                    document.getElementById('recipeModalMeal').innerText = `🍽️ ${r.meal}`;
+                    document.getElementById('recipeModalBenefit').innerText = r.benefit;
                     document.getElementById('recipeModalIngredients').innerHTML = r.ingredients.map(i => `<li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-aqua-400 mt-1.5 shrink-0"></span> ${i}</li>`).join('');
-                    document.getElementById('recipeModalSteps').innerHTML = r.steps.map((s, i) => `<li class="flex gap-4 text-sm"><span class="w-6 h-6 rounded-full bg-aqua-100 text-aqua-600 flex items-center justify-center font-black">${i+1}</span> ${s}</li>`).join('');
+                    document.getElementById('recipeModalSteps').innerHTML = r.steps.map((s, i) => `<li class="flex gap-4 text-sm text-slate-500"><span class="w-6 h-6 rounded-full bg-aqua-100 text-aqua-600 flex items-center justify-center font-black">${i+1}</span> ${s}</li>`).join('');
                     document.getElementById('recipeModal').classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
                 }
-                function closeRecipeModal() { document.getElementById('recipeModal').classList.add('hidden'); }
+                function closeRecipeModal() { document.getElementById('recipeModal').classList.add('hidden'); document.body.style.overflow = ''; }
             </script>
             </div>
 
@@ -436,19 +485,26 @@
             const target = document.getElementById('page-' + pageId);
             if (target) target.classList.add('active');
             
+            // Sidebar desktop links
             document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-            if (element) element.classList.add('active');
+            
+            // Bottom nav mobile links
+            document.querySelectorAll('.mobile-nav-btn').forEach(b => {
+                b.classList.remove('text-aqua-400');
+                b.classList.add('text-white/40');
+            });
+
+            if(element) {
+                if(element.classList.contains('sidebar-link')) element.classList.add('active');
+                if(element.classList.contains('mobile-nav-btn')) {
+                    element.classList.remove('text-white/40');
+                    element.classList.add('text-aqua-400');
+                }
+            }
 
             const headerTitle = document.getElementById('pageHeader');
-            const titles = {
-                'dashboard': 'Dashboard',
-                'rastreador': 'Rastreador de Sintomas',
-                'plano': 'Plano Alimentar',
-                'receitas': 'Receitas',
-                'relatorios': 'Relatórios',
-                'comunidade': 'Comunidade'
-            };
-            if (headerTitle) headerTitle.innerText = titles[pageId] || 'Flora 40+';
+            const titles = { dashboard:'Dashboard', rastreador:'Rastreador de Sintomas', plano:'Plano Alimentar', receitas:'Receitas', relatorios:'Relatórios', comunidade:'Comunidade' };
+            if(headerTitle) headerTitle.innerText = titles[pageId] || 'Dashboard';
 
             if (pageId === 'dashboard') { setTimeout(initWeeklyChart, 100); }
             if (pageId === 'rastreador') { setTimeout(initSymptomsChart, 100); }
