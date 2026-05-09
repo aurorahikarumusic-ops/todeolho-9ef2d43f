@@ -18,46 +18,49 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-[#F8F5F1] flex flex-col">
-        {/* Mobile Header */}
-        <header className="h-16 bg-white/80 backdrop-blur-lg border-b border-[#E8C7C8]/20 px-4 flex items-center justify-between sticky top-0 z-50">
+      <div className="min-h-screen flex flex-col relative">
+        {/* Animated background particles effect */}
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#A3D9D3]/10 rounded-full blur-[80px] animate-pulse" />
+          <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-[#E8C7C8]/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+
+        {/* Mobile Header - Glassmorphism */}
+        <header className="h-16 glass-morphism sticky top-0 z-50 px-4 flex items-center justify-between mx-4 my-2 rounded-2xl">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#2A8C7E] rounded-full flex items-center justify-center shadow-sm">
+            <div className="w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center border border-white/30 shadow-sm">
               <span className="text-white font-bold text-lg italic">f</span>
             </div>
-            <span className="font-bold text-lg text-[#333333]">Flora 40+</span>
+            <span className="font-display font-bold text-lg text-white">Flora 40+</span>
           </div>
           <div className="flex items-center gap-3">
-             <Bell className="w-5 h-5 text-[#333333]" />
-             <Avatar className="h-8 w-8 border border-[#A3D9D3]">
+             <Bell className="w-5 h-5 text-white/80" />
+             <Avatar className="h-8 w-8 border border-white/30 shadow-sm">
                 <AvatarImage src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop" />
-                <AvatarFallback>MS</AvatarFallback>
+                <AvatarFallback className="bg-white/10 text-white">MS</AvatarFallback>
              </Avatar>
           </div>
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-y-auto px-4 py-6 pb-24">
+        <main className="flex-1 px-4 py-4 pb-28 relative z-10">
           {children}
         </main>
 
-        {/* Bottom Navigation */}
-        <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-[#E8C7C8]/30 px-2 pb-6 pt-2 z-50 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
-          <div className="flex justify-between items-center max-w-md mx-auto">
+        {/* Bottom Navigation - Glassmorphism */}
+        <nav className="fixed bottom-4 left-4 right-4 glass-morphism rounded-[2.5rem] px-2 py-2 z-50">
+          <div className="flex justify-between items-center max-w-md mx-auto h-16">
             {menuItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <Link 
                   key={item.label} 
                   to={item.path}
-                  className={`flex flex-col items-center gap-1 flex-1 py-1 transition-all duration-300 ${isActive ? 'text-[#2A8C7E]' : 'text-gray-400'}`}
+                  className={`flex flex-col items-center gap-1 flex-1 py-1 transition-all duration-500 ${isActive ? 'text-white scale-110' : 'text-white/40'}`}
                 >
-                  <div className={`p-1 rounded-xl transition-all ${isActive ? 'bg-[#A3D9D3]/30 scale-110' : ''}`}>
+                  <div className={`p-2 rounded-2xl transition-all duration-300 ${isActive ? 'bg-white/20 shadow-[0_0_15px_rgba(255,255,255,0.2)]' : ''}`}>
                     <item.icon className={`w-6 h-6 ${isActive ? 'stroke-[2.5px]' : 'stroke-[2px]'}`} />
                   </div>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider ${isActive ? 'opacity-100' : 'opacity-60'}`}>
-                    {item.label}
-                  </span>
                 </Link>
               );
             })}
