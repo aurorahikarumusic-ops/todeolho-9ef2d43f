@@ -209,86 +209,124 @@ function QuickRegisterView({ setView }: any) {
   const [bristol, setBristol] = useState(4);
 
   return (
-    <motion.div initial={{ x: 300 }} animate={{ x: 0 }} exit={{ x: -300 }} className="p-6 space-y-6">
+    <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }} className="p-6 space-y-8 relative z-10">
        <header className="flex items-center justify-between">
-          <button onClick={() => setView("dashboard")} className="text-[#2A8C7E] font-bold flex items-center gap-1">
-            <ArrowLeft className="w-5 h-5" /> Sair
+          <button onClick={() => setView("dashboard")} className="text-gray-400 hover:text-[#2A8C7E] font-black uppercase text-[10px] tracking-widest flex items-center gap-1.5 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Cancelar
           </button>
-          <div className="flex gap-1">
+          <div className="flex gap-1.5">
             {[1, 2, 3].map(s => (
-              <div key={s} className={`h-1.5 w-8 rounded-full ${step >= s ? 'bg-[#2A8C7E]' : 'bg-gray-200'}`} />
+              <div key={s} className={`h-1.5 w-10 rounded-full transition-all duration-500 ${step >= s ? 'bg-[#2A8C7E]' : 'bg-gray-200'}`} />
             ))}
           </div>
        </header>
 
        {step === 1 && (
-         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <h2 className="text-2xl font-black text-gray-900 leading-tight">Como foi sua evacuação?<br/><span className="text-[#2A8C7E] text-lg font-medium">Escala de Bristol</span></h2>
-            <div className="grid grid-cols-1 gap-3">
-               {BRISTOL_SCALE.map(item => (
-                 <button 
+         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-black text-gray-900 leading-tight tracking-tight">Saúde Digestiva</h2>
+              <p className="text-[#2A8C7E] font-bold text-sm bg-[#A3D9D3]/10 w-fit px-3 py-1 rounded-full">Escala de Bristol</p>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4">
+               {BRISTOL_SCALE.map((item, i) => (
+                 <motion.button 
                   key={item.type}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
                   onClick={() => setBristol(item.type)}
-                  className={`p-4 rounded-2xl border-2 text-left transition-all flex justify-between items-center ${bristol === item.type ? 'border-[#2A8C7E] bg-[#A3D9D3]/10 shadow-md' : 'border-gray-100 bg-white'}`}
+                  className={`p-5 rounded-[2rem] border-2 text-left transition-all flex justify-between items-center group ${bristol === item.type ? 'border-[#2A8C7E] bg-white shadow-xl shadow-[#2A8C7E]/10' : 'border-gray-50 bg-white/50'}`}
                  >
-                   <div className="flex flex-col">
-                      <span className="font-bold text-gray-900">Tipo {item.type}</span>
-                      <span className="text-xs text-gray-500">{item.desc}</span>
+                   <div className="flex flex-col gap-0.5">
+                      <span className={`font-black text-sm uppercase tracking-wider transition-colors ${bristol === item.type ? 'text-[#2A8C7E]' : 'text-gray-400'}`}>Tipo {item.type}</span>
+                      <span className={`font-bold text-base tracking-tight ${bristol === item.type ? 'text-gray-900' : 'text-gray-500'}`}>{item.desc}</span>
                    </div>
-                   {bristol === item.type && <CheckCircle2 className="w-5 h-5 text-[#2A8C7E]" />}
-                 </button>
+                   <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${bristol === item.type ? 'bg-[#2A8C7E] border-[#2A8C7E]' : 'border-gray-100 group-hover:border-[#A3D9D3]'}`}>
+                      {bristol === item.type && <CheckCircle2 className="w-4 h-4 text-white" />}
+                   </div>
+                 </motion.button>
                ))}
             </div>
-            <Button onClick={() => setStep(2)} className="w-full h-16 rounded-full bg-[#2A8C7E] font-bold text-lg shadow-lg">Próximo</Button>
+            <Button onClick={() => setStep(2)} className="w-full h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-[0_15px_30px_rgba(42,140,126,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all border-none">Próximo</Button>
          </motion.div>
        )}
 
        {step === 2 && (
-         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <h2 className="text-2xl font-black text-gray-900 leading-tight">Sintomas da Menopausa<br/><span className="text-[#E8C7C8] text-lg font-medium">Frequência/Intensidade</span></h2>
-            <div className="space-y-6">
-               {MENOPAUSE_SYMPTOMS.map(s => (
-                 <div key={s.id} className="space-y-3">
-                    <div className="flex items-center gap-3">
-                       <div className="p-2 bg-[#F8F5F1] rounded-xl"><s.icon className="w-5 h-5 text-[#2A8C7E]" /></div>
-                       <Label className="font-bold text-gray-800">{s.label}</Label>
+         <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-black text-gray-900 leading-tight tracking-tight">Equilíbrio Hormonal</h2>
+              <p className="text-[#E8C7C8] font-bold text-sm bg-[#E8C7C8]/10 w-fit px-3 py-1 rounded-full tracking-tight">Intensidade dos Sintomas</p>
+            </div>
+
+            <div className="space-y-10 py-4">
+               {MENOPAUSE_SYMPTOMS.map((s, i) => (
+                 <motion.div 
+                   key={s.id} 
+                   className="space-y-4"
+                   initial={{ opacity: 0, y: 10 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   transition={{ delay: i * 0.1 }}
+                 >
+                    <div className="flex items-center justify-between">
+                       <div className="flex items-center gap-3">
+                          <div className="p-3 bg-white rounded-2xl shadow-sm border border-gray-50"><s.icon className="w-5 h-5 text-[#2A8C7E]" /></div>
+                          <Label className="font-black text-gray-800 tracking-tight text-lg">{s.label}</Label>
+                       </div>
                     </div>
-                    <Slider defaultValue={[0]} max={10} step={1} className="py-2" />
-                    <div className="flex justify-between text-[10px] font-bold text-gray-400 uppercase">
-                       <span>Leve</span>
-                       <span>Moderado</span>
-                       <span>Severo</span>
+                    <div className="px-1">
+                      <Slider defaultValue={[0]} max={10} step={1} className="py-2" />
+                      <div className="flex justify-between text-[10px] font-black text-gray-300 uppercase tracking-widest mt-1">
+                         <span>Leve</span>
+                         <span>Intenso</span>
+                      </div>
                     </div>
-                 </div>
+                 </motion.div>
                ))}
             </div>
             <div className="flex gap-4">
-              <Button variant="outline" onClick={() => setStep(1)} className="w-20 h-16 rounded-full border-[#A3D9D3]">Voltar</Button>
-              <Button onClick={() => setStep(3)} className="flex-1 h-16 rounded-full bg-[#2A8C7E] font-bold text-lg shadow-lg">Próximo</Button>
+              <Button variant="outline" onClick={() => setStep(1)} className="w-24 h-20 rounded-full border-gray-200 bg-white font-black text-gray-400">Voltar</Button>
+              <Button onClick={() => setStep(3)} className="flex-1 h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-lg">Próximo</Button>
             </div>
          </motion.div>
        )}
 
        {step === 3 && (
-         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-            <h2 className="text-2xl font-black text-gray-900 leading-tight">Gatilhos e Hábitos<br/><span className="text-[#2A8C7E] text-lg font-medium">Últimas 24 horas</span></h2>
-            <div className="space-y-4">
-               <Card className="p-5 rounded-3xl border-none bg-white">
-                  <Label className="font-bold text-gray-800 mb-4 block">Ingestão de Fibras & Água</Label>
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                       <div className="flex items-center gap-2"><Utensils className="w-5 h-5 text-[#2A8C7E]" /> <span className="text-sm font-medium">Meta 30g Fibras</span></div>
-                       <Checkbox className="h-6 w-6 rounded-lg border-[#2A8C7E]" />
-                    </div>
-                    <div className="flex items-center justify-between">
-                       <div className="flex items-center gap-2"><Droplets className="w-5 h-5 text-[#2A8C7E]" /> <span className="text-sm font-medium">Meta 2L Água</span></div>
-                       <Checkbox className="h-6 w-6 rounded-lg border-[#2A8C7E]" />
-                    </div>
+         <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-black text-gray-900 leading-tight tracking-tight">Hábitos & Estilo</h2>
+              <p className="text-[#2A8C7E] font-bold text-sm bg-[#A3D9D3]/10 w-fit px-3 py-1 rounded-full">Metas das Últimas 24h</p>
+            </div>
+
+            <div className="space-y-5">
+               <Card className="p-6 rounded-[2.5rem] border-none bg-white shadow-sm space-y-6">
+                  <div className="flex items-center justify-between group cursor-pointer">
+                     <div className="flex items-center gap-4">
+                        <div className="p-3 bg-[#FDF8F3] rounded-2xl"><Utensils className="w-6 h-6 text-[#2A8C7E]" /></div>
+                        <div className="flex flex-col">
+                           <span className="text-base font-black text-gray-900 tracking-tight">Fibras (30g)</span>
+                           <span className="text-xs text-gray-400 font-medium tracking-tight">Vital para o estroboloma</span>
+                        </div>
+                     </div>
+                     <Checkbox className="h-7 w-7 rounded-xl border-2 border-gray-100 data-[state=checked]:bg-[#2A8C7E] data-[state=checked]:border-[#2A8C7E] transition-all" />
+                  </div>
+                  
+                  <div className="h-px bg-gray-50 w-full" />
+
+                  <div className="flex items-center justify-between group cursor-pointer">
+                     <div className="flex items-center gap-4">
+                        <div className="p-3 bg-[#FDF8F3] rounded-2xl"><Droplets className="w-6 h-6 text-[#2A8C7E]" /></div>
+                        <div className="flex flex-col">
+                           <span className="text-base font-black text-gray-900 tracking-tight">Hidratação (2L)</span>
+                           <span className="text-xs text-gray-400 font-medium tracking-tight">Redução de inchaço</span>
+                        </div>
+                     </div>
+                     <Checkbox className="h-7 w-7 rounded-xl border-2 border-gray-100 data-[state=checked]:bg-[#2A8C7E] data-[state=checked]:border-[#2A8C7E] transition-all" />
                   </div>
                </Card>
-               <Textarea placeholder="Observações extras (ex: tomei café tarde, estresse no trabalho...)" className="rounded-3xl min-h-[120px] bg-white border-none focus-visible:ring-[#2A8C7E]" />
+               <Textarea placeholder="Algo a mais para sua nutri? (Ex: Estresse, suplementos...)" className="rounded-[2.5rem] p-8 min-h-[160px] bg-white border-none shadow-sm focus-visible:ring-1 focus-visible:ring-[#A3D9D3] text-gray-700 font-medium placeholder:text-gray-300" />
             </div>
-            <Button onClick={() => toast.success("Registro Clínico Salvo!") || setView("dashboard")} className="w-full h-16 rounded-full bg-[#2A8C7E] font-bold text-lg shadow-lg">Finalizar Registro</Button>
+            <Button onClick={() => toast.success("Registro Clínico Salvo!") || setView("dashboard")} className="w-full h-20 rounded-full bg-[#2A8C7E] font-black text-xl shadow-[0_15px_30px_rgba(42,140,126,0.3)]">Finalizar</Button>
          </motion.div>
        )}
     </motion.div>
