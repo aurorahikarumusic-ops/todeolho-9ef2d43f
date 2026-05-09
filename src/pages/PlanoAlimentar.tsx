@@ -87,8 +87,7 @@ const WEEKLY_PLAN: DayPlan[] = [
         fiber: "4g"
       }
     ]
-  },
-  // Adding more days would be similar...
+  }
 ];
 
 const SHOPPING_LIST = [
@@ -134,7 +133,6 @@ export default function PlanoAlimentar() {
         </TabsList>
 
         <TabsContent value="plano" className="space-y-6 animate-in slide-in-from-bottom-2">
-          {/* Day Selector */}
           <div className="flex gap-2 overflow-x-auto pb-4 no-scrollbar">
             {["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"].map((day, idx) => (
               <button
@@ -284,6 +282,31 @@ export default function PlanoAlimentar() {
              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Índice Glicêmico</p>
            </div>
          </div>
+      </section>
+
+      <section className="p-8 rounded-[2.5rem] bg-white border border-[#A3D9D3]/30 space-y-4">
+        <div className="flex items-center gap-3">
+          <Info className="w-6 h-6 text-[#2A8C7E]" />
+          <h3 className="text-xl font-bold text-gray-900">Como geramos seu plano</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+          <div className="flex gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#2A8C7E] shrink-0" />
+            <p><strong>Ajuste Dinâmico:</strong> Novos planos são gerados com base nos seus sintomas registrados no Rastreador.</p>
+          </div>
+          <div className="flex gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#2A8C7E] shrink-0" />
+            <p><strong>Sazonalidade:</strong> Priorizamos alimentos da época para garantir frescor e menor custo.</p>
+          </div>
+          <div className="flex gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#2A8C7E] shrink-0" />
+            <p><strong>Variedade:</strong> Nunca repetimos o mesmo prato principal em menos de 10 dias.</p>
+          </div>
+          <div className="flex gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#2A8C7E] shrink-0" />
+            <p><strong>Equilíbrio Hormonal:</strong> Incluímos fitoestrógenos naturais (como linhaça e inhame) em doses terapêuticas.</p>
+          </div>
+        </div>
       </section>
 
       <div className="text-center p-6 space-y-2">
