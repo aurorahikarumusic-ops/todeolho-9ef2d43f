@@ -476,19 +476,26 @@
             const target = document.getElementById('page-' + pageId);
             if (target) target.classList.add('active');
             
+            // Sidebar desktop links
             document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-            if (element) element.classList.add('active');
+            
+            // Bottom nav mobile links
+            document.querySelectorAll('.mobile-nav-btn').forEach(b => {
+                b.classList.remove('text-aqua-400');
+                b.classList.add('text-white/40');
+            });
+
+            if(element) {
+                if(element.classList.contains('sidebar-link')) element.classList.add('active');
+                if(element.classList.contains('mobile-nav-btn')) {
+                    element.classList.remove('text-white/40');
+                    element.classList.add('text-aqua-400');
+                }
+            }
 
             const headerTitle = document.getElementById('pageHeader');
-            const titles = {
-                'dashboard': 'Dashboard',
-                'rastreador': 'Rastreador de Sintomas',
-                'plano': 'Plano Alimentar',
-                'receitas': 'Receitas',
-                'relatorios': 'Relatórios',
-                'comunidade': 'Comunidade'
-            };
-            if (headerTitle) headerTitle.innerText = titles[pageId] || 'Flora 40+';
+            const titles = { dashboard:'Dashboard', rastreador:'Rastreador de Sintomas', plano:'Plano Alimentar', receitas:'Receitas', relatorios:'Relatórios', comunidade:'Comunidade' };
+            if(headerTitle) headerTitle.innerText = titles[pageId] || 'Dashboard';
 
             if (pageId === 'dashboard') { setTimeout(initWeeklyChart, 100); }
             if (pageId === 'rastreador') { setTimeout(initSymptomsChart, 100); }
