@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { 
   Heart, Brain, Zap, Moon, Smile, Droplets, Utensils, 
   TrendingUp, Sparkles, Footprints, Info, CheckCircle2,
-  Calendar, ChevronRight
+  Calendar, ChevronRight, Loader2
 } from "lucide-react";
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
@@ -24,6 +24,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const BRISTOL_SCALE = [
   { type: 1, desc: "Caroços duros e separados" },
@@ -49,13 +50,35 @@ export default function Rastreador() {
   const [gutScore, setGutScore] = useState(75);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState("sintomas");
+  const [aiInsight, setAiInsight] = useState<string | null>(null);
+  const [isLoadingInsight, setIsLoadingInsight] = useState(false);
   
   useEffect(() => {
     const hasSeenOnboarding = localStorage.getItem("flora_onboarding_done");
     if (!hasSeenOnboarding) {
       setShowOnboarding(true);
     }
+    fetchAiInsight();
   }, []);
+
+  const fetchAiInsight = async () => {
+    setIsLoadingInsight(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("flora-ai", {
+        body: { 
+          prompt: "Gere um insight para Maria, uma mulher de 52 anos que registrou inchaço leve ontem, mas completou 2L de água.", 
+          type: "insight" 
+        },
+      });
+      if (error) throw error;
+      setAiInsight(data.content);
+    } catch (error) {
+      console.error("Erro ao buscar insight:", error);
+      setAiInsight("Mantenha o foco na hidratação! Sua dedicação hoje é o equilíbrio de amanhã.");
+    } finally {
+      setIsLoadingInsight(false);
+    }
+  };
 
   const finishOnboarding = () => {
     localStorage.setItem("flora_onboarding_done", "true");
@@ -67,6 +90,7 @@ export default function Rastreador() {
     toast.success("Registro salvo com sucesso!", {
       description: "Seu score de saúde intestinal foi atualizado.",
     });
+    fetchAiInsight();
   };
 
   const habits = [
@@ -258,7 +282,13 @@ export default function Rastreador() {
             <h3 className="text-xl font-bold text-gray-900">Insight da Flora IA</h3>
           </div>
           <p className="text-gray-700 leading-relaxed text-lg">
-            "Olá Flora! Notei que sua **energia** está 30% maior nos dias em que você completa o hábito de **Caminhada**. Além disso, seu inchaço diminuiu desde que você reduziu laticínios no jantar. Continue assim!"
+            {isLoadingInsight ? (
+              <span className="flex items-center gap-2 text-gray-400 italic">
+                <Loader2 className="w-4 h-4 animate-spin" /> Gerando insight personalizado...
+              </span>
+            ) : (
+              aiInsight || "Olá Flora! Continue registrando seus dados para que eu possa gerar insights personalizados sobre seu equilíbrio."
+            )}
           </p>
           <Button variant="link" className="text-[#2A8C7E] p-0 mt-4 font-bold flex items-center gap-1 group">
             Ver relatório detalhado <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
